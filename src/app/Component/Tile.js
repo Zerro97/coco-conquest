@@ -13,9 +13,7 @@ Tile.schema = {
 	y: { type: Types.Number },
 
 	// Tile geometry
-	size: { type: Types.Number, default: 40},
-	width: { type: Types.Number, default: 69.282},
-	height: { type: Types.Number, default: 80},
+	size: { type: Types.Number, default: 50},
 
 	// Store entity standing on the tile
 	unit: { type: Types.Number },

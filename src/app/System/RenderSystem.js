@@ -1,5 +1,6 @@
 import { System } from '../Library/Ecsy';
 import { Renderable, Tile } from '../Component';
+import { roundRect, drawPause, drawHp } from '../Util';
 
 /**
  * Handles all the drawing
@@ -8,7 +9,12 @@ export class RenderSystem extends System {
 	// This method will get called on every frame by default
 	execute(delta, time) {
 		this.clearCanvas();
+
+		// Drawing order matters
 		this.drawTiles();
+		this.drawBuildings();
+		this.drawUnits();
+		this.drawHud();
 	}
 
 	// Clear canvas screen
@@ -30,8 +36,6 @@ export class RenderSystem extends System {
 
 			this.drawHexagon(canvasX, canvasY, tile.size);
 		});
-
-		this.stop();
 	}
 
 	drawHexagon(x, y, r) {
@@ -46,18 +50,46 @@ export class RenderSystem extends System {
 		this.ctx.stroke();
 	}
         
-	draw(shape, position) {
-		switch(shape) {
-		case 'box':
-			this.ctx.beginPath();
-			this.ctx.rect(position.x - 25, position.y - 25, 50, 50);
-			this.ctx.fillStyle= '#e2736e';
+	drawBuildings() {
+		
+	}
+
+	drawUnits() {
+
+	}
+
+	drawHud() {
+		// Pause Button
+		this.ctx.fillStyle = 'rgb(210, 210, 210)';
+		this.ctx.fillRect(40, 40, 10, 50);
+		this.ctx.fillRect(60, 40, 10, 50);
+
+		// Top right panel
+		this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+		this.ctx.lineWidth = 5;
+		this.ctx.strokeStyle = 'rgb(100, 100, 100)';
+		roundRect(this.ctx, this.canvasWidth - 350, 0, 350, 120, {bl: 20}, true, true);
+		
+		// Circle		
+		this.ctx.fillStyle = 'rgb(150, 150, 150)';
+		this.ctx.lineWidth = 5;
+		this.ctx.strokeStyle = 'rgb(100, 100, 100)';
+		this.ctx.beginPath();
+		this.ctx.arc(this.canvasWidth - 285, 60, 50, 0, 2 * Math.PI);
+		this.ctx.fill();
+		this.ctx.stroke();
+
+		// HP
+		for(let i=0; i<15; i++) {
+			this.ctx.fillStyle = '#eb4034';
+			this.ctx.lineWidth = 1;
+			this.ctx.strokeStyle = 'white';
+			this.ctx.rect(this.canvasWidth - 200 + i*10, 30, 7, 25);
 			this.ctx.fill();
-			this.ctx.lineWidth = 2;
-			this.ctx.strokeStyle = '#b74843';
 			this.ctx.stroke();
-			break;
 		}
+
+		this.stop();		
 	}
 }
 

@@ -40,6 +40,7 @@ for (let i = 0; i < 30; i++) {
 				status: 'seen',
 				x: i,
 				y: j,
+				size: 50,
 				unit: null,
 				building: null
 			})
