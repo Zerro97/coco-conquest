@@ -30,34 +30,21 @@ world
 	.registerSystem(System.RenderSystem, {canvas: canvas})
 	.registerSystem(System.TileSystem);
 
-// Some helper functions when creating the components
-function getRandomVelocity() {
-	return {
-		x: SPEED_MULTIPLIER * (2 * Math.random() - 1), 
-		y: SPEED_MULTIPLIER * (2 * Math.random() - 1)
-	};
-}
-
-function getRandomPosition() {
-	return { 
-		x: Math.random() * canvas.width, 
-		y: Math.random() * canvas.height
-	};
-}
-
-function getRandomShape() {
-	return {
-		primitive: Math.random() >= 0.5 ? 'circle' : 'box'
-	};
-}
-
-for (let i = 0; i < NUM_ELEMENTS; i++) {
-	world
-		.createEntity()
-		.addComponent(Component.Velocity, getRandomVelocity())
-		.addComponent(Component.Shape, getRandomShape())
-		.addComponent(Component.Position, getRandomPosition())
-		.addComponent(Component.Renderable);        
+for (let i = 0; i < 30; i++) {
+	for(let j = 0; j< 20; j++) {
+		world
+			.createEntity()
+			.addComponent(Component.Tile, {
+				type: 'plain',
+				variation: 0,
+				status: 'seen',
+				x: i,
+				y: j,
+				unit: null,
+				building: null
+			})
+			.addComponent(Component.Renderable);
+	}
 }
 
 export { world };

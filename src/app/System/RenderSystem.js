@@ -1,5 +1,5 @@
 import { System } from '../Library/Ecsy';
-import { Shape, Position, Renderable } from '../Component';
+import { Renderable, Tile } from '../Component';
 
 /**
  * Handles all the drawing
@@ -8,20 +8,42 @@ export class RenderSystem extends System {
 	// This method will get called on every frame by default
 	execute(delta, time) {
 		this.clearCanvas();
-
-		// Iterate through all the entities on the query
-		this.queries.renderables.results.forEach(entity => {
-			var shape = entity.getComponent(Shape);
-			var position = entity.getComponent(Position);
-
-			this.draw(shape.primitive, position);
-		});
+		this.drawTiles();
 	}
 
 	// Clear canvas screen
 	clearCanvas() {
-		this.ctx.fillStyle = '#d4d4d4';
+		this.ctx.fillStyle = '#222222';
 		this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+	}
+
+	drawTiles() {
+		this.queries.tiles.results.forEach(entity => {	
+			let tile = entity.getMutableComponent(Tile);
+
+			let canvasX = tile.x * Math.sqrt(3) * tile.size;
+			let canvasY = tile.y * 3/2 * tile.size;
+
+			if(tile.y % 2 === 0) {
+				canvasX += Math.sqrt(3) * tile.size/2;
+			}
+
+			this.drawHexagon(canvasX, canvasY, tile.size);
+		});
+
+		this.stop();
+	}
+
+	drawHexagon(x, y, r) {
+		const angle = 2 * Math.PI / 6; // 60 degree
+
+		this.ctx.beginPath();
+		this.ctx.strokeStyle = '#444444';
+		for (var i = 0; i < 6; i++) {
+			this.ctx.lineTo(x + r * Math.sin(angle * i), y + r * Math.cos(angle * i));
+		}
+		this.ctx.closePath();
+		this.ctx.stroke();
 	}
         
 	draw(shape, position) {
@@ -42,6 +64,9 @@ export class RenderSystem extends System {
 // Define a query of entities that have "Renderable" and "Shape" components
 RenderSystem.queries = {
 	renderables: { 
-		components: [Renderable, Shape]
+		components: [Renderable]
+	},
+	tiles: {
+		components: [Tile]
 	}
 };
