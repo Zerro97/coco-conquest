@@ -1,4 +1,4 @@
-import { Component, Types } from 'ecsy';
+import { Component, Types } from '../Library/Ecsy';
 
 export class Hud extends Component {}
 

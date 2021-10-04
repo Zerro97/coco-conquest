@@ -1,4 +1,4 @@
-import { System } from 'ecsy';
+import { System } from '../Library/Ecsy';
 import { Tile, Unit, Building, Hud } from '../Component';
 
 /**

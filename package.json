@@ -37,7 +37,6 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "clean-webpack-plugin": "^4.0.0",
-    "ecsy": "^0.4.2"
+    "clean-webpack-plugin": "^4.0.0"
   }
 }

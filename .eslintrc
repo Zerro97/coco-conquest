@@ -9,6 +9,7 @@
     "parserOptions": {
         "sourceType": "module"
     },
+    "ignorePatterns": ["src/app/Library/*"],
     "rules": {
         "no-unused-vars": "off",
         "indent": [

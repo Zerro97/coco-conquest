@@ -1,3 +1,3 @@
-import { TagComponent } from 'ecsy';
+import { TagComponent } from '../Library/Ecsy';
 
 export class Building extends TagComponent {}

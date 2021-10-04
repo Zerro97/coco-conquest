@@ -1,4 +1,4 @@
-import { System } from 'ecsy';
+import { System } from '../Library/Ecsy';
 import { CanvasContext, Shape, Position, Renderable } from '../Component';
 
 /**

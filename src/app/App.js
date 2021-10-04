@@ -1,4 +1,4 @@
-import { World } from 'ecsy';
+import { World } from './Library/Ecsy';
 import * as Component from './Component';
 import * as System from './System';
 

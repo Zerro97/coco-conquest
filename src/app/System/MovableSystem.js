@@ -1,4 +1,4 @@
-import { System } from 'ecsy';
+import { System } from '../Library/Ecsy';
 import { Velocity, Position } from '../Component';
 
 export class MovableSystem extends System {
