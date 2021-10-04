@@ -32,8 +32,15 @@ export class System {
 		// Used for stats
 		this.executeTime = 0;
 
-		if (attributes && attributes.priority) {
-			this.priority = attributes.priority;
+		if (attributes) {
+			if(attributes.priority) {
+				this.priority = attributes.priority;
+			}
+			if(attributes.canvas) {
+				this.ctx = attributes.canvas.getContext('2d');
+				this.canvasWidth = attributes.canvas.width;
+				this.canvasHeight = attributes.canvas.height;
+			}
 		}
 
 		this._mandatoryQueries = [];

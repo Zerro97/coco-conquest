@@ -1,5 +1,5 @@
 import { System } from '../Library/Ecsy';
-import { CanvasContext, Shape, Position, Renderable } from '../Component';
+import { Shape, Position, Renderable } from '../Component';
 
 /**
  * Handles all the drawing
@@ -7,15 +7,8 @@ import { CanvasContext, Shape, Position, Renderable } from '../Component';
 export class RenderSystem extends System {
 	// This method will get called on every frame by default
 	execute(delta, time) {
-		let context = this.queries.context.results[0];
-		let canvasComponent = context.getComponent(CanvasContext);
+		this.clearCanvas();
 
-		let ctx = canvasComponent.ctx;
-		let canvasWidth = canvasComponent.width;
-		let canvasHeight = canvasComponent.height;
-
-		this.clearCanvas(ctx, canvasWidth, canvasHeight);
-          
 		// Iterate through all the entities on the query
 		this.queries.renderables.results.forEach(entity => {
 			var shape = entity.getComponent(Shape);
@@ -26,24 +19,21 @@ export class RenderSystem extends System {
 	}
 
 	// Clear canvas screen
-	clearCanvas(ctx, canvasWidth, canvasHeight) {
-		ctx.fillStyle = '#d4d4d4';
-		ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+	clearCanvas() {
+		this.ctx.fillStyle = '#d4d4d4';
+		this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 	}
         
 	draw(shape, position) {
-		let context = this.queries.context.results[0];
-		let ctx = context.getComponent(CanvasContext).ctx;
-
 		switch(shape) {
 		case 'box':
-			ctx.beginPath();
-			ctx.rect(position.x - 25, position.y - 25, 50, 50);
-			ctx.fillStyle= '#e2736e';
-			ctx.fill();
-			ctx.lineWidth = 2;
-			ctx.strokeStyle = '#b74843';
-			ctx.stroke();
+			this.ctx.beginPath();
+			this.ctx.rect(position.x - 25, position.y - 25, 50, 50);
+			this.ctx.fillStyle= '#e2736e';
+			this.ctx.fill();
+			this.ctx.lineWidth = 2;
+			this.ctx.strokeStyle = '#b74843';
+			this.ctx.stroke();
 			break;
 		}
 	}
@@ -51,10 +41,6 @@ export class RenderSystem extends System {
 
 // Define a query of entities that have "Renderable" and "Shape" components
 RenderSystem.queries = {
-	context: { 
-		components: [CanvasContext], 
-		mandatory: true 
-	},
 	renderables: { 
 		components: [Renderable, Shape]
 	}

@@ -1,7 +1,7 @@
 import { System } from '../Library/Ecsy';
 import { Velocity, Position } from '../Component';
 
-export class MovableSystem extends System {
+export class MovementSystem extends System {
 	// This method will get called on every frame by default
 	execute(delta, time) {
 		// Iterate through all the entities on the query
@@ -19,7 +19,7 @@ export class MovableSystem extends System {
 }
 
 // Define a query of entities that have "Velocity" and "Position" components
-MovableSystem.queries = {
+MovementSystem.queries = {
 	moving: {
 		components: [Velocity, Position]
 	}
