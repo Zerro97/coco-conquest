@@ -8,6 +8,10 @@ import { Tile, Position } from '../Component';
  * 3) Tile Status (ex. fog of war)
  */
 export class TileSystem extends System {
+	init() {
+		console.log(this);
+	}
+
 	// This method will get called on every frame by default
 	execute(delta, time) {
 		// Iterate through all the entities on the query

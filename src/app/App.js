@@ -10,13 +10,21 @@ const SHAPE_HALF_SIZE = SHAPE_SIZE / 2;
 // Create world and register the components and systems on it
 var world = new World();
 world
+	.registerComponent(Component.Acceleration)
 	.registerComponent(Component.Velocity)
 	.registerComponent(Component.Position)
-	.registerComponent(Component.Shape)
 	.registerComponent(Component.Renderable)
+	.registerComponent(Component.Shape)
+	.registerComponent(Component.Tile)
+	.registerComponent(Component.Hud)
+	.registerComponent(Component.Unit)
+	.registerComponent(Component.Building)
 	.registerComponent(Component.CanvasContext)
+	.registerSystem(System.KeyboardListenerSystem)
+	.registerSystem(System.MouseListenerSystem)
 	.registerSystem(System.MovableSystem)
-	.registerSystem(System.RendererSystem);
+	.registerSystem(System.RenderSystem)
+	.registerSystem(System.TileSystem);
 
 // Used for singleton components
 var singletonEntity = world.createEntity()

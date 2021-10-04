@@ -1,8 +1,10 @@
 import { System } from 'ecsy';
 import { CanvasContext, Shape, Position, Renderable } from '../Component';
 
-// RendererSystem
-export class RendererSystem extends System {
+/**
+ * Handles all the drawing
+ */
+export class RenderSystem extends System {
 	// This method will get called on every frame by default
 	execute(delta, time) {
 		let context = this.queries.context.results[0];
@@ -12,9 +14,7 @@ export class RendererSystem extends System {
 		let canvasWidth = canvasComponent.width;
 		let canvasHeight = canvasComponent.height;
 
-		// Clear canvas screen
-		ctx.fillStyle = '#d4d4d4';
-		ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+		this.clearCanvas(ctx, canvasWidth, canvasHeight);
           
 		// Iterate through all the entities on the query
 		this.queries.renderables.results.forEach(entity => {
@@ -23,6 +23,12 @@ export class RendererSystem extends System {
 
 			this.draw(shape.primitive, position);
 		});
+	}
+
+	// Clear canvas screen
+	clearCanvas(ctx, canvasWidth, canvasHeight) {
+		ctx.fillStyle = '#d4d4d4';
+		ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 	}
         
 	draw(shape, position) {
@@ -44,7 +50,7 @@ export class RendererSystem extends System {
 }
 
 // Define a query of entities that have "Renderable" and "Shape" components
-RendererSystem.queries = {
+RenderSystem.queries = {
 	context: { 
 		components: [CanvasContext], 
 		mandatory: true 
