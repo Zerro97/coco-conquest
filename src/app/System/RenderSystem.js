@@ -1,6 +1,6 @@
 import { System } from '../Library/Ecsy';
 import { Renderable, Tile } from '../Component';
-import { roundRect, drawPause, drawHp } from '../Util';
+import { drawHexagon, drawHoveredHexagon, drawSelectedHexagon, hexToCanvas } from '../Util';
 
 /**
  * Handles all the drawing
@@ -26,28 +26,20 @@ export class RenderSystem extends System {
 	drawTiles() {
 		this.queries.tiles.results.forEach(entity => {	
 			let tile = entity.getMutableComponent(Tile);
+			let canvasPos = hexToCanvas(tile.x, tile.y, tile.size);
 
-			let canvasX = tile.x * Math.sqrt(3) * tile.size;
-			let canvasY = tile.y * 3/2 * tile.size;
-
-			if(tile.y % 2 === 0) {
-				canvasX += Math.sqrt(3) * tile.size/2;
+			switch(tile.status){
+			case 'hover':
+				drawHoveredHexagon(this.ctx, canvasPos.x, canvasPos.y, tile.size);
+				break;
+			case 'selected':
+				drawSelectedHexagon(this.ctx, canvasPos.x, canvasPos.y, tile.size);
+				break;
+			default:
+				drawHexagon(this.ctx, canvasPos.x, canvasPos.y, tile.size);
+				break;
 			}
-
-			this.drawHexagon(canvasX, canvasY, tile.size);
 		});
-	}
-
-	drawHexagon(x, y, r) {
-		const angle = 2 * Math.PI / 6; // 60 degree
-
-		this.ctx.beginPath();
-		this.ctx.strokeStyle = '#444444';
-		for (var i = 0; i < 6; i++) {
-			this.ctx.lineTo(x + r * Math.sin(angle * i), y + r * Math.cos(angle * i));
-		}
-		this.ctx.closePath();
-		this.ctx.stroke();
 	}
         
 	drawBuildings() {
@@ -65,6 +57,7 @@ export class RenderSystem extends System {
 		this.ctx.fillRect(60, 40, 10, 50);
 
 		// Top right panel
+		/*
 		this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
 		this.ctx.lineWidth = 5;
 		this.ctx.strokeStyle = 'rgb(100, 100, 100)';
@@ -89,7 +82,7 @@ export class RenderSystem extends System {
 			this.ctx.stroke();
 		}
 
-		this.stop();		
+		this.stop();*/
 	}
 }
 
