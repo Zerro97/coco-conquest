@@ -1,6 +1,6 @@
 import { System } from '../Library/Ecsy';
 import { Tile, Unit, Building, Hud, ScreenStatus } from '../Component';
-import { hexToCanvas, isInsideHexagon } from '../Util';
+import { hexToCanvas, isInsideHexagon, applyTransformation } from '../Util';
 
 /**
  * Handles all the events that could happen when 
@@ -35,8 +35,6 @@ export class MouseListenerSystem extends System {
 				screenStatus.scaleX += scaleAmount;
 				screenStatus.scaleY += scaleAmount;
 			}
-
-			console.log(screenStatus, scaleAmount);
 		});
 
 		// Stopping this system once listener is registered
@@ -45,12 +43,17 @@ export class MouseListenerSystem extends System {
 	}
 
 	checkTiles(mouseX, mouseY, type) {
+		const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
+
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
 
 			let canvasPos = hexToCanvas(tile.x, tile.y, tile.size);
-
-			if(isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)){
+			let translation = {x: screenStatus.x, y: screenStatus.y};
+			let scale = {x: screenStatus.scaleX, y:screenStatus.scaleY};
+			let mousePos = applyTransformation(mouseX, mouseY, translation, scale);
+			
+			if(isInsideHexagon(canvasPos.x, canvasPos.y, mousePos.x, mousePos.y, tile.size)){
 				if(type === 'hover' && tile.status != 'selected') {
 					tile.status = 'hover';
 				} else if(type === 'click') {

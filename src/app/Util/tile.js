@@ -105,3 +105,17 @@ export function isInsideHexagon(hexX, hexY, posX, posY, radius){
 
 	return (dy <= a) && (a*dx + 0.25*dy <= 0.5*a);
 }
+
+/**
+ * Apply given transformation to a point
+ * Currently only translation & scale transformation
+ * are handled (with translate applied first and then scale).
+ * 
+ * @param {*} x 
+ * @param {*} y 
+ * @param {*} transformation 
+ */
+export function applyTransformation(x, y, translation, scale) {
+	//return {x: x, y: y};
+	return {x: (x + translation.x) / scale.x, y: (y + translation.y) / scale.y};
+}

@@ -15,9 +15,7 @@ export class RenderSystem extends System {
 		this.ctx.save();
 
 		// Applying coordinate transformation according to screenStatus
-		// TODO: 
-		// Negative sign in translation
-		// Order of transformation
+		// Currently no intention of applying rotate transformation
 		this.ctx.translate(-screenStatus.x, -screenStatus.y);
 		this.ctx.scale(screenStatus.scaleX, screenStatus.scaleY);
 		this.ctx.rotate(screenStatus.rotate);
