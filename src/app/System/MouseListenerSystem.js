@@ -28,11 +28,15 @@ export class MouseListenerSystem extends System {
 			let scaleAmount = scrollDirection * 0.1;
 			let screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
 			
-			if(scrollDirection === -1 && screenStatus.scale > -2) {
-				screenStatus.scale += scaleAmount;
-			} else if(scrollDirection === 1 && screenStatus.scale < 2) {
-				screenStatus.scale += scaleAmount;
+			if(scrollDirection === -1 && screenStatus.scaleX > 0.5 && screenStatus.scaleY > 0.5) {
+				screenStatus.scaleX += scaleAmount;
+				screenStatus.scaleY += scaleAmount;
+			} else if(scrollDirection === 1 && screenStatus.scaleX < 1.5  && screenStatus.scaleY < 1.5) {
+				screenStatus.scaleX += scaleAmount;
+				screenStatus.scaleY += scaleAmount;
 			}
+
+			console.log(screenStatus, scaleAmount);
 		});
 
 		// Stopping this system once listener is registered

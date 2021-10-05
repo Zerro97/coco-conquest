@@ -1,5 +1,5 @@
 import { System } from '../Library/Ecsy';
-import { Renderable, Tile } from '../Component';
+import { Renderable, ScreenStatus, Tile } from '../Component';
 import { drawHexagon, drawHoveredHexagon, drawSelectedHexagon, hexToCanvas } from '../Util';
 
 /**
@@ -8,12 +8,27 @@ import { drawHexagon, drawHoveredHexagon, drawSelectedHexagon, hexToCanvas } fro
 export class RenderSystem extends System {
 	// This method will get called on every frame by default
 	execute(delta, time) {
+		const screenStatus = this.queries.screenStatus.results[0].getComponent(ScreenStatus);
+
 		this.clearCanvas();
 
+		this.ctx.save();
+
+		// Applying coordinate transformation according to screenStatus
+		// TODO: 
+		// Negative sign in translation
+		// Order of transformation
+		this.ctx.translate(-screenStatus.x, -screenStatus.y);
+		this.ctx.scale(screenStatus.scaleX, screenStatus.scaleY);
+		this.ctx.rotate(screenStatus.rotate);
+		
 		// Drawing order matters
 		this.drawTiles();
 		this.drawBuildings();
 		this.drawUnits();
+
+		this.ctx.restore();
+
 		this.drawHud();
 	}
 
@@ -93,5 +108,8 @@ RenderSystem.queries = {
 	},
 	tiles: {
 		components: [Tile]
+	},
+	screenStatus: {
+		components: [ScreenStatus]
 	}
 };

@@ -38,8 +38,8 @@ world
 
 
 // Adding Entity
-for (let i = 0; i < 20; i++) {
-	for(let j = 0; j< 20; j++) {
+for (let i = 0; i < 50; i++) {
+	for(let j = 0; j< 30; j++) {
 		world
 			.createEntity()
 			.addComponent(Component.Tile, {
