@@ -1,5 +1,5 @@
 import { System } from '../Library/Ecsy';
-import { Tile, Unit, Building, Hud } from '../Component';
+import { Tile, Unit, Building, Hud, ScreenStatus } from '../Component';
 import { hexToCanvas, isInsideHexagon } from '../Util';
 
 /**
@@ -20,6 +20,19 @@ export class MouseListenerSystem extends System {
 			e.stopPropagation();
 
 			this.checkTiles(e.clientX, e.clientY, 'click');
+		});
+
+		window.addEventListener('wheel', e => { 
+			// -1 for up, 1 for down
+			let scrollDirection = parseInt(e.deltaY * 0.01);
+			let scaleAmount = scrollDirection * 0.1;
+			let screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
+			
+			if(scrollDirection === -1 && screenStatus.scale > -2) {
+				screenStatus.scale += scaleAmount;
+			} else if(scrollDirection === 1 && screenStatus.scale < 2) {
+				screenStatus.scale += scaleAmount;
+			}
 		});
 
 		// Stopping this system once listener is registered
@@ -50,6 +63,9 @@ export class MouseListenerSystem extends System {
 
 // Define a query of entities
 MouseListenerSystem.queries = {
+	screenStatus: {
+		components: [ScreenStatus]
+	},
 	hud: {
 		components: [Hud]
 	},

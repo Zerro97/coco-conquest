@@ -24,12 +24,20 @@ world
 	.registerComponent(Component.Hud)
 	.registerComponent(Component.Unit)
 	.registerComponent(Component.Building)
+	.registerComponent(Component.ScreenStatus)
 	.registerSystem(System.KeyboardListenerSystem)
 	.registerSystem(System.MouseListenerSystem)
 	.registerSystem(System.MovementSystem)
 	.registerSystem(System.RenderSystem, {canvas: canvas})
 	.registerSystem(System.TileSystem);
 
+// Singleton components
+world
+	.createEntity()
+	.addComponent(Component.ScreenStatus);
+
+
+// Adding Entity
 for (let i = 0; i < 20; i++) {
 	for(let j = 0; j< 20; j++) {
 		world

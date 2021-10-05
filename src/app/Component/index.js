@@ -10,3 +10,4 @@ export { Hud } from './Hud.js';
 export { Unit } from './Unit.js';
 export { Building } from './Building.js';
 
+export { ScreenStatus } from './ScreenStatus.js';
