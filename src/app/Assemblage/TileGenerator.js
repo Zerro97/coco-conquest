@@ -11,7 +11,7 @@ export class TileGenerator {
 	}
 
 	registerMap(map) {
-		if(map.isArray && map[0].isArray) {
+		if(Array.isArray(map) && Array.isArray(map[0])) {
 			this.map = map;
 		} else {
 			console.error('Map has to be 2d array');

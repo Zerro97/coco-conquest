@@ -1,5 +1,14 @@
 import { System } from '../Library/Ecsy';
-import { Renderable, ScreenStatus, Tile } from '../Component';
+import { 
+	Unit, 
+	Health, 
+	Damage, 
+	Sight,
+	Range,
+	Speed,
+	ScreenStatus, 
+	Tile 
+} from '../Component';
 import { drawHexagon, drawHoveredHexagon, drawSelectedHexagon, hexToCanvas } from '../Util';
 
 /**
@@ -37,7 +46,7 @@ export class RenderSystem extends System {
 	}
 
 	drawTiles() {
-		this.queries.tiles.results.forEach(entity => {	
+		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
 			let canvasPos = hexToCanvas(tile.x, tile.y, tile.size);
 
@@ -60,7 +69,9 @@ export class RenderSystem extends System {
 	}
 
 	drawUnits() {
-
+		this.queries.units.results.forEach(entity => {
+			
+		});
 	}
 
 	drawHud() {
@@ -99,10 +110,9 @@ export class RenderSystem extends System {
 	}
 }
 
-// Define a query of entities that have "Renderable" and "Shape" components
 RenderSystem.queries = {
-	renderables: { 
-		components: [Renderable]
+	units: { 
+		components: [Unit]
 	},
 	tiles: {
 		components: [Tile]

@@ -7,3 +7,6 @@ A turn based game leveraging:
 
 ## Libraries that might get added
 - hex-grid: For working with hexagonal tiles
+
+## Game Assets Link
+(Link)[https://game-icons.net/tags/weapon.html]
