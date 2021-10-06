@@ -1,5 +1,5 @@
 {
-  "name": "Ecsy Game AI",
+  "name": "Ecsy-Game-AI",
   "version": "1.0.0",
   "description": "A turn based game with ai based opponent",
   "main": "index.js",
