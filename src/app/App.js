@@ -1,4 +1,5 @@
 import map from './Assets/Map/map_1.json';
+import unitImage from './Assets/Images/Units/0.png';
 
 import { World } from './Library/Ecsy';
 import * as Component from './Component';
@@ -15,7 +16,8 @@ var world = new World();
 world
 	.registerComponent(Component.Acceleration)
 	.registerComponent(Component.Velocity)
-	.registerComponent(Component.Position)
+	.registerComponent(Component.CanvasPosition)
+	.registerComponent(Component.MapPosition)
 	.registerComponent(Component.Renderable)
 	.registerComponent(Component.Shape)
 	.registerComponent(Component.Tile)
@@ -32,7 +34,7 @@ world
 	.registerSystem(System.KeyboardListenerSystem)
 	.registerSystem(System.MouseListenerSystem)
 	.registerSystem(System.MovementSystem)
-	.registerSystem(System.RenderSystem, {canvas: canvas})
+	.registerSystem(System.RenderSystem, {priority: 10, canvas: canvas})
 	.registerSystem(System.TileSystem)
 	.registerSystem(System.UnitSystem);
 

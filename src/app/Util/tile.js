@@ -71,7 +71,6 @@ export function drawSelectedHexagon(ctx, x, y, r) {
  * Given x, y position of the tile,
  * return the actual pixel position of tile in canvas
  * 
- * @param {*} ctx 
  * @param {*} x 
  * @param {*} y 
  * @param {*} r 

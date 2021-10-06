@@ -5,9 +5,11 @@
         "es6": true,
         "jest": true
     },
+    "parser": "@babel/eslint-parser",
     "extends": "eslint:recommended",
     "parserOptions": {
-        "sourceType": "module"
+        "sourceType": "module",
+        "allowImportExportEverywhere": "true"
     },
     "ignorePatterns": ["src/app/Library/*"],
     "rules": {

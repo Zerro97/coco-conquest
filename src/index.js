@@ -3,9 +3,9 @@ import './index.css';
 
 // From Ecsy Library
 import { world } from './app/App';
-            
+
 // Run!
-function run() {
+function run() {	let imageObject = new Image(50, 50);
 	// Compute delta and elapsed time
 	var time = performance.now();
 	var delta = time - lastTime;

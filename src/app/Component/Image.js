@@ -4,5 +4,5 @@ export class Image extends Component {}
 
 // Stores the file path of the image asset
 Image.schema = {
-	value: { type: Types.String },
+	value: { type: Types.Ref },
 };

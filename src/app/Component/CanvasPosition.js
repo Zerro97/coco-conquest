@@ -1,8 +1,8 @@
 import { Component, Types } from '../Library/Ecsy';
 
-export class Position extends Component {}
+export class CanvasPosition extends Component {}
 
-Position.schema = {
+CanvasPosition.schema = {
 	x: { type: Types.Number },
 	y: { type: Types.Number }
 };

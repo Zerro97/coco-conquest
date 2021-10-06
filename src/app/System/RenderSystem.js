@@ -1,11 +1,13 @@
 import { System } from '../Library/Ecsy';
 import { 
 	Unit, 
+	Image,
 	Health, 
 	Damage, 
 	Sight,
 	Range,
 	Speed,
+	MapPosition,
 	ScreenStatus, 
 	Tile 
 } from '../Component';
@@ -70,7 +72,19 @@ export class RenderSystem extends System {
 
 	drawUnits() {
 		this.queries.units.results.forEach(entity => {
-			
+			let image = entity.getComponent(Image);
+			let mapPos = entity.getComponent(MapPosition);
+			let canvasPos = hexToCanvas(mapPos.x, mapPos.y, 50);
+
+			this.ctx.fillStyle = 'red';
+			this.ctx.fillRect(canvasPos.x, canvasPos.y, 50, 50);
+
+			//console.log(image.value[0]);
+			image.value.onload = () => {
+				console.log('innnn');
+				//console.log(image.value);
+				this.ctx.drawImage(image.value, canvasPos.x, canvasPos.y, 50, 50);
+			};
 		});
 	}
 
@@ -112,7 +126,7 @@ export class RenderSystem extends System {
 
 RenderSystem.queries = {
 	units: { 
-		components: [Unit]
+		components: [Unit, Image, MapPosition, Health, Damage, Sight, Range, Speed]
 	},
 	tiles: {
 		components: [Tile]

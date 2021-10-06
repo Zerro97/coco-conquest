@@ -1,4 +1,5 @@
-export { Position } from './Position.js';
+export { CanvasPosition } from './CanvasPosition.js';
+export { MapPosition } from './MapPosition.js';
 export { Velocity } from './Velocity.js';
 export { Acceleration } from './Acceleration.js';
 

@@ -1,4 +1,4 @@
-import { Unit, Image, Health, Damage, Sight, Range, Speed } from '../Component';
+import { Unit, Image, Health, Damage, Sight, Range, Speed, MapPosition } from '../Component';
 
 /**
  * Used for registering tile entity to the world
@@ -14,6 +14,7 @@ export class UnitGenerator {
 			.createEntity()
 			.addComponent(Unit, {value: type})
 			.addComponent(Image)
+			.addComponent(MapPosition)
 			.addComponent(Health)
 			.addComponent(Damage)
 			.addComponent(Sight)
