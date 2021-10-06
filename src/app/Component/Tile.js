@@ -14,8 +14,4 @@ Tile.schema = {
 
 	// Tile geometry
 	size: { type: Types.Number, default: 50},
-
-	// Store entity standing on the tile
-	unit: { type: Types.Number },
-	building: { type: Types.Number }
 };
