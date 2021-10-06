@@ -1,11 +1,9 @@
+import { readFileSync } from 'fs';
+
 import { World } from './Library/Ecsy';
 import * as Component from './Component';
 import * as System from './System';
-
-const NUM_ELEMENTS = 50;
-const SPEED_MULTIPLIER = 0.3;
-const SHAPE_SIZE = 50;
-const SHAPE_HALF_SIZE = SHAPE_SIZE / 2;
+import { TileGenerator } from './Assemblage';
 
 // Get canvas from DOM
 var canvas = document.querySelector('#main');
@@ -37,21 +35,14 @@ world
 	.addComponent(Component.ScreenStatus);
 
 
-// Adding Entity
-for (let i = 0; i < 50; i++) {
-	for(let j = 0; j< 30; j++) {
-		world
-			.createEntity()
-			.addComponent(Component.Tile, {
-				type: 'plain',
-				variation: 0,
-				status: 'seen',
-				x: i,
-				y: j,
-				size: 50
-			})
-			.addComponent(Component.Renderable);
-	}
-}
+// Generators
+const tileGenerator = new TileGenerator();
+
+// Create Map
+let mapFile = readFileSync('./Assets/Map/map_1.json');
+let map = JSON.parse(mapFile);
+
+tileGenerator.registerMap(map);
+tileGenerator.generateTiles();
 
 export { world };
