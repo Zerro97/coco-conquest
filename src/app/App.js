@@ -1,5 +1,5 @@
 import map from './Assets/Map/map_1.json';
-import unitImage from './Assets/Images/Units/0.png';
+import { ImageLoader } from './Util/ImageLoader';
 
 import { World } from './Library/Ecsy';
 import * as Component from './Component';
@@ -10,6 +10,10 @@ import { TileGenerator, UnitGenerator } from './Assemblage';
 var canvas = document.querySelector('#main');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+
+// Load all images
+let imageLoader = new ImageLoader();
+let images = imageLoader.loadUnitImages();
 
 // Create world and register the components and systems on it
 var world = new World();
@@ -42,6 +46,17 @@ world
 world
 	.createEntity()
 	.addComponent(Component.ScreenStatus);
+
+// Store image objects as entity
+for(const key in images) {
+	let image = {};
+	image[key] = images[key];
+	console.log(image);
+
+	world
+		.createEntity()
+		.addComponent(Component.Image, image);
+}
 
 // Generators
 const unitGenerator = new UnitGenerator(world);

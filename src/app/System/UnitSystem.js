@@ -1,5 +1,3 @@
-import unitImage from '../Assets/Images/Units/0.png';
-
 import { System } from '../Library/Ecsy';
 import { Unit, Image, Health, Damage, Sight, Range, Speed, MapPosition } from '../Component';
 import { UnitType } from '../Type';
@@ -33,14 +31,12 @@ export class UnitSystem extends System {
 		const type = entity.getMutableComponent(Unit);
 		const image = entity.getMutableComponent(Image);
 		let imageObject = new Image(50, 50);
-		imageObject.src = unitImage;
-
-		let start = Date.now();
-		let now = start;
-		while (now - start < 1000) {
-			now = Date.now();
-		}
-		console.log(imageObject);
+		imageObject.src = import(`../Assets/Images/Units/${type.value}.png`);
+		//console.log(type.value);
+		const images = this.queries.images.results.forEach(entity => {
+			let image = entity.getMutableComponent(Image);
+			//console.log(image);
+		});
 
 		const health = entity.getMutableComponent(Health);
 		const damage = entity.getMutableComponent(Damage);
@@ -63,5 +59,8 @@ export class UnitSystem extends System {
 UnitSystem.queries = {
 	unit: {
 		components: [Unit, Image, MapPosition, Health, Damage, Sight, Range, Speed]
+	},
+	images: {
+		components: [Unit, Image]
 	}
 };
