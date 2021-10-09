@@ -44,7 +44,7 @@ world
 	.registerSystem(System.MouseListenerSystem)
 	.registerSystem(System.MovementSystem)
 	.registerSystem(System.RenderSystem, {priority: 10, ctx: canvas.getContext('2d'), canvasWidth: canvas.width, canvasHeight: canvas.height})
-	.registerSystem(System.LoaderSystem, {priority: -10, images: images})
+	.registerSystem(System.LoaderSystem, {priority: -10, images: images, mapWidth: tileMap.length, mapHeight: tileMap[0].length, canvasWidth: canvas.width, canvasHeight: canvas.height})
 	.registerSystem(System.TileSystem)
 	.registerSystem(System.UnitSystem);
 
