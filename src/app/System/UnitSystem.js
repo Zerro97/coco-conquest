@@ -33,15 +33,12 @@ export class UnitSystem extends System {
 		const sight = entity.getMutableComponent(Sight);
 		const range = entity.getMutableComponent(Range);
 		const speed = entity.getMutableComponent(Speed);
-		const mapPos = entity.getMutableComponent(MapPosition);
 
 		health.value = healthValue;
 		damage.value = damageValue;
 		sight.value = sightValue;
 		range.value = rangeValue;
 		speed.value = speedValue;
-		mapPos.x = 5;
-		mapPos.y = 5;
 	}
 }
 

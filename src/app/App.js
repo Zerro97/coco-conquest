@@ -1,12 +1,15 @@
 import 'regenerator-runtime/runtime';
 
-import map from './Assets/Map/map_1.json';
+import tileMap from './Assets/Map/Tile/map_1.json';
+import unitMap from './Assets/Map/Unit/map_1.json';
+import buildingMap from './Assets/Map/Building/map_1.json';
+
 import { ImageLoader } from './Util/ImageLoader';
 
 import { World } from './Library/Ecsy';
 import * as Component from './Component';
 import * as System from './System';
-import { TileGenerator, UnitGenerator } from './Assemblage';
+import { MapGenerator, UnitGenerator } from './Assemblage';
 
 // Get canvas from DOM
 var canvas = document.querySelector('#main');
@@ -60,15 +63,18 @@ for(const key in images) {
 
 // Generators
 const unitGenerator = new UnitGenerator(world);
-const tileGenerator = new TileGenerator(world);
+const mapGenerator = new MapGenerator(world);
 
 // Create Map
-tileGenerator.registerMap(map);
-tileGenerator.generateTiles();
+mapGenerator.registerTileMap(tileMap);
+mapGenerator.registerUnitMap(unitMap);
+mapGenerator.registerBuildingMap(buildingMap);
+mapGenerator.generateTiles();
+mapGenerator.generateUnits();
 
 // Adding Units
-unitGenerator.generateUnit(0);
-unitGenerator.generateUnit(1);
-unitGenerator.generateUnit(2);
+// unitGenerator.generateUnit(0);
+// unitGenerator.generateUnit(1);
+// unitGenerator.generateUnit(2);
 
 export { world };

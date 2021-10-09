@@ -1,9 +1,11 @@
-import { Tile } from '../Component';
+import { Tile, Unit, Health, Damage, Sight, Range, Speed, MapPosition } from '../Component';
 
 export class MapGenerator {
 	constructor(world) {
 		this.world = world;
-		this.map = [];
+		this.tileMap = [];
+		this.unitMap = [];
+		this.buildingMap = [];
 	}
 
 	/**
@@ -17,13 +19,44 @@ export class MapGenerator {
         
 	}
 
-	registerMap() {
-		for(let row=0; row<this.map.length; row++) {
-			for(let col=0; col<this.map[0].length; col++) {
+	/**
+	 * 
+	 * @param {Array} map 2d array
+	 */
+	registerTileMap(map) {
+		if(Array.isArray(map) && Array.isArray(map[0])) {
+			this.tileMap = map;
+		} else {
+			console.error('Map has to be 2d array');
+		}
+	}
+
+	registerUnitMap(map) {
+		if(Array.isArray(map) && Array.isArray(map[0])) {
+			this.unitMap = map;
+		} else {
+			console.error('Map has to be 2d array');
+		}
+	}
+
+	registerBuildingMap(map) {
+		if(Array.isArray(map) && Array.isArray(map[0])) {
+			this.buildingMap = map;
+		} else {
+			console.error('Map has to be 2d array');
+		}
+	}
+
+	/**
+     * Generate all the tiles 
+     */
+	generateTiles() {
+		for(let row=0; row<this.tileMap.length; row++) {
+			for(let col=0; col<this.tileMap[0].length; col++) {
 				this.world
 					.createEntity()
 					.addComponent(Tile, {
-						type: this.map[row][col],
+						type: 'plain', // map[row][col]
 						variation: 0,
 						status: 'seen',
 						x: col,
@@ -33,8 +66,35 @@ export class MapGenerator {
 			}
 		}
 	}
-    
-	outputFile() {
 
+	/**
+	 * Generate all the units
+	 */
+	generateUnits() {
+		for(let row=0; row<this.unitMap.length; row++) {
+			for(let col=0; col<this.unitMap[0].length; col++) {
+				if(this.unitMap[row][col] !== -1) {
+					this.world
+						.createEntity()
+						.addComponent(Unit, {value: this.unitMap[row][col]})
+						.addComponent(MapPosition, {x: col, y: row})
+						.addComponent(Health)
+						.addComponent(Damage)
+						.addComponent(Sight)
+						.addComponent(Range)
+						.addComponent(Speed);
+				}
+			}
+		}
+	}
+
+	generateBuildings() {
+		for(let row=0; row<this.unitMap.length; row++) {
+			for(let col=0; col<this.unitMap[0].length; col++) {
+				if(this.unitMap[row][col] !== -1) {
+					console.log('in');
+				}
+			}
+		}
 	}
 }
