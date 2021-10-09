@@ -1,5 +1,8 @@
 module.exports = {
 	entry: './src/index.js',
+	experiments: {
+		topLevelAwait: true
+	},
 	module: {
 		rules: [
 			{

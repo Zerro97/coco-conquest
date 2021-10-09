@@ -33,13 +33,8 @@ export class System {
 		this.executeTime = 0;
 
 		if (attributes) {
-			if(attributes.priority) {
-				this.priority = attributes.priority;
-			}
-			if(attributes.canvas) {
-				this.ctx = attributes.canvas.getContext('2d');
-				this.canvasWidth = attributes.canvas.width;
-				this.canvasHeight = attributes.canvas.height;
+			for(const key in attributes) {
+				this[key] = attributes[key];
 			}
 		}
 

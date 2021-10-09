@@ -1,3 +1,5 @@
+import 'regenerator-runtime/runtime';
+
 import map from './Assets/Map/map_1.json';
 import { ImageLoader } from './Util/ImageLoader';
 
@@ -13,10 +15,10 @@ canvas.height = window.innerHeight;
 
 // Load all images
 let imageLoader = new ImageLoader();
-let images = imageLoader.loadUnitImages();
+let images = await imageLoader.loadUnitImages();
 
 // Create world and register the components and systems on it
-var world = new World();
+var world = new World({ entityPoolSize: 10000 });
 world
 	.registerComponent(Component.Acceleration)
 	.registerComponent(Component.Velocity)
@@ -38,7 +40,8 @@ world
 	.registerSystem(System.KeyboardListenerSystem)
 	.registerSystem(System.MouseListenerSystem)
 	.registerSystem(System.MovementSystem)
-	.registerSystem(System.RenderSystem, {priority: 10, canvas: canvas})
+	.registerSystem(System.RenderSystem, {priority: 10, ctx: canvas.getContext('2d'), canvasWidth: canvas.width, canvasHeight: canvas.height})
+	.registerSystem(System.LoaderSystem, {priority: -10, images: images})
 	.registerSystem(System.TileSystem)
 	.registerSystem(System.UnitSystem);
 
@@ -47,15 +50,12 @@ world
 	.createEntity()
 	.addComponent(Component.ScreenStatus);
 
+
 // Store image objects as entity
 for(const key in images) {
-	let image = {};
-	image[key] = images[key];
-	console.log(image);
-
 	world
 		.createEntity()
-		.addComponent(Component.Image, image);
+		.addComponent(Component.Image);
 }
 
 // Generators

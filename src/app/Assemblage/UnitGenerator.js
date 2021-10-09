@@ -13,7 +13,6 @@ export class UnitGenerator {
 		this.world
 			.createEntity()
 			.addComponent(Unit, {value: type})
-			.addComponent(Image)
 			.addComponent(MapPosition)
 			.addComponent(Health)
 			.addComponent(Damage)

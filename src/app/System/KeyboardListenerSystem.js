@@ -34,8 +34,6 @@ export class KeyboardListenerSystem extends System {
 			screenStatus.y += 10;
 			break;
 		}
-
-		console.log(screenStatus);
 	}
 }
 

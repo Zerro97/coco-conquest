@@ -1,3 +1,4 @@
+
 export class ImageLoader {
 	constructor() {
 		this.images = {};
@@ -11,12 +12,14 @@ export class ImageLoader {
 		return images;
 	}
 
-	loadUnitImages() {
+	async loadUnitImages() {
 		this.imageNames = this.importAll(require.context('../Assets/Images/Units', false, /\.(png|jpe?g|svg)$/));
 
 		for(const key in this.imageNames) {
-			let image = new Image();
+			const image = new Image();
+
 			image.src = this.imageNames[key];
+			await image.decode();
 			this.images[key] = image;
 		}
 

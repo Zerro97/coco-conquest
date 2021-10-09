@@ -71,20 +71,27 @@ export class RenderSystem extends System {
 	}
 
 	drawUnits() {
+		const images = [];
+		this.queries.images.results.forEach(entity => {
+			images.push(entity.getMutableComponent(Image).value);
+		});
+
 		this.queries.units.results.forEach(entity => {
-			let image = entity.getComponent(Image);
+			let type = entity.getComponent(Unit).value;
+			let image = images[type];
+
 			let mapPos = entity.getComponent(MapPosition);
 			let canvasPos = hexToCanvas(mapPos.x, mapPos.y, 50);
 
-			this.ctx.fillStyle = 'red';
-			this.ctx.fillRect(canvasPos.x, canvasPos.y, 50, 50);
+			this.ctx.save();
+			this.ctx.beginPath();
+			this.ctx.arc(canvasPos.x, canvasPos.y, 30, 0, Math.PI*2, true);   
+			this.ctx.closePath();
+			this.ctx.clip();
+			
+			this.ctx.drawImage(image, canvasPos.x - 30, canvasPos.y - 30, 60, 60);
 
-			//console.log(image.value[0]);
-			image.value.onload = () => {
-				console.log('innnn');
-				//console.log(image.value);
-				this.ctx.drawImage(image.value, canvasPos.x, canvasPos.y, 50, 50);
-			};
+			this.ctx.restore();
 		});
 	}
 
@@ -126,7 +133,10 @@ export class RenderSystem extends System {
 
 RenderSystem.queries = {
 	units: { 
-		components: [Unit, Image, MapPosition, Health, Damage, Sight, Range, Speed]
+		components: [Unit, MapPosition, Health, Damage, Sight, Range, Speed]
+	},
+	images: {
+		components: [Image]
 	},
 	tiles: {
 		components: [Tile]
