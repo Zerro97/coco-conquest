@@ -10,5 +10,5 @@ ScreenStatus.schema = {
 	scaleX: { type: Types.Number, default: 1 },
 	scaleY: { type: Types.Number, default: 1 },
 	// Rotation in radian
-	rotation: { type: Types.Number, default: 0 }
+	rotation: { type: Types.Number, default: 0 },
 };

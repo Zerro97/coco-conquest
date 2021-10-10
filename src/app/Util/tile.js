@@ -7,20 +7,35 @@
  * @param {*} y 
  * @param {*} r 
  */
-export function drawHexagon(ctx, x, y, r) {
+function drawHexagon(ctx, x, y, r) {
 	const angle = 2 * Math.PI / 6; // 60 degree
 
-	ctx.beginPath();
-	ctx.strokeStyle = '#444444';
 	for (var i = 0; i < 6; i++) {
 		ctx.lineTo(x + r * Math.sin(angle * i), y + r * Math.cos(angle * i));
 	}
+}
+
+export function drawBaseTile(ctx, x, y) {
+	ctx.beginPath();
+	ctx.fillStyle = '#444444';
+
+	drawHexagon(ctx, x, y, 50);
+
 	ctx.closePath();
-	ctx.stroke();
+	ctx.fill();
+
+	// Reverse Clip
+	ctx.save();
+	ctx.beginPath();
+	drawHexagon(ctx, x, y, 47);
+	ctx.closePath();
+	ctx.clip();
+	ctx.fillStyle = '#222222';
+	ctx.fillRect(-5000, -5000, 10000, 10000);
+	ctx.restore();
 }
 
 /**
- * Variation of drawHexagon.
  * Draw highlighted hexagon when mouse is hovering
  * 
  * @param {*} ctx 
@@ -28,22 +43,27 @@ export function drawHexagon(ctx, x, y, r) {
  * @param {*} y 
  * @param {*} r 
  */
-export function drawHoveredHexagon(ctx, x, y, r) {
-	const angle = 2 * Math.PI / 6; // 60 degree
-
+export function drawHoveringTile(ctx, x, y) {
 	ctx.beginPath();
-	ctx.strokeStyle = '#2c5c8a';
-	ctx.lineWidth = 3;
-	for (var i = 0; i < 6; i++) {
-		ctx.lineTo(x + r * Math.sin(angle * i), y + r * Math.cos(angle * i));
-	}
+	ctx.fillStyle = '#2c5c8a';
+
+	drawHexagon(ctx, x, y, 50);
+
 	ctx.closePath();
-	ctx.stroke();
-	ctx.lineWidth = 1;
+	ctx.fill();
+
+	// Reverse Clip
+	ctx.save();
+	ctx.beginPath();
+	drawHexagon(ctx, x, y, 45);
+	ctx.closePath();
+	ctx.clip();
+	ctx.fillStyle = '#222222';
+	ctx.fillRect(-5000, -5000, 10000, 10000);
+	ctx.restore();
 }
 
 /**
- * Variation of drawHexagon.
  * Draw highlighted hexagon when tile is clicked
  * 
  * @param {*} ctx 
@@ -51,20 +71,24 @@ export function drawHoveredHexagon(ctx, x, y, r) {
  * @param {*} y 
  * @param {*} r 
  */
-export function drawSelectedHexagon(ctx, x, y, r) {
-	const angle = 2 * Math.PI / 6; // 60 degree
-
+export function drawSelectedTile(ctx, x, y) {
 	ctx.beginPath();
-	ctx.fillStyle = '#243240';
-	ctx.strokeStyle = '#2c5c8a';
-	ctx.lineWidth = 3;
-	for (var i = 0; i < 6; i++) {
-		ctx.lineTo(x + r * Math.sin(angle * i), y + r * Math.cos(angle * i));
-	}
+	ctx.fillStyle = '#2c5c8a';
+
+	drawHexagon(ctx, x, y, 50);
+
 	ctx.closePath();
 	ctx.fill();
-	ctx.stroke();
-	ctx.lineWidth = 1;
+
+	// Reverse Clip
+	ctx.save();
+	ctx.beginPath();
+	drawHexagon(ctx, x, y, 45);
+	ctx.closePath();
+	ctx.clip();
+	ctx.fillStyle = '#243240';
+	ctx.fillRect(-5000, -5000, 10000, 10000);
+	ctx.restore();
 }
 
 /**
@@ -102,7 +126,7 @@ export function isInsideHexagon(hexX, hexY, posX, posY, radius){
 	const dy = Math.abs(hexY - posY)/(radius*2);
 	const a = 0.25 * Math.sqrt(3.0);
 
-	return (dy <= a) && (a*dx + 0.25*dy <= 0.5*a);
+	return (dx <= a) && (a*dy + 0.25*dx <= 0.5*a);
 }
 
 /**

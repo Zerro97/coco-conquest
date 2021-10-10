@@ -11,7 +11,7 @@ import {
 	ScreenStatus, 
 	Tile 
 } from '../Component';
-import { drawHexagon, drawHoveredHexagon, drawSelectedHexagon, hexToCanvas } from '../Util';
+import { drawBaseTile, drawHoveringTile, drawSelectedTile, hexToCanvas } from '../Util';
 
 /**
  * Handles all the drawing
@@ -48,19 +48,21 @@ export class RenderSystem extends System {
 	}
 
 	drawTiles() {
+		const screenStatus = this.queries.screenStatus.results[0].getComponent(ScreenStatus);
+
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
 			let canvasPos = hexToCanvas(tile.x, tile.y, tile.size);
 
 			switch(tile.status){
 			case 'hover':
-				drawHoveredHexagon(this.ctx, canvasPos.x, canvasPos.y, tile.size);
+				drawHoveringTile(this.ctx, canvasPos.x, canvasPos.y);
 				break;
 			case 'selected':
-				drawSelectedHexagon(this.ctx, canvasPos.x, canvasPos.y, tile.size);
+				drawSelectedTile(this.ctx, canvasPos.x, canvasPos.y);
 				break;
 			default:
-				drawHexagon(this.ctx, canvasPos.x, canvasPos.y, tile.size);
+				drawBaseTile(this.ctx, canvasPos.x, canvasPos.y);
 				break;
 			}
 		});
