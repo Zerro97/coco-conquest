@@ -14,21 +14,21 @@ import buildingMap from './Assets/Map/Building/map_1.json';
 import { ImageLoader } from './Util/ImageLoader';
 import { MapGenerator, UnitGenerator } from './Assemblage';
 
-console.log(Component);
+// Initialize the world
+let world = new World({ entityPoolSize: 10000 });
 
 // Get canvas from DOM
-var canvas = document.querySelector('#main');
+let canvas = document.querySelector('#main');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 // Load all images
-let imageLoader = new ImageLoader();
+let imageLoader = new ImageLoader(world);
 let unitImages = await imageLoader.loadUnitImages();
 let buildingImages = await imageLoader.loadBuildingImages();
 let iconImages = await imageLoader.loadIconImages();
 
-// Create world and register the components and systems on it
-var world = new World({ entityPoolSize: 10000 });
+// Register components and systems
 world
 	.registerComponent(Component.Acceleration)
 	.registerComponent(Component.Velocity)
@@ -43,6 +43,7 @@ world
 	.registerComponent(Component.Sight)
 	.registerComponent(Component.Range)
 	.registerComponent(Component.Speed)
+	.registerComponent(Component.Image)
 	.registerComponent(Component.UnitImage)
 	.registerComponent(Component.BuildingImage)
 	.registerComponent(Component.IconImage)
@@ -60,7 +61,9 @@ world
 	})
 	.registerSystem(System.LoaderSystem, {
 		priority: -10, 
+		iconImages: iconImages, 
 		unitImages: unitImages, 
+		buildingImages: buildingImages, 
 		mapWidth: tileMap.length, 
 		mapHeight: tileMap[0].length, 
 		canvasWidth: canvas.width, 
@@ -82,11 +85,9 @@ world
 
 
 // Store image objects as entity
-for(const key in unitImages) {
-	world
-		.createEntity()
-		.addComponent(Component.UnitImage);
-}
+imageLoader.generateIconImage();
+imageLoader.generateUnitImage();
+imageLoader.generateBuildingImage();
 
 // Generators
 const unitGenerator = new UnitGenerator(world);

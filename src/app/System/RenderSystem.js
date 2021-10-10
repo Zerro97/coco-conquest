@@ -2,6 +2,8 @@ import { System } from '../Library/Ecsy';
 import { 
 	Unit, 
 	UnitImage,
+	IconImage,
+	Image,
 	Health, 
 	Damage, 
 	Sight,
@@ -77,8 +79,14 @@ export class RenderSystem extends System {
 	drawUnits() {
 		const images = [];
 		this.queries.images.results.forEach(entity => {
-			images.push(entity.getMutableComponent(UnitImage).value);
+			if(entity.hasComponent(UnitImage)) {
+				images.push({ 
+					name: entity.getMutableComponent(Image).name,
+					value: entity.getMutableComponent(Image).value
+				});
+			}
 		});
+		
 
 		this.queries.units.results.forEach(entity => {
 			let type = entity.getComponent(Unit).value;
@@ -182,7 +190,7 @@ RenderSystem.queries = {
 		components: [Unit, MapPosition, Health, Damage, Sight, Range, Speed]
 	},
 	images: {
-		components: [UnitImage]
+		components: [Image]
 	},
 	tiles: {
 		components: [Tile]

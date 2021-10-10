@@ -1,5 +1,5 @@
 import { System } from '../Library/Ecsy';
-import { UnitImage, ScreenStatus } from '../Component';
+import { Image, UnitImage, BuildingImage, IconImage, ScreenStatus } from '../Component';
 import { hexToCanvas } from '../Util';
 
 export class LoaderSystem extends System {
@@ -11,9 +11,31 @@ export class LoaderSystem extends System {
 	}
 
 	loadImages() {
-		this.queries.images.results.forEach((entity, index) => {
-			var image = entity.getMutableComponent(UnitImage);
-			image.value = this.unitImages[`${index}.png`];
+		let counter = {
+			unit: 0,
+			building: 0,
+			icon: 0
+		};
+		let unitKeys = Object.keys(this.unitImages);
+		let buildingKeys = Object.keys(this.buildingImages);
+		let iconKeys = Object.keys(this.iconImages);
+		
+		this.queries.images.results.forEach(entity => {
+			var image = entity.getMutableComponent(Image);
+
+			if(entity.hasComponent(UnitImage)){
+				image.name = unitKeys[counter.unit];
+				image.value = this.unitImages[unitKeys[counter.unit]];
+				counter.unit += 1;
+			} else if(entity.hasComponent(BuildingImage)){
+				image.name = buildingKeys[counter.building];
+				image.value = this.buildingImages[buildingKeys[counter.building]];
+				counter.building += 1;
+			} else if(entity.hasComponent(IconImage)){
+				image.name = iconKeys[counter.icon];
+				image.value = this.iconImages[iconKeys[counter.icon]];
+				counter.icon += 1;
+			}
 		});
 	}
 
@@ -31,7 +53,7 @@ export class LoaderSystem extends System {
 
 LoaderSystem.queries = {
 	images: {
-		components: [UnitImage]
+		components: [Image]
 	},
 	screenStatus: {
 		components: [ScreenStatus]
