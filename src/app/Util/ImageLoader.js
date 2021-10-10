@@ -1,8 +1,8 @@
+import { UnitImage } from '../Component';
 
 export class ImageLoader {
-	constructor() {
-		this.images = {};
-		this.imageNames = {};
+	constructor(world) {
+		this.world = world;
 	}
 
 	importAll(r) {
@@ -13,16 +13,53 @@ export class ImageLoader {
 	}
 
 	async loadUnitImages() {
-		this.imageNames = this.importAll(require.context('../Assets/Images/Units', false, /\.(png|jpe?g|svg)$/));
+		const images = {};
+		const imageNames = this.importAll(require.context('../Assets/Images/Units', false, /\.(png|jpe?g|svg)$/));
 
-		for(const key in this.imageNames) {
+		for(const key in imageNames) {
 			const image = new Image();
 
-			image.src = this.imageNames[key];
+			image.src = imageNames[key];
 			await image.decode();
-			this.images[key] = image;
+			images[key] = image;
 		}
 
-		return this.images;
+		return images;
+	}
+
+	async loadBuildingImages() {
+		const images = {};
+		const imageNames = this.importAll(require.context('../Assets/Images/Buildings', false, /\.(png|jpe?g|svg)$/));
+
+		for(const key in imageNames) {
+			const image = new Image();
+
+			image.src = imageNames[key];
+			await image.decode();
+			images[key] = image;
+		}
+
+		return images;
+	}
+
+	async loadIconImages() {
+		const images = {};
+		const imageNames = this.importAll(require.context('../Assets/Images/Icons', false, /\.(png|jpe?g|svg)$/));
+
+		for(const key in imageNames) {
+			const image = new Image();
+
+			image.src = imageNames[key];
+			await image.decode();
+			images[key] = image;
+		}
+
+		return images;
+	}
+
+	generateUnitImage() {
+		this.world
+			.createEntity()
+			.addComponent(UnitImage);
 	}
 }
