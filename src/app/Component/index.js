@@ -19,3 +19,5 @@ export { Range } from './Range.js';
 export { Speed } from './Speed.js';
 
 export { ScreenStatus } from './ScreenStatus.js';
+export { GameStatus } from './GameStatus.js';
+export { ActionStatus } from './ActionStatus.js';

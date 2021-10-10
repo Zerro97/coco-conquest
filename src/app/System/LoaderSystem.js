@@ -26,8 +26,6 @@ export class LoaderSystem extends System {
 
 		screenStatus.x = -dx/2;
 		screenStatus.y = -dy/2;
-
-		console.log(this.mapWidth, this.mapHeight, screenStatus);
 	}
 }
 

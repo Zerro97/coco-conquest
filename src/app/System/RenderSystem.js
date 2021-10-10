@@ -8,7 +8,8 @@ import {
 	Range,
 	Speed,
 	MapPosition,
-	ScreenStatus, 
+	ScreenStatus,
+	ActionStatus,
 	Tile 
 } from '../Component';
 import { drawBaseTile, drawHoveringTile, drawSelectedTile, hexToCanvas } from '../Util';
@@ -35,6 +36,7 @@ export class RenderSystem extends System {
 		this.drawTiles();
 		this.drawBuildings();
 		this.drawUnits();
+		this.drawSelectOption();
 
 		this.ctx.restore();
 
@@ -97,6 +99,48 @@ export class RenderSystem extends System {
 		});
 	}
 
+	drawSelectOption() {
+		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		//console.log(actionStatus);
+
+		if(actionStatus.selectType !== -1) {
+			let mapPos = { x: actionStatus.selectX, y: actionStatus.selectY };
+			let canvasPos = hexToCanvas(mapPos.x, mapPos.y, 50);
+
+			switch(actionStatus.selectType) {
+			case 0:
+				break;
+			case 1:
+				this.ctx.fillStyle = 'red';
+				this.ctx.beginPath();
+				this.ctx.arc(canvasPos.x -25, canvasPos.y - 65, 20, 0, Math.PI*2, true);   
+				this.ctx.closePath();
+				this.ctx.fill();
+
+				this.ctx.fillStyle = 'blue';
+				this.ctx.beginPath();
+				this.ctx.arc(canvasPos.x + 25, canvasPos.y - 65, 20, 0, Math.PI*2, true);   
+				this.ctx.closePath();
+				this.ctx.fill();
+
+				this.ctx.fillStyle = '#ffffff';
+				this.ctx.beginPath();
+				this.ctx.arc(canvasPos.x -25, canvasPos.y - 65, 17, 0, Math.PI*2, true);   
+				this.ctx.closePath();
+				this.ctx.fill();
+
+				this.ctx.fillStyle = '#ffffff';
+				this.ctx.beginPath();
+				this.ctx.arc(canvasPos.x + 25, canvasPos.y - 65, 17, 0, Math.PI*2, true);   
+				this.ctx.closePath();
+				this.ctx.fill();
+				break;
+			case 2:
+				break;
+			}
+		}
+	}
+
 	drawHud() {
 		// Pause Button
 		this.ctx.fillStyle = 'rgb(210, 210, 210)';
@@ -145,5 +189,8 @@ RenderSystem.queries = {
 	},
 	screenStatus: {
 		components: [ScreenStatus]
+	},
+	actionStatus: {
+		components: [ActionStatus]
 	}
 };

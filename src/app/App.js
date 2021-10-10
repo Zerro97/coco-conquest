@@ -40,6 +40,8 @@ world
 	.registerComponent(Component.Speed)
 	.registerComponent(Component.Image)
 	.registerComponent(Component.ScreenStatus)
+	.registerComponent(Component.ActionStatus)
+	.registerComponent(Component.GameStatus)
 	.registerSystem(System.KeyboardListenerSystem)
 	.registerSystem(System.MouseListenerSystem)
 	.registerSystem(System.MovementSystem)
@@ -52,6 +54,12 @@ world
 world
 	.createEntity()
 	.addComponent(Component.ScreenStatus);
+world
+	.createEntity()
+	.addComponent(Component.ActionStatus);
+world
+	.createEntity()
+	.addComponent(Component.GameStatus);
 
 
 // Store image objects as entity

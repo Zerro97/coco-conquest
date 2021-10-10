@@ -1,5 +1,5 @@
 import { System } from '../Library/Ecsy';
-import { Tile, Unit, Building, Hud, ScreenStatus } from '../Component';
+import { Tile, Unit, Building, MapPosition, Hud, ScreenStatus, ActionStatus } from '../Component';
 import { hexToCanvas, isInsideHexagon, applyTransformation } from '../Util';
 
 /**
@@ -94,6 +94,7 @@ export class MouseListenerSystem extends System {
 
 	checkTiles(mouseX, mouseY, type) {
 		const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
+		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
 
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
@@ -108,6 +109,9 @@ export class MouseListenerSystem extends System {
 					tile.status = 'hover';
 				} else if(type === 'click') {
 					tile.status = 'selected';
+					actionStatus.selectType = this.checkObjectOnTile(tile.x, tile.y);
+					actionStatus.selectX = tile.x;
+					actionStatus.selectY = tile.y;
 				}
 			} else {
 				tile.status = tile.status != 'selected' ? 'seen' : 'selected';
@@ -115,6 +119,35 @@ export class MouseListenerSystem extends System {
 		});
 	}
 
+	checkObjectOnTile(x, y) {
+		let objectType = 0;
+
+		this.queries.unit.results.some(entity => {
+			const type = entity.getComponent(Unit);
+			const mapPos = entity.getComponent(MapPosition);
+			
+			if(x === mapPos.x && y === mapPos.y) {
+				objectType = 1;
+				return true;
+			}
+
+			return false;
+		});
+
+		this.queries.building.results.some(entity => {
+			const type = entity.getComponent(Building);
+			const mapPos = entity.getComponent(MapPosition);
+
+			if(x === mapPos.x && y === mapPos.y) {
+				objectType = 2;
+				return true;
+			}
+
+			return false;
+		});
+
+		return objectType;
+	}
 
 }
 
@@ -123,6 +156,9 @@ MouseListenerSystem.queries = {
 	screenStatus: {
 		components: [ScreenStatus]
 	},
+	actionStatus: {
+		components: [ActionStatus]
+	},
 	hud: {
 		components: [Hud]
 	},
@@ -130,9 +166,9 @@ MouseListenerSystem.queries = {
 		components: [Tile]
 	},
 	unit: {
-		components: [Unit]
+		components: [Unit, MapPosition]
 	},
 	building: {
-		components: [Building]
+		components: [Building, MapPosition]
 	}
 };
