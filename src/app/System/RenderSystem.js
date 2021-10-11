@@ -19,9 +19,14 @@ import {
 	Tile, 
 	DamagePopup,
 	Timer,
-	CanvasPosition
+	CanvasPosition,
+	Building,
+	SelectedTile,
+	SelectedUnit,
+	SelectedBuilding
 } from '../Component';
 import { 
+	roundRect,
 	drawBaseTile, 
 	drawHoveringTile, 
 	drawSelectedTile, 
@@ -32,7 +37,7 @@ import {
 	cubeToPixel, 
 	tiles_in_range
 } from '../Util';
-import { ActionType, TileStatus } from '../Type';
+import { ActionType, ObjectType, TileStatus } from '../Type';
 
 /**
  * Handles all the drawing
@@ -182,7 +187,7 @@ export class RenderSystem extends System {
 		const actionEntity = this.queries.actionStatus.results[0];
 		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
 
-		const selectedUnit = this.getSelectedUnit();
+		const selectedUnit = this.getSelectedObject();
 		const range = selectedUnit.getComponent(Range).value;
 
 		let mapPos = { x: selectPosition.x, z: selectPosition.z };
@@ -209,7 +214,7 @@ export class RenderSystem extends System {
 		const actionEntity = this.queries.actionStatus.results[0];
 		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
 
-		const selectedUnit = this.getSelectedUnit();
+		const selectedUnit = this.getSelectedObject();
 		const speed = selectedUnit.getComponent(Speed).value;
 
 		let mapPos = { x: selectPosition.x, z: selectPosition.z };
@@ -232,13 +237,35 @@ export class RenderSystem extends System {
 	}
 
 	drawHud() {
+		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+
+		let selectedObject = null;
+		let type = null;
+		let health = null;
+		let damage = null;
+		let range = null;
+		let sight = null;
+		let speed = null;
+
+		if(actionStatus.action === ActionType.SELECTED) {
+			selectedObject = this.getSelectedObject();
+			type = selectedObject.getComponent(Object).value;
+		}
+
+		if(type === ObjectType.UNIT){
+			health = selectedObject.getComponent(Health).value;
+			damage = selectedObject.getComponent(Damage).value;
+			range = selectedObject.getComponent(Range).value;
+			sight = selectedObject.getComponent(Sight).value;
+			speed = selectedObject.getComponent(Speed).value;
+		}
+
 		// Pause Button
 		this.ctx.fillStyle = 'rgb(210, 210, 210)';
 		this.ctx.fillRect(40, 40, 10, 50);
 		this.ctx.fillRect(60, 40, 10, 50);
 
 		// Top right panel
-		/*
 		this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
 		this.ctx.lineWidth = 5;
 		this.ctx.strokeStyle = 'rgb(100, 100, 100)';
@@ -254,16 +281,25 @@ export class RenderSystem extends System {
 		this.ctx.stroke();
 
 		// HP
-		for(let i=0; i<15; i++) {
-			this.ctx.fillStyle = '#eb4034';
-			this.ctx.lineWidth = 1;
-			this.ctx.strokeStyle = 'white';
-			this.ctx.rect(this.canvasWidth - 200 + i*10, 30, 7, 25);
-			this.ctx.fill();
-			this.ctx.stroke();
-		}
+		switch(type) {
+		case ObjectType.TILE:
+        
+			break;
+		case ObjectType.UNIT:
+			this.ctx.font = '18px Arial';
+			this.ctx.fillStyle = 'black';
+			this.ctx.textAlign = 'center';
 
-		this.stop();*/
+			this.ctx.fillText('HP: ' + health, this.canvasWidth - 50, 45);
+			this.ctx.fillText('DG: ' + damage, this.canvasWidth - 120, 45);
+			this.ctx.fillText('RA: ' + range, this.canvasWidth - 190, 45);
+			this.ctx.fillText('SI: ' + sight, this.canvasWidth - 50, 85);
+			this.ctx.fillText('SP: ' + speed, this.canvasWidth - 120, 85);
+
+			break;
+		case ObjectType.BUILDING:
+			break;
+		}
 	}
 
 	drawDamagePopup(){
@@ -285,26 +321,37 @@ export class RenderSystem extends System {
 		});
 	}
 
-	getSelectedUnit() {
-		const actionEntity = this.queries.actionStatus.results[0];
-		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
+	getSelectedObject() {
+		let selectedObject = {};
 
-		let selectedUnit = {};
-		this.queries.units.results.some(entity => {
-			const mapPos = entity.getComponent(MapPosition);
-			
-			if(selectPosition.x === mapPos.x && 
-				selectPosition.y === mapPos.y && 
-				selectPosition.z === mapPos.z) {
-
-				selectedUnit = entity;
+		this.queries.tiles.results.some(entity => {			
+			if(entity.hasComponent(SelectedTile)){
+				selectedObject = entity;
 				return true;
 			}
 
 			return false;
 		});
 
-		return selectedUnit;
+		this.queries.units.results.some(entity => {			
+			if(entity.hasComponent(SelectedUnit)){
+				selectedObject = entity;
+				return true;
+			}
+
+			return false;
+		});
+
+		this.queries.buildings.results.some(entity => {			
+			if(entity.hasComponent(SelectedBuilding)){
+				selectedObject = entity;
+				return true;
+			}
+
+			return false;
+		});
+
+		return selectedObject;
 	}
 }
 
@@ -314,6 +361,9 @@ RenderSystem.queries = {
 	},
 	units: { 
 		components: [Unit, MapPosition, Object, Health, Damage, Sight, Range, Speed]
+	},
+	buildings: { 
+		components: [Building, MapPosition, Object]
 	},
 	images: {
 		components: [Image]
