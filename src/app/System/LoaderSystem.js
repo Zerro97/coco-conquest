@@ -1,6 +1,6 @@
 import { System } from '../Library/Ecsy';
 import { Image, UnitImage, BuildingImage, IconImage, ScreenStatus } from '../Component';
-import { hexToCanvas } from '../Util';
+import { evenrToPixel } from '../Util';
 
 export class LoaderSystem extends System {
 	execute(delta, time) {
@@ -41,7 +41,7 @@ export class LoaderSystem extends System {
 
 	setInitialPosition() {
 		let screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
-		let canvasPos = hexToCanvas(this.mapHeight, this.mapWidth, 50);
+		let canvasPos = evenrToPixel(this.mapHeight, this.mapWidth, 50);
 
 		let dx = this.canvasWidth - canvasPos.x;
 		let dy = this.canvasHeight - canvasPos.y;

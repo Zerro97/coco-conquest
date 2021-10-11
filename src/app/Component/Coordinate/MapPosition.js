@@ -4,5 +4,6 @@ export class MapPosition extends Component {}
 
 MapPosition.schema = {
 	x: { type: Types.Number },
-	y: { type: Types.Number }
+	y: { type: Types.Number },
+	z: { type: Types.Number },
 };

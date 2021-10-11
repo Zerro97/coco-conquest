@@ -25,5 +25,6 @@ ActionStatus.schema = {
 
 	// Map position of selected object
 	selectX: { type: Types.Number},
-	selectY: { type: Types.Number}
+	selectY: { type: Types.Number},
+	selectZ: { type: Types.Number}
 };

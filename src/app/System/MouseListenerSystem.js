@@ -1,6 +1,6 @@
 import { System } from '../Library/Ecsy';
 import { Tile, Unit, Building, MapPosition, Hud, ScreenStatus, ActionStatus } from '../Component';
-import { hexToCanvas, isInsideHexagon, applyTransformation, isInsideCircle } from '../Util';
+import { evenrToPixel, cubeToPixel, isInsideHexagon, applyTransformation, isInsideCircle } from '../Util';
 import { ActionType, SelectType, AttackType, MovementType, TileStatus } from '../Type';
 
 /**
@@ -109,7 +109,7 @@ export class MouseListenerSystem extends System {
 
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
-			let canvasPos = hexToCanvas(tile.x, tile.y, tile.size);
+			let canvasPos = cubeToPixel(tile.x, tile.z, tile.size);
 
 			if(isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)){
 				if(type === 'hover' && tile.status != TileStatus.SELECTED) {
@@ -157,13 +157,13 @@ export class MouseListenerSystem extends System {
 
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
-			let canvasPos = hexToCanvas(tile.x, tile.y, tile.size);
+			let canvasPos = cubeToPixel(tile.x, tile.z, tile.size);
 
 			if(isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)){
 				actionStatus.action = ActionType.SELECTED;
-				actionStatus.selectType = this.checkObjectTypeOnTile(tile.x, tile.y);
+				actionStatus.selectType = this.checkObjectTypeOnTile(tile.x, tile.z);
 				actionStatus.selectX = tile.x;
-				actionStatus.selectY = tile.y;
+				actionStatus.selectZ = tile.z;
 			}
 		});
 	}
@@ -171,7 +171,7 @@ export class MouseListenerSystem extends System {
 	checkOption(mouseX, mouseY) {
 		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
 
-		const tilePos = hexToCanvas(actionStatus.selectX, actionStatus.selectY, 50);
+		const tilePos = cubeToPixel(actionStatus.selectX, actionStatus.selectZ, 50);
 		const attackPos = {x: tilePos.x - 25, y: tilePos.y - 65};
 		const movementPos = {x: tilePos.x + 25, y: tilePos.y - 65};
 
@@ -189,34 +189,37 @@ export class MouseListenerSystem extends System {
 	checkAttack(mouseX, mouseY) {
 		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
 		
-		const tilePos = hexToCanvas(actionStatus.selectX, actionStatus.selectY, 50);
+		const tilePos = cubeToPixel(actionStatus.selectX, actionStatus.selectZ, 50);
 		const cancelPos = {x: tilePos.x, y: tilePos.y - 75};
 		
-
 		if(isInsideCircle(cancelPos.x, cancelPos.y, mouseX, mouseY, 20)) {
 			actionStatus.action = ActionType.NOT_SELECTED;
+		} else {
+			this.checkSelect(mouseX, mouseY);
 		}
 	}
 
 	checkMovement(mouseX, mouseY) {
 		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
 		
-		const tilePos = hexToCanvas(actionStatus.selectX, actionStatus.selectY, 50);
+		const tilePos = cubeToPixel(actionStatus.selectX, actionStatus.selectZ, 50);
 		const cancelPos = {x: tilePos.x, y: tilePos.y - 75};
 		console.log(actionStatus);
 		
 		if(isInsideCircle(cancelPos.x, cancelPos.y, mouseX, mouseY, 20)) {
 			actionStatus.action = ActionType.NOT_SELECTED;
+		} else {
+			this.checkSelect(mouseX, mouseY);
 		}
 	}
 
-	checkObjectTypeOnTile(x, y) {
+	checkObjectTypeOnTile(x, z) {
 		let objectType = 0;
 
 		this.queries.unit.results.some(entity => {
 			const mapPos = entity.getComponent(MapPosition);
 			
-			if(x === mapPos.x && y === mapPos.y) {
+			if(x === mapPos.x && z === mapPos.z) {
 				objectType = SelectType.UNIT;
 				return true;
 			}
@@ -227,7 +230,7 @@ export class MouseListenerSystem extends System {
 		this.queries.building.results.some(entity => {
 			const mapPos = entity.getComponent(MapPosition);
 
-			if(x === mapPos.x && y === mapPos.y) {
+			if(x === mapPos.x && z === mapPos.z) {
 				objectType = SelectType.BUILDING;
 				return true;
 			}

@@ -99,13 +99,16 @@ export function drawSelectedTile(ctx, x, y) {
  * @param {*} y 
  * @param {*} r 
  */
-export function hexToCanvas(x, y, r) {
-	let canvasX = x * Math.sqrt(3) * r;
-	let canvasY = y * 3/2 * r;
+export function evenrToPixel(x, y, r) {
+	let canvasX = r * Math.sqrt(3) * (x - 0.5 * (y&1));
+	let canvasY = r * 3/2 * y;
 
-	if(y % 2 === 0) {
-		canvasX += Math.sqrt(3) * r/2;
-	}
+	return {x: canvasX, y: canvasY};
+}
+
+export function cubeToPixel(x, z, r) {
+	let canvasX = r * (Math.sqrt(3) * x + Math.sqrt(3)/2 * z);
+	let canvasY = r * (3./2 * z);
 
 	return {x: canvasX, y: canvasY};
 }

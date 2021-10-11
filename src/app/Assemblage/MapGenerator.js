@@ -1,4 +1,5 @@
 import { Tile, Unit, Health, Damage, Sight, Range, Speed, MapPosition } from '../Component';
+import { evenr_to_cube } from '../Util';
 
 export class MapGenerator {
 	constructor(world) {
@@ -53,14 +54,17 @@ export class MapGenerator {
 	generateTiles() {
 		for(let row=0; row<this.tileMap.length; row++) {
 			for(let col=0; col<this.tileMap[0].length; col++) {
+				let cube = evenr_to_cube(row, col);
+
 				this.world
 					.createEntity()
 					.addComponent(Tile, {
 						type: 'plain', // map[row][col]
 						variation: 0,
 						status: 'seen',
-						x: col,
-						y: row,
+						x: cube.x,
+						y: cube.y,
+						z: cube.z,
 						size: 50
 					});
 			}
@@ -74,10 +78,12 @@ export class MapGenerator {
 		for(let row=0; row<this.unitMap.length; row++) {
 			for(let col=0; col<this.unitMap[0].length; col++) {
 				if(this.unitMap[row][col] !== -1) {
+					let cube = evenr_to_cube(row, col);
+
 					this.world
 						.createEntity()
 						.addComponent(Unit, {value: this.unitMap[row][col]})
-						.addComponent(MapPosition, {x: col, y: row})
+						.addComponent(MapPosition, {x: cube.x, y: cube.y, z: cube.z})
 						.addComponent(Health)
 						.addComponent(Damage)
 						.addComponent(Sight)

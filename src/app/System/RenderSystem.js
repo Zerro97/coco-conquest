@@ -14,7 +14,7 @@ import {
 	ActionStatus,
 	Tile 
 } from '../Component';
-import { drawBaseTile, drawHoveringTile, drawSelectedTile, drawSelectIcon, drawCancelIcon, hexToCanvas } from '../Util';
+import { drawBaseTile, drawHoveringTile, drawSelectedTile, drawSelectIcon, drawCancelIcon, cubeToPixel } from '../Util';
 import { ActionType, TileStatus } from '../Type';
 
 /**
@@ -58,7 +58,7 @@ export class RenderSystem extends System {
 
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
-			let canvasPos = hexToCanvas(tile.x, tile.y, tile.size);
+			let canvasPos = cubeToPixel(tile.x, tile.z, tile.size);
 
 			switch(tile.status){
 			case TileStatus.HOVER:
@@ -99,7 +99,7 @@ export class RenderSystem extends System {
 			});
 
 			let mapPos = entity.getComponent(MapPosition);
-			let canvasPos = hexToCanvas(mapPos.x, mapPos.y, 50);
+			let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
 			this.ctx.save();
 			this.ctx.beginPath();
@@ -142,8 +142,8 @@ export class RenderSystem extends System {
 			}
 		});
 
-		let mapPos = { x: actionStatus.selectX, y: actionStatus.selectY };
-		let canvasPos = hexToCanvas(mapPos.x, mapPos.y, 50);
+		let mapPos = { x: actionStatus.selectX, z: actionStatus.selectZ };
+		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
 		switch(actionStatus.selectType) {
 		case 0:
@@ -158,16 +158,16 @@ export class RenderSystem extends System {
 
 	drawAttack() {
 		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
-		let mapPos = { x: actionStatus.selectX, y: actionStatus.selectY };
-		let canvasPos = hexToCanvas(mapPos.x, mapPos.y, 50);
+		let mapPos = { x: actionStatus.selectX, z: actionStatus.selectZ };
+		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
 		drawCancelIcon(this.ctx, canvasPos.x, canvasPos.y);
 	}
 
 	drawMove() {
 		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
-		let mapPos = { x: actionStatus.selectX, y: actionStatus.selectY };
-		let canvasPos = hexToCanvas(mapPos.x, mapPos.y, 50);
+		let mapPos = { x: actionStatus.selectX, z: actionStatus.selectZ };
+		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
 		drawCancelIcon(this.ctx, canvasPos.x, canvasPos.y);
 	}
