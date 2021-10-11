@@ -37,6 +37,8 @@ world
 	.registerComponent(Component.MovePosition)
 	.registerComponent(Component.AttackPosition)
 	.registerComponent(Component.SelectPosition)
+	.registerComponent(Component.Timer)
+	.registerComponent(Component.Block)
 	.registerComponent(Component.Tile)
 	.registerComponent(Component.Hud)
 	.registerComponent(Component.Unit)
@@ -75,7 +77,7 @@ world
 	.registerSystem(System.TileSystem)
 	.registerSystem(System.UnitSystem);
 
-// Singleton components
+// Singleton entities
 world
 	.createEntity()
 	.addComponent(Component.ScreenStatus);
@@ -88,6 +90,10 @@ world
 world
 	.createEntity()
 	.addComponent(Component.GameStatus);
+world
+	.createEntity()
+	.addComponent(Component.Block)
+	.addComponent(Component.Timer);
 
 
 // Store image objects as entity

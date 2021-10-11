@@ -1,4 +1,5 @@
 export * from './Coordinate';
+export * from './Control';
 export * from './Image';
 export * from './Movement';
 export * from './Stats';

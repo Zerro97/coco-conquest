@@ -1,5 +1,20 @@
 import { System } from '../Library/Ecsy';
-import { Tile, Unit, Range, Speed, Building, MapPosition, Hud, ScreenStatus, ActionStatus, MovePosition, AttackPosition, SelectPosition } from '../Component';
+import { 
+	Hud,
+	Tile,
+	Block,
+	Timer,
+	Range, 
+	Speed, 
+	Unit, 
+	Building, 
+	MapPosition,
+	ScreenStatus, 
+	ActionStatus, 
+	MovePosition, 
+	AttackPosition, 
+	SelectPosition
+} from '../Component';
 import { cube_distance, cubeToPixel, isInsideHexagon, applyTransformation, isInsideCircle } from '../Util';
 import { ActionType, SelectType, AttackType, MovementType, TileStatus } from '../Type';
 
@@ -129,23 +144,28 @@ export class MouseListenerSystem extends System {
 	updateAction(mouseX, mouseY) {
 		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
 
-		switch(actionStatus.action) {
-		case ActionType.NOT_SELECTED:
-			// 1) If the player just selected tile
-			this.checkSelect(mouseX, mouseY);
-			break;
-		case ActionType.SELECTED:
-			// 2) Check which option player selected
-			this.checkOption(mouseX, mouseY);			
-			break;
-		case ActionType.ATTACK:
-			// 3a) If the player is attacking
-			this.checkAttack(mouseX, mouseY);
-			break;
-		case ActionType.MOVE:
-			// 3b) If the player is moving
-			this.checkMovement(mouseX, mouseY);
-			break;
+		const control = this.queries.control.results[0];
+		const block = control.getComponent(Block);
+		
+		if(!block.value) {
+			switch(actionStatus.action) {
+			case ActionType.NOT_SELECTED:
+				// 1) If the player just selected tile
+				this.checkSelect(mouseX, mouseY);
+				break;
+			case ActionType.SELECTED:
+				// 2) Check which option player selected
+				this.checkOption(mouseX, mouseY);			
+				break;
+			case ActionType.ATTACK:
+				// 3a) If the player is attacking
+				this.checkAttack(mouseX, mouseY);
+				break;
+			case ActionType.MOVE:
+				// 3b) If the player is moving
+				this.checkMovement(mouseX, mouseY);
+				break;
+			}
 		}
 	}
 
@@ -164,6 +184,8 @@ export class MouseListenerSystem extends System {
 				selectPosition.x = tile.x;
 				selectPosition.y = tile.y;
 				selectPosition.z = tile.z;
+
+				console.log(actionStatus.action);
 			}
 		});
 	}
@@ -202,6 +224,9 @@ export class MouseListenerSystem extends System {
 		const range = selectedUnit.getComponent(Range).value;
 		const unitPos = selectedUnit.getMutableComponent(MapPosition);
 
+		const control = this.queries.control.results[0];
+		const block = control.getMutableComponent(Block);
+
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
 			let canvasPos = cubeToPixel(tile.x, tile.z, tile.size);
@@ -221,10 +246,10 @@ export class MouseListenerSystem extends System {
 			attackPosition.z = mouseTilePos.z;
 
 			// Temp
-			unitPos.x = mouseTilePos.x;
-			unitPos.y = mouseTilePos.y;
-			unitPos.z = mouseTilePos.z;
-			actionStatus.action = ActionType.NOT_SELECTED;
+			// unitPos.x = mouseTilePos.x;
+			// unitPos.y = mouseTilePos.y;
+			// unitPos.z = mouseTilePos.z;
+			block.value = true;
 		} else {
 			this.checkSelect(mouseX, mouseY);
 		}
@@ -262,7 +287,6 @@ export class MouseListenerSystem extends System {
 			movePosition.y = mouseTilePos.y;
 			movePosition.z = mouseTilePos.z;
 
-			// Temp
 			unitPos.x = mouseTilePos.x;
 			unitPos.y = mouseTilePos.y;
 			unitPos.z = mouseTilePos.z;
@@ -307,7 +331,6 @@ export class MouseListenerSystem extends System {
 		let selectedUnit = {};
 		this.queries.units.results.some(entity => {
 			const mapPos = entity.getComponent(MapPosition);
-			console.log(mapPos);
 			
 			if(selectPosition.x === mapPos.x && 
 				selectPosition.y === mapPos.y && 
@@ -331,6 +354,9 @@ MouseListenerSystem.queries = {
 	},
 	actionStatus: {
 		components: [ActionStatus, MovePosition, AttackPosition, SelectPosition]
+	},
+	control: {
+		components: [Block, Timer]
 	},
 	hud: {
 		components: [Hud]

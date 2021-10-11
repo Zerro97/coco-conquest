@@ -126,6 +126,7 @@ export class RenderSystem extends System {
 
 	drawActionHud() {
 		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		console.log(actionStatus.action);
 
 		switch(actionStatus.action) {
 		case ActionType.SELECTED:
