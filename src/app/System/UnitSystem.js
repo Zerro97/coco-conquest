@@ -14,17 +14,17 @@ export class UnitSystem extends System {
 	initializeUnit(entity) {
 		const type = entity.getMutableComponent(Unit);
 		
-		switch(type.value) {
-		case UnitType.scout:
-			this.assignStats(entity, 5, 1, 2, 1, 3);
-			break;
-		case UnitType.warrior:
-			this.assignStats(entity, 8, 2, 2, 1, 2);
-			break;
-		case UnitType.brute:
-			this.assignStats(entity, 10, 3, 2, 1, 1);
-			break;
-		}
+		// switch(type.value) {
+		// case UnitType.scout:
+		// 	this.assignStats(entity, 5, 1, 2, 1, 3);
+		// 	break;
+		// case UnitType.warrior:
+		// 	this.assignStats(entity, 8, 2, 2, 1, 2);
+		// 	break;
+		// case UnitType.brute:
+		// 	this.assignStats(entity, 10, 3, 2, 1, 1);
+		// 	break;
+		// }
 	}
 
 	assignStats(entity, healthValue, damageValue, sightValue, rangeValue, speedValue) {

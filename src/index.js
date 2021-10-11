@@ -5,7 +5,7 @@ import './index.css';
 import { world } from './app/App';
 
 // Run!
-function run() {	let imageObject = new Image(50, 50);
+function run() {
 	// Compute delta and elapsed time
 	var time = performance.now();
 	var delta = time - lastTime;

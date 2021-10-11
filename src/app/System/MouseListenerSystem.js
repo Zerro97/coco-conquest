@@ -163,6 +163,7 @@ export class MouseListenerSystem extends System {
 				actionStatus.action = ActionType.SELECTED;
 				actionStatus.selectType = this.checkObjectTypeOnTile(tile.x, tile.z);
 				actionStatus.selectX = tile.x;
+				actionStatus.selectY = tile.y;
 				actionStatus.selectZ = tile.z;
 			}
 		});

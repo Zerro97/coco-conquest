@@ -91,6 +91,47 @@ export function drawSelectedTile(ctx, x, y) {
 	ctx.restore();
 }
 
+export function drawAttackingTile(ctx, x, y) {
+	ctx.beginPath();
+	ctx.fillStyle = '#7a4646';
+
+	drawHexagon(ctx, x, y, 50);
+
+	ctx.closePath();
+	ctx.fill();
+
+	// Reverse Clip
+	ctx.save();
+	ctx.beginPath();
+	drawHexagon(ctx, x, y, 45);
+	ctx.closePath();
+	ctx.clip();
+	ctx.fillStyle = '#4a2c2c';
+	ctx.fillRect(-5000, -5000, 10000, 10000);
+	ctx.restore();
+}
+
+
+export function drawMovingTile(ctx, x, y) {
+	ctx.beginPath();
+	ctx.fillStyle = '#467a4b';
+
+	drawHexagon(ctx, x, y, 50);
+
+	ctx.closePath();
+	ctx.fill();
+
+	// Reverse Clip
+	ctx.save();
+	ctx.beginPath();
+	drawHexagon(ctx, x, y, 45);
+	ctx.closePath();
+	ctx.clip();
+	ctx.fillStyle = '#264028';
+	ctx.fillRect(-5000, -5000, 10000, 10000);
+	ctx.restore();
+}
+
 /**
  * Given x, y position of the tile,
  * return the actual pixel position of tile in canvas

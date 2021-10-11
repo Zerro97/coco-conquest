@@ -14,7 +14,17 @@ import {
 	ActionStatus,
 	Tile 
 } from '../Component';
-import { drawBaseTile, drawHoveringTile, drawSelectedTile, drawSelectIcon, drawCancelIcon, cubeToPixel } from '../Util';
+import { 
+	drawBaseTile, 
+	drawHoveringTile, 
+	drawSelectedTile, 
+	drawAttackingTile,
+	drawMovingTile,
+	drawSelectIcon, 
+	drawCancelIcon, 
+	cubeToPixel, 
+	tiles_in_range
+} from '../Util';
 import { ActionType, TileStatus } from '../Type';
 
 /**
@@ -149,7 +159,7 @@ export class RenderSystem extends System {
 		case 0:
 			break;
 		case 1:
-			drawSelectIcon(this.ctx, canvasPos.x, canvasPos.y, iconImages[0].value, iconImages[1].value);
+			drawSelectIcon(this.ctx, canvasPos.x, canvasPos.y, iconImages[1].value, iconImages[0].value);
 			break;
 		case 2:
 			break;
@@ -158,16 +168,49 @@ export class RenderSystem extends System {
 
 	drawAttack() {
 		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		const selectedUnit = this.getSelectedUnit();
+		const range = selectedUnit.getComponent(Range).value;
+
 		let mapPos = { x: actionStatus.selectX, z: actionStatus.selectZ };
 		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
+		let tilesInRange = tiles_in_range({
+			x: actionStatus.selectX, 
+			y: actionStatus.selectY, 
+			z: actionStatus.selectZ
+		}, range);
+
+		tilesInRange.forEach(tile => {
+			const pixelPos = cubeToPixel(tile.x, tile.z, 50);
+			drawAttackingTile(this.ctx, pixelPos.x, pixelPos.y);
+		});
+		this.drawUnits();
+		this.drawBuildings();
+
+		// Draw Cancel Button
 		drawCancelIcon(this.ctx, canvasPos.x, canvasPos.y);
 	}
 
 	drawMove() {
 		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		const selectedUnit = this.getSelectedUnit();
+		const speed = selectedUnit.getComponent(Speed).value;
+
 		let mapPos = { x: actionStatus.selectX, z: actionStatus.selectZ };
 		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
+
+		let tilesInRange = tiles_in_range({
+			x: actionStatus.selectX, 
+			y: actionStatus.selectY, 
+			z: actionStatus.selectZ
+		}, speed);
+
+		tilesInRange.forEach(tile => {
+			const pixelPos = cubeToPixel(tile.x, tile.z, 50);
+			drawMovingTile(this.ctx, pixelPos.x, pixelPos.y);
+		});
+		this.drawUnits();
+		this.drawBuildings();
 
 		drawCancelIcon(this.ctx, canvasPos.x, canvasPos.y);
 	}
@@ -205,6 +248,27 @@ export class RenderSystem extends System {
 		}
 
 		this.stop();*/
+	}
+
+	getSelectedUnit() {
+		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+
+		let selectedUnit = {};
+		this.queries.units.results.some(entity => {
+			const mapPos = entity.getComponent(MapPosition);
+			
+			if(actionStatus.selectX === mapPos.x && 
+				actionStatus.selectY === mapPos.y && 
+				actionStatus.selectZ === mapPos.z) {
+
+				selectedUnit = entity;
+				return true;
+			}
+
+			return false;
+		});
+
+		return selectedUnit;
 	}
 }
 

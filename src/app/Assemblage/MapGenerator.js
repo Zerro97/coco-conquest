@@ -1,5 +1,5 @@
 import { Tile, Unit, Health, Damage, Sight, Range, Speed, MapPosition } from '../Component';
-import { evenr_to_cube } from '../Util';
+import { evenr_to_cube, StatManager } from '../Util';
 
 export class MapGenerator {
 	constructor(world) {
@@ -75,20 +75,23 @@ export class MapGenerator {
 	 * Generate all the units
 	 */
 	generateUnits() {
+		let statManager = new StatManager();
+
 		for(let row=0; row<this.unitMap.length; row++) {
 			for(let col=0; col<this.unitMap[0].length; col++) {
 				if(this.unitMap[row][col] !== -1) {
 					let cube = evenr_to_cube(row, col);
+					let stat = statManager.getStat(this.unitMap[row][col]);
 
 					this.world
 						.createEntity()
 						.addComponent(Unit, {value: this.unitMap[row][col]})
 						.addComponent(MapPosition, {x: cube.x, y: cube.y, z: cube.z})
-						.addComponent(Health)
-						.addComponent(Damage)
-						.addComponent(Sight)
-						.addComponent(Range)
-						.addComponent(Speed);
+						.addComponent(Health, {value: stat.HEALTH})
+						.addComponent(Damage, {value: stat.DAMAGE})
+						.addComponent(Sight, {value: stat.SIGHT})
+						.addComponent(Range, {value: stat.RANGE})
+						.addComponent(Speed, {value: stat.SPEED});
 				}
 			}
 		}
