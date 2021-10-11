@@ -10,16 +10,20 @@ export class ActionStatus extends Component {}
  * After user selects unit, he can either command attack or movement
  */
 ActionStatus.schema = {
-	// What kind of object is selected
-	// -1: Not selected, 0: Tile, 1: Unit, 2: Building
-	selectType: { type: Types.Number, default: -1 },
+	// 0: NOT SELECTED
+	// 1: SELECTED
+	// 2: ATTACK
+	// 3: MOVE
+	action: { type: Types.Number, default: 0},
+
+	// 0: Tile, 1: Unit, 2: Building
+	selectType: { type: Types.Number, default: 0 },
+	// 0: Simple, 1: Skill
+	attackType: { type: Types.Number, default: 0 },
+	// 0: Moving, 1: Sailing, 2: Flying, 3: Burrowing?
+	movementType: { type: Types.Boolean, default: 0 },
+
 	// Map position of selected object
 	selectX: { type: Types.Number},
-	selectY: { type: Types.Number},
-
-	// Is it a simple attack or a skill
-	// -1: Not attacking, 0: Simple, 1: Skill
-	attackType: { type: Types.Number, default: -1 },
-	// -1: Not moving, 0: Moving
-	movementType: { type: Types.Boolean, default: -1 }
+	selectY: { type: Types.Number}
 };

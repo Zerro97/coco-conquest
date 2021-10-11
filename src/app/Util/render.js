@@ -49,3 +49,47 @@ export function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
 		ctx.stroke();
 	}
 }
+
+export function drawSelectIcon(ctx, x, y, swordImage, shoeImage) {
+	ctx.fillStyle = 'red';
+	ctx.beginPath();
+	ctx.arc(x -25, y - 65, 20, 0, Math.PI*2, true);   
+	ctx.closePath();
+	ctx.fill();
+
+	ctx.fillStyle = 'blue';
+	ctx.beginPath();
+	ctx.arc(x + 25, y - 65, 20, 0, Math.PI*2, true);   
+	ctx.closePath();
+	ctx.fill();
+
+	ctx.save();
+	ctx.beginPath();
+	ctx.arc(x -25, y - 65, 17, 0, Math.PI*2, true);   
+	ctx.closePath();
+	ctx.clip();
+	ctx.drawImage(swordImage, x - 45, y - 85, 40, 40);
+	ctx.restore();
+
+	ctx.save();
+	ctx.beginPath();
+	ctx.arc(x + 25, y - 65, 17, 0, Math.PI*2, true);   
+	ctx.closePath();
+	ctx.clip();
+	ctx.drawImage(shoeImage, x + 5, y - 85, 40, 40);
+	ctx.restore();
+}
+
+export function drawCancelIcon(ctx, x, y) {
+	ctx.fillStyle = 'red';
+	ctx.beginPath();
+	ctx.arc(x, y - 75, 20, 0, Math.PI*2, true);   
+	ctx.closePath();
+	ctx.fill();
+
+	ctx.fillStyle = 'white';
+	ctx.font = '25px serif';
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'middle';
+	ctx.fillText('X', x, y - 75);
+}

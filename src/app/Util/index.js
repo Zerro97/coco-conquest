@@ -1,2 +1,3 @@
-export { roundRect } from './render.js';
-export { drawBaseTile, drawHoveringTile, drawSelectedTile, hexToCanvas, isInsideHexagon, applyTransformation } from './tile.js';
+export * from './render.js';
+export * from './math.js';
+export * from './tile.js';

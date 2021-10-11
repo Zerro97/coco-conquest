@@ -14,7 +14,8 @@ import {
 	ActionStatus,
 	Tile 
 } from '../Component';
-import { drawBaseTile, drawHoveringTile, drawSelectedTile, hexToCanvas } from '../Util';
+import { drawBaseTile, drawHoveringTile, drawSelectedTile, drawSelectIcon, drawCancelIcon, hexToCanvas } from '../Util';
+import { ActionType, TileStatus } from '../Type';
 
 /**
  * Handles all the drawing
@@ -38,7 +39,8 @@ export class RenderSystem extends System {
 		this.drawTiles();
 		this.drawBuildings();
 		this.drawUnits();
-		this.drawSelectOption();
+
+		this.drawActionHud();
 
 		this.ctx.restore();
 
@@ -59,10 +61,10 @@ export class RenderSystem extends System {
 			let canvasPos = hexToCanvas(tile.x, tile.y, tile.size);
 
 			switch(tile.status){
-			case 'hover':
+			case TileStatus.HOVER:
 				drawHoveringTile(this.ctx, canvasPos.x, canvasPos.y);
 				break;
-			case 'selected':
+			case TileStatus.SELECTED:
 				drawSelectedTile(this.ctx, canvasPos.x, canvasPos.y);
 				break;
 			default:
@@ -109,7 +111,26 @@ export class RenderSystem extends System {
 		});
 	}
 
-	drawSelectOption() {
+	drawActionHud() {
+		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+
+		switch(actionStatus.action) {
+		case ActionType.SELECTED:
+			// 2) Draw unit's options
+			this.drawOption();			
+			break;
+		case ActionType.ATTACK:
+			// 3a) Draw attack hud
+			this.drawAttack();
+			break;
+		case ActionType.MOVE:
+			// 3b) Draw movement hud
+			this.drawMove();
+			break;
+		}
+	}
+
+	drawOption() {
 		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
 		const iconImages = [];
 		this.queries.images.results.forEach(entity => {
@@ -121,46 +142,34 @@ export class RenderSystem extends System {
 			}
 		});
 
-		if(actionStatus.selectType !== -1) {
-			let mapPos = { x: actionStatus.selectX, y: actionStatus.selectY };
-			let canvasPos = hexToCanvas(mapPos.x, mapPos.y, 50);
+		let mapPos = { x: actionStatus.selectX, y: actionStatus.selectY };
+		let canvasPos = hexToCanvas(mapPos.x, mapPos.y, 50);
 
-			switch(actionStatus.selectType) {
-			case 0:
-				break;
-			case 1:
-				this.ctx.fillStyle = 'red';
-				this.ctx.beginPath();
-				this.ctx.arc(canvasPos.x -25, canvasPos.y - 65, 20, 0, Math.PI*2, true);   
-				this.ctx.closePath();
-				this.ctx.fill();
-
-				this.ctx.fillStyle = 'blue';
-				this.ctx.beginPath();
-				this.ctx.arc(canvasPos.x + 25, canvasPos.y - 65, 20, 0, Math.PI*2, true);   
-				this.ctx.closePath();
-				this.ctx.fill();
-
-				this.ctx.save();
-				this.ctx.beginPath();
-				this.ctx.arc(canvasPos.x -25, canvasPos.y - 65, 17, 0, Math.PI*2, true);   
-				this.ctx.closePath();
-				this.ctx.clip();
-				this.ctx.drawImage(iconImages[1].value, canvasPos.x - 45, canvasPos.y - 85, 40, 40);
-				this.ctx.restore();
-
-				this.ctx.save();
-				this.ctx.beginPath();
-				this.ctx.arc(canvasPos.x + 25, canvasPos.y - 65, 17, 0, Math.PI*2, true);   
-				this.ctx.closePath();
-				this.ctx.clip();
-				this.ctx.drawImage(iconImages[0].value, canvasPos.x + 5, canvasPos.y - 85, 40, 40);
-				this.ctx.restore();
-				break;
-			case 2:
-				break;
-			}
+		switch(actionStatus.selectType) {
+		case 0:
+			break;
+		case 1:
+			drawSelectIcon(this.ctx, canvasPos.x, canvasPos.y, iconImages[0].value, iconImages[1].value);
+			break;
+		case 2:
+			break;
 		}
+	}
+
+	drawAttack() {
+		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		let mapPos = { x: actionStatus.selectX, y: actionStatus.selectY };
+		let canvasPos = hexToCanvas(mapPos.x, mapPos.y, 50);
+
+		drawCancelIcon(this.ctx, canvasPos.x, canvasPos.y);
+	}
+
+	drawMove() {
+		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		let mapPos = { x: actionStatus.selectX, y: actionStatus.selectY };
+		let canvasPos = hexToCanvas(mapPos.x, mapPos.y, 50);
+
+		drawCancelIcon(this.ctx, canvasPos.x, canvasPos.y);
 	}
 
 	drawHud() {

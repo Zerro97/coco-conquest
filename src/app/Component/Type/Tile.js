@@ -6,7 +6,7 @@ Tile.schema = {
 	// Tile information
 	type: { type: Types.String, default: 'plain' },
 	variation: { type: Types.Number, default: 0 },
-	status: { type: Types.String },
+	status: { type: Types.Number },
 
 	// Tile coordinate (not canvas coordinate)
 	x: { type: Types.Number },

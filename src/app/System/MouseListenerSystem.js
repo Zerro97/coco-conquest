@@ -1,6 +1,7 @@
 import { System } from '../Library/Ecsy';
 import { Tile, Unit, Building, MapPosition, Hud, ScreenStatus, ActionStatus } from '../Component';
-import { hexToCanvas, isInsideHexagon, applyTransformation } from '../Util';
+import { hexToCanvas, isInsideHexagon, applyTransformation, isInsideCircle } from '../Util';
+import { ActionType, SelectType, AttackType, MovementType, TileStatus } from '../Type';
 
 /**
  * Handles all the events that could happen when 
@@ -15,12 +16,17 @@ export class MouseListenerSystem extends System {
 		document.addEventListener('pointerdown', e => {
 			evCache.push(e);
 
-			this.checkTiles(e.clientX, e.clientY, 'hover');
+			//this.checkTiles(e.clientX, e.clientY, 'hover');
 		});
 
 		document.addEventListener('pointermove', e => {
+			const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
+			let translation = {x: screenStatus.x, y: screenStatus.y};
+			let scale = {x: screenStatus.scaleX, y:screenStatus.scaleY};
+			let mousePos = applyTransformation(e.clientX, e.clientY, translation, scale);
+
 			this.checkPinchGesture(e, evCache, prevDiff);
-			this.checkTiles(e.clientX, e.clientY, 'hover');
+			this.checkTiles(mousePos.x, mousePos.y, 'hover');
 		});
 
 		document.addEventListener('pointerup', e => {
@@ -33,7 +39,13 @@ export class MouseListenerSystem extends System {
 			// If the number of pointers down is less than two then reset diff tracker
 			if (evCache.length < 2) prevDiff.value = -1;
 
-			this.checkTiles(e.clientX, e.clientY, 'click');
+			const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
+			let translation = {x: screenStatus.x, y: screenStatus.y};
+			let scale = {x: screenStatus.scaleX, y:screenStatus.scaleY};
+			let mousePos = applyTransformation(e.clientX, e.clientY, translation, scale);
+
+			this.updateAction(mousePos.x, mousePos.y, 'click');
+			this.checkTiles(mousePos.x, mousePos.y, 'click');
 		});
 
 		window.addEventListener('wheel', e => { 
@@ -93,41 +105,119 @@ export class MouseListenerSystem extends System {
 	}
 
 	checkTiles(mouseX, mouseY, type) {
-		const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
 		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
 
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
-
 			let canvasPos = hexToCanvas(tile.x, tile.y, tile.size);
-			let translation = {x: screenStatus.x, y: screenStatus.y};
-			let scale = {x: screenStatus.scaleX, y:screenStatus.scaleY};
-			let mousePos = applyTransformation(mouseX, mouseY, translation, scale);
-			
-			if(isInsideHexagon(canvasPos.x, canvasPos.y, mousePos.x, mousePos.y, tile.size)){
-				if(type === 'hover' && tile.status != 'selected') {
-					tile.status = 'hover';
+
+			if(isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)){
+				if(type === 'hover' && tile.status != TileStatus.SELECTED) {
+					tile.status = TileStatus.HOVER;
 				} else if(type === 'click') {
-					tile.status = 'selected';
-					actionStatus.selectType = this.checkObjectOnTile(tile.x, tile.y);
-					actionStatus.selectX = tile.x;
-					actionStatus.selectY = tile.y;
+					tile.status = TileStatus.SELECTED;
 				}
 			} else {
-				tile.status = tile.status != 'selected' ? 'seen' : 'selected';
+				if(type === 'click' && tile.status === TileStatus.SELECTED){
+					tile.status = TileStatus.SEEN;
+				}
+				tile.status = tile.status != TileStatus.SELECTED ? TileStatus.SEEN : TileStatus.SELECTED;
 			}
 		});
 	}
 
-	checkObjectOnTile(x, y) {
+	updateAction(mouseX, mouseY) {
+		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+		console.log('BEFORE: ', actionStatus);
+
+		switch(actionStatus.action) {
+		case ActionType.NOT_SELECTED:
+			// 1) If the player just selected tile
+			this.checkSelect(mouseX, mouseY);
+			break;
+		case ActionType.SELECTED:
+			// 2) Check which option player selected
+			this.checkOption(mouseX, mouseY);			
+			break;
+		case ActionType.ATTACK:
+			// 3a) If the player is attacking
+			this.checkAttack(mouseX, mouseY);
+			break;
+		case ActionType.MOVE:
+			// 3b) If the player is moving
+			this.checkMovement(mouseX, mouseY);
+			break;
+		}
+
+		console.log('AFTER: ', actionStatus);
+	}
+
+	checkSelect(mouseX, mouseY) {
+		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+
+		this.queries.tiles.results.forEach(entity => {
+			let tile = entity.getMutableComponent(Tile);
+			let canvasPos = hexToCanvas(tile.x, tile.y, tile.size);
+
+			if(isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)){
+				actionStatus.action = ActionType.SELECTED;
+				actionStatus.selectType = this.checkObjectTypeOnTile(tile.x, tile.y);
+				actionStatus.selectX = tile.x;
+				actionStatus.selectY = tile.y;
+			}
+		});
+	}
+
+	checkOption(mouseX, mouseY) {
+		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+
+		const tilePos = hexToCanvas(actionStatus.selectX, actionStatus.selectY, 50);
+		const attackPos = {x: tilePos.x - 25, y: tilePos.y - 65};
+		const movementPos = {x: tilePos.x + 25, y: tilePos.y - 65};
+
+		if(isInsideCircle(attackPos.x, attackPos.y, mouseX, mouseY, 20)) {
+			actionStatus.action = ActionType.ATTACK;
+			actionStatus.attackType = AttackType.SIMPLE;
+		} else if(isInsideCircle(movementPos.x, movementPos.y, mouseX, mouseY, 20)) {
+			actionStatus.action = ActionType.MOVE;
+			actionStatus.movementType = MovementType.SIMPLE;
+		} else {
+			this.checkSelect(mouseX, mouseY);
+		}
+	}
+
+	checkAttack(mouseX, mouseY) {
+		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+		
+		const tilePos = hexToCanvas(actionStatus.selectX, actionStatus.selectY, 50);
+		const cancelPos = {x: tilePos.x, y: tilePos.y - 75};
+		
+
+		if(isInsideCircle(cancelPos.x, cancelPos.y, mouseX, mouseY, 20)) {
+			actionStatus.action = ActionType.NOT_SELECTED;
+		}
+	}
+
+	checkMovement(mouseX, mouseY) {
+		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+		
+		const tilePos = hexToCanvas(actionStatus.selectX, actionStatus.selectY, 50);
+		const cancelPos = {x: tilePos.x, y: tilePos.y - 75};
+		console.log(actionStatus);
+		
+		if(isInsideCircle(cancelPos.x, cancelPos.y, mouseX, mouseY, 20)) {
+			actionStatus.action = ActionType.NOT_SELECTED;
+		}
+	}
+
+	checkObjectTypeOnTile(x, y) {
 		let objectType = 0;
 
 		this.queries.unit.results.some(entity => {
-			const type = entity.getComponent(Unit);
 			const mapPos = entity.getComponent(MapPosition);
 			
 			if(x === mapPos.x && y === mapPos.y) {
-				objectType = 1;
+				objectType = SelectType.UNIT;
 				return true;
 			}
 
@@ -135,11 +225,10 @@ export class MouseListenerSystem extends System {
 		});
 
 		this.queries.building.results.some(entity => {
-			const type = entity.getComponent(Building);
 			const mapPos = entity.getComponent(MapPosition);
 
 			if(x === mapPos.x && y === mapPos.y) {
-				objectType = 2;
+				objectType = SelectType.BUILDING;
 				return true;
 			}
 
@@ -148,7 +237,6 @@ export class MouseListenerSystem extends System {
 
 		return objectType;
 	}
-
 }
 
 // Define a query of entities
