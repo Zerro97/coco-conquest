@@ -5,3 +5,4 @@ export * from './Movement';
 export * from './Stats';
 export * from './Status';
 export * from './Type';
+export * from './Tag';

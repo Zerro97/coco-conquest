@@ -7,12 +7,5 @@ Tile.schema = {
 	type: { type: Types.String, default: 'plain' },
 	variation: { type: Types.Number, default: 0 },
 	status: { type: Types.Number },
-
-	// Tile coordinate (cube coordinate)
-	x: { type: Types.Number },
-	y: { type: Types.Number },
-	z: { type: Types.Number },
-
-	// Tile geometry
 	size: { type: Types.Number, default: 50},
 };

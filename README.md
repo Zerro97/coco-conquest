@@ -5,8 +5,9 @@ A turn based game leveraging:
 - eslint: For linting
 - jest: For testing
 
-## Libraries that might get added
-- hex-grid: For working with hexagonal tiles
+## Set Up
+1. `npm install`
+2. `npm start`
 
 ## Game Assets Link
 (Link)[https://game-icons.net/tags/weapon.html]

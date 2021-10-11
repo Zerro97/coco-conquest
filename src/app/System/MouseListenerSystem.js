@@ -5,18 +5,22 @@ import {
 	Block,
 	Timer,
 	Range, 
-	Speed, 
+	Speed,
 	Unit, 
 	Building, 
+	Object,
 	MapPosition,
 	ScreenStatus, 
 	ActionStatus, 
 	MovePosition, 
 	AttackPosition, 
-	SelectPosition
+	SelectPosition,
+	SelectedTile,
+	SelectedUnit,
+	SelectedBuilding
 } from '../Component';
 import { cube_distance, cubeToPixel, isInsideHexagon, applyTransformation, isInsideCircle } from '../Util';
-import { ActionType, SelectType, AttackType, MovementType, TileStatus } from '../Type';
+import { ActionType, ObjectType, AttackType, MovementType, TileStatus } from '../Type';
 
 /**
  * Handles all the events that could happen when 
@@ -124,7 +128,8 @@ export class MouseListenerSystem extends System {
 
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
-			let canvasPos = cubeToPixel(tile.x, tile.z, tile.size);
+			let tilePos = entity.getMutableComponent(MapPosition);
+			let canvasPos = cubeToPixel(tilePos.x, tilePos.z, tile.size);
 
 			if(isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)){
 				if(type === 'hover' && tile.status != TileStatus.SELECTED) {
@@ -176,16 +181,33 @@ export class MouseListenerSystem extends System {
 
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
-			let canvasPos = cubeToPixel(tile.x, tile.z, tile.size);
+			let tilePos = entity.getMutableComponent(MapPosition);
+			let canvasPos = cubeToPixel(tilePos.x, tilePos.z, tile.size);
 
 			if(isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)){
-				actionStatus.action = ActionType.SELECTED;
-				actionStatus.selectType = this.checkObjectTypeOnTile(tile.x, tile.z);
-				selectPosition.x = tile.x;
-				selectPosition.y = tile.y;
-				selectPosition.z = tile.z;
+				this.removeSelect();
 
-				console.log(actionStatus.action);
+				const object = this.getObjectOnTile(tilePos.x, tilePos.z);
+				const objectType = object.getComponent(Object).value;
+
+				switch(objectType) {
+				case ObjectType.TILE:
+					object.addComponent(SelectedTile);
+					break;
+				case ObjectType.UNIT:
+					object.addComponent(SelectedUnit);
+					break;
+				case ObjectType.BUILDING:
+					object.addComponent(SelectedBuilding);
+					break;
+				}
+
+				actionStatus.action = ActionType.SELECTED;
+				actionStatus.selectType = objectType;
+
+				selectPosition.x = tilePos.x;
+				selectPosition.y = tilePos.y;
+				selectPosition.z = tilePos.z;
 			}
 		});
 	}
@@ -229,12 +251,13 @@ export class MouseListenerSystem extends System {
 
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
-			let canvasPos = cubeToPixel(tile.x, tile.z, tile.size);
+			let tileMapPos = entity.getMutableComponent(MapPosition);
+			let canvasPos = cubeToPixel(tileMapPos.x, tileMapPos.z, tile.size);
 
 			if(isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)){
-				mouseTilePos.x = tile.x;
-				mouseTilePos.y = tile.y;
-				mouseTilePos.z = tile.z;
+				mouseTilePos.x = tileMapPos.x;
+				mouseTilePos.y = tileMapPos.y;
+				mouseTilePos.z = tileMapPos.z;
 			}
 		});
 		
@@ -271,12 +294,14 @@ export class MouseListenerSystem extends System {
 
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
-			let canvasPos = cubeToPixel(tile.x, tile.z, tile.size);
+			let tileMapPos = entity.getMutableComponent(MapPosition);
+
+			let canvasPos = cubeToPixel(tileMapPos.x, tileMapPos.z, tile.size);
 
 			if(isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)){
-				mouseTilePos.x = tile.x;
-				mouseTilePos.y = tile.y;
-				mouseTilePos.z = tile.z;
+				mouseTilePos.x = tileMapPos.x;
+				mouseTilePos.y = tileMapPos.y;
+				mouseTilePos.z = tileMapPos.z;
 			}
 		});
 		
@@ -296,14 +321,25 @@ export class MouseListenerSystem extends System {
 		}
 	}
 
-	checkObjectTypeOnTile(x, z) {
-		let objectType = 0;
+	getObjectOnTile(x, z) {
+		let object = {};
+
+		this.queries.tiles.results.some(entity => {
+			const tilePos = entity.getComponent(MapPosition);
+			
+			if(x === tilePos.x && z === tilePos.z) {
+				object = entity;
+				return true;
+			}
+
+			return false;
+		});
 
 		this.queries.units.results.some(entity => {
 			const mapPos = entity.getComponent(MapPosition);
 			
 			if(x === mapPos.x && z === mapPos.z) {
-				objectType = SelectType.UNIT;
+				object = entity;
 				return true;
 			}
 
@@ -314,28 +350,21 @@ export class MouseListenerSystem extends System {
 			const mapPos = entity.getComponent(MapPosition);
 
 			if(x === mapPos.x && z === mapPos.z) {
-				objectType = SelectType.BUILDING;
+				object = entity;
 				return true;
 			}
 
 			return false;
 		});
 
-		return objectType;
+		return object;
 	}
 
 	getSelectedUnit() {
-		const actionEntity = this.queries.actionStatus.results[0];
-		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
-
 		let selectedUnit = {};
-		this.queries.units.results.some(entity => {
-			const mapPos = entity.getComponent(MapPosition);
-			
-			if(selectPosition.x === mapPos.x && 
-				selectPosition.y === mapPos.y && 
-				selectPosition.z === mapPos.z) {
 
+		this.queries.units.results.some(entity => {			
+			if(entity.hasComponent(SelectedUnit)){
 				selectedUnit = entity;
 				return true;
 			}
@@ -344,6 +373,26 @@ export class MouseListenerSystem extends System {
 		});
 
 		return selectedUnit;
+	}
+
+	removeSelect() {
+		this.queries.tiles.results.forEach(entity => {
+			if(entity.hasComponent(SelectedTile)) {
+				entity.removeComponent(SelectedTile);
+			}
+		});
+
+		this.queries.units.results.forEach(entity => {
+			if(entity.hasComponent(SelectedUnit)) {
+				entity.removeComponent(SelectedUnit);
+			}
+		});
+
+		this.queries.building.results.forEach(entity => {
+			if(entity.hasComponent(SelectedBuilding)) {
+				entity.removeComponent(SelectedBuilding);
+			}
+		});
 	}
 }
 
@@ -362,12 +411,12 @@ MouseListenerSystem.queries = {
 		components: [Hud]
 	},
 	tiles: {
-		components: [Tile]
+		components: [Tile, MapPosition, Object]
 	},
 	units: {
-		components: [Unit, MapPosition]
+		components: [Unit, MapPosition, Object]
 	},
 	building: {
-		components: [Building, MapPosition]
+		components: [Building, MapPosition, Object]
 	}
 };

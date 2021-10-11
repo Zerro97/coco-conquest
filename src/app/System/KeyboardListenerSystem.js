@@ -1,5 +1,5 @@
 import { System } from '../Library/Ecsy';
-import { Tile, Unit, Building, Hud, ScreenStatus } from '../Component';
+import { Tile, Unit, Building, MapPosition, Object, Hud, ScreenStatus } from '../Component';
 
 /**
  * Handles all the events that could happen when 
@@ -43,10 +43,10 @@ KeyboardListenerSystem.queries = {
 		components: [Hud]
 	},
 	tile: {
-		components: [Tile]
+		components: [Tile, MapPosition, Object]
 	},
 	unit: {
-		components: [Unit]
+		components: [Unit, MapPosition, Object]
 	},
 	building: {
 		components: [Building]

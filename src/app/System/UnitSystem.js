@@ -12,7 +12,8 @@ import {
 	ActionStatus, 
 	MovePosition, 
 	AttackPosition, 
-	SelectPosition 
+	SelectPosition, 
+	SelectedUnit
 } from '../Component';
 import { ActionType, UnitType } from '../Type';
 
@@ -32,6 +33,10 @@ export class UnitSystem extends System {
 		const block = control.getMutableComponent(Block);
 
 		if(actionStatus.action === ActionType.ATTACK) {
+			const selectedUnit = this.getSelectedUnit();
+			const damage = selectedUnit.getComponent(Damage);
+			console.log(damage);
+
 			this.queries.units.results.forEach(entity => {
 				const health = entity.getMutableComponent(Health);
 				const mapPos = entity.getComponent(MapPosition);
@@ -39,7 +44,8 @@ export class UnitSystem extends System {
 				if(mapPos.x === attackPosition.x && 
 					mapPos.y === attackPosition.y && 
 					mapPos.z === attackPosition.z) {
-					health.value -= 1;
+
+					health.value -= damage.value;
 					attackPosition.x = -999;
 					attackPosition.y = -999;
 					attackPosition.z = -999;
@@ -55,6 +61,21 @@ export class UnitSystem extends System {
 		// Unblock mouse listener 
 		// (it was blocked to prevent changing action type from NOT_SELECTED to SELECTED)
 		block.value = false; 
+	}
+
+	getSelectedUnit() {
+		let selectedUnit = {};
+
+		this.queries.units.results.some(entity => {			
+			if(entity.hasComponent(SelectedUnit)){
+				selectedUnit = entity;
+				return true;
+			}
+
+			return false;
+		});
+
+		return selectedUnit;
 	}
 }
 

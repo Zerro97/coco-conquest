@@ -71,7 +71,8 @@ export class RenderSystem extends System {
 
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
-			let canvasPos = cubeToPixel(tile.x, tile.z, tile.size);
+			let tilePos = entity.getMutableComponent(MapPosition);
+			let canvasPos = cubeToPixel(tilePos.x, tilePos.z, tile.size);
 
 			switch(tile.status){
 			case TileStatus.HOVER:
@@ -126,7 +127,6 @@ export class RenderSystem extends System {
 
 	drawActionHud() {
 		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
-		console.log(actionStatus.action);
 
 		switch(actionStatus.action) {
 		case ActionType.SELECTED:

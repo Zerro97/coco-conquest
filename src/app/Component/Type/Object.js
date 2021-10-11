@@ -1,7 +1,7 @@
 import { Types, Component } from '../../Library/Ecsy';
 
-export class Building extends Component {}
+export class Object extends Component {}
 
-Building.schema = {
+Object.schema = {
 	value: { type: Types.Number },
 };
