@@ -56,6 +56,7 @@ world
 	.registerComponent(Component.SelectedTile)
 	.registerComponent(Component.SelectedUnit)
 	.registerComponent(Component.SelectedBuilding)
+	.registerComponent(Component.DamagePopup)
 	.registerComponent(Component.ScreenStatus)
 	.registerComponent(Component.ActionStatus)
 	.registerComponent(Component.GameStatus)

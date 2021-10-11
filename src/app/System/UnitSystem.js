@@ -8,19 +8,22 @@ import {
 	Sight, 
 	Range, 
 	Speed, 
-	MapPosition, 
+	MapPosition,
+	CanvasPosition, 
 	ActionStatus, 
 	MovePosition, 
 	AttackPosition, 
 	SelectPosition, 
-	SelectedUnit
+	SelectedUnit,
+	DamagePopup,
+	Velocity
 } from '../Component';
 import { ActionType, UnitType } from '../Type';
+import { cubeToPixel } from '../Util';
 
 export class UnitSystem extends System {
 	execute(delta, time) {
 		this.attackUnit();
-
 		//this.stop();
 	}
 
@@ -35,7 +38,6 @@ export class UnitSystem extends System {
 		if(actionStatus.action === ActionType.ATTACK) {
 			const selectedUnit = this.getSelectedUnit();
 			const damage = selectedUnit.getComponent(Damage);
-			console.log(damage);
 
 			this.queries.units.results.forEach(entity => {
 				const health = entity.getMutableComponent(Health);
@@ -50,6 +52,14 @@ export class UnitSystem extends System {
 					attackPosition.y = -999;
 					attackPosition.z = -999;
 					actionStatus.action = ActionType.NOT_SELECTED;
+
+					this.world
+						.createEntity()
+						.addComponent(MapPosition, {x: mapPos.x, y: mapPos.y, z: mapPos.z})
+						.addComponent(CanvasPosition, cubeToPixel(mapPos.x, mapPos.z, 50))
+						.addComponent(Velocity, {x: 0, y: -0.03})
+						.addComponent(DamagePopup, {value: damage.value})
+						.addComponent(Timer, {maxTime: 50, curTime: 0});
 				}
 				
 				if(health.value <= 0) {

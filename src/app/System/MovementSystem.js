@@ -12,10 +12,6 @@ export class MovementSystem extends System {
 			position.y += velocity.y * delta;
 		});
 	}
-
-	outOfCanvas(position) {
-
-	}
 }
 
 // Define a query of entities that have "Velocity" and "Position" components

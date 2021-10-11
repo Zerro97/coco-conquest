@@ -9,13 +9,17 @@ import {
 	Sight,
 	Range,
 	Speed,
+	Object,
 	MapPosition,
 	MovePosition, 
 	AttackPosition, 
 	SelectPosition,
 	ScreenStatus,
 	ActionStatus,
-	Tile 
+	Tile, 
+	DamagePopup,
+	Timer,
+	CanvasPosition
 } from '../Component';
 import { 
 	drawBaseTile, 
@@ -54,6 +58,7 @@ export class RenderSystem extends System {
 		this.drawUnits();
 
 		this.drawActionHud();
+		this.drawDamagePopup();
 
 		this.ctx.restore();
 
@@ -261,6 +266,25 @@ export class RenderSystem extends System {
 		this.stop();*/
 	}
 
+	drawDamagePopup(){
+		this.queries.popup.results.forEach(entity => {
+			const damage = entity.getComponent(DamagePopup);
+			const timer = entity.getMutableComponent(Timer);
+			const canvasPos = entity.getComponent(CanvasPosition);
+
+			if(timer.curTime < timer.maxTime) {
+				this.ctx.font = '20px Arial';
+				this.ctx.fillStyle = 'red';
+				this.ctx.textAlign = 'center';
+				this.ctx.fillText('-' + damage.value, canvasPos.x, canvasPos.y - 50);
+
+				timer.curTime += 1;
+			} else {
+				entity.remove();
+			}
+		});
+	}
+
 	getSelectedUnit() {
 		const actionEntity = this.queries.actionStatus.results[0];
 		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
@@ -285,14 +309,17 @@ export class RenderSystem extends System {
 }
 
 RenderSystem.queries = {
+	tiles: {
+		components: [Tile, MapPosition, Object]
+	},
 	units: { 
-		components: [Unit, MapPosition, Health, Damage, Sight, Range, Speed]
+		components: [Unit, MapPosition, Object, Health, Damage, Sight, Range, Speed]
 	},
 	images: {
 		components: [Image]
 	},
-	tiles: {
-		components: [Tile]
+	popup: { 
+		components: [DamagePopup, Timer, MapPosition, CanvasPosition]
 	},
 	screenStatus: {
 		components: [ScreenStatus]
