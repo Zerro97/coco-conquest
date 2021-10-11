@@ -34,6 +34,9 @@ world
 	.registerComponent(Component.Velocity)
 	.registerComponent(Component.CanvasPosition)
 	.registerComponent(Component.MapPosition)
+	.registerComponent(Component.MovePosition)
+	.registerComponent(Component.AttackPosition)
+	.registerComponent(Component.SelectPosition)
 	.registerComponent(Component.Tile)
 	.registerComponent(Component.Hud)
 	.registerComponent(Component.Unit)
@@ -78,7 +81,10 @@ world
 	.addComponent(Component.ScreenStatus);
 world
 	.createEntity()
-	.addComponent(Component.ActionStatus);
+	.addComponent(Component.ActionStatus)
+	.addComponent(Component.MovePosition)
+	.addComponent(Component.AttackPosition)
+	.addComponent(Component.SelectPosition);
 world
 	.createEntity()
 	.addComponent(Component.GameStatus);

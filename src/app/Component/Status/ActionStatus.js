@@ -22,9 +22,4 @@ ActionStatus.schema = {
 	attackType: { type: Types.Number, default: 0 },
 	// 0: Moving, 1: Sailing, 2: Flying, 3: Burrowing?
 	movementType: { type: Types.Boolean, default: 0 },
-
-	// Map position of selected object
-	selectX: { type: Types.Number},
-	selectY: { type: Types.Number},
-	selectZ: { type: Types.Number}
 };

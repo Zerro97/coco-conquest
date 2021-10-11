@@ -1,6 +1,6 @@
 import { System } from '../Library/Ecsy';
-import { Tile, Unit, Building, MapPosition, Hud, ScreenStatus, ActionStatus } from '../Component';
-import { evenrToPixel, cubeToPixel, isInsideHexagon, applyTransformation, isInsideCircle } from '../Util';
+import { Tile, Unit, Range, Speed, Building, MapPosition, Hud, ScreenStatus, ActionStatus, MovePosition, AttackPosition, SelectPosition } from '../Component';
+import { cube_distance, cubeToPixel, isInsideHexagon, applyTransformation, isInsideCircle } from '../Util';
 import { ActionType, SelectType, AttackType, MovementType, TileStatus } from '../Type';
 
 /**
@@ -128,7 +128,6 @@ export class MouseListenerSystem extends System {
 
 	updateAction(mouseX, mouseY) {
 		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
-		console.log('BEFORE: ', actionStatus);
 
 		switch(actionStatus.action) {
 		case ActionType.NOT_SELECTED:
@@ -148,12 +147,12 @@ export class MouseListenerSystem extends System {
 			this.checkMovement(mouseX, mouseY);
 			break;
 		}
-
-		console.log('AFTER: ', actionStatus);
 	}
 
 	checkSelect(mouseX, mouseY) {
-		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+		const actionEntity = this.queries.actionStatus.results[0];
+		const actionStatus = actionEntity.getMutableComponent(ActionStatus);
+		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
 
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
@@ -162,17 +161,19 @@ export class MouseListenerSystem extends System {
 			if(isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)){
 				actionStatus.action = ActionType.SELECTED;
 				actionStatus.selectType = this.checkObjectTypeOnTile(tile.x, tile.z);
-				actionStatus.selectX = tile.x;
-				actionStatus.selectY = tile.y;
-				actionStatus.selectZ = tile.z;
+				selectPosition.x = tile.x;
+				selectPosition.y = tile.y;
+				selectPosition.z = tile.z;
 			}
 		});
 	}
 
 	checkOption(mouseX, mouseY) {
-		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+		const actionEntity = this.queries.actionStatus.results[0];
+		const actionStatus = actionEntity.getMutableComponent(ActionStatus);
+		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
 
-		const tilePos = cubeToPixel(actionStatus.selectX, actionStatus.selectZ, 50);
+		const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, 50);
 		const attackPos = {x: tilePos.x - 25, y: tilePos.y - 65};
 		const movementPos = {x: tilePos.x + 25, y: tilePos.y - 65};
 
@@ -188,12 +189,41 @@ export class MouseListenerSystem extends System {
 	}
 
 	checkAttack(mouseX, mouseY) {
-		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+		const actionEntity = this.queries.actionStatus.results[0];
+		const actionStatus = actionEntity.getMutableComponent(ActionStatus);
+		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
+		const attackPosition = actionEntity.getMutableComponent(AttackPosition);
 		
-		const tilePos = cubeToPixel(actionStatus.selectX, actionStatus.selectZ, 50);
+		const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, 50);
 		const cancelPos = {x: tilePos.x, y: tilePos.y - 75};
+		const mouseTilePos = {};
+
+		const selectedUnit = this.getSelectedUnit();
+		const range = selectedUnit.getComponent(Range).value;
+		const unitPos = selectedUnit.getMutableComponent(MapPosition);
+
+		this.queries.tiles.results.forEach(entity => {
+			let tile = entity.getMutableComponent(Tile);
+			let canvasPos = cubeToPixel(tile.x, tile.z, tile.size);
+
+			if(isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)){
+				mouseTilePos.x = tile.x;
+				mouseTilePos.y = tile.y;
+				mouseTilePos.z = tile.z;
+			}
+		});
 		
 		if(isInsideCircle(cancelPos.x, cancelPos.y, mouseX, mouseY, 20)) {
+			actionStatus.action = ActionType.NOT_SELECTED;
+		} else if(cube_distance(selectPosition, mouseTilePos) <= range) {
+			attackPosition.x = mouseTilePos.x;
+			attackPosition.y = mouseTilePos.y;
+			attackPosition.z = mouseTilePos.z;
+
+			// Temp
+			unitPos.x = mouseTilePos.x;
+			unitPos.y = mouseTilePos.y;
+			unitPos.z = mouseTilePos.z;
 			actionStatus.action = ActionType.NOT_SELECTED;
 		} else {
 			this.checkSelect(mouseX, mouseY);
@@ -201,13 +231,41 @@ export class MouseListenerSystem extends System {
 	}
 
 	checkMovement(mouseX, mouseY) {
-		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+		const actionEntity = this.queries.actionStatus.results[0];
+		const actionStatus = actionEntity.getMutableComponent(ActionStatus);
+		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
+		const movePosition = actionEntity.getMutableComponent(MovePosition);
 		
-		const tilePos = cubeToPixel(actionStatus.selectX, actionStatus.selectZ, 50);
+		const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, 50);
 		const cancelPos = {x: tilePos.x, y: tilePos.y - 75};
-		console.log(actionStatus);
+		const mouseTilePos = {};
+
+		const selectedUnit = this.getSelectedUnit();
+		const speed = selectedUnit.getComponent(Speed).value;
+		const unitPos = selectedUnit.getMutableComponent(MapPosition);
+
+		this.queries.tiles.results.forEach(entity => {
+			let tile = entity.getMutableComponent(Tile);
+			let canvasPos = cubeToPixel(tile.x, tile.z, tile.size);
+
+			if(isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)){
+				mouseTilePos.x = tile.x;
+				mouseTilePos.y = tile.y;
+				mouseTilePos.z = tile.z;
+			}
+		});
 		
 		if(isInsideCircle(cancelPos.x, cancelPos.y, mouseX, mouseY, 20)) {
+			actionStatus.action = ActionType.NOT_SELECTED;
+		} else if(cube_distance(selectPosition, mouseTilePos) <= speed) {
+			movePosition.x = mouseTilePos.x;
+			movePosition.y = mouseTilePos.y;
+			movePosition.z = mouseTilePos.z;
+
+			// Temp
+			unitPos.x = mouseTilePos.x;
+			unitPos.y = mouseTilePos.y;
+			unitPos.z = mouseTilePos.z;
 			actionStatus.action = ActionType.NOT_SELECTED;
 		} else {
 			this.checkSelect(mouseX, mouseY);
@@ -217,7 +275,7 @@ export class MouseListenerSystem extends System {
 	checkObjectTypeOnTile(x, z) {
 		let objectType = 0;
 
-		this.queries.unit.results.some(entity => {
+		this.queries.units.results.some(entity => {
 			const mapPos = entity.getComponent(MapPosition);
 			
 			if(x === mapPos.x && z === mapPos.z) {
@@ -241,6 +299,29 @@ export class MouseListenerSystem extends System {
 
 		return objectType;
 	}
+
+	getSelectedUnit() {
+		const actionEntity = this.queries.actionStatus.results[0];
+		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
+
+		let selectedUnit = {};
+		this.queries.units.results.some(entity => {
+			const mapPos = entity.getComponent(MapPosition);
+			console.log(mapPos);
+			
+			if(selectPosition.x === mapPos.x && 
+				selectPosition.y === mapPos.y && 
+				selectPosition.z === mapPos.z) {
+
+				selectedUnit = entity;
+				return true;
+			}
+
+			return false;
+		});
+
+		return selectedUnit;
+	}
 }
 
 // Define a query of entities
@@ -249,7 +330,7 @@ MouseListenerSystem.queries = {
 		components: [ScreenStatus]
 	},
 	actionStatus: {
-		components: [ActionStatus]
+		components: [ActionStatus, MovePosition, AttackPosition, SelectPosition]
 	},
 	hud: {
 		components: [Hud]
@@ -257,7 +338,7 @@ MouseListenerSystem.queries = {
 	tiles: {
 		components: [Tile]
 	},
-	unit: {
+	units: {
 		components: [Unit, MapPosition]
 	},
 	building: {

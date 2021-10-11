@@ -10,6 +10,9 @@ import {
 	Range,
 	Speed,
 	MapPosition,
+	MovePosition, 
+	AttackPosition, 
+	SelectPosition,
 	ScreenStatus,
 	ActionStatus,
 	Tile 
@@ -141,7 +144,10 @@ export class RenderSystem extends System {
 	}
 
 	drawOption() {
-		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		const actionEntity = this.queries.actionStatus.results[0];
+		const actionStatus = actionEntity.getMutableComponent(ActionStatus);
+		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
+
 		const iconImages = [];
 		this.queries.images.results.forEach(entity => {
 			if(entity.hasComponent(IconImage)) {
@@ -152,7 +158,7 @@ export class RenderSystem extends System {
 			}
 		});
 
-		let mapPos = { x: actionStatus.selectX, z: actionStatus.selectZ };
+		let mapPos = { x: selectPosition.x, z: selectPosition.z };
 		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
 		switch(actionStatus.selectType) {
@@ -167,17 +173,19 @@ export class RenderSystem extends System {
 	}
 
 	drawAttack() {
-		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		const actionEntity = this.queries.actionStatus.results[0];
+		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
+
 		const selectedUnit = this.getSelectedUnit();
 		const range = selectedUnit.getComponent(Range).value;
 
-		let mapPos = { x: actionStatus.selectX, z: actionStatus.selectZ };
+		let mapPos = { x: selectPosition.x, z: selectPosition.z };
 		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
 		let tilesInRange = tiles_in_range({
-			x: actionStatus.selectX, 
-			y: actionStatus.selectY, 
-			z: actionStatus.selectZ
+			x: selectPosition.x, 
+			y: selectPosition.y, 
+			z: selectPosition.z
 		}, range);
 
 		tilesInRange.forEach(tile => {
@@ -192,17 +200,19 @@ export class RenderSystem extends System {
 	}
 
 	drawMove() {
-		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		const actionEntity = this.queries.actionStatus.results[0];
+		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
+
 		const selectedUnit = this.getSelectedUnit();
 		const speed = selectedUnit.getComponent(Speed).value;
 
-		let mapPos = { x: actionStatus.selectX, z: actionStatus.selectZ };
+		let mapPos = { x: selectPosition.x, z: selectPosition.z };
 		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
 		let tilesInRange = tiles_in_range({
-			x: actionStatus.selectX, 
-			y: actionStatus.selectY, 
-			z: actionStatus.selectZ
+			x: selectPosition.x, 
+			y: selectPosition.y, 
+			z: selectPosition.z
 		}, speed);
 
 		tilesInRange.forEach(tile => {
@@ -251,15 +261,16 @@ export class RenderSystem extends System {
 	}
 
 	getSelectedUnit() {
-		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		const actionEntity = this.queries.actionStatus.results[0];
+		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
 
 		let selectedUnit = {};
 		this.queries.units.results.some(entity => {
 			const mapPos = entity.getComponent(MapPosition);
 			
-			if(actionStatus.selectX === mapPos.x && 
-				actionStatus.selectY === mapPos.y && 
-				actionStatus.selectZ === mapPos.z) {
+			if(selectPosition.x === mapPos.x && 
+				selectPosition.y === mapPos.y && 
+				selectPosition.z === mapPos.z) {
 
 				selectedUnit = entity;
 				return true;
@@ -286,6 +297,6 @@ RenderSystem.queries = {
 		components: [ScreenStatus]
 	},
 	actionStatus: {
-		components: [ActionStatus]
+		components: [ActionStatus, MovePosition, AttackPosition, SelectPosition]
 	}
 };
