@@ -77,20 +77,24 @@ export class RenderSystem extends System {
 	}
 
 	drawUnits() {
-		const images = [];
+		const unitImages = [];
 		this.queries.images.results.forEach(entity => {
 			if(entity.hasComponent(UnitImage)) {
-				images.push({ 
+				unitImages.push({ 
 					name: entity.getMutableComponent(Image).name,
 					value: entity.getMutableComponent(Image).value
 				});
 			}
 		});
-		
 
 		this.queries.units.results.forEach(entity => {
 			let type = entity.getComponent(Unit).value;
-			let image = images[type];
+			let image = unitImages.reduce((item, acc) => {
+				if(item.name === `${type}.png`){
+					return item;
+				}
+				return acc;
+			});
 
 			let mapPos = entity.getComponent(MapPosition);
 			let canvasPos = hexToCanvas(mapPos.x, mapPos.y, 50);
@@ -100,16 +104,22 @@ export class RenderSystem extends System {
 			this.ctx.arc(canvasPos.x, canvasPos.y, 30, 0, Math.PI*2, true);   
 			this.ctx.closePath();
 			this.ctx.clip();
-			
-			this.ctx.drawImage(image, canvasPos.x - 30, canvasPos.y - 30, 60, 60);
-
+			this.ctx.drawImage(image.value, canvasPos.x - 30, canvasPos.y - 30, 60, 60);
 			this.ctx.restore();
 		});
 	}
 
 	drawSelectOption() {
 		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
-		//console.log(actionStatus);
+		const iconImages = [];
+		this.queries.images.results.forEach(entity => {
+			if(entity.hasComponent(IconImage)) {
+				iconImages.push({ 
+					name: entity.getMutableComponent(Image).name,
+					value: entity.getMutableComponent(Image).value
+				});
+			}
+		});
 
 		if(actionStatus.selectType !== -1) {
 			let mapPos = { x: actionStatus.selectX, y: actionStatus.selectY };
@@ -131,17 +141,21 @@ export class RenderSystem extends System {
 				this.ctx.closePath();
 				this.ctx.fill();
 
-				this.ctx.fillStyle = '#ffffff';
+				this.ctx.save();
 				this.ctx.beginPath();
 				this.ctx.arc(canvasPos.x -25, canvasPos.y - 65, 17, 0, Math.PI*2, true);   
 				this.ctx.closePath();
-				this.ctx.fill();
+				this.ctx.clip();
+				this.ctx.drawImage(iconImages[1].value, canvasPos.x - 45, canvasPos.y - 85, 40, 40);
+				this.ctx.restore();
 
-				this.ctx.fillStyle = '#ffffff';
+				this.ctx.save();
 				this.ctx.beginPath();
 				this.ctx.arc(canvasPos.x + 25, canvasPos.y - 65, 17, 0, Math.PI*2, true);   
 				this.ctx.closePath();
-				this.ctx.fill();
+				this.ctx.clip();
+				this.ctx.drawImage(iconImages[0].value, canvasPos.x + 5, canvasPos.y - 85, 40, 40);
+				this.ctx.restore();
 				break;
 			case 2:
 				break;
