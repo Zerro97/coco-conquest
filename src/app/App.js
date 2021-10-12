@@ -52,6 +52,7 @@ world
 	.registerComponent(Component.Image)
 	.registerComponent(Component.UnitImage)
 	.registerComponent(Component.BuildingImage)
+	.registerComponent(Component.TerrainImage)
 	.registerComponent(Component.IconImage)
 	.registerComponent(Component.SelectedTile)
 	.registerComponent(Component.SelectedUnit)

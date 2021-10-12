@@ -4,7 +4,7 @@ export class Tile extends Component {}
 
 Tile.schema = {
 	// Tile information
-	type: { type: Types.String, default: 'plain' },
+	type: { type: Types.Number, default: 0 },
 	variation: { type: Types.Number, default: 0 },
 	status: { type: Types.Number },
 	size: { type: Types.Number, default: 50},

@@ -7,7 +7,7 @@
  * @param {*} y 
  * @param {*} r 
  */
-function drawHexagon(ctx, x, y, r) {
+function drawHexagonLine(ctx, x, y, r) {
 	const angle = 2 * Math.PI / 6; // 60 degree
 
 	for (var i = 0; i < 6; i++) {
@@ -15,121 +15,42 @@ function drawHexagon(ctx, x, y, r) {
 	}
 }
 
+function drawHexagon(ctx, x, y, outColor, inColor) {
+	ctx.beginPath();
+	ctx.fillStyle = outColor;
+	drawHexagonLine(ctx, x, y, 50);
+	ctx.closePath();
+	ctx.fill();
+
+	// Reverse Clip
+	ctx.save();
+	ctx.beginPath();
+	drawHexagonLine(ctx, x, y, 45);
+	ctx.closePath();
+	ctx.clip();
+	ctx.fillStyle = inColor;
+	ctx.fillRect(-5000, -5000, 10000, 10000);
+	ctx.restore();
+}
+
 export function drawBaseTile(ctx, x, y) {
-	ctx.beginPath();
-	ctx.fillStyle = '#444444';
-
-	drawHexagon(ctx, x, y, 50);
-
-	ctx.closePath();
-	ctx.fill();
-
-	// Reverse Clip
-	ctx.save();
-	ctx.beginPath();
-	drawHexagon(ctx, x, y, 47);
-	ctx.closePath();
-	ctx.clip();
-	ctx.fillStyle = '#222222';
-	ctx.fillRect(-5000, -5000, 10000, 10000);
-	ctx.restore();
+	drawHexagon(ctx, x, y, '#444444', '#222222');
 }
 
-/**
- * Draw highlighted hexagon when mouse is hovering
- * 
- * @param {*} ctx 
- * @param {*} x 
- * @param {*} y 
- * @param {*} r 
- */
 export function drawHoveringTile(ctx, x, y) {
-	ctx.beginPath();
-	ctx.fillStyle = '#2c5c8a';
-
-	drawHexagon(ctx, x, y, 50);
-
-	ctx.closePath();
-	ctx.fill();
-
-	// Reverse Clip
-	ctx.save();
-	ctx.beginPath();
-	drawHexagon(ctx, x, y, 45);
-	ctx.closePath();
-	ctx.clip();
-	ctx.fillStyle = '#222222';
-	ctx.fillRect(-5000, -5000, 10000, 10000);
-	ctx.restore();
+	drawHexagon(ctx, x, y, '#2c5c8a', '#222222');
 }
 
-/**
- * Draw highlighted hexagon when tile is clicked
- * 
- * @param {*} ctx 
- * @param {*} x 
- * @param {*} y 
- * @param {*} r 
- */
 export function drawSelectedTile(ctx, x, y) {
-	ctx.beginPath();
-	ctx.fillStyle = '#2c5c8a';
-
-	drawHexagon(ctx, x, y, 50);
-
-	ctx.closePath();
-	ctx.fill();
-
-	// Reverse Clip
-	ctx.save();
-	ctx.beginPath();
-	drawHexagon(ctx, x, y, 45);
-	ctx.closePath();
-	ctx.clip();
-	ctx.fillStyle = '#243240';
-	ctx.fillRect(-5000, -5000, 10000, 10000);
-	ctx.restore();
+	drawHexagon(ctx, x, y, '#2c5c8a', '#243240');
 }
 
 export function drawAttackingTile(ctx, x, y) {
-	ctx.beginPath();
-	ctx.fillStyle = '#7a4646';
-
-	drawHexagon(ctx, x, y, 50);
-
-	ctx.closePath();
-	ctx.fill();
-
-	// Reverse Clip
-	ctx.save();
-	ctx.beginPath();
-	drawHexagon(ctx, x, y, 45);
-	ctx.closePath();
-	ctx.clip();
-	ctx.fillStyle = '#4a2c2c';
-	ctx.fillRect(-5000, -5000, 10000, 10000);
-	ctx.restore();
+	drawHexagon(ctx, x, y, '#7a4646', '#4a2c2c');
 }
 
-
 export function drawMovingTile(ctx, x, y) {
-	ctx.beginPath();
-	ctx.fillStyle = '#467a4b';
-
-	drawHexagon(ctx, x, y, 50);
-
-	ctx.closePath();
-	ctx.fill();
-
-	// Reverse Clip
-	ctx.save();
-	ctx.beginPath();
-	drawHexagon(ctx, x, y, 45);
-	ctx.closePath();
-	ctx.clip();
-	ctx.fillStyle = '#264028';
-	ctx.fillRect(-5000, -5000, 10000, 10000);
-	ctx.restore();
+	drawHexagon(ctx, x, y, '#467a4b', '#264028');
 }
 
 /**
