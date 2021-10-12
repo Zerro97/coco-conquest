@@ -1,5 +1,16 @@
 import { System } from '../Library/Ecsy';
-import { Image, UnitImage, BuildingImage, IconImage, ScreenStatus } from '../Component';
+import { 
+	Image, 
+	UnitImage, 
+	BuildingImage,
+	IconImage, 
+	DirtImage, 
+	GrassImage, 
+	MarsImage, 
+	SandImage,
+	StoneImage, 
+	ScreenStatus 
+} from '../Component';
 import { evenrToPixel } from '../Util';
 
 export class LoaderSystem extends System {
@@ -14,11 +25,21 @@ export class LoaderSystem extends System {
 		let counter = {
 			unit: 0,
 			building: 0,
-			icon: 0
+			icon: 0,
+			dirt: 0,
+			grass: 0,
+			mars: 0,
+			sand: 0,
+			stone: 0
 		};
 		let unitKeys = Object.keys(this.unitImages);
 		let buildingKeys = Object.keys(this.buildingImages);
 		let iconKeys = Object.keys(this.iconImages);
+		let dirtKeys = Object.keys(this.dirtImages);
+		let grassKeys = Object.keys(this.grassImages);
+		let marsKeys = Object.keys(this.marsImages);
+		let sandKeys = Object.keys(this.sandImages);
+		let stoneKeys = Object.keys(this.stoneImages);
 		
 		this.queries.images.results.forEach(entity => {
 			var image = entity.getMutableComponent(Image);
@@ -35,6 +56,26 @@ export class LoaderSystem extends System {
 				image.name = iconKeys[counter.icon];
 				image.value = this.iconImages[iconKeys[counter.icon]];
 				counter.icon += 1;
+			} else if(entity.hasComponent(DirtImage)){
+				image.name = dirtKeys[counter.dirt];
+				image.value = this.dirtImages[dirtKeys[counter.dirt]];
+				counter.dirt += 1;
+			} else if(entity.hasComponent(GrassImage)){
+				image.name = grassKeys[counter.grass];
+				image.value = this.grassImages[grassKeys[counter.grass]];
+				counter.grass += 1;
+			} else if(entity.hasComponent(MarsImage)){
+				image.name = marsKeys[counter.mars];
+				image.value = this.marsImages[marsKeys[counter.mars]];
+				counter.mars += 1;
+			} else if(entity.hasComponent(SandImage)){
+				image.name = sandKeys[counter.sand];
+				image.value = this.sandImages[sandKeys[counter.sand]];
+				counter.sand += 1;
+			} else if(entity.hasComponent(StoneImage)){
+				image.name = stoneKeys[counter.stone];
+				image.value = this.stoneImages[stoneKeys[counter.stone]];
+				counter.stone += 1;
 			}
 		});
 	}

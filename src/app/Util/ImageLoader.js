@@ -1,4 +1,14 @@
-import { Image as ImageComponent, UnitImage, BuildingImage, IconImage } from '../Component';
+import { 
+	Image as ImageComponent, 
+	UnitImage, 
+	BuildingImage, 
+	IconImage, 
+	DirtImage,
+	GrassImage,
+	MarsImage,
+	SandImage,
+	StoneImage 
+} from '../Component';
 
 export class ImageLoader {
 	constructor(world) {
@@ -23,11 +33,35 @@ export class ImageLoader {
 		return images;
 	}
 
-	async loadImages(url, type) {
+	async loadImages(type) {
 		const images = {};
 
-		// TODO: require without variable, add switch case
-		this[type] = this.importAll(require.context('../Assets/Images/' + url, false, /\.(png|jpe?g|svg)$/));
+		switch(type) {
+		case 'iconImages':
+			this[type] = this.importAll(require.context('../Assets/Images/Icons', false, /\.(png|jpe?g|svg)$/));
+			break;
+		case 'unitImages':
+			this[type] = this.importAll(require.context('../Assets/Images/Units', false, /\.(png|jpe?g|svg)$/));
+			break;
+		case 'buildingImages':
+			this[type] = this.importAll(require.context('../Assets/Images/Buildings', false, /\.(png|jpe?g|svg)$/));
+			break;
+		case 'dirtImages':
+			this[type] = this.importAll(require.context('../Assets/Images/Tiles/Terrain/Dirt', false, /\.(png|jpe?g|svg)$/));
+			break;
+		case 'grassImages':
+			this[type] = this.importAll(require.context('../Assets/Images/Tiles/Terrain/Grass', false, /\.(png|jpe?g|svg)$/));
+			break;
+		case 'marsImages':
+			this[type] = this.importAll(require.context('../Assets/Images/Tiles/Terrain/Mars', false, /\.(png|jpe?g|svg)$/));
+			break;
+		case 'sandImages':
+			this[type] = this.importAll(require.context('../Assets/Images/Tiles/Terrain/Sand', false, /\.(png|jpe?g|svg)$/));
+			break;
+		case 'stoneImages':
+			this[type] = this.importAll(require.context('../Assets/Images/Tiles/Terrain/Stone', false, /\.(png|jpe?g|svg)$/));
+			break;
+		}
 		
 		for(const key in this[type]) {
 			const image = new Image();
@@ -41,35 +75,35 @@ export class ImageLoader {
 	}
 
 	loadUnitImages() {
-		return this.loadImages('Units', 'unitImages');
+		return this.loadImages('unitImages');
 	}
 
 	loadBuildingImages() {
-		return this.loadImages('Buildings', 'buildingImages');
+		return this.loadImages('buildingImages');
 	}
 
 	loadIconImages() {
-		return this.loadImages('Icons', 'iconImages');
+		return this.loadImages('iconImages');
 	}
 
 	loadDirtTerrainImages() {
-		return this.loadImages('Tiles/Terrain/Dirt', 'dirtImages');
+		return this.loadImages('dirtImages');
 	}
 
 	loadGrassTerrainImages() {
-		return this.loadImages('Tiles/Terrain/Grass', 'grassImages');
+		return this.loadImages('grassImages');
 	}
 
 	loadMarsTerrainImages() {
-		return this.loadImages('Tiles/Terrain/Mars', 'marsImages');
+		return this.loadImages('marsImages');
 	}
 
 	loadSandTerrainImages() {
-		return this.loadImages('Tiles/Terrain/Sand', 'sandImages');
+		return this.loadImages('sandImages');
 	}
 
 	loadStoneTerrainImages() {
-		return this.loadImages('Tiles/Terrain/Stone', 'stoneImages');
+		return this.loadImages('stoneImages');
 	}
 
 	generateImage(component, type) {
@@ -91,5 +125,25 @@ export class ImageLoader {
 
 	generateIconImage() {
 		this.generateImage(IconImage, 'iconImages');
+	}
+
+	generateDirtTerrainImage() {
+		this.generateImage(DirtImage, 'dirtImages');
+	}
+
+	generateGrassTerrainImage() {
+		this.generateImage(GrassImage, 'grassImages');
+	}
+
+	generateMarsTerrainImage() {
+		this.generateImage(MarsImage, 'marsImages');
+	}
+
+	generateSandTerrainImage() {
+		this.generateImage(SandImage, 'sandImages');
+	}
+
+	generateStoneTerrainImage() {
+		this.generateImage(StoneImage, 'stoneImages');
 	}
 }

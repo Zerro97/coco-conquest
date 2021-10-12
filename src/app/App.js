@@ -21,12 +21,24 @@ let world = new World({ entityPoolSize: 10000 });
 let canvas = document.querySelector('#main');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+let ctx = canvas.getContext('2d');
+
+// Display loading text
+ctx.font = '50px Arial';
+ctx.textAlign = 'center';
+ctx.fillText('Loading...', canvas.width/2, canvas.height/2);
 
 // Load all images
 let imageLoader = new ImageLoader(world);
 let unitImages = await imageLoader.loadUnitImages();
 let buildingImages = await imageLoader.loadBuildingImages();
 let iconImages = await imageLoader.loadIconImages();
+
+let dirtImages = await imageLoader.loadDirtTerrainImages();
+let grassImages = await imageLoader.loadGrassTerrainImages();
+let marsImages = await imageLoader.loadMarsTerrainImages();
+let sandImages = await imageLoader.loadSandTerrainImages();
+let stoneImages = await imageLoader.loadStoneTerrainImages();
 
 // Register components and systems
 world
@@ -52,7 +64,11 @@ world
 	.registerComponent(Component.Image)
 	.registerComponent(Component.UnitImage)
 	.registerComponent(Component.BuildingImage)
-	.registerComponent(Component.TerrainImage)
+	.registerComponent(Component.DirtImage)
+	.registerComponent(Component.GrassImage)
+	.registerComponent(Component.MarsImage)
+	.registerComponent(Component.SandImage)
+	.registerComponent(Component.StoneImage)
 	.registerComponent(Component.IconImage)
 	.registerComponent(Component.SelectedTile)
 	.registerComponent(Component.SelectedUnit)
@@ -66,15 +82,22 @@ world
 	.registerSystem(System.MovementSystem)
 	.registerSystem(System.RenderSystem, {
 		priority: 10, 
-		ctx: canvas.getContext('2d'), 
+		ctx: ctx, 
 		canvasWidth: canvas.width, 
 		canvasHeight: canvas.height
 	})
 	.registerSystem(System.LoaderSystem, {
 		priority: -10, 
+
 		iconImages: iconImages, 
-		unitImages: unitImages, 
+		unitImages: unitImages,
 		buildingImages: buildingImages, 
+		dirtImages: dirtImages,
+		grassImages: grassImages,
+		marsImages: marsImages,
+		sandImages: sandImages,
+		stoneImages: stoneImages,
+
 		mapWidth: tileMap.length, 
 		mapHeight: tileMap[0].length, 
 		canvasWidth: canvas.width, 
@@ -106,6 +129,12 @@ world
 imageLoader.generateIconImage();
 imageLoader.generateUnitImage();
 imageLoader.generateBuildingImage();
+
+imageLoader.generateDirtTerrainImage();
+imageLoader.generateGrassTerrainImage();
+imageLoader.generateMarsTerrainImage();
+imageLoader.generateSandTerrainImage();
+imageLoader.generateStoneTerrainImage();
 
 // Generators
 const unitGenerator = new UnitGenerator(world);

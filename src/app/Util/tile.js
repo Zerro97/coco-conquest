@@ -34,23 +34,34 @@ function drawHexagon(ctx, x, y, outColor, inColor) {
 }
 
 export function drawBaseTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, '#444444', '#222222');
+	drawHexagon(ctx, x, y, 'rgba(68, 68, 68, 0.5)', 'rgba(34, 34, 34, 0.5)');
 }
 
 export function drawHoveringTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, '#2c5c8a', '#222222');
+	drawHexagon(ctx, x, y, 'rgba(44, 92, 138, 0.5)', 'rgba(34, 34, 34, 0.5)');
 }
 
 export function drawSelectedTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, '#2c5c8a', '#243240');
+	drawHexagon(ctx, x, y, 'rgba(44, 92, 138, 0.5)', 'rgba(36, 50, 64, 0.5)');
 }
 
 export function drawAttackingTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, '#7a4646', '#4a2c2c');
+	drawHexagon(ctx, x, y, 'rgba(122, 70, 70, 0.5)', 'rgba(74, 44, 44, 0.5)');
 }
 
 export function drawMovingTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, '#467a4b', '#264028');
+	drawHexagon(ctx, x, y, 'rgba(70, 122, 75, 0.5)', 'rgba(38, 64, 40, 0.5)');
+}
+
+
+export function drawImageTile(ctx, x, y, image) {
+	ctx.save();
+	ctx.beginPath();
+	drawHexagonLine(ctx, x, y, 50);
+	ctx.closePath();
+	ctx.clip();
+	ctx.drawImage(image, x-50, y-50, 100, 100);
+	ctx.restore();
 }
 
 /**

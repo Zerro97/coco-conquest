@@ -62,8 +62,9 @@ export class MapGenerator {
 					.addComponent(Object, {value: ObjectType.TILE})
 					.addComponent(MapPosition, {x: cube.x, y: cube.y, z: cube.z})
 					.addComponent(Tile, {
-						type: this.tileMap[row][col],
-						variation: 0,
+						type: this.tileMap[row][col][0],
+						terrain: this.tileMap[row][col][1],
+						variation: this.tileMap[row][col][2],
 						status: 'seen',
 						size: 50
 					});

@@ -23,7 +23,12 @@ import {
 	Building,
 	SelectedTile,
 	SelectedUnit,
-	SelectedBuilding
+	SelectedBuilding,
+	DirtImage,
+	GrassImage,
+	MarsImage,
+	SandImage,
+	StoneImage
 } from '../Component';
 import { 
 	roundRect,
@@ -32,6 +37,7 @@ import {
 	drawSelectedTile, 
 	drawAttackingTile,
 	drawMovingTile,
+	drawImageTile,
 	drawSelectIcon, 
 	drawCancelIcon, 
 	cubeToPixel, 
@@ -77,12 +83,13 @@ export class RenderSystem extends System {
 	}
 
 	drawTiles() {
-		const screenStatus = this.queries.screenStatus.results[0].getComponent(ScreenStatus);
-
 		this.queries.tiles.results.forEach(entity => {
 			let tile = entity.getMutableComponent(Tile);
 			let tilePos = entity.getMutableComponent(MapPosition);
 			let canvasPos = cubeToPixel(tilePos.x, tilePos.z, tile.size);
+
+			let image = this.getTileImage(tile.terrain, tile.variation);
+			
 
 			switch(tile.status){
 			case TileStatus.HOVER:
@@ -92,10 +99,76 @@ export class RenderSystem extends System {
 				drawSelectedTile(this.ctx, canvasPos.x, canvasPos.y);
 				break;
 			default:
-				drawBaseTile(this.ctx, canvasPos.x, canvasPos.y);
+				drawImageTile(this.ctx, canvasPos.x, canvasPos.y, image);
+				//drawBaseTile(this.ctx, canvasPos.x, canvasPos.y);
 				break;
 			}
 		});
+	}
+
+	getTileImage(terrainType, variation) {
+		let image = {};
+
+		const dirtEntities = this.queries.dirtImages.results;
+		const grassEntities = this.queries.grassImages.results;
+		const marsEntities = this.queries.marsImages.results;
+		const sandEntities = this.queries.sandImages.results;
+		const stoneEntities = this.queries.stoneImages.results;
+
+		switch(terrainType) {
+		case 0:
+			dirtEntities.some(entity => {
+				let imageComp = entity.getMutableComponent(Image);
+				let variationType = imageComp.name.substr(0, imageComp.name.indexOf('.'));
+				
+				if(variationType == variation) {
+					image = imageComp.value;
+				}
+			});
+			break;
+		case 1:
+			grassEntities.some(entity => {
+				let imageComp = entity.getMutableComponent(Image);
+				let variationType = imageComp.name.substr(0, imageComp.name.indexOf('.'));
+				
+				if(variationType == variation) {
+					image = imageComp.value;
+				}
+			});
+			break;
+		case 2:
+			marsEntities.some(entity => {
+				let imageComp = entity.getMutableComponent(Image);
+				let variationType = imageComp.name.substr(0, imageComp.name.indexOf('.'));
+				
+				if(variationType == variation) {
+					image = imageComp.value;
+				}
+			});
+			break;
+		case 3:
+			sandEntities.some(entity => {
+				let imageComp = entity.getMutableComponent(Image);
+				let variationType = imageComp.name.substr(0, imageComp.name.indexOf('.'));
+				
+				if(variationType == variation) {
+					image = imageComp.value;
+				}
+			});
+			break;
+		case 4:
+			stoneEntities.some(entity => {
+				let imageComp = entity.getMutableComponent(Image);
+				let variationType = imageComp.name.substr(0, imageComp.name.indexOf('.'));
+				
+				if(variationType == variation) {
+					image = imageComp.value;
+				}
+			});
+			break;
+		}
+
+		return image;
 	}
         
 	drawBuildings() {
@@ -367,6 +440,21 @@ RenderSystem.queries = {
 	},
 	images: {
 		components: [Image]
+	},
+	dirtImages: {
+		components: [DirtImage]
+	},
+	grassImages: {
+		components: [GrassImage]
+	},
+	marsImages: {
+		components: [MarsImage]
+	},
+	sandImages: {
+		components: [SandImage]
+	},
+	stoneImages: {
+		components: [StoneImage]
 	},
 	popup: { 
 		components: [DamagePopup, Timer, MapPosition, CanvasPosition]
