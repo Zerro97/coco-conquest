@@ -40,6 +40,8 @@ let marsImages = await imageLoader.loadMarsTerrainImages();
 let sandImages = await imageLoader.loadSandTerrainImages();
 let stoneImages = await imageLoader.loadStoneTerrainImages();
 
+let backgroundImages = await imageLoader.loadBackgroundImages();
+
 // Register components and systems
 world
 	.registerComponent(Component.Acceleration)
@@ -70,6 +72,7 @@ world
 	.registerComponent(Component.SandImage)
 	.registerComponent(Component.StoneImage)
 	.registerComponent(Component.IconImage)
+	.registerComponent(Component.BackgroundImage)
 	.registerComponent(Component.SelectedTile)
 	.registerComponent(Component.SelectedUnit)
 	.registerComponent(Component.SelectedBuilding)
@@ -97,6 +100,7 @@ world
 		marsImages: marsImages,
 		sandImages: sandImages,
 		stoneImages: stoneImages,
+		backgroundImages: backgroundImages,
 
 		mapWidth: tileMap.length, 
 		mapHeight: tileMap[0].length, 
@@ -135,6 +139,8 @@ imageLoader.generateGrassTerrainImage();
 imageLoader.generateMarsTerrainImage();
 imageLoader.generateSandTerrainImage();
 imageLoader.generateStoneTerrainImage();
+
+imageLoader.generateBackgroundImage();
 
 // Generators
 const unitGenerator = new UnitGenerator(world);

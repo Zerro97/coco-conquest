@@ -29,6 +29,7 @@ import {
 	MarsImage,
 	SandImage,
 	StoneImage,
+	BackgroundImage
 } from '../Component';
 import {
 	roundRect,
@@ -79,8 +80,10 @@ export class RenderSystem extends System {
 
 	// Clear canvas screen
 	clearCanvas() {
-		this.ctx.fillStyle = '#222222';
-		this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+		const backgroundEntity = this.queries.backgroundImages.results[1];
+		const backgroundImage = backgroundEntity.getComponent(Image);
+
+		this.ctx.drawImage(backgroundImage.value, 0, 0, this.canvasWidth, this.canvasHeight);
 	}
 
 	drawTiles() {
@@ -393,6 +396,7 @@ export class RenderSystem extends System {
 		this.ctx.strokeStyle = 'rgb(100, 100, 100)';
 		this.ctx.beginPath();
 		this.ctx.arc(this.canvasWidth - 285, 60, 50, 0, 2 * Math.PI);
+		this.ctx.closePath();
 		this.ctx.fill();
 		this.ctx.stroke();
 
@@ -506,6 +510,9 @@ RenderSystem.queries = {
 	},
 	stoneImages: {
 		components: [StoneImage],
+	},
+	backgroundImages: {
+		components: [BackgroundImage],
 	},
 	popup: {
 		components: [DamagePopup, Timer, MapPosition, CanvasPosition],

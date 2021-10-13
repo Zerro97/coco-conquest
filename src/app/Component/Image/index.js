@@ -7,3 +7,4 @@ export { GrassImage } from './GrassImage.js';
 export { MarsImage } from './MarsImage.js';
 export { SandImage } from './SandImage.js';
 export { StoneImage } from './StoneImage.js';
+export { BackgroundImage } from './BackgroundImage.js';

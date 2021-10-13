@@ -7,7 +7,8 @@ import {
 	GrassImage,
 	MarsImage,
 	SandImage,
-	StoneImage 
+	StoneImage,
+	BackgroundImage
 } from '../Component';
 
 export class ImageLoader {
@@ -24,6 +25,9 @@ export class ImageLoader {
 		this.marsImages;
 		this.sandImages;
 		this.stoneImages;
+
+		// Background
+		this.backgroundImages;
 	}
 
 	importAll(r) {
@@ -60,6 +64,9 @@ export class ImageLoader {
 			break;
 		case 'stoneImages':
 			this[type] = this.importAll(require.context('../Assets/Images/Tiles/Terrain/Stone', false, /\.(png|jpe?g|svg)$/));
+			break;
+		case 'backgroundImages':
+			this[type] = this.importAll(require.context('../Assets/Images/Background', false, /\.(png|jpe?g|svg)$/));
 			break;
 		}
 		
@@ -106,6 +113,10 @@ export class ImageLoader {
 		return this.loadImages('stoneImages');
 	}
 
+	loadBackgroundImages() {
+		return this.loadImages('backgroundImages');
+	}
+
 	generateImage(component, type) {
 		for(const key in this[type]) {
 			this.world
@@ -145,5 +156,9 @@ export class ImageLoader {
 
 	generateStoneTerrainImage() {
 		this.generateImage(StoneImage, 'stoneImages');
+	}
+
+	generateBackgroundImage() {
+		this.generateImage(BackgroundImage, 'backgroundImages');
 	}
 }

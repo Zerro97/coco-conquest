@@ -9,6 +9,7 @@ import {
 	MarsImage, 
 	SandImage,
 	StoneImage, 
+	BackgroundImage,
 	ScreenStatus 
 } from '../Component';
 import { evenrToPixel } from '../Util';
@@ -30,7 +31,8 @@ export class LoaderSystem extends System {
 			grass: 0,
 			mars: 0,
 			sand: 0,
-			stone: 0
+			stone: 0,
+			background: 0
 		};
 		let unitKeys = Object.keys(this.unitImages);
 		let buildingKeys = Object.keys(this.buildingImages);
@@ -40,6 +42,7 @@ export class LoaderSystem extends System {
 		let marsKeys = Object.keys(this.marsImages);
 		let sandKeys = Object.keys(this.sandImages);
 		let stoneKeys = Object.keys(this.stoneImages);
+		let backgroundKeys = Object.keys(this.backgroundImages);
 		
 		this.queries.images.results.forEach(entity => {
 			var image = entity.getMutableComponent(Image);
@@ -76,6 +79,10 @@ export class LoaderSystem extends System {
 				image.name = stoneKeys[counter.stone];
 				image.value = this.stoneImages[stoneKeys[counter.stone]];
 				counter.stone += 1;
+			} else if(entity.hasComponent(BackgroundImage)){
+				image.name = backgroundKeys[counter.background];
+				image.value = this.backgroundImages[backgroundKeys[counter.background]];
+				counter.background += 1;
 			}
 		});
 	}
