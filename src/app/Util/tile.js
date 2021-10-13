@@ -11,17 +11,17 @@ function drawHexagonLine(ctx, x, y, r) {
 	const angle = (2 * Math.PI) / 6; // 60 degree
 
 	for (var i = 0; i < 6; i++) {
-		let newX = x + r * Math.round(Math.sin(angle * i) * 100) / 100;
-		let newY = y + r * Math.round(Math.cos(angle * i)* 100) / 100;
-		ctx.lineTo(newX, newY);
+		ctx.lineTo(x + r * Math.sin(angle * i), y + r * Math.cos(angle * i));
 	}
 }
 
 function drawHexagon(ctx, x, y, outColor, inColor) {
 	ctx.save();
-	ctx.clip();
+	
 	ctx.beginPath();
+	
 	drawHexagonLine(ctx, x, y, 50);
+	ctx.clip();
 	ctx.closePath();
 	ctx.lineWidth = 6;
 	ctx.strokeStyle = outColor;
@@ -41,31 +41,6 @@ function drawHexagon(ctx, x, y, outColor, inColor) {
 	// ctx.restore();
 }
 
-function drawHexagonLineCopy(ctx, x, y, r) {
-	const angle = (2 * Math.PI) / 6; // 60 degree
-	ctx.moveTo(x + r * Math.sin(0), y + r * Math.cos(0));
-
-	for (var i = 0; i < 6; i++) {
-		let newX = x + r * Math.sin(angle * i)* 100 / 100;
-		let newY = y + r * Math.cos(angle * i)* 100 / 100;
-		ctx.lineTo(newX, newY);
-	}
-	ctx.lineTo(x, y);
-}
-
-function drawHexagonCopy(ctx, x, y, outColor, inColor) {
-	ctx.save();
-	ctx.clip();
-	ctx.beginPath();
-	drawHexagonLineCopy(ctx, x, y, 50);
-	ctx.closePath();
-	ctx.lineWidth = 6;
-	ctx.strokeStyle = outColor;
-	ctx.fillStyle = inColor;
-	//ctx.fill();
-	ctx.stroke();
-	ctx.restore();
-}
 
 export function drawBaseTile(ctx, x, y) {
 	drawHexagon(ctx, x, y, 'rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.01)');
@@ -80,11 +55,11 @@ export function drawSelectedTile(ctx, x, y) {
 }
 
 export function drawAttackingTile(ctx, x, y) {
-	drawHexagonCopy(ctx, x, y, 'rgba(122, 70, 70, 1)', 'rgba(74, 44, 44, 1)');
+	drawHexagon(ctx, x, y, 'rgba(255, 0, 0, 0.3)', 'rgba(255, 0, 0, 0.1)');
 }
 
-export function drawMovingTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, 'rgba(255, 255, 255, 0.5)', 'rgba(255, 255, 255, 0.05)');
+export function drawMovingTile(ctx, x, y, tile) {
+	drawHexagon(ctx, x, y, 'rgba(255, 255, 255, 0.3)', 'rgba(255, 255, 255, 0.1)', tile);
 }
 
 export function drawImageTile(ctx, x, y, image) {

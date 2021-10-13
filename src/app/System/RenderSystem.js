@@ -337,8 +337,9 @@ export class RenderSystem extends System {
 
 		tilesInRange.forEach((tile) => {
 			const pixelPos = cubeToPixel(tile.x, tile.z, 50);
-			drawMovingTile(this.ctx, pixelPos.x, pixelPos.y);
+			drawMovingTile(this.ctx, pixelPos.x, pixelPos.y, tile);
 		});
+		
 		this.drawUnits();
 		this.drawBuildings();
 
@@ -346,8 +347,7 @@ export class RenderSystem extends System {
 	}
 
 	drawHud() {
-		const actionStatus =
-      this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
 
 		let selectedObject = null;
 		let type = null;
