@@ -1,22 +1,22 @@
 import { System } from '../Library/Ecsy';
-import { 
-	Unit, 
+import {
+	Unit,
 	UnitImage,
 	IconImage,
 	Image,
-	Health, 
-	Damage, 
+	Health,
+	Damage,
 	Sight,
 	Range,
 	Speed,
 	Object,
 	MapPosition,
-	MovePosition, 
-	AttackPosition, 
+	MovePosition,
+	AttackPosition,
 	SelectPosition,
 	ScreenStatus,
 	ActionStatus,
-	Tile, 
+	Tile,
 	DamagePopup,
 	Timer,
 	CanvasPosition,
@@ -28,20 +28,20 @@ import {
 	GrassImage,
 	MarsImage,
 	SandImage,
-	StoneImage
+	StoneImage,
 } from '../Component';
-import { 
+import {
 	roundRect,
-	drawBaseTile, 
-	drawHoveringTile, 
-	drawSelectedTile, 
+	drawBaseTile,
+	drawHoveringTile,
+	drawSelectedTile,
 	drawAttackingTile,
 	drawMovingTile,
 	drawImageTile,
-	drawSelectIcon, 
-	drawCancelIcon, 
-	cubeToPixel, 
-	tiles_in_range
+	drawSelectIcon,
+	drawCancelIcon,
+	cubeToPixel,
+	tiles_in_range,
 } from '../Util';
 import { ActionType, ObjectType, TileStatus } from '../Type';
 
@@ -51,7 +51,8 @@ import { ActionType, ObjectType, TileStatus } from '../Type';
 export class RenderSystem extends System {
 	// This method will get called on every frame by default
 	execute(delta, time) {
-		const screenStatus = this.queries.screenStatus.results[0].getComponent(ScreenStatus);
+		const screenStatus =
+      this.queries.screenStatus.results[0].getComponent(ScreenStatus);
 
 		this.clearCanvas();
 
@@ -62,7 +63,7 @@ export class RenderSystem extends System {
 		this.ctx.translate(-screenStatus.x, -screenStatus.y);
 		this.ctx.scale(screenStatus.scaleX, screenStatus.scaleY);
 		this.ctx.rotate(screenStatus.rotate);
-		
+
 		// Drawing order matters
 		this.drawTiles();
 		this.drawBuildings();
@@ -83,15 +84,16 @@ export class RenderSystem extends System {
 	}
 
 	drawTiles() {
-		this.queries.tiles.results.forEach(entity => {
+		this.queries.tiles.results.forEach((entity) => {
 			let tile = entity.getMutableComponent(Tile);
 			let tilePos = entity.getMutableComponent(MapPosition);
 			let canvasPos = cubeToPixel(tilePos.x, tilePos.z, tile.size);
 
 			let image = this.getTileImage(tile.terrain, tile.variation);
-			
 
-			switch(tile.status){
+			drawImageTile(this.ctx, canvasPos.x, canvasPos.y, image);
+
+			switch (tile.status) {
 			case TileStatus.HOVER:
 				drawHoveringTile(this.ctx, canvasPos.x, canvasPos.y);
 				break;
@@ -99,8 +101,7 @@ export class RenderSystem extends System {
 				drawSelectedTile(this.ctx, canvasPos.x, canvasPos.y);
 				break;
 			default:
-				drawImageTile(this.ctx, canvasPos.x, canvasPos.y, image);
-				//drawBaseTile(this.ctx, canvasPos.x, canvasPos.y);
+				drawBaseTile(this.ctx, canvasPos.x, canvasPos.y);
 				break;
 			}
 		});
@@ -115,53 +116,68 @@ export class RenderSystem extends System {
 		const sandEntities = this.queries.sandImages.results;
 		const stoneEntities = this.queries.stoneImages.results;
 
-		switch(terrainType) {
+		switch (terrainType) {
 		case 0:
-			dirtEntities.some(entity => {
+			dirtEntities.some((entity) => {
 				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(0, imageComp.name.indexOf('.'));
-				
-				if(variationType == variation) {
+				let variationType = imageComp.name.substr(
+					0,
+					imageComp.name.indexOf('.')
+				);
+
+				if (variationType == variation) {
 					image = imageComp.value;
 				}
 			});
 			break;
 		case 1:
-			grassEntities.some(entity => {
+			grassEntities.some((entity) => {
 				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(0, imageComp.name.indexOf('.'));
-				
-				if(variationType == variation) {
+				let variationType = imageComp.name.substr(
+					0,
+					imageComp.name.indexOf('.')
+				);
+
+				if (variationType == variation) {
 					image = imageComp.value;
 				}
 			});
 			break;
 		case 2:
-			marsEntities.some(entity => {
+			marsEntities.some((entity) => {
 				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(0, imageComp.name.indexOf('.'));
-				
-				if(variationType == variation) {
+				let variationType = imageComp.name.substr(
+					0,
+					imageComp.name.indexOf('.')
+				);
+
+				if (variationType == variation) {
 					image = imageComp.value;
 				}
 			});
 			break;
 		case 3:
-			sandEntities.some(entity => {
+			sandEntities.some((entity) => {
 				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(0, imageComp.name.indexOf('.'));
-				
-				if(variationType == variation) {
+				let variationType = imageComp.name.substr(
+					0,
+					imageComp.name.indexOf('.')
+				);
+
+				if (variationType == variation) {
 					image = imageComp.value;
 				}
 			});
 			break;
 		case 4:
-			stoneEntities.some(entity => {
+			stoneEntities.some((entity) => {
 				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(0, imageComp.name.indexOf('.'));
-				
-				if(variationType == variation) {
+				let variationType = imageComp.name.substr(
+					0,
+					imageComp.name.indexOf('.')
+				);
+
+				if (variationType == variation) {
 					image = imageComp.value;
 				}
 			});
@@ -170,26 +186,24 @@ export class RenderSystem extends System {
 
 		return image;
 	}
-        
-	drawBuildings() {
-		
-	}
+
+	drawBuildings() {}
 
 	drawUnits() {
 		const unitImages = [];
-		this.queries.images.results.forEach(entity => {
-			if(entity.hasComponent(UnitImage)) {
-				unitImages.push({ 
+		this.queries.images.results.forEach((entity) => {
+			if (entity.hasComponent(UnitImage)) {
+				unitImages.push({
 					name: entity.getMutableComponent(Image).name,
-					value: entity.getMutableComponent(Image).value
+					value: entity.getMutableComponent(Image).value,
 				});
 			}
 		});
 
-		this.queries.units.results.forEach(entity => {
+		this.queries.units.results.forEach((entity) => {
 			let type = entity.getComponent(Unit).value;
 			let image = unitImages.reduce((item, acc) => {
-				if(item.name === `${type}.png`){
+				if (item.name === `${type}.png`) {
 					return item;
 				}
 				return acc;
@@ -200,21 +214,28 @@ export class RenderSystem extends System {
 
 			this.ctx.save();
 			this.ctx.beginPath();
-			this.ctx.arc(canvasPos.x, canvasPos.y, 30, 0, Math.PI*2, true);   
+			this.ctx.arc(canvasPos.x, canvasPos.y, 30, 0, Math.PI * 2, true);
 			this.ctx.closePath();
 			this.ctx.clip();
-			this.ctx.drawImage(image.value, canvasPos.x - 30, canvasPos.y - 30, 60, 60);
+			this.ctx.drawImage(
+				image.value,
+				canvasPos.x - 30,
+				canvasPos.y - 30,
+				60,
+				60
+			);
 			this.ctx.restore();
 		});
 	}
 
 	drawActionHud() {
-		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		const actionStatus =
+      this.queries.actionStatus.results[0].getComponent(ActionStatus);
 
-		switch(actionStatus.action) {
+		switch (actionStatus.action) {
 		case ActionType.SELECTED:
 			// 2) Draw unit's options
-			this.drawOption();			
+			this.drawOption();
 			break;
 		case ActionType.ATTACK:
 			// 3a) Draw attack hud
@@ -233,11 +254,11 @@ export class RenderSystem extends System {
 		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
 
 		const iconImages = [];
-		this.queries.images.results.forEach(entity => {
-			if(entity.hasComponent(IconImage)) {
-				iconImages.push({ 
+		this.queries.images.results.forEach((entity) => {
+			if (entity.hasComponent(IconImage)) {
+				iconImages.push({
 					name: entity.getMutableComponent(Image).name,
-					value: entity.getMutableComponent(Image).value
+					value: entity.getMutableComponent(Image).value,
 				});
 			}
 		});
@@ -245,11 +266,17 @@ export class RenderSystem extends System {
 		let mapPos = { x: selectPosition.x, z: selectPosition.z };
 		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
-		switch(actionStatus.selectType) {
+		switch (actionStatus.selectType) {
 		case 0:
 			break;
 		case 1:
-			drawSelectIcon(this.ctx, canvasPos.x, canvasPos.y, iconImages[1].value, iconImages[0].value);
+			drawSelectIcon(
+				this.ctx,
+				canvasPos.x,
+				canvasPos.y,
+				iconImages[1].value,
+				iconImages[0].value
+			);
 			break;
 		case 2:
 			break;
@@ -266,13 +293,16 @@ export class RenderSystem extends System {
 		let mapPos = { x: selectPosition.x, z: selectPosition.z };
 		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
-		let tilesInRange = tiles_in_range({
-			x: selectPosition.x, 
-			y: selectPosition.y, 
-			z: selectPosition.z
-		}, range);
+		let tilesInRange = tiles_in_range(
+			{
+				x: selectPosition.x,
+				y: selectPosition.y,
+				z: selectPosition.z,
+			},
+			range
+		);
 
-		tilesInRange.forEach(tile => {
+		tilesInRange.forEach((tile) => {
 			const pixelPos = cubeToPixel(tile.x, tile.z, 50);
 			drawAttackingTile(this.ctx, pixelPos.x, pixelPos.y);
 		});
@@ -293,13 +323,16 @@ export class RenderSystem extends System {
 		let mapPos = { x: selectPosition.x, z: selectPosition.z };
 		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
-		let tilesInRange = tiles_in_range({
-			x: selectPosition.x, 
-			y: selectPosition.y, 
-			z: selectPosition.z
-		}, speed);
+		let tilesInRange = tiles_in_range(
+			{
+				x: selectPosition.x,
+				y: selectPosition.y,
+				z: selectPosition.z,
+			},
+			speed
+		);
 
-		tilesInRange.forEach(tile => {
+		tilesInRange.forEach((tile) => {
 			const pixelPos = cubeToPixel(tile.x, tile.z, 50);
 			drawMovingTile(this.ctx, pixelPos.x, pixelPos.y);
 		});
@@ -310,7 +343,8 @@ export class RenderSystem extends System {
 	}
 
 	drawHud() {
-		const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
+		const actionStatus =
+      this.queries.actionStatus.results[0].getComponent(ActionStatus);
 
 		let selectedObject = null;
 		let type = null;
@@ -320,12 +354,12 @@ export class RenderSystem extends System {
 		let sight = null;
 		let speed = null;
 
-		if(actionStatus.action === ActionType.SELECTED) {
+		if (actionStatus.action === ActionType.SELECTED) {
 			selectedObject = this.getSelectedObject();
 			type = selectedObject.getComponent(Object).value;
 		}
 
-		if(type === ObjectType.UNIT){
+		if (type === ObjectType.UNIT) {
 			health = selectedObject.getComponent(Health).value;
 			damage = selectedObject.getComponent(Damage).value;
 			range = selectedObject.getComponent(Range).value;
@@ -342,9 +376,18 @@ export class RenderSystem extends System {
 		this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
 		this.ctx.lineWidth = 5;
 		this.ctx.strokeStyle = 'rgb(100, 100, 100)';
-		roundRect(this.ctx, this.canvasWidth - 350, 0, 350, 120, {bl: 20}, true, true);
-		
-		// Circle		
+		roundRect(
+			this.ctx,
+			this.canvasWidth - 350,
+			0,
+			350,
+			120,
+			{ bl: 20 },
+			true,
+			true
+		);
+
+		// Circle
 		this.ctx.fillStyle = 'rgb(150, 150, 150)';
 		this.ctx.lineWidth = 5;
 		this.ctx.strokeStyle = 'rgb(100, 100, 100)';
@@ -354,9 +397,8 @@ export class RenderSystem extends System {
 		this.ctx.stroke();
 
 		// HP
-		switch(type) {
+		switch (type) {
 		case ObjectType.TILE:
-        
 			break;
 		case ObjectType.UNIT:
 			this.ctx.font = '18px Arial';
@@ -375,13 +417,13 @@ export class RenderSystem extends System {
 		}
 	}
 
-	drawDamagePopup(){
-		this.queries.popup.results.forEach(entity => {
+	drawDamagePopup() {
+		this.queries.popup.results.forEach((entity) => {
 			const damage = entity.getComponent(DamagePopup);
 			const timer = entity.getMutableComponent(Timer);
 			const canvasPos = entity.getComponent(CanvasPosition);
 
-			if(timer.curTime < timer.maxTime) {
+			if (timer.curTime < timer.maxTime) {
 				this.ctx.font = '20px Arial';
 				this.ctx.fillStyle = 'red';
 				this.ctx.textAlign = 'center';
@@ -397,8 +439,8 @@ export class RenderSystem extends System {
 	getSelectedObject() {
 		let selectedObject = {};
 
-		this.queries.tiles.results.some(entity => {			
-			if(entity.hasComponent(SelectedTile)){
+		this.queries.tiles.results.some((entity) => {
+			if (entity.hasComponent(SelectedTile)) {
 				selectedObject = entity;
 				return true;
 			}
@@ -406,8 +448,8 @@ export class RenderSystem extends System {
 			return false;
 		});
 
-		this.queries.units.results.some(entity => {			
-			if(entity.hasComponent(SelectedUnit)){
+		this.queries.units.results.some((entity) => {
+			if (entity.hasComponent(SelectedUnit)) {
 				selectedObject = entity;
 				return true;
 			}
@@ -415,8 +457,8 @@ export class RenderSystem extends System {
 			return false;
 		});
 
-		this.queries.buildings.results.some(entity => {			
-			if(entity.hasComponent(SelectedBuilding)){
+		this.queries.buildings.results.some((entity) => {
+			if (entity.hasComponent(SelectedBuilding)) {
 				selectedObject = entity;
 				return true;
 			}
@@ -430,39 +472,48 @@ export class RenderSystem extends System {
 
 RenderSystem.queries = {
 	tiles: {
-		components: [Tile, MapPosition, Object]
+		components: [Tile, MapPosition, Object],
 	},
-	units: { 
-		components: [Unit, MapPosition, Object, Health, Damage, Sight, Range, Speed]
+	units: {
+		components: [
+			Unit,
+			MapPosition,
+			Object,
+			Health,
+			Damage,
+			Sight,
+			Range,
+			Speed,
+		],
 	},
-	buildings: { 
-		components: [Building, MapPosition, Object]
+	buildings: {
+		components: [Building, MapPosition, Object],
 	},
 	images: {
-		components: [Image]
+		components: [Image],
 	},
 	dirtImages: {
-		components: [DirtImage]
+		components: [DirtImage],
 	},
 	grassImages: {
-		components: [GrassImage]
+		components: [GrassImage],
 	},
 	marsImages: {
-		components: [MarsImage]
+		components: [MarsImage],
 	},
 	sandImages: {
-		components: [SandImage]
+		components: [SandImage],
 	},
 	stoneImages: {
-		components: [StoneImage]
+		components: [StoneImage],
 	},
-	popup: { 
-		components: [DamagePopup, Timer, MapPosition, CanvasPosition]
+	popup: {
+		components: [DamagePopup, Timer, MapPosition, CanvasPosition],
 	},
 	screenStatus: {
-		components: [ScreenStatus]
+		components: [ScreenStatus],
 	},
 	actionStatus: {
-		components: [ActionStatus, MovePosition, AttackPosition, SelectPosition]
-	}
+		components: [ActionStatus, MovePosition, AttackPosition, SelectPosition],
+	},
 };
