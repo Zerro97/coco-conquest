@@ -337,7 +337,7 @@ export class RenderSystem extends System {
 
 		tilesInRange.forEach((tile) => {
 			const pixelPos = cubeToPixel(tile.x, tile.z, 50);
-			drawMovingTile(this.ctx, pixelPos.x, pixelPos.y, tile);
+			drawMovingTile(this.ctx, pixelPos.x, pixelPos.y);
 		});
 		
 		this.drawUnits();

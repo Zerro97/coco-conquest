@@ -79,10 +79,13 @@ world
 	.registerComponent(Component.DamagePopup)
 	.registerComponent(Component.ScreenStatus)
 	.registerComponent(Component.ActionStatus)
+	.registerComponent(Component.MouseStatus)
+	.registerComponent(Component.KeyboardStatus)
 	.registerComponent(Component.GameStatus)
 	.registerSystem(System.KeyboardListenerSystem)
 	.registerSystem(System.MouseListenerSystem)
 	.registerSystem(System.MovementSystem)
+	.registerSystem(System.ActionSystem)
 	.registerSystem(System.RenderSystem, {
 		priority: 10, 
 		ctx: ctx, 
@@ -125,9 +128,14 @@ world
 	.addComponent(Component.GameStatus);
 world
 	.createEntity()
+	.addComponent(Component.MouseStatus);
+world
+	.createEntity()
+	.addComponent(Component.KeyboardStatus);
+world
+	.createEntity()
 	.addComponent(Component.Block)
 	.addComponent(Component.Timer);
-
 
 // Store image objects as entity
 imageLoader.generateIconImage();

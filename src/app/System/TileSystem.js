@@ -20,24 +20,27 @@ export class TileSystem extends System {
 		this.stop();
 	}
 
-	unitAdded(unit, tile) {
+	checkTiles(mouseX, mouseY, type) {
+		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
 
-	}
+		this.queries.tiles.results.forEach((entity) => {
+			let tile = entity.getMutableComponent(Tile);
+			let tilePos = entity.getMutableComponent(MapPosition);
+			let canvasPos = cubeToPixel(tilePos.x, tilePos.z, tile.size);
 
-	unitRemoved(unit, tile) {
-
-	}
-
-	buildingAdded(building, tile) {
-
-	}
-
-	buildingRemoved(building, tile) {
-
-	}
-
-	statusChanged(status, tile) {
-
+			if (isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)) {
+				if (type === 'hover' && tile.status != TileStatus.SELECTED) {
+					tile.status = TileStatus.HOVER;
+				} else if (type === 'click') {
+					tile.status = TileStatus.SELECTED;
+				}
+			} else {
+				if (type === 'click' && tile.status === TileStatus.SELECTED) {
+					tile.status = TileStatus.SEEN;
+				}
+				tile.status = tile.status != TileStatus.SELECTED ? TileStatus.SEEN : TileStatus.SELECTED;
+			}
+		});
 	}
 }
 
