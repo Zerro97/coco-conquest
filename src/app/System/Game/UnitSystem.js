@@ -1,4 +1,4 @@
-import { System } from '../Library/Ecsy';
+import { System } from '../../Library/Ecsy';
 import {
 	Block,
 	Timer,
@@ -17,13 +17,13 @@ import {
 	SelectedUnit,
 	DamagePopup,
 	Velocity
-} from '../Component';
-import { ActionType, UnitType } from '../Type';
-import { cubeToPixel } from '../Util';
+} from '../../Component';
+import { ActionType, UnitType } from '../../Type';
+import { cubeToPixel } from '../../Util';
 
 export class UnitSystem extends System {
 	execute(delta, time) {
-		this.attackUnit();
+		//this.attackUnit();
 		//this.stop();
 	}
 

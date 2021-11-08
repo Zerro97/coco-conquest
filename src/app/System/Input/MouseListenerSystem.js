@@ -1,6 +1,6 @@
-import { System } from '../Library/Ecsy';
-import { MouseStatus, ScreenStatus } from '../Component';
-import { applyTransformation } from '../Util';
+import { System } from '../../Library/Ecsy';
+import { MouseStatus, ScreenStatus } from '../../Component';
+import { applyTransformation } from '../../Util';
 
 /**
  * Store mouse event data to entity

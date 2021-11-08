@@ -1,4 +1,4 @@
-import { System } from '../Library/Ecsy';
+import { System } from '../../Library/Ecsy';
 import { 
 	Image, 
 	UnitImage, 
@@ -11,8 +11,8 @@ import {
 	StoneImage, 
 	BackgroundImage,
 	ScreenStatus 
-} from '../Component';
-import { evenrToPixel } from '../Util';
+} from '../../Component';
+import { evenrToPixel } from '../../Util';
 
 export class LoaderSystem extends System {
 	execute(delta, time) {

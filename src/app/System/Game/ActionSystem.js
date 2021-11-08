@@ -1,4 +1,4 @@
-import { System } from '../Library/Ecsy';
+import { System } from '../../Library/Ecsy';
 import {
 	Hud,
 	Tile,
@@ -11,28 +11,29 @@ import {
 	Object,
 	MapPosition,
 	ScreenStatus,
+	MouseStatus,
 	ActionStatus,
 	MovePosition,
 	AttackPosition,
 	SelectPosition,
 	SelectedTile,
 	SelectedUnit,
-	SelectedBuilding,
-} from '../Component';
+	SelectedBuilding
+} from '../../Component';
 import {
 	cube_distance,
 	cubeToPixel,
 	isInsideHexagon,
 	applyTransformation,
 	isInsideCircle,
-} from '../Util';
+} from '../../Util';
 import {
 	ActionType,
 	ObjectType,
 	AttackType,
 	MovementType,
 	TileStatus,
-} from '../Type';
+} from '../../Type';
 
 /**
  * Handles all the events that could happen when
@@ -40,7 +41,8 @@ import {
  */
 export class ActionSystem extends System {
 	execute(delta, time) {
-
+		const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+		this.updateAction(mouseStatus.x, mouseStatus.y);
 	}
 
 	updateAction(mouseX, mouseY) {
@@ -311,6 +313,9 @@ ActionSystem.queries = {
 	},
 	actionStatus: {
 		components: [ActionStatus, MovePosition, AttackPosition, SelectPosition],
+	},
+	mouseStatus: {
+		components: [MouseStatus]
 	},
 	control: {
 		components: [Block, Timer],

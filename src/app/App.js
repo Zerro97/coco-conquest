@@ -76,6 +76,8 @@ world
 	.registerComponent(Component.SelectedTile)
 	.registerComponent(Component.SelectedUnit)
 	.registerComponent(Component.SelectedBuilding)
+	.registerComponent(Component.CurrentHover)
+	.registerComponent(Component.CurrentSelect)
 	.registerComponent(Component.DamagePopup)
 	.registerComponent(Component.ScreenStatus)
 	.registerComponent(Component.ActionStatus)

@@ -1,5 +1,5 @@
-import { System } from '../Library/Ecsy';
-import { Tile, Unit, Building, MapPosition, Object, Hud, ScreenStatus } from '../Component';
+import { System } from '../../Library/Ecsy';
+import { Tile, Unit, Building, MapPosition, Object, Hud, ScreenStatus } from '../../Component';
 
 /**
  * Handles all the events that could happen when 

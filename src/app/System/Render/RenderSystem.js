@@ -1,4 +1,4 @@
-import { System } from '../Library/Ecsy';
+import { System } from '../../Library/Ecsy';
 import {
 	Unit,
 	UnitImage,
@@ -30,7 +30,7 @@ import {
 	SandImage,
 	StoneImage,
 	BackgroundImage
-} from '../Component';
+} from '../../Component';
 import {
 	roundRect,
 	drawBaseTile,
@@ -43,8 +43,8 @@ import {
 	drawCancelIcon,
 	cubeToPixel,
 	tiles_in_range,
-} from '../Util';
-import { ActionType, ObjectType, TileStatus } from '../Type';
+} from '../../Util';
+import { ActionType, ObjectType, TileStatus } from '../../Type';
 
 /**
  * Handles all the drawing
@@ -83,7 +83,9 @@ export class RenderSystem extends System {
 		const backgroundEntity = this.queries.backgroundImages.results[1];
 		const backgroundImage = backgroundEntity.getComponent(Image);
 
-		this.ctx.drawImage(backgroundImage.value, 0, 0, this.canvasWidth, this.canvasHeight);
+		//this.ctx.drawImage(backgroundImage.value, 0, 0, this.canvasWidth, this.canvasHeight);
+		this.ctx.fillStyle = '#111111';
+		this.ctx.fillRect(0,0, this.canvasWidth, this.canvasHeight);
 	}
 
 	drawTiles() {
