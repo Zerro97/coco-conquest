@@ -1,18 +1,11 @@
 import { System } from '../../Library/Ecsy';
 import { Tile, ActionStatus, MapPosition } from '../../Component';
 import {
-	cube_distance,
 	cubeToPixel,
-	isInsideHexagon,
-	applyTransformation,
-	isInsideCircle,
+	isInsideHexagon
 } from '../../Util';
 import {
-	ActionType,
-	ObjectType,
-	AttackType,
-	MovementType,
-	TileStatus,
+	TileStatus
 } from '../../Type';
 
 /**

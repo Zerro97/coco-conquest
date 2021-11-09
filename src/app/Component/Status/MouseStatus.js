@@ -8,8 +8,8 @@ MouseStatus.schema = {
 	y: { type: Types.Number, default: 0 },
 
 	// Position (Transformed using screenStatus to fit map coordinate)
-	transformedX: { type: Types.Number, default: 0 },
-	transformedY: { type: Types.Number, default: 0 },
+	mapX: { type: Types.Number, default: 0 },
+	mapY: { type: Types.Number, default: 0 },
 
 	// Second pointer position (ex. using finger)
 	secX: { type: Types.Number, default: 0 },

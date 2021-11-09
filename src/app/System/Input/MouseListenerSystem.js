@@ -32,8 +32,8 @@ export class MouseListenerSystem extends System {
 				translation,
 				scale
 			);
-			mouseStatus.transformedX = mousePos.x;
-			mouseStatus.transformedY = mousePos.y;
+			mouseStatus.mapX = mousePos.x;
+			mouseStatus.mapY = mousePos.y;
 
 			this.checkPinchGesture(e, evCache, prevDiff);
 		});

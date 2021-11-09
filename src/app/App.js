@@ -42,78 +42,51 @@ let stoneImages = await imageLoader.loadStoneTerrainImages();
 
 let backgroundImages = await imageLoader.loadBackgroundImages();
 
-// Register components and systems
-world
-	.registerComponent(Component.Acceleration)
-	.registerComponent(Component.Velocity)
-	.registerComponent(Component.CanvasPosition)
-	.registerComponent(Component.MapPosition)
-	.registerComponent(Component.MovePosition)
-	.registerComponent(Component.AttackPosition)
-	.registerComponent(Component.SelectPosition)
-	.registerComponent(Component.Timer)
-	.registerComponent(Component.Block)
-	.registerComponent(Component.Tile)
-	.registerComponent(Component.Hud)
-	.registerComponent(Component.Unit)
-	.registerComponent(Component.Building)
-	.registerComponent(Component.Object)
-	.registerComponent(Component.Health)
-	.registerComponent(Component.Damage)
-	.registerComponent(Component.Sight)
-	.registerComponent(Component.Range)
-	.registerComponent(Component.Speed)
-	.registerComponent(Component.Image)
-	.registerComponent(Component.UnitImage)
-	.registerComponent(Component.BuildingImage)
-	.registerComponent(Component.DirtImage)
-	.registerComponent(Component.GrassImage)
-	.registerComponent(Component.MarsImage)
-	.registerComponent(Component.SandImage)
-	.registerComponent(Component.StoneImage)
-	.registerComponent(Component.IconImage)
-	.registerComponent(Component.BackgroundImage)
-	.registerComponent(Component.SelectedTile)
-	.registerComponent(Component.SelectedUnit)
-	.registerComponent(Component.SelectedBuilding)
-	.registerComponent(Component.CurrentHover)
-	.registerComponent(Component.CurrentSelect)
-	.registerComponent(Component.DamagePopup)
-	.registerComponent(Component.ScreenStatus)
-	.registerComponent(Component.ActionStatus)
-	.registerComponent(Component.MouseStatus)
-	.registerComponent(Component.KeyboardStatus)
-	.registerComponent(Component.GameStatus)
-	.registerSystem(System.KeyboardListenerSystem)
-	.registerSystem(System.MouseListenerSystem)
-	.registerSystem(System.MovementSystem)
-	.registerSystem(System.ActionSystem)
-	.registerSystem(System.RenderSystem, {
-		priority: 10, 
-		ctx: ctx, 
-		canvasWidth: canvas.width, 
-		canvasHeight: canvas.height
-	})
-	.registerSystem(System.LoaderSystem, {
-		priority: -10, 
+// Register components 
+function registerComponents() {
+	Object.keys(Component).forEach((comp) => {
+		world.registerComponent(Component[comp]);
+	});
+}
 
-		iconImages: iconImages, 
-		unitImages: unitImages,
-		buildingImages: buildingImages, 
-		dirtImages: dirtImages,
-		grassImages: grassImages,
-		marsImages: marsImages,
-		sandImages: sandImages,
-		stoneImages: stoneImages,
-		backgroundImages: backgroundImages,
+// Register systems 
+function registerSystems() {
+	world
+		.registerSystem(System.KeyboardListenerSystem)
+		.registerSystem(System.MouseListenerSystem)
+		.registerSystem(System.MovementSystem)
+		.registerSystem(System.ActionSystem)
+		.registerSystem(System.RenderSystem, {
+			priority: 10, 
+			ctx: ctx, 
+			canvasWidth: canvas.width, 
+			canvasHeight: canvas.height
+		})
+		.registerSystem(System.LoaderSystem, {
+			priority: -10, 
 
-		mapWidth: tileMap.length, 
-		mapHeight: tileMap[0].length, 
-		canvasWidth: canvas.width, 
-		canvasHeight: canvas.height
-	})
-	.registerSystem(System.TileSystem)
-	.registerSystem(System.UnitSystem);
+			iconImages: iconImages, 
+			unitImages: unitImages,
+			buildingImages: buildingImages, 
+			dirtImages: dirtImages,
+			grassImages: grassImages,
+			marsImages: marsImages,
+			sandImages: sandImages,
+			stoneImages: stoneImages,
+			backgroundImages: backgroundImages,
+
+			mapWidth: tileMap.length, 
+			mapHeight: tileMap[0].length, 
+			canvasWidth: canvas.width, 
+			canvasHeight: canvas.height
+		})
+		.registerSystem(System.TileSystem)
+		.registerSystem(System.UnitSystem);
+}
+
+// Register systems 
+registerComponents();
+registerSystems();
 
 // Singleton entities
 world
