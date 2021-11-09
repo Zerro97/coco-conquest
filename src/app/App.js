@@ -30,17 +30,14 @@ ctx.fillText('Loading...', canvas.width/2, canvas.height/2);
 
 // Load all images
 let imageLoader = new ImageLoader(world);
+
+console.log('in1');
+let tileImages = await imageLoader.loadTileImages();
 let unitImages = await imageLoader.loadUnitImages();
 let buildingImages = await imageLoader.loadBuildingImages();
 let iconImages = await imageLoader.loadIconImages();
-
-let dirtImages = await imageLoader.loadDirtTerrainImages();
-let grassImages = await imageLoader.loadGrassTerrainImages();
-let marsImages = await imageLoader.loadMarsTerrainImages();
-let sandImages = await imageLoader.loadSandTerrainImages();
-let stoneImages = await imageLoader.loadStoneTerrainImages();
-
 let backgroundImages = await imageLoader.loadBackgroundImages();
+console.log('in2');
 
 // Register components 
 function registerComponents() {
@@ -66,14 +63,10 @@ function registerSystems() {
 		.registerSystem(System.LoaderSystem, {
 			priority: -10, 
 
+			tileImages: tileImages,
 			iconImages: iconImages, 
 			unitImages: unitImages,
 			buildingImages: buildingImages, 
-			dirtImages: dirtImages,
-			grassImages: grassImages,
-			marsImages: marsImages,
-			sandImages: sandImages,
-			stoneImages: stoneImages,
 			backgroundImages: backgroundImages,
 
 			mapWidth: tileMap.length, 
@@ -114,16 +107,10 @@ world
 	.addComponent(Component.Timer);
 
 // Store image objects as entity
+imageLoader.generateTileImage();
 imageLoader.generateIconImage();
 imageLoader.generateUnitImage();
 imageLoader.generateBuildingImage();
-
-imageLoader.generateDirtTerrainImage();
-imageLoader.generateGrassTerrainImage();
-imageLoader.generateMarsTerrainImage();
-imageLoader.generateSandTerrainImage();
-imageLoader.generateStoneTerrainImage();
-
 imageLoader.generateBackgroundImage();
 
 // Generators

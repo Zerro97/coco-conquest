@@ -1,6 +1,6 @@
 import { System } from '../../Library/Ecsy';
 import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, Radius, ScreenStatus, Selectable, Size } from '../../Component';
-import { applyTransformation, isInsideCircle, isInsideHexagon } from '../../Util';
+import { applyTransformation, isInsideCircle, isInsideHexagon, isInsideRectangle } from '../../Util';
 import { Shape } from '../../Type';
 
 /**
@@ -14,8 +14,6 @@ export class MouseHandlerSystem extends System {
 
 	checkHover() {
 		const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
-		const mouseX = mouseStatus.x;
-		const mouseY = mouseStatus.x;
 		const mouseTransX = mouseStatus.mapX;
 		const mouseTransY = mouseStatus.mapY;
 
@@ -27,27 +25,26 @@ export class MouseHandlerSystem extends System {
 			switch(objectType) {
 				case Shape.RECTANGLE: {
 					let size = object.getComponent(Size);
-					if(mouseTransX > objectPosition - size.width/2 && 
-						mouseTransX < objectPosition + size.width/2 && 
-						mouseTransY > objectPosition - size.height/2 && 
-						mouseTransY < objectPosition + size.height/2) {
-							console.log('in');
-						}
-
+					if(isInsideRectangle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, size.width, size.height)) {
+						object.addComponent(CurrentHover);
+					}
 					break;
 				}
 				case Shape.CIRCLE: {
 					let radius = object.getMutableComponent(Radius);
 					if(isInsideCircle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, radius)) {
-						console.log('in');
+						object.addComponent(CurrentHover);
 					}
-
 					break;
 				}
 				case Shape.HEXAGON: {
 					if(isInsideHexagon(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, 50)) {
-						console.log(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY);
+						object.addComponent(CurrentHover);
 					}
+					break;
+				}
+				default: {
+					object.removeComponent(CurrentHover);
 					break;
 				}
 			}
@@ -57,37 +54,41 @@ export class MouseHandlerSystem extends System {
 
 	checkSelect() {
 		const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
-		const mouseX = mouseStatus.x;
-		const mouseY = mouseStatus.x;
 		const mouseTransX = mouseStatus.mapX;
 		const mouseTransY = mouseStatus.mapY;
 
-		// Loop through all the hoverable objects
+		// Loop through all the selectable objects
 		this.queries.selectableObjects.results.forEach((object) => {
 			let objectPosition = object.getMutableComponent(CanvasPosition);
 			let objectType = object.getMutableComponent(Selectable).type;
-		});
-	}
 
-	/**
-	 * Check if a point is within given list of verticies
-	 * 
-	 * @param {*} nvert Number of vertices in the polygon. Whether to repeat the first vertex at the end is discussed below.
-	 * @param {*} vertx Arrays containing the x-coordinates of the polygon's vertices.
-	 * @param {*} verty Arrays containing the y-coordinates of the polygon's vertices.
-	 * @param {*} testx x-coordinate of the test point.
-	 * @param {*} testy y-coordinate of the test point.
-	 * @returns 
-	 */
-	pnpoly( nvert, vertx, verty, testx, testy ) {
-		var i, j, c = false;
-		for( i = 0, j = nvert-1; i < nvert; j = i++ ) {
-			if( ( ( verty[i] > testy ) != ( verty[j] > testy ) ) &&
-				( testx < ( vertx[j] - vertx[i] ) * ( testy - verty[i] ) / ( verty[j] - verty[i] ) + vertx[i] ) ) {
-					c = !c;
+			switch(objectType) {
+				case Shape.RECTANGLE: {
+					let size = object.getComponent(Size);
+					if(isInsideRectangle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, size.width, size.height)) {
+						object.addComponent(CurrentSelect);
+					}
+					break;
+				}
+				case Shape.CIRCLE: {
+					let radius = object.getMutableComponent(Radius);
+					if(isInsideCircle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, radius)) {
+						object.addComponent(CurrentSelect);
+					}
+					break;
+				}
+				case Shape.HEXAGON: {
+					if(isInsideHexagon(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, 50)) {
+						object.addComponent(CurrentSelect);
+					}
+					break;
+				}
+				default: {
+					object.removeComponent(CurrentSelect);
+					break;
+				}
 			}
-		}
-		return c;
+		});
 	}
 }
 
@@ -98,12 +99,6 @@ MouseHandlerSystem.queries = {
 	},
 	screenStatus: {
 		components: [ScreenStatus]
-	},
-	currentHover: {
-		components: [CurrentHover]
-	}, 
-	currentSelect: {
-		components: [CurrentSelect]
 	},
 	hoverableObjects: {
 		components: [Hoverable, CanvasPosition]

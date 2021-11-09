@@ -24,11 +24,6 @@ import {
 	SelectedTile,
 	SelectedUnit,
 	SelectedBuilding,
-	DirtImage,
-	GrassImage,
-	MarsImage,
-	SandImage,
-	StoneImage,
 	BackgroundImage
 } from '../../Component';
 import {
@@ -42,7 +37,7 @@ import {
 	drawSelectIcon,
 	drawCancelIcon,
 	cubeToPixel,
-	tiles_in_range,
+	tilesInRange,
 } from '../../Util';
 import { ActionType, ObjectType, TileStatus } from '../../Type';
 
@@ -86,110 +81,6 @@ export class RenderSystem extends System {
 		//this.ctx.drawImage(backgroundImage.value, 0, 0, this.canvasWidth, this.canvasHeight);
 		this.ctx.fillStyle = '#111111';
 		this.ctx.fillRect(0,0, this.canvasWidth, this.canvasHeight);
-	}
-
-	drawTiles() {
-		this.queries.tiles.results.forEach((entity) => {
-			let tile = entity.getMutableComponent(Tile);
-			let tilePos = entity.getMutableComponent(MapPosition);
-			let canvasPos = cubeToPixel(tilePos.x, tilePos.z, tile.size);
-
-			let image = this.getTileImage(tile.terrain, tile.variation);
-
-			drawImageTile(this.ctx, canvasPos.x, canvasPos.y, image);
-
-			switch (tile.status) {
-			case TileStatus.HOVER:
-				drawHoveringTile(this.ctx, canvasPos.x, canvasPos.y);
-				break;
-			case TileStatus.SELECTED:
-				drawSelectedTile(this.ctx, canvasPos.x, canvasPos.y);
-				break;
-			default:
-				drawBaseTile(this.ctx, canvasPos.x, canvasPos.y);
-				break;
-			}
-		});
-	}
-
-	getTileImage(terrainType, variation) {
-		let image = {};
-
-		const dirtEntities = this.queries.dirtImages.results;
-		const grassEntities = this.queries.grassImages.results;
-		const marsEntities = this.queries.marsImages.results;
-		const sandEntities = this.queries.sandImages.results;
-		const stoneEntities = this.queries.stoneImages.results;
-
-		switch (terrainType) {
-		case 0:
-			dirtEntities.some((entity) => {
-				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(
-					0,
-					imageComp.name.indexOf('.')
-				);
-
-				if (variationType == variation) {
-					image = imageComp.value;
-				}
-			});
-			break;
-		case 1:
-			grassEntities.some((entity) => {
-				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(
-					0,
-					imageComp.name.indexOf('.')
-				);
-
-				if (variationType == variation) {
-					image = imageComp.value;
-				}
-			});
-			break;
-		case 2:
-			marsEntities.some((entity) => {
-				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(
-					0,
-					imageComp.name.indexOf('.')
-				);
-
-				if (variationType == variation) {
-					image = imageComp.value;
-				}
-			});
-			break;
-		case 3:
-			sandEntities.some((entity) => {
-				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(
-					0,
-					imageComp.name.indexOf('.')
-				);
-
-				if (variationType == variation) {
-					image = imageComp.value;
-				}
-			});
-			break;
-		case 4:
-			stoneEntities.some((entity) => {
-				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(
-					0,
-					imageComp.name.indexOf('.')
-				);
-
-				if (variationType == variation) {
-					image = imageComp.value;
-				}
-			});
-			break;
-		}
-
-		return image;
 	}
 
 	drawBuildings() {}
@@ -298,7 +189,7 @@ export class RenderSystem extends System {
 		let mapPos = { x: selectPosition.x, z: selectPosition.z };
 		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
-		let tilesInRange = tiles_in_range(
+		let tiles = tilesInRange(
 			{
 				x: selectPosition.x,
 				y: selectPosition.y,
@@ -307,7 +198,7 @@ export class RenderSystem extends System {
 			range
 		);
 
-		tilesInRange.forEach((tile) => {
+		tiles.forEach((tile) => {
 			const pixelPos = cubeToPixel(tile.x, tile.z, 50);
 			drawAttackingTile(this.ctx, pixelPos.x, pixelPos.y);
 		});
@@ -328,7 +219,7 @@ export class RenderSystem extends System {
 		let mapPos = { x: selectPosition.x, z: selectPosition.z };
 		let canvasPos = cubeToPixel(mapPos.x, mapPos.z, 50);
 
-		let tilesInRange = tiles_in_range(
+		let tiles = tilesInRange(
 			{
 				x: selectPosition.x,
 				y: selectPosition.y,
@@ -337,7 +228,7 @@ export class RenderSystem extends System {
 			speed
 		);
 
-		tilesInRange.forEach((tile) => {
+		tiles.forEach((tile) => {
 			const pixelPos = cubeToPixel(tile.x, tile.z, 50);
 			drawMovingTile(this.ctx, pixelPos.x, pixelPos.y);
 		});
@@ -497,21 +388,6 @@ RenderSystem.queries = {
 	},
 	images: {
 		components: [Image],
-	},
-	dirtImages: {
-		components: [DirtImage],
-	},
-	grassImages: {
-		components: [GrassImage],
-	},
-	marsImages: {
-		components: [MarsImage],
-	},
-	sandImages: {
-		components: [SandImage],
-	},
-	stoneImages: {
-		components: [StoneImage],
 	},
 	backgroundImages: {
 		components: [BackgroundImage],

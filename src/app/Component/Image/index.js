@@ -1,10 +1,6 @@
-export { Image } from './Image.js';
-export { UnitImage } from './UnitImage.js';
-export { BuildingImage } from './BuildingImage.js';
-export { IconImage } from './IconImage.js';
-export { DirtImage } from './DirtImage.js';
-export { GrassImage } from './GrassImage.js';
-export { MarsImage } from './MarsImage.js';
-export { SandImage } from './SandImage.js';
-export { StoneImage } from './StoneImage.js';
-export { BackgroundImage } from './BackgroundImage.js';
+export * from './Image.js';
+export * from './UnitImage.js';
+export * from './BuildingImage.js';
+export * from './IconImage.js';
+export * from './TileImage.js';
+export * from './BackgroundImage.js';

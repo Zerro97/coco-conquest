@@ -21,7 +21,7 @@ import {
 	SelectedBuilding
 } from '../../Component';
 import {
-	cube_distance,
+	cubeDistance,
 	cubeToPixel,
 	isInsideHexagon,
 	applyTransformation,
@@ -173,7 +173,7 @@ export class ActionSystem extends System {
 
 		if (isInsideCircle(cancelPos.x, cancelPos.y, mouseX, mouseY, 20)) {
 			actionStatus.action = ActionType.NOT_SELECTED;
-		} else if (cube_distance(selectPosition, mouseTilePos) <= range) {
+		} else if (cubeDistance(selectPosition, mouseTilePos) <= range) {
 			attackPosition.x = mouseTilePos.x;
 			attackPosition.y = mouseTilePos.y;
 			attackPosition.z = mouseTilePos.z;
@@ -217,7 +217,7 @@ export class ActionSystem extends System {
 
 		if (isInsideCircle(cancelPos.x, cancelPos.y, mouseX, mouseY, 20)) {
 			actionStatus.action = ActionType.NOT_SELECTED;
-		} else if (cube_distance(selectPosition, mouseTilePos) <= speed) {
+		} else if (cubeDistance(selectPosition, mouseTilePos) <= speed) {
 			movePosition.x = mouseTilePos.x;
 			movePosition.y = mouseTilePos.y;
 			movePosition.z = mouseTilePos.z;

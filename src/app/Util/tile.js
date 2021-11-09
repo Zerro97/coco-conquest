@@ -29,16 +29,6 @@ function drawHexagon(ctx, x, y, outColor, inColor) {
 	ctx.fill();
 	ctx.stroke();
 	ctx.restore();
-
-	// Reverse Clip
-	// ctx.save();
-	// ctx.beginPath();
-	// drawHexagonLine(ctx, x, y, 45);
-	// ctx.closePath();
-	// ctx.clip();
-	// //ctx.fillStyle = inColor;
-	// ctx.clearRect(-5000, -5000, 10000, 10000);
-	// ctx.restore();
 }
 
 
@@ -94,24 +84,7 @@ export function cubeToPixel(x, z, r) {
 	return { x: canvasX, y: canvasY };
 }
 
-/**
- * Given canvas coordinate of hexagon and a point
- * return if the point is within the hexagon
- *
- * @param {*} hexX
- * @param {*} hexY
- * @param {*} posX
- * @param {*} posY
- * @param {*} radius
- * @returns
- */
-export function isInsideHexagon(hexX, hexY, posX, posY, radius) {
-	const dx = Math.abs(hexX - posX) / (radius * 2);
-	const dy = Math.abs(hexY - posY) / (radius * 2);
-	const a = 0.25 * Math.sqrt(3.0);
 
-	return dx <= a && a * dy + 0.25 * dx <= 0.5 * a;
-}
 
 /**
  * Apply given transformation to a point
@@ -123,6 +96,5 @@ export function isInsideHexagon(hexX, hexY, posX, posY, radius) {
  * @param {*} transformation
  */
 export function applyTransformation(x, y, translation, scale) {
-	//return {x: x, y: y};
 	return { x: (x + translation.x) / scale.x, y: (y + translation.y) / scale.y };
 }

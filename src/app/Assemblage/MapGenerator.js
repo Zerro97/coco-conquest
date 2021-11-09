@@ -1,5 +1,5 @@
 import { Tile, Unit, Health, Damage, Sight, Range, Speed, MapPosition, Object, Hoverable, Selectable, CanvasPosition } from '../Component';
-import { evenr_to_cube, StatManager } from '../Util';
+import { cubeToPixel, evenrToCube, StatManager } from '../Util';
 import { ObjectType, Shape } from '../Type';
 
 export class MapGenerator {
@@ -55,14 +55,14 @@ export class MapGenerator {
 	generateTiles() {
 		for(let row=0; row<this.tileMap.length; row++) {
 			for(let col=0; col<this.tileMap[0].length; col++) {
-				let cube = evenr_to_cube(row, col);
+				let cube = evenrToCube(row, col);
+				let pixel = cubeToPixel(cube.x, cube.z, 50);
 
 				this.world
 					.createEntity()
 					.addComponent(Object, {value: ObjectType.TILE})
 					.addComponent(MapPosition, {x: cube.x, y: cube.y, z: cube.z})
-					// TODO: consider setting correct position when initialized instead of -1
-					.addComponent(CanvasPosition, {x: -1, y: -1}) 
+					.addComponent(CanvasPosition, {x: pixel.x, y: pixel.y}) 
 					.addComponent(Hoverable, {type: Shape.HEXAGON})
 					.addComponent(Selectable, {type: Shape.HEXAGON})
 					.addComponent(Tile, {
@@ -85,7 +85,7 @@ export class MapGenerator {
 		for(let row=0; row<this.unitMap.length; row++) {
 			for(let col=0; col<this.unitMap[0].length; col++) {
 				if(this.unitMap[row][col] !== -1) {
-					let cube = evenr_to_cube(row, col);
+					let cube = evenrToCube(row, col);
 					let stat = statManager.getStat(this.unitMap[row][col]);
 
 					this.world
