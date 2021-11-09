@@ -7,3 +7,5 @@ export * from './Status';
 export * from './Type';
 export * from './Tag';
 export * from './Hud';
+export * from './Input';
+export * from './Shape';

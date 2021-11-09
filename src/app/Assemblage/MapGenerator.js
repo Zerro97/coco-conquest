@@ -1,6 +1,6 @@
 import { Tile, Unit, Health, Damage, Sight, Range, Speed, MapPosition, Object, Hoverable, Selectable, CanvasPosition } from '../Component';
 import { evenr_to_cube, StatManager } from '../Util';
-import { ObjectType } from '../Type';
+import { ObjectType, Shape } from '../Type';
 
 export class MapGenerator {
 	constructor(world) {
@@ -63,8 +63,8 @@ export class MapGenerator {
 					.addComponent(MapPosition, {x: cube.x, y: cube.y, z: cube.z})
 					// TODO: consider setting correct position when initialized instead of -1
 					.addComponent(CanvasPosition, {x: -1, y: -1}) 
-					.addComponent(Hoverable)
-					.addComponent(Selectable)
+					.addComponent(Hoverable, {type: Shape.HEXAGON})
+					.addComponent(Selectable, {type: Shape.HEXAGON})
 					.addComponent(Tile, {
 						type: this.tileMap[row][col][0],
 						terrain: this.tileMap[row][col][1],

@@ -54,6 +54,7 @@ function registerSystems() {
 	world
 		.registerSystem(System.KeyboardListenerSystem)
 		.registerSystem(System.MouseListenerSystem)
+		.registerSystem(System.MouseHandlerSystem)
 		.registerSystem(System.MovementSystem)
 		.registerSystem(System.ActionSystem)
 		.registerSystem(System.RenderSystem, {

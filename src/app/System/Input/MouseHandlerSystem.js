@@ -1,6 +1,7 @@
 import { System } from '../../Library/Ecsy';
-import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, ScreenStatus, Selectable } from '../../Component';
-import { applyTransformation } from '../../Util';
+import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, Radius, ScreenStatus, Selectable, Size } from '../../Component';
+import { applyTransformation, isInsideCircle, isInsideHexagon } from '../../Util';
+import { Shape } from '../../Type';
 
 /**
  * Store mouse event data to entity
@@ -13,10 +14,43 @@ export class MouseHandlerSystem extends System {
 
 	checkHover() {
 		const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+		const mouseX = mouseStatus.x;
+		const mouseY = mouseStatus.x;
+		const mouseTransX = mouseStatus.mapX;
+		const mouseTransY = mouseStatus.mapY;
 
 		// Loop through all the hoverable objects
 		this.queries.hoverableObjects.results.forEach((object) => {
 			let objectPosition = object.getMutableComponent(CanvasPosition);
+			let objectType = object.getMutableComponent(Hoverable).type;
+
+			switch(objectType) {
+				case Shape.RECTANGLE: {
+					let size = object.getComponent(Size);
+					if(mouseTransX > objectPosition - size.width/2 && 
+						mouseTransX < objectPosition + size.width/2 && 
+						mouseTransY > objectPosition - size.height/2 && 
+						mouseTransY < objectPosition + size.height/2) {
+							console.log('in');
+						}
+
+					break;
+				}
+				case Shape.CIRCLE: {
+					let radius = object.getMutableComponent(Radius);
+					if(isInsideCircle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, radius)) {
+						console.log('in');
+					}
+
+					break;
+				}
+				case Shape.HEXAGON: {
+					if(isInsideHexagon(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, 50)) {
+						console.log(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY);
+					}
+					break;
+				}
+			}
 		});
 
 	}
@@ -29,8 +63,9 @@ export class MouseHandlerSystem extends System {
 		const mouseTransY = mouseStatus.mapY;
 
 		// Loop through all the hoverable objects
-		this.queries.mouseStatus.results.forEach((object) => {
+		this.queries.selectableObjects.results.forEach((object) => {
 			let objectPosition = object.getMutableComponent(CanvasPosition);
+			let objectType = object.getMutableComponent(Selectable).type;
 		});
 	}
 
