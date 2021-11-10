@@ -1,137 +1,83 @@
 import { System } from '../../Library/Ecsy';
-import { Tile, ActionStatus, MapPosition, CurrentHover, CanvasPosition } from '../../Component';
+import { Tile, MapPosition, CurrentHover, CanvasPosition, TileImage, Image } from '../../Component';
 import {
 	cubeToPixel,
-	drawBaseTile,
 	drawHoveringTile,
-	drawImageTile,
 	drawSelectedTile,
-	isInsideHexagon
+	drawImageTile
 } from '../../Util';
-import {
-	TileStatus
-} from '../../Type';
+import { TileSize } from '../../Type';
 
-/**
- * Keeps track of tile information such as:
- * 1) Unit on tile
- * 2) Building on tile
- * 3) Tile Status (ex. fog of war)
- * 
- * Hex Coordinate: "even-r"
- */
 export class TileSystem extends System {
 	// This method will get called on every frame by default
 	execute(delta, time) {
 		this.drawTiles();
+		this.updateTiles();
 	}
 
 	drawTiles() {
+		this.clearCanvas();
 		this.drawTileImage();
 		this.drawHoveringTile();
 		this.drawSelectedTile();
+	}
+
+	clearCanvas() {
+		this.ctx.fillStyle = '#111111';
+		this.ctx.fillRect(0,0, this.canvasWidth, this.canvasHeight);
 	}
 
 	drawTileImage() {
 		this.queries.tiles.results.forEach((entity) => {
 			let tile = entity.getMutableComponent(Tile);
 			let tilePos = entity.getMutableComponent(MapPosition);
-			let canvasPos = cubeToPixel(tilePos.x, tilePos.z, tile.size);
+			let canvasPos = cubeToPixel(tilePos.x, tilePos.z, TileSize.REGULAR);
 
-			let image = this.getTileImage(tile.terrain, tile.variation);
+			const spriteSheet = this.getSpriteSheet(tile.type);
+			const spritePos = this.getSpriteSheetPosition(tile.variation);
 
-			drawImageTile(this.ctx, canvasPos.x, canvasPos.y, image);
+			this.ctx.drawImage(spriteSheet, spritePos.x, spritePos.y, spritePos.width, spritePos.height, canvasPos.x-55, canvasPos.y-55, 110, 110);
 		});
 	}
 
 	drawHoveringTile() {
-		const canvasPos = this.queries.currentHover.results.getMutableComponent(CanvasPosition);
+		const canvasPos = this.queries.currentHover.results[0].getMutableComponent(CanvasPosition);
 		drawHoveringTile(this.ctx, canvasPos.x, canvasPos.y);
 	}
 
 	drawSelectedTile() {
-		const canvasPos = this.queries.currentSelect.results.getMutableComponent(CanvasPosition);
-		drawHoveringTile(this.ctx, canvasPos.x, canvasPos.y);
+		const canvasPos = this.queries.currentSelect.results[0].getMutableComponent(CanvasPosition);
+		drawSelectedTile(this.ctx, canvasPos.x, canvasPos.y);
 	}
 
-	getTileImage(terrainType, variation) {
-		let image = {};
+	getSpriteSheet(type) {
+		const spriteSheets = this.queries.tileImages.results;
+		
+		for(let i=0; i<spriteSheets.length; i++) {
+			let image = spriteSheets[i].getMutableComponent(Image);
+			let imageType = image.name.substr(0, image.name.indexOf('.'));
 
-		const dirtEntities = this.queries.dirtImages.results;
-		const grassEntities = this.queries.grassImages.results;
-		const marsEntities = this.queries.marsImages.results;
-		const sandEntities = this.queries.sandImages.results;
-		const stoneEntities = this.queries.stoneImages.results;
-
-		switch (terrainType) {
-		case 0:
-			dirtEntities.some((entity) => {
-				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(
-					0,
-					imageComp.name.indexOf('.')
-				);
-
-				if (variationType == variation) {
-					image = imageComp.value;
-				}
-			});
-			break;
-		case 1:
-			grassEntities.some((entity) => {
-				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(
-					0,
-					imageComp.name.indexOf('.')
-				);
-
-				if (variationType == variation) {
-					image = imageComp.value;
-				}
-			});
-			break;
-		case 2:
-			marsEntities.some((entity) => {
-				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(
-					0,
-					imageComp.name.indexOf('.')
-				);
-
-				if (variationType == variation) {
-					image = imageComp.value;
-				}
-			});
-			break;
-		case 3:
-			sandEntities.some((entity) => {
-				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(
-					0,
-					imageComp.name.indexOf('.')
-				);
-
-				if (variationType == variation) {
-					image = imageComp.value;
-				}
-			});
-			break;
-		case 4:
-			stoneEntities.some((entity) => {
-				let imageComp = entity.getMutableComponent(Image);
-				let variationType = imageComp.name.substr(
-					0,
-					imageComp.name.indexOf('.')
-				);
-
-				if (variationType == variation) {
-					image = imageComp.value;
-				}
-			});
-			break;
+			if (imageType == type) {
+				return image.value;
+			}
 		}
 
-		return image;
+		console.error('Could not find corresponding sprite sheet from given type');
+		return 'Error';
+	}
+
+	getSpriteSheetPosition(variation) {
+		let position = {};
+		position.width = 210;
+		position.height = 210;
+		position.x = (variation % 9) * 210;
+		position.y = (Math.floor(variation / 9)) * 210;
+
+		return position;
+	}
+
+	updateTiles() {
+		
 	}
 }
 
@@ -145,5 +91,8 @@ TileSystem.queries = {
 	},
 	tiles: {
 		components: [Tile]
+	},
+	tileImages: {
+		components: [Image, TileImage]
 	}
 };

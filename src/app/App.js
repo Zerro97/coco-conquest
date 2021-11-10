@@ -58,6 +58,12 @@ function registerSystems() {
 			canvasWidth: canvas.width, 
 			canvasHeight: canvas.height
 		})
+		.registerSystem(System.TileSystem, {
+			priority: 9, 
+			ctx: ctx,
+			canvasWidth: canvas.width, 
+			canvasHeight: canvas.height
+		})
 		.registerSystem(System.LoaderSystem, {
 			priority: -10, 
 
@@ -72,7 +78,6 @@ function registerSystems() {
 			canvasWidth: canvas.width, 
 			canvasHeight: canvas.height
 		})
-		.registerSystem(System.TileSystem)
 		.registerSystem(System.UnitSystem);
 }
 

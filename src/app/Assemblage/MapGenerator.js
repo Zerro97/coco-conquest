@@ -66,11 +66,9 @@ export class MapGenerator {
 					.addComponent(Hoverable, {type: Shape.HEXAGON})
 					.addComponent(Selectable, {type: Shape.HEXAGON})
 					.addComponent(Tile, {
-						type: this.tileMap[row][col][0],
-						terrain: this.tileMap[row][col][1],
-						variation: this.tileMap[row][col][2],
-						status: 'seen',
-						size: 50
+						base: this.tileMap[row][col][0],
+						type: this.tileMap[row][col][1],
+						variation: this.tileMap[row][col][2]
 					});
 			}
 		}

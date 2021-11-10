@@ -50,7 +50,7 @@ export class RenderSystem extends System {
 		const screenStatus =
       this.queries.screenStatus.results[0].getComponent(ScreenStatus);
 
-		this.clearCanvas();
+		//this.clearCanvas();
 
 		this.ctx.save();
 
@@ -61,7 +61,6 @@ export class RenderSystem extends System {
 		this.ctx.rotate(screenStatus.rotate);
 
 		// Drawing order matters
-		this.drawTiles();
 		this.drawBuildings();
 		this.drawUnits();
 
@@ -75,10 +74,6 @@ export class RenderSystem extends System {
 
 	// Clear canvas screen
 	clearCanvas() {
-		const backgroundEntity = this.queries.backgroundImages.results[1];
-		const backgroundImage = backgroundEntity.getComponent(Image);
-
-		//this.ctx.drawImage(backgroundImage.value, 0, 0, this.canvasWidth, this.canvasHeight);
 		this.ctx.fillStyle = '#111111';
 		this.ctx.fillRect(0,0, this.canvasWidth, this.canvasHeight);
 	}
@@ -388,9 +383,6 @@ RenderSystem.queries = {
 	},
 	images: {
 		components: [Image],
-	},
-	backgroundImages: {
-		components: [BackgroundImage],
 	},
 	popup: {
 		components: [DamagePopup, Timer, MapPosition, CanvasPosition],

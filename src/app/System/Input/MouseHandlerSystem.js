@@ -19,6 +19,8 @@ export class MouseHandlerSystem extends System {
 
 		// Loop through all the hoverable objects
 		this.queries.hoverableObjects.results.forEach((object) => {
+			object.removeComponent(CurrentHover);
+
 			let objectPosition = object.getMutableComponent(CanvasPosition);
 			let objectType = object.getMutableComponent(Hoverable).type;
 
@@ -26,25 +28,27 @@ export class MouseHandlerSystem extends System {
 				case Shape.RECTANGLE: {
 					let size = object.getComponent(Size);
 					if(isInsideRectangle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, size.width, size.height)) {
-						object.addComponent(CurrentHover);
+						if(!object.hasComponent(CurrentHover)) {
+							object.addComponent(CurrentHover);
+						}
 					}
 					break;
 				}
 				case Shape.CIRCLE: {
 					let radius = object.getMutableComponent(Radius);
 					if(isInsideCircle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, radius)) {
-						object.addComponent(CurrentHover);
+						if(!object.hasComponent(CurrentHover)) {
+							object.addComponent(CurrentHover);
+						}
 					}
 					break;
 				}
 				case Shape.HEXAGON: {
-					if(isInsideHexagon(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, 50)) {
-						object.addComponent(CurrentHover);
+					if(isInsideHexagon(objectPosition.x, objectPosition.y-50, mouseTransX, mouseTransY, 50)) {
+						if(!object.hasComponent(CurrentHover)) {
+							object.addComponent(CurrentHover);
+						}
 					}
-					break;
-				}
-				default: {
-					object.removeComponent(CurrentHover);
 					break;
 				}
 			}
@@ -66,20 +70,26 @@ export class MouseHandlerSystem extends System {
 				case Shape.RECTANGLE: {
 					let size = object.getComponent(Size);
 					if(isInsideRectangle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, size.width, size.height)) {
-						object.addComponent(CurrentSelect);
+						if(!object.hasComponent(CurrentSelect)) {
+							object.addComponent(CurrentSelect);
+						}
 					}
 					break;
 				}
 				case Shape.CIRCLE: {
 					let radius = object.getMutableComponent(Radius);
 					if(isInsideCircle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, radius)) {
-						object.addComponent(CurrentSelect);
+						if(!object.hasComponent(CurrentSelect)) {
+							object.addComponent(CurrentSelect);
+						}
 					}
 					break;
 				}
 				case Shape.HEXAGON: {
 					if(isInsideHexagon(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, 50)) {
-						object.addComponent(CurrentSelect);
+						if(!object.hasComponent(CurrentSelect)) {
+							object.addComponent(CurrentSelect);
+						}
 					}
 					break;
 				}

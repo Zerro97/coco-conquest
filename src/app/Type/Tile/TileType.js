@@ -23,19 +23,20 @@
  * 17: Valley Dense No Spot
  * 18: Valley Sparse Spot
  * 19: Valley Sparse No Spot
+ *
+ * 20: Moor Dense Spot
+ * 21: Moor Dense No Spot
+ * 22: Moor Sparse Spot
+ * 23: Moor Sparse No Spot
  * 
- * 20: Mountain Connifer
- * 21: Mountain Deciduous
- * 22: Mountain Grassland
- * 23: Mountain Moor
+ * 24: Mountain Connifer
+ * 25: Mountain Deciduous
+ * 26: Mountain Grassland
+ * 27: Mountain Moor
  * 
- * 24: Moor Dense Spot
- * 25: Moor Dense No Spot
- * 26: Moor Sparse Spot
- * 27: Moor Sparse No Spot
- * 
- * 28: Ocean Wave
- * 29: Ocean No Wave
+ * 28: Ocean Big Wave
+ * 29: Ocean Small Wave
+ * 30: Ocean No Wave
  * 
  * 30: City Spot
  * 31: City No Spot
@@ -66,19 +67,20 @@ export const TileType = {
     VAL_SPARSE_SPOT: 18,
     VAL_SPARSE_NONE: 19,
 
-    MOU_DENSE_SPOT: 20,
-    MOU_DENSE_NONE: 21,
-    MOU_SPARSE_SPOT: 22,
-    MOU_SPARSE_NONE: 23,
+    MOO_DENSE_SPOT: 20,
+    MOO_DENSE_NONE: 21,
+    MOO_SPARSE_SPOT: 22,
+    MOO_SPARSE_NONE: 23,
 
-    MOO_DENSE_SPOT: 24,
-    MOO_DENSE_NONE: 25,
-    MOO_SPARSE_SPOT: 26,
-    MOO_SPARSE_NONE: 27,
+    MOUNTAIN_CONIFER: 24,
+    MOUNTAIN_DECIDUOUS: 25,
+    MOUNTAIN_GRASS: 26,
+    MOUNTAIN_MOOR: 27,
 
-    OCEAN_WAVE: 28,
-    OCEAN_NONE: 29,
+    OCEAN_BIG_WAVE: 28,
+    OCEAN_SMALL_WAVE: 29,
+    OCEAN_PLAIN: 30,
 
-    CITY_SPOT: 30,
-    CITY_NONE: 31,
+    CITY_SPOT: 31,
+    CITY_NONE: 32,
 };
