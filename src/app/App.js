@@ -31,13 +31,11 @@ ctx.fillText('Loading...', canvas.width/2, canvas.height/2);
 // Load all images
 let imageLoader = new ImageLoader(world);
 
-console.log('in1');
 let tileImages = await imageLoader.loadTileImages();
 let unitImages = await imageLoader.loadUnitImages();
 let buildingImages = await imageLoader.loadBuildingImages();
 let iconImages = await imageLoader.loadIconImages();
 let backgroundImages = await imageLoader.loadBackgroundImages();
-console.log('in2');
 
 // Register components 
 function registerComponents() {
