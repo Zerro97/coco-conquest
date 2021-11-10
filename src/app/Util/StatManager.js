@@ -1,4 +1,4 @@
-import * as Stat from '../Type/Stats';
+import * as Stat from "../Type/Stats";
 
 export class StatManager {
 	constructor() {
@@ -21,6 +21,6 @@ export class StatManager {
 			return this.availableUnits[type];
 		}
 		
-		console.warn('Given unit type does not exist');
+		console.warn("Given unit type does not exist");
 	}
 }

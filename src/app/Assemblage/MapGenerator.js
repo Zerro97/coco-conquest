@@ -1,6 +1,6 @@
-import { Tile, Unit, Health, Damage, Sight, Range, Speed, MapPosition, Object, Hoverable, Selectable, CanvasPosition } from '../Component';
-import { cubeToPixel, evenrToCube, StatManager } from '../Util';
-import { ObjectType, Shape } from '../Type';
+import { Tile, Unit, Health, Damage, Sight, Range, Speed, MapPosition, Object, Hoverable, Selectable, CanvasPosition } from "../Component";
+import { cubeToPixel, evenrToCube, StatManager } from "../Util";
+import { ObjectType, Shape, TileSize } from "../Type";
 
 export class MapGenerator {
 	constructor(world) {
@@ -29,7 +29,7 @@ export class MapGenerator {
 		if(Array.isArray(map) && Array.isArray(map[0])) {
 			this.tileMap = map;
 		} else {
-			console.error('Map has to be 2d array');
+			console.error("Map has to be 2d array");
 		}
 	}
 
@@ -37,7 +37,7 @@ export class MapGenerator {
 		if(Array.isArray(map) && Array.isArray(map[0])) {
 			this.unitMap = map;
 		} else {
-			console.error('Map has to be 2d array');
+			console.error("Map has to be 2d array");
 		}
 	}
 
@@ -45,7 +45,7 @@ export class MapGenerator {
 		if(Array.isArray(map) && Array.isArray(map[0])) {
 			this.buildingMap = map;
 		} else {
-			console.error('Map has to be 2d array');
+			console.error("Map has to be 2d array");
 		}
 	}
 
@@ -56,7 +56,7 @@ export class MapGenerator {
 		for(let row=0; row<this.tileMap.length; row++) {
 			for(let col=0; col<this.tileMap[0].length; col++) {
 				let cube = evenrToCube(row, col);
-				let pixel = cubeToPixel(cube.x, cube.z, 50);
+				let pixel = cubeToPixel(cube.x, cube.z, TileSize.REGULAR);
 
 				this.world
 					.createEntity()
@@ -105,7 +105,7 @@ export class MapGenerator {
 		for(let row=0; row<this.unitMap.length; row++) {
 			for(let col=0; col<this.unitMap[0].length; col++) {
 				if(this.unitMap[row][col] !== -1) {
-					console.log('in');
+					console.log("in");
 				}
 			}
 		}

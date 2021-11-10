@@ -1,5 +1,5 @@
 export const ScoutStat = {
-	NAME: 'Scout',
+	NAME: "Scout",
 	TYPE: 0,
 	DAMAGE: 1,
 	HEALTH: 5,

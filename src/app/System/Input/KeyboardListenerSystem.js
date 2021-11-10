@@ -1,5 +1,5 @@
-import { System } from '../../Library/Ecsy';
-import { Tile, Unit, Building, MapPosition, Object, Hud, ScreenStatus } from '../../Component';
+import { System } from "../../Library/Ecsy";
+import { Tile, Unit, Building, MapPosition, Object, Hud, ScreenStatus } from "../../Component";
 
 /**
  * Handles all the events that could happen when 
@@ -8,7 +8,7 @@ import { Tile, Unit, Building, MapPosition, Object, Hud, ScreenStatus } from '..
 export class KeyboardListenerSystem extends System {
 	// This method will get called on every frame by default
 	execute(delta, time) {
-		document.addEventListener('keydown', e => {
+		document.addEventListener("keydown", e => {
 			this.handleTranslation(e.key);
 		});
 
@@ -21,16 +21,16 @@ export class KeyboardListenerSystem extends System {
 		const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
 
 		switch(key) {
-		case 'a':
+		case "a":
 			screenStatus.x -= 10;
 			break;
-		case 'd':
+		case "d":
 			screenStatus.x += 10;
 			break;
-		case 'w':
+		case "w":
 			screenStatus.y -= 10;
 			break;
-		case 's':
+		case "s":
 			screenStatus.y += 10;
 			break;
 		}

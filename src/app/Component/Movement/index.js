@@ -1,2 +1,2 @@
-export { Velocity } from './Velocity.js';
-export { Acceleration } from './Acceleration.js';
+export { Velocity } from "./Velocity.js";
+export { Acceleration } from "./Acceleration.js";

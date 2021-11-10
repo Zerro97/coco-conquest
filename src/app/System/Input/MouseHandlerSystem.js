@@ -1,7 +1,7 @@
-import { System } from '../../Library/Ecsy';
-import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, Radius, ScreenStatus, Selectable, Size } from '../../Component';
-import { applyTransformation, isInsideCircle, isInsideHexagon, isInsideRectangle } from '../../Util';
-import { Shape } from '../../Type';
+import { System } from "../../Library/Ecsy";
+import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, Radius, ScreenStatus, Selectable, Size } from "../../Component";
+import { applyTransformation, isInsideCircle, isInsideHexagon, isInsideRectangle } from "../../Util";
+import { Shape, TileSize } from "../../Type";
 
 /**
  * Store mouse event data to entity
@@ -44,7 +44,7 @@ export class MouseHandlerSystem extends System {
 					break;
 				}
 				case Shape.HEXAGON: {
-					if(isInsideHexagon(objectPosition.x, objectPosition.y-50, mouseTransX, mouseTransY, 50)) {
+					if(isInsideHexagon(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, TileSize.REGULAR)) {
 						if(!object.hasComponent(CurrentHover)) {
 							object.addComponent(CurrentHover);
 						}
@@ -86,7 +86,7 @@ export class MouseHandlerSystem extends System {
 					break;
 				}
 				case Shape.HEXAGON: {
-					if(isInsideHexagon(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, 50)) {
+					if(isInsideHexagon(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, TileSize.REGULAR)) {
 						if(!object.hasComponent(CurrentSelect)) {
 							object.addComponent(CurrentSelect);
 						}

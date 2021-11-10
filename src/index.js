@@ -1,8 +1,8 @@
 // Inject css into DOM using webpack
-import './index.css';
+import "./index.css";
 
 // From Ecsy Library
-import { world } from './app/App';
+import { world } from "./app/App";
 
 // Run!
 function run() {

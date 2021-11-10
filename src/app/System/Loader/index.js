@@ -1,1 +1,1 @@
-export * from './LoaderSystem.js';
+export * from "./LoaderSystem.js";

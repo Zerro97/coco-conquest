@@ -5,7 +5,7 @@ import {
 	IconImage, 
 	TileImage,
 	BackgroundImage
-} from '../Component';
+} from "../Component";
 
 export class ImageLoader {
 	constructor(world) {
@@ -20,7 +20,7 @@ export class ImageLoader {
 
 	importAll(r) {
 		let images = {};
-		r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+		r.keys().map((item, index) => { images[item.replace("./", "")] = r(item); });
 
 		return images;
 	}
@@ -29,20 +29,20 @@ export class ImageLoader {
 		const images = {};
 
 		switch(type) {
-		case 'tileImages':
-			this[type] = this.importAll(require.context('../Assets/Images/Tiles', false, /\.(png|jpe?g|svg)$/));
+		case "tileImages":
+			this[type] = this.importAll(require.context("../Assets/Images/Tiles", false, /\.(png|jpe?g|svg)$/));
 			break;
-		case 'iconImages':
-			this[type] = this.importAll(require.context('../Assets/Images/Icons', false, /\.(png|jpe?g|svg)$/));
+		case "iconImages":
+			this[type] = this.importAll(require.context("../Assets/Images/Icons", false, /\.(png|jpe?g|svg)$/));
 			break;
-		case 'unitImages':
-			this[type] = this.importAll(require.context('../Assets/Images/Units', false, /\.(png|jpe?g|svg)$/));
+		case "unitImages":
+			this[type] = this.importAll(require.context("../Assets/Images/Units", false, /\.(png|jpe?g|svg)$/));
 			break;
-		case 'buildingImages':
-			this[type] = this.importAll(require.context('../Assets/Images/Buildings', false, /\.(png|jpe?g|svg)$/));
+		case "buildingImages":
+			this[type] = this.importAll(require.context("../Assets/Images/Buildings", false, /\.(png|jpe?g|svg)$/));
 			break;
-		case 'backgroundImages':
-			this[type] = this.importAll(require.context('../Assets/Images/Background', false, /\.(png|jpe?g|svg)$/));
+		case "backgroundImages":
+			this[type] = this.importAll(require.context("../Assets/Images/Background", false, /\.(png|jpe?g|svg)$/));
 			break;
 		}
 		
@@ -60,23 +60,23 @@ export class ImageLoader {
 	}
 
 	loadTileImages() {
-		return this.loadImages('tileImages');
+		return this.loadImages("tileImages");
 	}
 
 	loadUnitImages() {
-		return this.loadImages('unitImages');
+		return this.loadImages("unitImages");
 	}
 
 	loadBuildingImages() {
-		return this.loadImages('buildingImages');
+		return this.loadImages("buildingImages");
 	}
 
 	loadIconImages() {
-		return this.loadImages('iconImages');
+		return this.loadImages("iconImages");
 	}
 
 	loadBackgroundImages() {
-		return this.loadImages('backgroundImages');
+		return this.loadImages("backgroundImages");
 	}
 
 	generateImage(component, type) {
@@ -89,22 +89,22 @@ export class ImageLoader {
 	}
 
 	generateTileImage() {
-		this.generateImage(TileImage, 'tileImages');
+		this.generateImage(TileImage, "tileImages");
 	}
 
 	generateUnitImage() {
-		this.generateImage(UnitImage, 'unitImages');
+		this.generateImage(UnitImage, "unitImages");
 	}
 
 	generateBuildingImage() {
-		this.generateImage(BuildingImage, 'buildingImages');
+		this.generateImage(BuildingImage, "buildingImages");
 	}
 
 	generateIconImage() {
-		this.generateImage(IconImage, 'iconImages');
+		this.generateImage(IconImage, "iconImages");
 	}
 
 	generateBackgroundImage() {
-		this.generateImage(BackgroundImage, 'backgroundImages');
+		this.generateImage(BackgroundImage, "backgroundImages");
 	}
 }

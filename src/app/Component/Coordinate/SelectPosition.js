@@ -1,4 +1,4 @@
-import { Component, Types } from '../../Library/Ecsy';
+import { Component, Types } from "../../Library/Ecsy";
 
 export class SelectPosition extends Component {}
 

@@ -1,32 +1,32 @@
-import 'regenerator-runtime/runtime';
+import "regenerator-runtime/runtime";
 
 // ECS
-import { World } from './Library/Ecsy';
-import * as Component from './Component';
-import * as System from './System';
+import { World } from "./Library/Ecsy";
+import * as Component from "./Component";
+import * as System from "./System";
 
 // Map
-import tileMap from './Assets/Map/Tile/map_1.json';
-import unitMap from './Assets/Map/Unit/map_1.json';
-import buildingMap from './Assets/Map/Building/map_1.json';
+import tileMap from "./Assets/Map/Tile/map_1.json";
+import unitMap from "./Assets/Map/Unit/map_1.json";
+import buildingMap from "./Assets/Map/Building/map_1.json";
 
 // Loader & Generator
-import { ImageLoader } from './Util/ImageLoader';
-import { MapGenerator, UnitGenerator } from './Assemblage';
+import { ImageLoader } from "./Util/ImageLoader";
+import { MapGenerator, UnitGenerator } from "./Assemblage";
 
 // Initialize the world
 let world = new World({ entityPoolSize: 10000 });
 
 // Get canvas from DOM
-let canvas = document.querySelector('#main');
+let canvas = document.querySelector("#main");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-let ctx = canvas.getContext('2d');
+let ctx = canvas.getContext("2d");
 
 // Display loading text
-ctx.font = '50px Arial';
-ctx.textAlign = 'center';
-ctx.fillText('Loading...', canvas.width/2, canvas.height/2);
+ctx.font = "50px Arial";
+ctx.textAlign = "center";
+ctx.fillText("Loading...", canvas.width/2, canvas.height/2);
 
 // Load all images
 let imageLoader = new ImageLoader(world);
@@ -47,13 +47,40 @@ function registerComponents() {
 // Register systems 
 function registerSystems() {
 	world
-		.registerSystem(System.KeyboardListenerSystem)
-		.registerSystem(System.MouseListenerSystem)
-		.registerSystem(System.MouseHandlerSystem)
-		.registerSystem(System.MovementSystem)
-		.registerSystem(System.ActionSystem)
-		.registerSystem(System.RenderSystem, {
-			priority: 10, 
+    .registerSystem(System.LoaderSystem, {
+      priority: -10, 
+
+      tileImages: tileImages,
+      iconImages: iconImages, 
+      unitImages: unitImages,
+      buildingImages: buildingImages, 
+      backgroundImages: backgroundImages,
+
+      mapWidth: tileMap.length, 
+      mapHeight: tileMap[0].length, 
+      canvasWidth: canvas.width, 
+      canvasHeight: canvas.height
+    })
+		.registerSystem(System.KeyboardListenerSystem, {
+      priority: -10
+    })
+		.registerSystem(System.MouseListenerSystem, {
+      priority: -10
+    })
+		.registerSystem(System.MouseHandlerSystem, {
+      priority: 0
+    })
+		.registerSystem(System.MovementSystem, {
+      priority: 5
+    })
+		.registerSystem(System.ActionSystem, {
+      priority: 5
+    })
+    .registerSystem(System.UnitSystem, {
+      priority: 5
+    })
+    .registerSystem(System.ScreenSystem, {
+			priority: 8, 
 			ctx: ctx, 
 			canvasWidth: canvas.width, 
 			canvasHeight: canvas.height
@@ -64,21 +91,18 @@ function registerSystems() {
 			canvasWidth: canvas.width, 
 			canvasHeight: canvas.height
 		})
-		.registerSystem(System.LoaderSystem, {
-			priority: -10, 
-
-			tileImages: tileImages,
-			iconImages: iconImages, 
-			unitImages: unitImages,
-			buildingImages: buildingImages, 
-			backgroundImages: backgroundImages,
-
-			mapWidth: tileMap.length, 
-			mapHeight: tileMap[0].length, 
+    .registerSystem(System.RenderSystem, {
+			priority: 10, 
+			ctx: ctx, 
 			canvasWidth: canvas.width, 
 			canvasHeight: canvas.height
 		})
-		.registerSystem(System.UnitSystem);
+    .registerSystem(System.HudSystem, {
+			priority: 11, 
+			ctx: ctx, 
+			canvasWidth: canvas.width, 
+			canvasHeight: canvas.height
+		});
 }
 
 // Register systems 

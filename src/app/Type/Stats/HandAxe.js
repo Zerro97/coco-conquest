@@ -1,5 +1,5 @@
 export const HandAxeStat = {
-	NAME: 'HandAxe',
+	NAME: "HandAxe",
 	TYPE: 3,
 	DAMAGE: 1,
 	HEALTH: 5,

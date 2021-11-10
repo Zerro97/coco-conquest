@@ -1,4 +1,4 @@
-import { System } from '../../Library/Ecsy';
+import { System } from "../../Library/Ecsy";
 import {
 	Hud,
 	Tile,
@@ -19,21 +19,22 @@ import {
 	SelectedTile,
 	SelectedUnit,
 	SelectedBuilding
-} from '../../Component';
+} from "../../Component";
 import {
 	cubeDistance,
 	cubeToPixel,
 	isInsideHexagon,
 	applyTransformation,
 	isInsideCircle,
-} from '../../Util';
+} from "../../Util";
 import {
 	ActionType,
 	ObjectType,
 	AttackType,
 	MovementType,
 	TileStatus,
-} from '../../Type';
+  TileSize,
+} from "../../Type";
 
 /**
  * Handles all the events that could happen when
@@ -116,7 +117,7 @@ export class ActionSystem extends System {
 		const actionStatus = actionEntity.getMutableComponent(ActionStatus);
 		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
 
-		const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, 50);
+		const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, TileSize.REGULAR);
 		const attackPos = { x: tilePos.x - 25, y: tilePos.y - 65 };
 		const movementPos = { x: tilePos.x + 25, y: tilePos.y - 65 };
 
@@ -148,7 +149,7 @@ export class ActionSystem extends System {
 		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
 		const attackPosition = actionEntity.getMutableComponent(AttackPosition);
 
-		const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, 50);
+		const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, TileSize.REGULAR);
 		const cancelPos = { x: tilePos.x, y: tilePos.y - 75 };
 		const mouseTilePos = {};
 
@@ -194,7 +195,7 @@ export class ActionSystem extends System {
 		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
 		const movePosition = actionEntity.getMutableComponent(MovePosition);
 
-		const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, 50);
+		const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, TileSize.REGULAR);
 		const cancelPos = { x: tilePos.x, y: tilePos.y - 75 };
 		const mouseTilePos = {};
 

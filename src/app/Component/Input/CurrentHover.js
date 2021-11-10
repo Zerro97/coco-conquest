@@ -1,7 +1,3 @@
-import { Component, Types } from '../../Library/Ecsy';
+import { TagComponent } from "../../Library/Ecsy";
 
-export class CurrentHover extends Component {}
-
-CurrentHover.schema = {
-	value: { type: Types.Number },
-};
+export class CurrentHover extends TagComponent {}

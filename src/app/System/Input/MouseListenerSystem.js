@@ -1,6 +1,6 @@
-import { System } from '../../Library/Ecsy';
-import { MouseStatus, ScreenStatus } from '../../Component';
-import { applyTransformation } from '../../Util';
+import { System } from "../../Library/Ecsy";
+import { MouseStatus, ScreenStatus } from "../../Component";
+import { applyTransformation } from "../../Util";
 
 /**
  * Store mouse event data to entity
@@ -11,14 +11,14 @@ export class MouseListenerSystem extends System {
 		let evCache = new Array();
 		let prevDiff = { value: -1 };
 
-		document.addEventListener('pointerdown', (e) => {
+		document.addEventListener("pointerdown", (e) => {
 			const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
 
 			mouseStatus.isMouseDown = true;
 			evCache.push(e);
 		});
 
-		document.addEventListener('pointermove', (e) => {
+		document.addEventListener("pointermove", (e) => {
 			const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
 			mouseStatus.x = e.clientX;
 			mouseStatus.y = e.clientY;
@@ -38,7 +38,7 @@ export class MouseListenerSystem extends System {
 			this.checkPinchGesture(e, evCache, prevDiff);
 		});
 
-		document.addEventListener('pointerup', (e) => {
+		document.addEventListener("pointerup", (e) => {
 			const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
 			mouseStatus.isMouseUp = true;
 
@@ -52,7 +52,7 @@ export class MouseListenerSystem extends System {
 			if (evCache.length < 2) prevDiff.value = -1;
 		});
 
-		window.addEventListener('wheel', (e) => {
+		window.addEventListener("wheel", (e) => {
 			// -1 for up, 1 for down
 			let scrollDirection = parseInt(e.deltaY * 0.01);
 			let scaleAmount = scrollDirection * 0.1;
@@ -61,7 +61,7 @@ export class MouseListenerSystem extends System {
 			if ( scrollDirection === -1 && screenStatus.scaleX > 0.5 && screenStatus.scaleY > 0.5 ) {
 				screenStatus.scaleX += scaleAmount;
 				screenStatus.scaleY += scaleAmount;
-			} else if (scrollDirection === 1 && screenStatus.scaleX < 1.5 && screenStatus.scaleY < 1.5) {
+			} else if (scrollDirection === 1 && screenStatus.scaleX < 5.0 && screenStatus.scaleY < 5.0) {
 				screenStatus.scaleX += scaleAmount;
 				screenStatus.scaleY += scaleAmount;
 			}

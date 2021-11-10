@@ -17,13 +17,13 @@
  * @param {Boolean} [stroke = true] Whether to stroke the rectangle.
  */
 export function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
-	if (typeof stroke === 'undefined') {
+	if (typeof stroke === "undefined") {
 		stroke = true;
 	}
-	if (typeof radius === 'undefined') {
+	if (typeof radius === "undefined") {
 		radius = 5;
 	}
-	if (typeof radius === 'number') {
+	if (typeof radius === "number") {
 		radius = {tl: radius, tr: radius, br: radius, bl: radius};
 	} else {
 		var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
@@ -51,13 +51,13 @@ export function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
 }
 
 export function drawSelectIcon(ctx, x, y, swordImage, shoeImage) {
-	ctx.fillStyle = 'red';
+	ctx.fillStyle = "red";
 	ctx.beginPath();
 	ctx.arc(x -25, y - 65, 20, 0, Math.PI*2, true);   
 	ctx.closePath();
 	ctx.fill();
 
-	ctx.fillStyle = 'blue';
+	ctx.fillStyle = "blue";
 	ctx.beginPath();
 	ctx.arc(x + 25, y - 65, 20, 0, Math.PI*2, true);   
 	ctx.closePath();
@@ -81,15 +81,15 @@ export function drawSelectIcon(ctx, x, y, swordImage, shoeImage) {
 }
 
 export function drawCancelIcon(ctx, x, y) {
-	ctx.fillStyle = 'red';
+	ctx.fillStyle = "red";
 	ctx.beginPath();
 	ctx.arc(x, y - 75, 20, 0, Math.PI*2, true);   
 	ctx.closePath();
 	ctx.fill();
 
-	ctx.fillStyle = 'white';
-	ctx.font = '25px serif';
-	ctx.textAlign = 'center';
-	ctx.textBaseline = 'middle';
-	ctx.fillText('X', x, y - 75);
+	ctx.fillStyle = "white";
+	ctx.font = "25px serif";
+	ctx.textAlign = "center";
+	ctx.textBaseline = "middle";
+	ctx.fillText("X", x, y - 75);
 }

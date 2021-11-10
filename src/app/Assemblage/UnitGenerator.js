@@ -1,4 +1,4 @@
-import { Unit, Health, Damage, Sight, Range, Speed, MapPosition } from '../Component';
+import { Unit, Health, Damage, Sight, Range, Speed, MapPosition } from "../Component";
 
 /**
  * Used for registering tile entity to the world

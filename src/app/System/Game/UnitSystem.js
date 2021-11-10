@@ -1,4 +1,4 @@
-import { System } from '../../Library/Ecsy';
+import { System } from "../../Library/Ecsy";
 import {
 	Block,
 	Timer,
@@ -17,9 +17,9 @@ import {
 	SelectedUnit,
 	DamagePopup,
 	Velocity
-} from '../../Component';
-import { ActionType, UnitType } from '../../Type';
-import { cubeToPixel } from '../../Util';
+} from "../../Component";
+import { ActionType, TileSize, UnitType } from "../../Type";
+import { cubeToPixel } from "../../Util";
 
 export class UnitSystem extends System {
 	execute(delta, time) {
@@ -56,7 +56,7 @@ export class UnitSystem extends System {
 					this.world
 						.createEntity()
 						.addComponent(MapPosition, {x: mapPos.x, y: mapPos.y, z: mapPos.z})
-						.addComponent(CanvasPosition, cubeToPixel(mapPos.x, mapPos.z, 50))
+						.addComponent(CanvasPosition, cubeToPixel(mapPos.x, mapPos.z, TileSize.REGULAR))
 						.addComponent(Velocity, {x: 0, y: -0.03})
 						.addComponent(DamagePopup, {value: damage.value})
 						.addComponent(Timer, {maxTime: 50, curTime: 0});

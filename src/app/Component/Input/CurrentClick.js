@@ -1,3 +1,3 @@
 import { TagComponent } from "../../Library/Ecsy";
 
-export class CurrentSelect extends TagComponent {}
+export class CurrentClick extends TagComponent {}

@@ -1,98 +1,114 @@
-import { System } from '../../Library/Ecsy';
-import { Tile, MapPosition, CurrentHover, CanvasPosition, TileImage, Image } from '../../Component';
+import { System } from "../../Library/Ecsy";
 import {
-	cubeToPixel,
-	drawHoveringTile,
-	drawSelectedTile,
-	drawImageTile
-} from '../../Util';
-import { TileSize } from '../../Type';
+  Tile,
+  MapPosition,
+  CurrentHover,
+  CanvasPosition,
+  TileImage,
+  Image,
+} from "../../Component";
+import {
+  cubeToPixel,
+  drawHoveringTile,
+  drawSelectedTile,
+  drawImageTile,
+} from "../../Util";
+import { TileSize } from "../../Type";
 
 export class TileSystem extends System {
-	// This method will get called on every frame by default
-	execute(delta, time) {
-		this.drawTiles();
-		this.updateTiles();
-	}
+  // This method will get called on every frame by default
+  execute(delta, time) {
+    this.drawTiles();
+    this.updateTiles();
+  }
 
-	drawTiles() {
-		this.clearCanvas();
-		this.drawTileImage();
-		this.drawHoveringTile();
-		this.drawSelectedTile();
-	}
+  drawTiles() {
+    this.drawTileImage();
+    this.drawHoveringTile();
+    this.drawSelectedTile();
+  }
 
-	clearCanvas() {
-		this.ctx.fillStyle = '#111111';
-		this.ctx.fillRect(0,0, this.canvasWidth, this.canvasHeight);
-	}
+  drawTileImage() {
+    this.queries.tiles.results.forEach((entity) => {
+      let tile = entity.getMutableComponent(Tile);
+      let tilePos = entity.getMutableComponent(MapPosition);
+      let canvasPos = cubeToPixel(tilePos.x, tilePos.z, TileSize.REGULAR);
 
-	drawTileImage() {
-		this.queries.tiles.results.forEach((entity) => {
-			let tile = entity.getMutableComponent(Tile);
-			let tilePos = entity.getMutableComponent(MapPosition);
-			let canvasPos = cubeToPixel(tilePos.x, tilePos.z, TileSize.REGULAR);
+      const spriteSheet = this.getSpriteSheet(tile.type);
+      const spritePos = this.getSpriteSheetPosition(tile.variation);
 
-			const spriteSheet = this.getSpriteSheet(tile.type);
-			const spritePos = this.getSpriteSheetPosition(tile.variation);
+      this.ctx.drawImage(
+        spriteSheet,
+        spritePos.x,
+        spritePos.y,
+        spritePos.width,
+        spritePos.height,
+        canvasPos.x - TileSize.REGULAR,
+        canvasPos.y - TileSize.REGULAR,
+        TileSize.REGULAR * 2,
+        TileSize.REGULAR * 2
+      );
+    });
+  }
 
-			this.ctx.drawImage(spriteSheet, spritePos.x, spritePos.y, spritePos.width, spritePos.height, canvasPos.x-55, canvasPos.y-55, 110, 110);
-		});
-	}
+  drawHoveringTile() {
+    const canvasPos = this.queries.currentHover.results[0]?.getMutableComponent(CanvasPosition);
 
-	drawHoveringTile() {
-		const canvasPos = this.queries.currentHover.results[0].getMutableComponent(CanvasPosition);
-		drawHoveringTile(this.ctx, canvasPos.x, canvasPos.y);
-	}
+    if(canvasPos) {
+      drawHoveringTile(this.ctx, canvasPos.x, canvasPos.y);
+    }
+  }
 
-	drawSelectedTile() {
-		const canvasPos = this.queries.currentSelect.results[0].getMutableComponent(CanvasPosition);
-		drawSelectedTile(this.ctx, canvasPos.x, canvasPos.y);
-	}
+  drawSelectedTile() {
+    const canvasPos = this.queries.currentSelect.results[0]?.getMutableComponent(CanvasPosition);
 
-	getSpriteSheet(type) {
-		const spriteSheets = this.queries.tileImages.results;
-		
-		for(let i=0; i<spriteSheets.length; i++) {
-			let image = spriteSheets[i].getMutableComponent(Image);
-			let imageType = image.name.substr(0, image.name.indexOf('.'));
+    if(canvasPos) {
+      drawSelectedTile(this.ctx, canvasPos.x, canvasPos.y);
+    }
+  }
 
-			if (imageType == type) {
-				return image.value;
-			}
-		}
+  getSpriteSheet(type) {
+    const spriteSheets = this.queries.tileImages.results;
 
-		console.error('Could not find corresponding sprite sheet from given type');
-		return 'Error';
-	}
+    for (let i = 0; i < spriteSheets.length; i++) {
+      let image = spriteSheets[i].getMutableComponent(Image);
+      let imageType = image.name.substr(0, image.name.indexOf("."));
 
-	getSpriteSheetPosition(variation) {
-		let position = {};
-		position.width = 210;
-		position.height = 210;
-		position.x = (variation % 9) * 210;
-		position.y = (Math.floor(variation / 9)) * 210;
+      if (imageType == type) {
+        return image.value;
+      }
+    }
 
-		return position;
-	}
+    console.error("Could not find corresponding sprite sheet from given type");
+    return "Error";
+  }
 
-	updateTiles() {
-		
-	}
+  getSpriteSheetPosition(variation) {
+    let position = {};
+
+    position.width = 210;
+    position.height = 210;
+    position.x = (variation % 9) * 210;
+    position.y = Math.floor(variation / 9) * 210;
+
+    return position;
+  }
+
+  updateTiles() {}
 }
 
 // Define a query of entities
 TileSystem.queries = {
-	currentHover: {
-		components: [CurrentHover, CanvasPosition, Tile]
-	},
-	currentSelect: {
-		components: [CurrentHover, CanvasPosition, Tile]
-	},
-	tiles: {
-		components: [Tile]
-	},
-	tileImages: {
-		components: [Image, TileImage]
-	}
+  currentHover: {
+    components: [CurrentHover, CanvasPosition, Tile],
+  },
+  currentSelect: {
+    components: [CurrentHover, CanvasPosition, Tile],
+  },
+  tiles: {
+    components: [Tile],
+  },
+  tileImages: {
+    components: [Image, TileImage],
+  },
 };

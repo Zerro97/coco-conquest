@@ -1,5 +1,5 @@
 export const PathfinderStat = {
-	NAME: 'Pathfinder',
+	NAME: "Pathfinder",
 	TYPE: 4,
 	DAMAGE: 1,
 	HEALTH: 5,

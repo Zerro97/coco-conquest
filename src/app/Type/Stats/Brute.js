@@ -1,5 +1,5 @@
 export const BruteStat = {
-	NAME: 'Brute',
+	NAME: "Brute",
 	TYPE: 2,
 	DAMAGE: 2,
 	HEALTH: 5,

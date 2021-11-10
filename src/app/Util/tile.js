@@ -1,3 +1,5 @@
+import { TileSize } from "../Type";
+
 /**
  * Given the center of hexagon (in canvas coordinate),
  * draw the hexagon based on that center
@@ -20,7 +22,7 @@ function drawHexagon(ctx, x, y, outColor, inColor) {
 	
 	ctx.beginPath();
 	
-	drawHexagonLine(ctx, x, y, 50);
+	drawHexagonLine(ctx, x, y, TileSize.REGULAR);
 	ctx.clip();
 	ctx.closePath();
 	ctx.lineWidth = 6;
@@ -33,32 +35,32 @@ function drawHexagon(ctx, x, y, outColor, inColor) {
 
 
 export function drawBaseTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, 'rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.01)');
+	drawHexagon(ctx, x, y, "rgba(255, 255, 255, 0.1)", "rgba(255, 255, 255, 0.01)");
 }
 
 export function drawHoveringTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, 'rgba(44, 92, 138, 0.2)', 'rgba(34, 34, 34, 0.2)');
+	drawHexagon(ctx, x, y, "rgba(44, 92, 138, 0.2)", "rgba(34, 34, 34, 0.2)");
 }
 
 export function drawSelectedTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, 'rgba(44, 92, 138, 0.3)', 'rgba(36, 50, 64, 0.3)');
+	drawHexagon(ctx, x, y, "rgba(44, 92, 138, 0.3)", "rgba(36, 50, 64, 0.3)");
 }
 
 export function drawAttackingTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, 'rgba(255, 0, 0, 0.3)', 'rgba(255, 0, 0, 0.1)');
+	drawHexagon(ctx, x, y, "rgba(255, 0, 0, 0.3)", "rgba(255, 0, 0, 0.1)");
 }
 
 export function drawMovingTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, 'rgba(255, 255, 255, 0.3)', 'rgba(255, 255, 255, 0.1)');
+	drawHexagon(ctx, x, y, "rgba(255, 255, 255, 0.3)", "rgba(255, 255, 255, 0.1)");
 }
 
 export function drawImageTile(ctx, x, y, image) {
 	ctx.save();
 	ctx.beginPath();
-	drawHexagonLine(ctx, x, y, 50);
+	drawHexagonLine(ctx, x, y, TileSize.REGULAR);
 	ctx.closePath();
 	ctx.clip();
-	ctx.drawImage(image, x - 50, y - 50, 100, 100);
+	ctx.drawImage(image, x - TileSize.REGULAR, y - TileSize.REGULAR, 100, 100);
 	ctx.restore();
 }
 
