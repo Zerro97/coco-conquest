@@ -53,18 +53,8 @@ export class MouseListenerSystem extends System {
 		});
 
 		window.addEventListener("wheel", (e) => {
-			// -1 for up, 1 for down
-			let scrollDirection = parseInt(e.deltaY * 0.01);
-			let scaleAmount = scrollDirection * 0.1;
-			let screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
-
-			if ( scrollDirection === -1 && screenStatus.scaleX > 0.5 && screenStatus.scaleY > 0.5 ) {
-				screenStatus.scaleX += scaleAmount;
-				screenStatus.scaleY += scaleAmount;
-			} else if (scrollDirection === 1 && screenStatus.scaleX < 5.0 && screenStatus.scaleY < 5.0) {
-				screenStatus.scaleX += scaleAmount;
-				screenStatus.scaleY += scaleAmount;
-			}
+      const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+			mouseStatus.wheelY = e.deltaY * 0.001;
 		});
 
 		// Stopping this system once listener is registered
