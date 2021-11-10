@@ -69,8 +69,6 @@ export class LoaderSystem extends System {
 
 		screenStatus.x = -dx/2;
 		screenStatus.y = -dy/2;
-    screenStatus.scaleX = 2;
-    screenStatus.scaleY = 2;
 	}
 }
 

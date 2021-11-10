@@ -47,43 +47,43 @@ function registerComponents() {
 // Register systems 
 function registerSystems() {
 	world
-    .registerSystem(System.LoaderSystem, {
-      priority: -10, 
+		.registerSystem(System.LoaderSystem, {
+			priority: -99, 
 
-      tileImages: tileImages,
-      iconImages: iconImages, 
-      unitImages: unitImages,
-      buildingImages: buildingImages, 
-      backgroundImages: backgroundImages,
+			tileImages: tileImages,
+			iconImages: iconImages, 
+			unitImages: unitImages,
+			buildingImages: buildingImages, 
+			backgroundImages: backgroundImages,
 
-      mapWidth: tileMap.length, 
-      mapHeight: tileMap[0].length, 
-      canvasWidth: canvas.width, 
-      canvasHeight: canvas.height
-    })
+			mapWidth: tileMap.length, 
+			mapHeight: tileMap[0].length, 
+			canvasWidth: canvas.width, 
+			canvasHeight: canvas.height
+		})
 		.registerSystem(System.KeyboardListenerSystem, {
-      priority: -10
-    })
+			priority: -10
+		})
 		.registerSystem(System.MouseListenerSystem, {
-      priority: -10
-    })
+			priority: -10
+		})
 		.registerSystem(System.MouseHandlerSystem, {
-      priority: 0
-    })
-		.registerSystem(System.MovementSystem, {
-      priority: 5
-    })
-		.registerSystem(System.ActionSystem, {
-      priority: 5
-    })
-    .registerSystem(System.UnitSystem, {
-      priority: 5
-    })
-    .registerSystem(System.ScreenSystem, {
-			priority: 8, 
+			priority: 0
+		})
+		.registerSystem(System.ScreenSystem, {
+			priority: 5, 
 			ctx: ctx, 
 			canvasWidth: canvas.width, 
 			canvasHeight: canvas.height
+		})
+		.registerSystem(System.MovementSystem, {
+			priority: 5
+		})
+		.registerSystem(System.ActionSystem, {
+			priority: 5
+		})
+		.registerSystem(System.UnitSystem, {
+			priority: 5
 		})
 		.registerSystem(System.TileSystem, {
 			priority: 9, 
@@ -91,13 +91,13 @@ function registerSystems() {
 			canvasWidth: canvas.width, 
 			canvasHeight: canvas.height
 		})
-    .registerSystem(System.RenderSystem, {
+		.registerSystem(System.RenderSystem, {
 			priority: 10, 
 			ctx: ctx, 
 			canvasWidth: canvas.width, 
 			canvasHeight: canvas.height
 		})
-    .registerSystem(System.HudSystem, {
+		.registerSystem(System.HudSystem, {
 			priority: 11, 
 			ctx: ctx, 
 			canvasWidth: canvas.width, 

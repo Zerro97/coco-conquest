@@ -98,5 +98,8 @@ export function cubeToPixel(x, z, r) {
  * @param {*} transformation
  */
 export function applyTransformation(x, y, translation, scale) {
-	return { x: (x + translation.x) / scale.x, y: (y + translation.y) / scale.y };
+	return { 
+		x: (x + translation.x) / scale.x, 
+		y: (y + translation.y) / scale.y 
+	};
 }

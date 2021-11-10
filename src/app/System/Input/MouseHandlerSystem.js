@@ -1,6 +1,6 @@
 import { System } from "../../Library/Ecsy";
 import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, Radius, ScreenStatus, Selectable, Size } from "../../Component";
-import { applyTransformation, isInsideCircle, isInsideHexagon, isInsideRectangle } from "../../Util";
+import { isInsideCircle, isInsideHexagon, isInsideRectangle } from "../../Util";
 import { Shape, TileSize } from "../../Type";
 
 /**
