@@ -62,7 +62,6 @@ export class TileSystem extends System {
 
   drawSelectedTile() {
     const canvasPos = this.queries.currentSelect.results[0]?.getMutableComponent(CanvasPosition);
-    //console.log(canvasPos);
 
     if(canvasPos) {
       drawSelectedTile(this.ctx, canvasPos.x, canvasPos.y);

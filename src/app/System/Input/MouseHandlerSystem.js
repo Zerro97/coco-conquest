@@ -1,7 +1,7 @@
 import { System } from "../../Library/Ecsy";
-import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, Radius, ScreenStatus, Selectable, Size } from "../../Component";
+import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, Radius, ScreenStatus, Selectable, Size, ActionStatus } from "../../Component";
 import { isInsideCircle, isInsideHexagon, isInsideRectangle } from "../../Util";
-import { Shape, TileSize } from "../../Type";
+import { Shape, TileSize, ActionType } from "../../Type";
 
 /**
  * Store mouse event data to entity
@@ -51,9 +51,9 @@ export class MouseHandlerSystem extends System {
 			object.removeComponent(CurrentHover);
 
 			let objectPosition = object.getMutableComponent(CanvasPosition);
-			let objectType = object.getMutableComponent(Hoverable).type;
+			let objectShape = object.getMutableComponent(Selectable).shape;
 
-			switch(objectType) {
+			switch(objectShape) {
 				case Shape.RECTANGLE: {
 					let size = object.getComponent(Size);
 					if(isInsideRectangle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, size.width, size.height)) {
@@ -86,8 +86,11 @@ export class MouseHandlerSystem extends System {
 
 	checkSelect() {
 		const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
 
 		if(mouseStatus.isMouseClicked) {
+			let isSelected = false;
+
 			const mouseTransX = mouseStatus.mapX;
 			const mouseTransY = mouseStatus.mapY;
 
@@ -96,14 +99,15 @@ export class MouseHandlerSystem extends System {
 				object.removeComponent(CurrentSelect);
 
 				let objectPosition = object.getMutableComponent(CanvasPosition);
-				let objectType = object.getMutableComponent(Selectable).type;
+				let objectShape = object.getMutableComponent(Selectable).shape;
 
-				switch(objectType) {
+				switch(objectShape) {
 					case Shape.RECTANGLE: {
 						let size = object.getComponent(Size);
 						if(isInsideRectangle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, size.width, size.height)) {
 							if(!object.hasComponent(CurrentSelect)) {
 								object.addComponent(CurrentSelect);
+								isSelected = true;
 							}
 						}
 						break;
@@ -113,6 +117,7 @@ export class MouseHandlerSystem extends System {
 						if(isInsideCircle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, radius)) {
 							if(!object.hasComponent(CurrentSelect)) {
 								object.addComponent(CurrentSelect);
+								isSelected = true;
 							}
 						}
 						break;
@@ -121,12 +126,19 @@ export class MouseHandlerSystem extends System {
 						if(isInsideHexagon(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, TileSize.REGULAR)) {
 							if(!object.hasComponent(CurrentSelect)) {
 								object.addComponent(CurrentSelect);
+								isSelected = true;
 							}
 						}
 						break;
 					}
 				}
 			});
+
+			if(isSelected) {
+				actionStatus.action = ActionType.SELECTED;
+			} else {
+				actionStatus.action = ActionType.NOT_SELECTED;
+			}
 		}
 	}
 }
@@ -135,6 +147,9 @@ export class MouseHandlerSystem extends System {
 MouseHandlerSystem.queries = {
 	mouseStatus: {
 		components: [MouseStatus]
+	},
+	actionStatus: {
+		components: [ActionStatus]
 	},
 	screenStatus: {
 		components: [ScreenStatus]

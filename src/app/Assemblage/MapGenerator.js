@@ -63,8 +63,8 @@ export class MapGenerator {
 					.addComponent(Object, {value: ObjectType.TILE})
 					.addComponent(MapPosition, {x: cube.x, y: cube.y, z: cube.z})
 					.addComponent(CanvasPosition, {x: pixel.x, y: pixel.y}) 
-					.addComponent(Hoverable, {type: Shape.HEXAGON})
-					.addComponent(Selectable, {type: Shape.HEXAGON})
+					.addComponent(Hoverable, {shape: Shape.HEXAGON})
+					.addComponent(Selectable, {shape: Shape.HEXAGON})
 					.addComponent(Tile, {
 						base: this.tileMap[row][col][0],
 						type: this.tileMap[row][col][1],
