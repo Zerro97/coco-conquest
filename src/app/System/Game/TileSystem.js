@@ -24,7 +24,7 @@ export class TileSystem extends System {
 
   drawTiles() {
     this.drawTileImage();
-    this.drawHoveringTile();
+    this.drawHoverTile();
     this.drawSelectedTile();
   }
 
@@ -51,7 +51,7 @@ export class TileSystem extends System {
     });
   }
 
-  drawHoveringTile() {
+  drawHoverTile() {
     const canvasPos = this.queries.currentHover.results[0]?.getMutableComponent(CanvasPosition);
 
     if(canvasPos) {

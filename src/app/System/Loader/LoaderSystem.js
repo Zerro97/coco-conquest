@@ -9,6 +9,7 @@ import {
 	ScreenStatus 
 } from "../../Component";
 import { evenrToPixel } from "../../Util";
+import { TileSize } from "../../Type";
 
 export class LoaderSystem extends System {
 	execute(delta, time) {
@@ -62,13 +63,10 @@ export class LoaderSystem extends System {
 
 	setInitialPosition() {
 		let screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
-		let canvasPos = evenrToPixel(this.mapHeight, this.mapWidth, 50);
+		let canvasPos = evenrToPixel(this.mapHeight/2, this.mapWidth/2, TileSize.REGULAR);
 
-		let dx = this.canvasWidth - canvasPos.x;
-		let dy = this.canvasHeight - canvasPos.y;
-
-		screenStatus.x = 0; //-dx/2;
-		screenStatus.y = 0; //-dy/2;
+		screenStatus.x = canvasPos.x - this.canvasWidth/2;
+		screenStatus.y = canvasPos.y - this.canvasHeight/2;
 	}
 }
 

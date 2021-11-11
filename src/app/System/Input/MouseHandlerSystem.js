@@ -53,7 +53,6 @@ export class MouseHandlerSystem extends System {
 				}
 			}
 		});
-
 	}
 
 	checkSelect() {
