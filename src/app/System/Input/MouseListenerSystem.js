@@ -10,11 +10,12 @@ export class MouseListenerSystem extends System {
 		document.addEventListener("pointerdown", (e) => {
 			const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
 			mouseStatus.isMouseDown = true;
+			mouseStatus.clickBuffer = 0;
 		});
 
 		document.addEventListener("pointerup", (e) => {
 			const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
-			mouseStatus.isMouseUp = true;
+			mouseStatus.isMouseDown = false;
 		});
 
 		document.addEventListener("pointermove", (e) => {

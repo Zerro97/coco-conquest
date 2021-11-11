@@ -69,6 +69,9 @@ function registerSystems() {
 			canvasWidth: canvas.width, 
 			canvasHeight: canvas.height
 		})
+		.registerSystem(System.KeyboardHandlerSystem, {
+			priority: 0
+		})
 		.registerSystem(System.MouseHandlerSystem, {
 			priority: 0
 		})

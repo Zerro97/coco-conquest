@@ -39,11 +39,11 @@ export function drawBaseTile(ctx, x, y) {
 }
 
 export function drawHoveringTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, "rgba(255, 255, 255, 1)", "rgba(255, 255, 255, 0.2)");
+	drawHexagon(ctx, x, y, "rgba(255, 255, 255, 0.3)", "rgba(255, 255, 255, 0.2)");
 }
 
 export function drawSelectedTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, "rgba(44, 92, 138, 0.3)", "rgba(36, 50, 64, 0.3)");
+	drawHexagon(ctx, x, y, "rgba(255, 255, 255, 0.8)", "rgba(255, 255, 255, 0.2)");
 }
 
 export function drawAttackingTile(ctx, x, y) {

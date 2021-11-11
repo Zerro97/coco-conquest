@@ -3,6 +3,7 @@ import {
   Tile,
   MapPosition,
   CurrentHover,
+  CurrentSelect,
   CanvasPosition,
   TileImage,
   Image,
@@ -61,6 +62,7 @@ export class TileSystem extends System {
 
   drawSelectedTile() {
     const canvasPos = this.queries.currentSelect.results[0]?.getMutableComponent(CanvasPosition);
+    //console.log(canvasPos);
 
     if(canvasPos) {
       drawSelectedTile(this.ctx, canvasPos.x, canvasPos.y);
@@ -103,7 +105,7 @@ TileSystem.queries = {
     components: [CurrentHover, CanvasPosition, Tile],
   },
   currentSelect: {
-    components: [CurrentHover, CanvasPosition, Tile],
+    components: [CurrentSelect, CanvasPosition, Tile],
   },
   tiles: {
     components: [Tile],
