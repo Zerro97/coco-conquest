@@ -86,10 +86,10 @@ export class TileSystem extends System {
   getSpriteSheetPosition(variation) {
     let position = {};
 
-    position.width = 210;
-    position.height = 210;
-    position.x = (variation % 9) * 210;
-    position.y = Math.floor(variation / 9) * 210;
+    position.width = 186;
+    position.height = 190;
+    position.x = (variation % 9) * 210 + 12;
+    position.y = Math.floor(variation / 9) * 210 + 10;
 
     return position;
   }

@@ -97,9 +97,13 @@ export function cubeToPixel(x, z, r) {
  * @param {*} y
  * @param {*} transformation
  */
-export function applyTransformation(x, y, translation, scale) {
+export function applyTransformation(x, y, translation, scale, canvas) {
 	return { 
-		x: (x + translation.x) / scale.x, 
-		y: (y + translation.y) / scale.y 
+		x: (x + translation.x - canvas.width/2) / scale.x + canvas.width/2, 
+		y: (y + translation.y - canvas.height/2) / scale.y + canvas.height/2
 	};
 }
+
+// const scaledX = (x - width/2) * scale;
+// const scaledY= (y - height/2) * scale;
+// return {x: scaledX + centerX, y: scaledY + centerY};

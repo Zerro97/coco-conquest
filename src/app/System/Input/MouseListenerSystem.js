@@ -25,11 +25,13 @@ export class MouseListenerSystem extends System {
 			const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
 			let translation = { x: screenStatus.x, y: screenStatus.y };
 			let scale = { x: screenStatus.scaleX, y: screenStatus.scaleY };
+			let canvasInfo = { width: this.canvasWidth, height: this.canvasHeight };
 			let mousePos = applyTransformation(
 				e.clientX,
 				e.clientY,
 				translation,
-				scale
+				scale,
+				canvasInfo
 			);
 			mouseStatus.mapX = mousePos.x;
 			mouseStatus.mapY = mousePos.y;

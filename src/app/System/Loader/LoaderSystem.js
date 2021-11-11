@@ -67,8 +67,8 @@ export class LoaderSystem extends System {
 		let dx = this.canvasWidth - canvasPos.x;
 		let dy = this.canvasHeight - canvasPos.y;
 
-		screenStatus.x = -dx/2;
-		screenStatus.y = -dy/2;
+		screenStatus.x = 0; //-dx/2;
+		screenStatus.y = 0; //-dy/2;
 	}
 }
 

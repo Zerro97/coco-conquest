@@ -65,7 +65,9 @@ function registerSystems() {
 			priority: -10
 		})
 		.registerSystem(System.MouseListenerSystem, {
-			priority: -10
+			priority: -10,
+			canvasWidth: canvas.width, 
+			canvasHeight: canvas.height
 		})
 		.registerSystem(System.MouseHandlerSystem, {
 			priority: 0
