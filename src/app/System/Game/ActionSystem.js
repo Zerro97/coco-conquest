@@ -8,7 +8,7 @@ import {
 	Speed,
 	Unit,
 	Building,
-	Object,
+	GameObject,
 	CurrentSelect,
 	MapPosition,
 	CanvasPosition,
@@ -31,7 +31,7 @@ import {
 } from "../../Util";
 import {
 	ActionType,
-	ObjectType,
+	GameObjectType,
 	AttackType,
 	MovementType,
 	TileStatus,
@@ -81,29 +81,30 @@ export class ActionSystem extends System {
 		const mapPos = currentTile.getMutableComponent(MapPosition);
 		const canvasPos = currentTile.getMutableComponent(CanvasPosition);
 		const selectedObject = this.getObjectOnTile(mapPos.x, mapPos.y);
-		const selectedType = selectedObject.getComponent(Object).value;
 
-		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
-		const attackPos = { x: canvasPos.x - 25, y: canvasPos.y - 65 };
-		const movementPos = { x: canvasPos.x + 25, y: canvasPos.y - 65 };
-		
+		if(Object.keys(selectedObject).length !== 0) {
+			const selectedType = selectedObject.getComponent(GameObject).value;
 
-		switch(selectedType) {
-			case ObjectType.TILE:
-				break;
-			case ObjectType.BUILDING:
-				break;
-			case ObjectType.UNIT:
-				if (isInsideCircle(attackPos.x, attackPos.y, mouseX, mouseY, 20)) {
-					
-					actionStatus.action = ActionType.ATTACK;
-					actionStatus.attackType = AttackType.SIMPLE;
-				} else if (isInsideCircle(movementPos.x, movementPos.y, mouseX, mouseY, 20)) {
-					actionStatus.action = ActionType.MOVE;
-					actionStatus.movementType = MovementType.SIMPLE;
-				}
+			const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+			const attackPos = { x: canvasPos.x - 25, y: canvasPos.y - 65 };
+			const movementPos = { x: canvasPos.x + 25, y: canvasPos.y - 65 };
 
-				break;
+			switch(selectedType) {
+				case GameObjectType.TILE:
+					break;
+				case GameObjectType.BUILDING:
+					break;
+				case GameObjectType.UNIT:
+					if (isInsideCircle(attackPos.x, attackPos.y, mouseX, mouseY, 20)) {
+						actionStatus.action = ActionType.ATTACK;
+						actionStatus.attackType = AttackType.SIMPLE;
+					} else if (isInsideCircle(movementPos.x, movementPos.y, mouseX, mouseY, 20)) {
+						actionStatus.action = ActionType.MOVE;
+						actionStatus.movementType = MovementType.SIMPLE;
+					}
+
+					break;
+			}
 		}
 	}
 
@@ -283,12 +284,12 @@ ActionSystem.queries = {
 		components: [Hud],
 	},
 	tiles: {
-		components: [Tile, MapPosition, Object],
+		components: [Tile, MapPosition, GameObject],
 	},
 	units: {
-		components: [Unit, MapPosition, Object],
+		components: [Unit, MapPosition, GameObject],
 	},
 	building: {
-		components: [Building, MapPosition, Object],
+		components: [Building, MapPosition, GameObject],
 	},
 };

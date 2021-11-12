@@ -1,6 +1,6 @@
 import { System } from "../../Library/Ecsy";
-import { ScreenStatus, ActionStatus, Health, Damage, Sight, Speed } from "../../Component";
-import { ActionType, ObjectType } from "../../Type";
+import { ScreenStatus, ActionStatus, Health, Damage, Sight, Speed, GameObject } from "../../Component";
+import { ActionType, GameObjectType } from "../../Type";
 import { roundRect } from "../../Util";
 
 export class HudSystem extends System {
@@ -28,10 +28,10 @@ export class HudSystem extends System {
 
     if (actionStatus.action === ActionType.SELECTED) {
       selectedObject = this.getSelectedObject();
-      type = selectedObject.getComponent(Object).value;
+      type = selectedObject.getComponent(GameObject).value;
     }
 
-    if (type === ObjectType.UNIT) {
+    if (type === GameObjectType.UNIT) {
       health = selectedObject.getComponent(Health).value;
       damage = selectedObject.getComponent(Damage).value;
       range = selectedObject.getComponent(Range).value;
@@ -71,9 +71,9 @@ export class HudSystem extends System {
 
     // HP
     switch (type) {
-      case ObjectType.TILE:
+      case GameObjectType.TILE:
         break;
-      case ObjectType.UNIT:
+      case GameObjectType.UNIT:
         this.ctx.font = "18px Arial";
         this.ctx.fillStyle = "black";
         this.ctx.textAlign = "center";
@@ -85,7 +85,7 @@ export class HudSystem extends System {
         this.ctx.fillText("SP: " + speed, this.canvasWidth - 120, 85);
 
         break;
-      case ObjectType.BUILDING:
+      case GameObjectType.BUILDING:
         break;
     }
   }

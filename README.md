@@ -10,4 +10,4 @@ A turn based game leveraging:
 2. `npm start`
 
 ## Game Assets Link
-(Link)[https://game-icons.net/tags/weapon.html]
+[Link](https://game-icons.net/tags/weapon.html)

@@ -9,7 +9,7 @@ import {
   Sight,
   Range,
   Speed,
-  Object,
+  GameObject,
   MapPosition,
   MovePosition,
   AttackPosition,
@@ -34,7 +34,7 @@ import {
   cubeToPixel,
   tilesInRange,
 } from "../../Util";
-import { ActionType, ObjectType, TileSize, TileStatus } from "../../Type";
+import { ActionType, GameObjectType, TileSize, TileStatus } from "../../Type";
 
 /**
  * Handles all the drawing
@@ -268,13 +268,13 @@ export class RenderSystem extends System {
 
 RenderSystem.queries = {
   tiles: {
-    components: [Tile, MapPosition, Object],
+    components: [Tile, MapPosition, GameObject],
   },
   units: {
     components: [
       Unit,
       MapPosition,
-      Object,
+      GameObject,
       Health,
       Damage,
       Sight,
@@ -283,7 +283,7 @@ RenderSystem.queries = {
     ],
   },
   buildings: {
-    components: [Building, MapPosition, Object],
+    components: [Building, MapPosition, GameObject],
   },
   images: {
     components: [Image],

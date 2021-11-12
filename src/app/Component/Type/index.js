@@ -1,5 +1,5 @@
-export { Building } from "./Building.js";
-export { Object } from "./Object.js";
-export { Tile } from "./Tile.js";
-export { Unit } from "./Unit.js";
-export { Hud } from "./Hud.js";
+export * from "./Building.js";
+export * from "./GameObject.js";
+export * from "./Tile.js";
+export * from "./Unit.js";
+export * from "./Hud.js";

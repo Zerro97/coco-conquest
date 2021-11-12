@@ -1,6 +1,6 @@
-import { Tile, Unit, Health, Damage, Sight, Range, Speed, MapPosition, Object, Hoverable, Selectable, CanvasPosition } from "../Component";
+import { Tile, Unit, Health, Damage, Sight, Range, Speed, MapPosition, GameObject, Hoverable, Selectable, CanvasPosition } from "../Component";
 import { cubeToPixel, evenrToCube, StatManager } from "../Util";
-import { ObjectType, Shape, TileSize } from "../Type";
+import { GameObjectType, Shape, TileSize } from "../Type";
 
 export class MapGenerator {
 	constructor(world) {
@@ -60,7 +60,7 @@ export class MapGenerator {
 
 				this.world
 					.createEntity()
-					.addComponent(Object, {value: ObjectType.TILE})
+					.addComponent(GameObject, {value: GameObjectType.TILE})
 					.addComponent(MapPosition, {x: cube.x, y: cube.y, z: cube.z})
 					.addComponent(CanvasPosition, {x: pixel.x, y: pixel.y}) 
 					.addComponent(Hoverable, {shape: Shape.HEXAGON})
@@ -89,7 +89,7 @@ export class MapGenerator {
 					this.world
 						.createEntity()
 						.addComponent(Unit, {value: this.unitMap[row][col]})
-						.addComponent(Object, {value: ObjectType.UNIT})
+						.addComponent(GameObject, {value: GameObjectType.UNIT})
 						.addComponent(MapPosition, {x: cube.x, y: cube.y, z: cube.z})
 						.addComponent(Health, {value: stat.HEALTH})
 						.addComponent(Damage, {value: stat.DAMAGE})
