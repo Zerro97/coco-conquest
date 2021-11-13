@@ -73,41 +73,4 @@ export class MapGenerator {
 			}
 		}
 	}
-
-	/**
-	 * Generate all the units
-	 */
-	generateUnits() {
-		let statManager = new StatManager();
-
-		for(let row=0; row<this.unitMap.length; row++) {
-			for(let col=0; col<this.unitMap[0].length; col++) {
-				if(this.unitMap[row][col] !== -1) {
-					let cube = evenrToCube(row, col);
-					let stat = statManager.getStat(this.unitMap[row][col]);
-
-					this.world
-						.createEntity()
-						.addComponent(Unit, {value: this.unitMap[row][col]})
-						.addComponent(GameObject, {value: GameObjectType.UNIT})
-						.addComponent(MapPosition, {x: cube.x, y: cube.y, z: cube.z})
-						.addComponent(Health, {value: stat.HEALTH})
-						.addComponent(Damage, {value: stat.DAMAGE})
-						.addComponent(Sight, {value: stat.SIGHT})
-						.addComponent(Range, {value: stat.RANGE})
-						.addComponent(Speed, {value: stat.SPEED});
-				}
-			}
-		}
-	}
-
-	generateBuildings() {
-		for(let row=0; row<this.unitMap.length; row++) {
-			for(let col=0; col<this.unitMap[0].length; col++) {
-				if(this.unitMap[row][col] !== -1) {
-					console.log("in");
-				}
-			}
-		}
-	}
 }

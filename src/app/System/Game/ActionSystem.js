@@ -17,10 +17,7 @@ import {
 	ActionStatus,
 	MovePosition,
 	AttackPosition,
-	SelectPosition,
-	SelectedTile,
-	SelectedUnit,
-	SelectedBuilding
+	SelectPosition
 } from "../../Component";
 import {
 	cubeDistance,
@@ -53,7 +50,6 @@ export class ActionSystem extends System {
 
 		const control = this.queries.control.results[0];
 		const block = control.getComponent(Block);
-		console.log(actionStatus.action);
 
 		if (!block.value) {
 			switch (actionStatus.action) {
@@ -80,17 +76,19 @@ export class ActionSystem extends System {
 		// TODO: mapPos and unit map pos is different for some reason!
 		const mapPos = currentTile.getMutableComponent(MapPosition);
 		const canvasPos = currentTile.getMutableComponent(CanvasPosition);
-		const selectedObject = this.getObjectOnTile(mapPos.x, mapPos.y);
+		const selectedObject = this.getObjectOnTile(mapPos.x, mapPos.z);
 
 		if(Object.keys(selectedObject).length !== 0) {
 			const selectedType = selectedObject.getComponent(GameObject).value;
 
 			const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+
 			const attackPos = { x: canvasPos.x - 25, y: canvasPos.y - 65 };
 			const movementPos = { x: canvasPos.x + 25, y: canvasPos.y - 65 };
 
 			switch(selectedType) {
 				case GameObjectType.TILE:
+					
 					break;
 				case GameObjectType.BUILDING:
 					break;
@@ -108,94 +106,94 @@ export class ActionSystem extends System {
 		}
 	}
 
-	checkAttack(mouseX, mouseY) {
-		const actionEntity = this.queries.actionStatus.results[0];
-		const actionStatus = actionEntity.getMutableComponent(ActionStatus);
-		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
-		const attackPosition = actionEntity.getMutableComponent(AttackPosition);
+	// checkAttack(mouseX, mouseY) {
+	// 	const actionEntity = this.queries.actionStatus.results[0];
+	// 	const actionStatus = actionEntity.getMutableComponent(ActionStatus);
+	// 	const selectPosition = actionEntity.getMutableComponent(SelectPosition);
+	// 	const attackPosition = actionEntity.getMutableComponent(AttackPosition);
 
-		const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, TileSize.REGULAR);
-		const cancelPos = { x: tilePos.x, y: tilePos.y - 75 };
-		const mouseTilePos = {};
+	// 	const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, TileSize.REGULAR);
+	// 	const cancelPos = { x: tilePos.x, y: tilePos.y - 75 };
+	// 	const mouseTilePos = {};
 
-		const selectedUnit = this.getSelectedUnit();
-		const range = selectedUnit.getComponent(Range).value;
-		const unitPos = selectedUnit.getMutableComponent(MapPosition);
+	// 	const selectedUnit = this.getSelectedUnit();
+	// 	const range = selectedUnit.getComponent(Range).value;
+	// 	const unitPos = selectedUnit.getMutableComponent(MapPosition);
 
-		const control = this.queries.control.results[0];
-		const block = control.getMutableComponent(Block);
+	// 	const control = this.queries.control.results[0];
+	// 	const block = control.getMutableComponent(Block);
 
-		this.queries.tiles.results.forEach((entity) => {
-			let tile = entity.getMutableComponent(Tile);
-			let tileMapPos = entity.getMutableComponent(MapPosition);
-			let canvasPos = cubeToPixel(tileMapPos.x, tileMapPos.z, tile.size);
+	// 	this.queries.tiles.results.forEach((entity) => {
+	// 		let tile = entity.getMutableComponent(Tile);
+	// 		let tileMapPos = entity.getMutableComponent(MapPosition);
+	// 		let canvasPos = cubeToPixel(tileMapPos.x, tileMapPos.z, tile.size);
 
-			if (isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)) {
-				mouseTilePos.x = tileMapPos.x;
-				mouseTilePos.y = tileMapPos.y;
-				mouseTilePos.z = tileMapPos.z;
-			}
-		});
+	// 		if (isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)) {
+	// 			mouseTilePos.x = tileMapPos.x;
+	// 			mouseTilePos.y = tileMapPos.y;
+	// 			mouseTilePos.z = tileMapPos.z;
+	// 		}
+	// 	});
 
-		if (isInsideCircle(cancelPos.x, cancelPos.y, mouseX, mouseY, 20)) {
-			actionStatus.action = ActionType.NOT_SELECTED;
-		} else if (cubeDistance(selectPosition, mouseTilePos) <= range) {
-			attackPosition.x = mouseTilePos.x;
-			attackPosition.y = mouseTilePos.y;
-			attackPosition.z = mouseTilePos.z;
+	// 	if (isInsideCircle(cancelPos.x, cancelPos.y, mouseX, mouseY, 20)) {
+	// 		actionStatus.action = ActionType.NOT_SELECTED;
+	// 	} else if (cubeDistance(selectPosition, mouseTilePos) <= range) {
+	// 		attackPosition.x = mouseTilePos.x;
+	// 		attackPosition.y = mouseTilePos.y;
+	// 		attackPosition.z = mouseTilePos.z;
 
-			// Temp
-			// unitPos.x = mouseTilePos.x;
-			// unitPos.y = mouseTilePos.y;
-			// unitPos.z = mouseTilePos.z;
-			block.value = true;
-		} else {
-			this.checkSelect(mouseX, mouseY);
-		}
-	}
+	// 		// Temp
+	// 		// unitPos.x = mouseTilePos.x;
+	// 		// unitPos.y = mouseTilePos.y;
+	// 		// unitPos.z = mouseTilePos.z;
+	// 		block.value = true;
+	// 	} else {
+	// 		this.checkSelect(mouseX, mouseY);
+	// 	}
+	// }
 
-	checkMovement(mouseX, mouseY) {
-		const actionEntity = this.queries.actionStatus.results[0];
-		const actionStatus = actionEntity.getMutableComponent(ActionStatus);
-		const selectPosition = actionEntity.getMutableComponent(SelectPosition);
-		const movePosition = actionEntity.getMutableComponent(MovePosition);
+	// checkMovement(mouseX, mouseY) {
+	// 	const actionEntity = this.queries.actionStatus.results[0];
+	// 	const actionStatus = actionEntity.getMutableComponent(ActionStatus);
+	// 	const selectPosition = actionEntity.getMutableComponent(SelectPosition);
+	// 	const movePosition = actionEntity.getMutableComponent(MovePosition);
 
-		const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, TileSize.REGULAR);
-		const cancelPos = { x: tilePos.x, y: tilePos.y - 75 };
-		const mouseTilePos = {};
+	// 	const tilePos = cubeToPixel(selectPosition.x, selectPosition.z, TileSize.REGULAR);
+	// 	const cancelPos = { x: tilePos.x, y: tilePos.y - 75 };
+	// 	const mouseTilePos = {};
 
-		const selectedUnit = this.getSelectedUnit();
-		const speed = selectedUnit.getComponent(Speed).value;
-		const unitPos = selectedUnit.getMutableComponent(MapPosition);
+	// 	const selectedUnit = this.getSelectedUnit();
+	// 	const speed = selectedUnit.getComponent(Speed).value;
+	// 	const unitPos = selectedUnit.getMutableComponent(MapPosition);
 
-		this.queries.tiles.results.forEach((entity) => {
-			let tile = entity.getMutableComponent(Tile);
-			let tileMapPos = entity.getMutableComponent(MapPosition);
+	// 	this.queries.tiles.results.forEach((entity) => {
+	// 		let tile = entity.getMutableComponent(Tile);
+	// 		let tileMapPos = entity.getMutableComponent(MapPosition);
 
-			let canvasPos = cubeToPixel(tileMapPos.x, tileMapPos.z, tile.size);
+	// 		let canvasPos = cubeToPixel(tileMapPos.x, tileMapPos.z, tile.size);
 
-			if (isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)) {
-				mouseTilePos.x = tileMapPos.x;
-				mouseTilePos.y = tileMapPos.y;
-				mouseTilePos.z = tileMapPos.z;
-			}
-		});
+	// 		if (isInsideHexagon(canvasPos.x, canvasPos.y, mouseX, mouseY, tile.size)) {
+	// 			mouseTilePos.x = tileMapPos.x;
+	// 			mouseTilePos.y = tileMapPos.y;
+	// 			mouseTilePos.z = tileMapPos.z;
+	// 		}
+	// 	});
 
-		if (isInsideCircle(cancelPos.x, cancelPos.y, mouseX, mouseY, 20)) {
-			actionStatus.action = ActionType.NOT_SELECTED;
-		} else if (cubeDistance(selectPosition, mouseTilePos) <= speed) {
-			movePosition.x = mouseTilePos.x;
-			movePosition.y = mouseTilePos.y;
-			movePosition.z = mouseTilePos.z;
+	// 	if (isInsideCircle(cancelPos.x, cancelPos.y, mouseX, mouseY, 20)) {
+	// 		actionStatus.action = ActionType.NOT_SELECTED;
+	// 	} else if (cubeDistance(selectPosition, mouseTilePos) <= speed) {
+	// 		movePosition.x = mouseTilePos.x;
+	// 		movePosition.y = mouseTilePos.y;
+	// 		movePosition.z = mouseTilePos.z;
 
-			unitPos.x = mouseTilePos.x;
-			unitPos.y = mouseTilePos.y;
-			unitPos.z = mouseTilePos.z;
-			actionStatus.action = ActionType.NOT_SELECTED;
-		} else {
-			this.checkSelect(mouseX, mouseY);
-		}
-	}
+	// 		unitPos.x = mouseTilePos.x;
+	// 		unitPos.y = mouseTilePos.y;
+	// 		unitPos.z = mouseTilePos.z;
+	// 		actionStatus.action = ActionType.NOT_SELECTED;
+	// 	} else {
+	// 		this.checkSelect(mouseX, mouseY);
+	// 	}
+	// }
 
 	getObjectOnTile(x, z) {
 		let object = {};
@@ -207,7 +205,6 @@ export class ActionSystem extends System {
 				object = entity;
 				return true;
 			}
-			console.log(x, z, mapPos.x, mapPos.z	);
 
 			return false;
 		});
@@ -226,41 +223,6 @@ export class ActionSystem extends System {
 
 		return object;
 	}
-
-	getSelectedUnit() {
-		let selectedUnit = {};
-
-		this.queries.units.results.some((entity) => {
-			if (entity.hasComponent(SelectedUnit)) {
-				selectedUnit = entity;
-				return true;
-			}
-
-			return false;
-		});
-
-		return selectedUnit;
-	}
-
-	removeSelect() {
-		this.queries.tiles.results.forEach((entity) => {
-			if (entity.hasComponent(SelectedTile)) {
-				entity.removeComponent(SelectedTile);
-			}
-		});
-
-		this.queries.units.results.forEach((entity) => {
-			if (entity.hasComponent(SelectedUnit)) {
-				entity.removeComponent(SelectedUnit);
-			}
-		});
-
-		this.queries.building.results.forEach((entity) => {
-			if (entity.hasComponent(SelectedBuilding)) {
-				entity.removeComponent(SelectedBuilding);
-			}
-		});
-	}
 }
 
 // Define a query of entities
@@ -277,11 +239,11 @@ ActionSystem.queries = {
 	selectedTile: {
 		components: [CurrentSelect, Tile, MapPosition]
 	},
-	control: {
-		components: [Block, Timer],
+	selectedUnit: {
+		components: [CurrentSelect, Unit, MapPosition]
 	},
-	hud: {
-		components: [Hud],
+	selectedBuildingTile: {
+		components: [CurrentSelect, Building, MapPosition]
 	},
 	tiles: {
 		components: [Tile, MapPosition, GameObject],
@@ -292,4 +254,10 @@ ActionSystem.queries = {
 	building: {
 		components: [Building, MapPosition, GameObject],
 	},
+	control: {
+		components: [Block, Timer],
+	},
+	hud: {
+		components: [Hud],
+	}
 };

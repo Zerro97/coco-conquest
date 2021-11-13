@@ -11,9 +11,10 @@ export class ActionStatus extends Component {}
  */
 ActionStatus.schema = {
 	// 0: NOT SELECTED
-	// 1: SELECTED
-	// 2: ATTACK
-	// 3: MOVE
+	// 1: FOCUSED
+	// 2: SELECTED
+	// 3: ATTACK
+	// 4: MOVE
 	action: { type: Types.Number, default: 0},
 
 	// 0: Tile, 1: Unit, 2: Building

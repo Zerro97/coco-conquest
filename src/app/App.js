@@ -102,8 +102,14 @@ function registerSystems() {
 			canvasWidth: canvas.width, 
 			canvasHeight: canvas.height
 		})
-		.registerSystem(System.HudSystem, {
+		.registerSystem(System.GameHudSystem, {
 			priority: 11, 
+			ctx: ctx, 
+			canvasWidth: canvas.width, 
+			canvasHeight: canvas.height
+		})
+		.registerSystem(System.HudSystem, {
+			priority: 20, 
 			ctx: ctx, 
 			canvasWidth: canvas.width, 
 			canvasHeight: canvas.height
@@ -151,14 +157,10 @@ const mapGenerator = new MapGenerator(world);
 
 // Create Map
 mapGenerator.registerTileMap(tileMap);
-mapGenerator.registerUnitMap(unitMap);
-mapGenerator.registerBuildingMap(buildingMap);
 mapGenerator.generateTiles();
-mapGenerator.generateUnits();
 
 // Adding Units
-// unitGenerator.generateUnit(0);
-// unitGenerator.generateUnit(1);
-// unitGenerator.generateUnit(2);
+unitGenerator.generateUnit(0, 0, 0);
+unitGenerator.generateUnit(1, 0, 1);
 
 export { world };

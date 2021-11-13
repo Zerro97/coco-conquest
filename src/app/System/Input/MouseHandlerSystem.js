@@ -1,5 +1,5 @@
 import { System } from "../../Library/Ecsy";
-import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, Radius, ScreenStatus, Selectable, Size, ActionStatus } from "../../Component";
+import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, Radius, ScreenStatus, Selectable, Size, ActionStatus, Unit } from "../../Component";
 import { isInsideCircle, isInsideHexagon, isInsideRectangle } from "../../Util";
 import { Shape, TileSize, ActionType } from "../../Type";
 
@@ -93,7 +93,7 @@ export class MouseHandlerSystem extends System {
 
 			const mouseTransX = mouseStatus.mapX;
 			const mouseTransY = mouseStatus.mapY;
-
+			
 			// Loop through all the selectable objects
 			this.queries.selectableObjects.results.forEach((object) => {
 				object.removeComponent(CurrentSelect);
@@ -159,5 +159,8 @@ MouseHandlerSystem.queries = {
 	},
 	selectableObjects: {
 		components: [Selectable, CanvasPosition]
+	},
+	units: {
+		components: [Unit]
 	}
 };

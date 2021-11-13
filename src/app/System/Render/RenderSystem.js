@@ -2,7 +2,6 @@ import { System } from "../../Library/Ecsy";
 import {
   Unit,
   UnitImage,
-  IconImage,
   Image,
   Health,
   Damage,
@@ -26,15 +25,9 @@ import {
   SelectedBuilding,
 } from "../../Component";
 import {
-  roundRect,
-  drawAttackingTile,
-  drawMovingTile,
-  drawSelectIcon,
-  drawCancelIcon,
   cubeToPixel,
-  tilesInRange,
 } from "../../Util";
-import { ActionType, GameObjectType, TileSize, TileStatus } from "../../Type";
+import { TileSize } from "../../Type";
 
 /**
  * Handles all the drawing
@@ -46,7 +39,6 @@ export class RenderSystem extends System {
     this.drawBuildings();
     this.drawUnits();
 
-    this.drawActionHud();
     this.drawDamagePopup();
 
   }
@@ -96,121 +88,6 @@ export class RenderSystem extends System {
       );
       this.ctx.restore();
     });
-  }
-
-  drawActionHud() {
-    const actionStatus =
-      this.queries.actionStatus.results[0].getComponent(ActionStatus);
-
-    switch (actionStatus.action) {
-      case ActionType.SELECTED:
-        // 2) Draw unit's options
-        this.drawOption();
-        break;
-      case ActionType.ATTACK:
-        // 3a) Draw attack hud
-        this.drawAttack();
-        break;
-      case ActionType.MOVE:
-        // 3b) Draw movement hud
-        this.drawMove();
-        break;
-    }
-  }
-
-  drawOption() {
-    const actionEntity = this.queries.actionStatus.results[0];
-    const actionStatus = actionEntity.getMutableComponent(ActionStatus);
-    const selectPosition = actionEntity.getMutableComponent(SelectPosition);
-
-    const iconImages = [];
-    this.queries.images.results.forEach((entity) => {
-      if (entity.hasComponent(IconImage)) {
-        iconImages.push({
-          name: entity.getMutableComponent(Image).name,
-          value: entity.getMutableComponent(Image).value,
-        });
-      }
-    });
-
-    let mapPos = { x: selectPosition.x, z: selectPosition.z };
-    let canvasPos = cubeToPixel(mapPos.x, mapPos.z, TileSize.REGULAR);
-
-    switch (actionStatus.selectType) {
-      case 0:
-        break;
-      case 1:
-        drawSelectIcon(
-          this.ctx,
-          canvasPos.x,
-          canvasPos.y,
-          iconImages[1].value,
-          iconImages[0].value
-        );
-        break;
-      case 2:
-        break;
-    }
-  }
-
-  drawAttack() {
-    const actionEntity = this.queries.actionStatus.results[0];
-    const selectPosition = actionEntity.getMutableComponent(SelectPosition);
-
-    const selectedUnit = this.getSelectedObject();
-    const range = selectedUnit.getComponent(Range).value;
-
-    let mapPos = { x: selectPosition.x, z: selectPosition.z };
-    let canvasPos = cubeToPixel(mapPos.x, mapPos.z, TileSize.REGULAR);
-
-    let tiles = tilesInRange(
-      {
-        x: selectPosition.x,
-        y: selectPosition.y,
-        z: selectPosition.z,
-      },
-      range
-    );
-
-    tiles.forEach((tile) => {
-      const pixelPos = cubeToPixel(tile.x, tile.z, TileSize.REGULAR);
-      drawAttackingTile(this.ctx, pixelPos.x, pixelPos.y);
-    });
-    this.drawUnits();
-    this.drawBuildings();
-
-    // Draw Cancel Button
-    drawCancelIcon(this.ctx, canvasPos.x, canvasPos.y);
-  }
-
-  drawMove() {
-    const actionEntity = this.queries.actionStatus.results[0];
-    const selectPosition = actionEntity.getMutableComponent(SelectPosition);
-
-    const selectedUnit = this.getSelectedObject();
-    const speed = selectedUnit.getComponent(Speed).value;
-
-    let mapPos = { x: selectPosition.x, z: selectPosition.z };
-    let canvasPos = cubeToPixel(mapPos.x, mapPos.z, TileSize.REGULAR);
-
-    let tiles = tilesInRange(
-      {
-        x: selectPosition.x,
-        y: selectPosition.y,
-        z: selectPosition.z,
-      },
-      speed
-    );
-
-    tiles.forEach((tile) => {
-      const pixelPos = cubeToPixel(tile.x, tile.z, TileSize.REGULAR);
-      drawMovingTile(this.ctx, pixelPos.x, pixelPos.y);
-    });
-
-    this.drawUnits();
-    this.drawBuildings();
-
-    drawCancelIcon(this.ctx, canvasPos.x, canvasPos.y);
   }
 
   drawDamagePopup() {
