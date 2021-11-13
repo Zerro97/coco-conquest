@@ -35,59 +35,7 @@ import { TileSize } from "../../Type";
 export class RenderSystem extends System {
   // This method will get called on every frame by default
   execute(delta, time) {
-    // Drawing order matters
-    this.drawBuildings();
-    this.drawUnits();
-
     this.drawDamagePopup();
-
-  }
-
-  // Clear canvas screen
-  clearCanvas() {
-    this.ctx.fillStyle = "#69696c";
-    this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
-  }
-
-  drawBuildings() {}
-
-  drawUnits() {
-    const unitImages = [];
-    this.queries.images.results.forEach((entity) => {
-      if (entity.hasComponent(UnitImage)) {
-        unitImages.push({
-          name: entity.getMutableComponent(Image).name,
-          value: entity.getMutableComponent(Image).value,
-        });
-      }
-    });
-
-    this.queries.units.results.forEach((entity) => {
-      let type = entity.getComponent(Unit).value;
-      let image = unitImages.reduce((item, acc) => {
-        if (item.name === `${type}.png`) {
-          return item;
-        }
-        return acc;
-      });
-
-      let mapPos = entity.getComponent(MapPosition);
-      let canvasPos = cubeToPixel(mapPos.x, mapPos.z, TileSize.REGULAR);
-
-      this.ctx.save();
-      this.ctx.beginPath();
-      this.ctx.arc(canvasPos.x, canvasPos.y, 30, 0, Math.PI * 2, true);
-      this.ctx.closePath();
-      this.ctx.clip();
-      this.ctx.drawImage(
-        image.value,
-        canvasPos.x - 30,
-        canvasPos.y - 30,
-        60,
-        60
-      );
-      this.ctx.restore();
-    });
   }
 
   drawDamagePopup() {
@@ -107,39 +55,6 @@ export class RenderSystem extends System {
         entity.remove();
       }
     });
-  }
-
-  getSelectedObject() {
-    let selectedObject = {};
-
-    this.queries.tiles.results.some((entity) => {
-      if (entity.hasComponent(SelectedTile)) {
-        selectedObject = entity;
-        return true;
-      }
-
-      return false;
-    });
-
-    this.queries.units.results.some((entity) => {
-      if (entity.hasComponent(SelectedUnit)) {
-        selectedObject = entity;
-        return true;
-      }
-
-      return false;
-    });
-
-    this.queries.buildings.results.some((entity) => {
-      if (entity.hasComponent(SelectedBuilding)) {
-        selectedObject = entity;
-        return true;
-      }
-
-      return false;
-    });
-
-    return selectedObject;
   }
 }
 

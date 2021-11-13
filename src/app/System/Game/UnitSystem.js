@@ -16,7 +16,10 @@ import {
 	SelectPosition, 
 	SelectedUnit,
 	DamagePopup,
-	Velocity
+	UnitImage,
+	Velocity,
+	CurrentFocus,
+	CurrentSelect
 } from "../../Component";
 import { ActionType, TileSize, UnitType } from "../../Type";
 import { cubeToPixel } from "../../Util";
@@ -73,19 +76,43 @@ export class UnitSystem extends System {
 		block.value = false; 
 	}
 
-	getSelectedUnit() {
-		let selectedUnit = {};
-
-		this.queries.units.results.some(entity => {			
-			if(entity.hasComponent(SelectedUnit)){
-				selectedUnit = entity;
-				return true;
+	drawUnits() {
+		const unitImages = [];
+		this.queries.images.results.forEach((entity) => {
+			if (entity.hasComponent(UnitImage)) {
+				unitImages.push({
+					name: entity.getMutableComponent(Image).name,
+					value: entity.getMutableComponent(Image).value,
+				});
 			}
-
-			return false;
 		});
 
-		return selectedUnit;
+		this.queries.units.results.forEach((entity) => {
+			let type = entity.getComponent(Unit).value;
+			let image = unitImages.reduce((item, acc) => {
+				if (item.name === `${type}.png`) {
+					return item;
+				}
+				return acc;
+			});
+
+			let mapPos = entity.getComponent(MapPosition);
+			let canvasPos = cubeToPixel(mapPos.x, mapPos.z, TileSize.REGULAR);
+
+			this.ctx.save();
+			this.ctx.beginPath();
+			this.ctx.arc(canvasPos.x, canvasPos.y, 30, 0, Math.PI * 2, true);
+			this.ctx.closePath();
+			this.ctx.clip();
+			this.ctx.drawImage(
+				image.value,
+				canvasPos.x - 30,
+				canvasPos.y - 30,
+				60,
+				60
+			);
+			this.ctx.restore();
+		});
 	}
 }
 
@@ -98,5 +125,11 @@ UnitSystem.queries = {
 	},
 	actionStatus: {
 		components: [ActionStatus, MovePosition, AttackPosition, SelectPosition]
-	}
+	},
+	focusedUnit: {
+		components: [CurrentFocus, Unit, MapPosition]
+	},
+	selectedUnit: {
+		components: [CurrentSelect, Unit, MapPosition]
+	},
 };

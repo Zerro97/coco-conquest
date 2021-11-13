@@ -1,20 +1,6 @@
 import { System } from "../../Library/Ecsy";
 import {
-  ScreenStatus,
   ActionStatus,
-  GameObject,
-  Health,
-  Damage,
-  Sight,
-  Speed,
-  Range,
-  MapPosition,
-  CanvasPosition,
-  CurrentSelect,
-  Image,
-  Tile,
-  Unit,
-  Building
 } from "../../Component";
 import { ActionType } from "../../Type";
 
