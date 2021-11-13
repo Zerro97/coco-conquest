@@ -1,18 +1,23 @@
-import * as Stat from "../Type/Stats";
+import * as UnitType from "../Type/Stats";
 
 export class StatManager {
 	constructor() {
 		this.availableUnits = {};
 
-		for(const key in Stat) {
-			this.availableUnits[Stat[key].TYPE] = {
-				TYPE: Stat[key].TYPE,
-				DAMAGE: Stat[key].DAMAGE,
-				HEALTH: Stat[key].HEALTH,
-				RANGE: Stat[key].RANGE,
-				SPEED: Stat[key].SPEED,
-				SIGHT: Stat[key].SIGHT
-			};
+		// Unit Types: ex. human, monster, livestock
+		for(const type in UnitType) {
+			const unitLists = UnitType[type];
+
+			for(const key in unitLists) {
+				this.availableUnits[unitLists[key].TYPE] = {
+					TYPE: unitLists[key].TYPE,
+					DAMAGE: unitLists[key].DAMAGE,
+					HEALTH: unitLists[key].HEALTH,
+					RANGE: unitLists[key].RANGE,
+					SPEED: unitLists[key].SPEED,
+					SIGHT: unitLists[key].SIGHT
+				};
+			}
 		}
 	}
 
