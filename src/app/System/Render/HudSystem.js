@@ -1,6 +1,6 @@
 import { System } from "../../Library/Ecsy";
 import {
-  ActionStatus, CurrentSelect, Damage, Health, Range, Sight, Speed, Tile, Unit, Building, BackgroundImage, Image
+  ActionStatus, CurrentSelect, Damage, Health, Range, Sight, Speed, Tile, Unit, Building, BackgroundImage, Image, UnitImage
 } from "../../Component";
 import { ActionType, BackgroundType } from "../../Type";
 import { roundRect } from "../../Util";
@@ -13,8 +13,8 @@ export class HudSystem extends System {
   }
 
   drawHud() {
-    //this.drawTRPanel();
-    //this.drawTPanel();
+    this.drawTRPanel();
+    this.drawTPanel();
     this.drawBRPanel();
   }
 
@@ -28,40 +28,11 @@ export class HudSystem extends System {
 
   drawBRPanel() {
     this.drawUnitPanel();
-    // this.ctx.fillStyle = "#d2955a";
-    // this.ctx.lineWidth = 10;
-    // this.ctx.strokeStyle = "#815932";
-    // roundRect(
-    //   this.ctx,
-    //   this.canvasWidth - 250,
-    //   this.canvasHeight - 150,
-    //   255,
-    //   155,
-    //   { tl: 20 },
-    //   true,
-    //   true
-    // );
-    
-    // this.ctx.fillStyle = "rgba(150, 150, 150, 0.6)";
-    // this.ctx.lineWidth = 20;
-    // this.ctx.strokeStyle = "rgba(100, 100, 100, 0.8)";
-    const posX = this.canvasWidth - 100;
-    const posY = this.canvasHeight - 75;
 
-    //#54422b
-    //const woodImage = this.queries.backgroundImages.results[BackgroundType.WOOD_1].getMutableComponent(Image);
-    //this.ctx1.drawImage(woodImage.value, 500, 500);
+    const posX = this.canvasWidth - 110;
+    const posY = this.canvasHeight - 90;
 
-    // this.ctx.fillStyle = "#170f0c";
-    // this.ctx.lineWidth = 2;
-    // this.ctx.strokeStyle = "#746b5c";
-    // this.ctx.beginPath();
-    // this.ctx.arc(posX, posY, 64, 0, 2 * Math.PI);
-    // this.ctx.closePath();
-    // this.ctx.fill();
-    // this.ctx.stroke();
-
-    const gradient = this.ctx.createRadialGradient(posX+30,posY-30, 1, posX,posY,60);
+    const gradient = this.ctx.createRadialGradient(posX+40, posY-40, 1, posX, posY, 80);
     
     // Add three color stops
     gradient.addColorStop(0, "white");
@@ -70,17 +41,15 @@ export class HudSystem extends System {
 
     this.ctx.fillStyle = gradient;
     this.ctx.beginPath();
-    this.ctx.arc(posX, posY, 60, 0, 2 * Math.PI);
-    //this.ctx.clip();
+    this.ctx.arc(posX, posY, 80, 0, 2 * Math.PI);
     this.ctx.closePath();
     this.ctx.fill();
-    //this.ctx.drawImage(woodImage.value, posX-60, posY-60, 120, 120);
 
     this.ctx.font = "26px Arial";
     this.ctx.fillStyle = "rgb(40, 40, 40)";
     this.ctx.textAlign = "center";
-    this.ctx.fillText("NEXT", this.canvasWidth - 100, this.canvasHeight - 85);
-    this.ctx.fillText("TURN", this.canvasWidth - 100, this.canvasHeight - 50);
+    this.ctx.fillText("NEXT", posX, posY - 5);
+    this.ctx.fillText("TURN", posX, posY + 25);
   }
 
   drawUnitPanel() {
@@ -96,28 +65,35 @@ export class HudSystem extends System {
       this.ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
       this.ctx.lineWidth = 5;
       this.ctx.strokeStyle = "rgb(100, 100, 100)";
-      roundRect(
-        this.ctx,
-        this.canvasWidth - 350,
-        0,
-        350,
-        120,
-        { bl: 20 },
-        true,
-        true
-      );
-  
-      // Circle
-      this.ctx.fillStyle = "rgb(150, 150, 150)";
-      this.ctx.lineWidth = 5;
-      this.ctx.strokeStyle = "rgb(100, 100, 100)";
+
       this.ctx.beginPath();
-      this.ctx.arc(this.canvasWidth - 285, 60, 50, 0, 2 * Math.PI);
+      this.ctx.moveTo(this.canvasWidth - 580, this.canvasHeight - 180);
+      this.ctx.lineTo(this.canvasWidth - 155, this.canvasHeight - 180);
+      this.ctx.arc(this.canvasWidth - 110, this.canvasHeight - 90, 90, -Math.PI/1.5, Math.PI/1.5, true);
+      this.ctx.lineTo(this.canvasWidth - 155, this.canvasHeight);
+      this.ctx.lineTo(this.canvasWidth - 580, this.canvasHeight);
       this.ctx.closePath();
       this.ctx.fill();
-      this.ctx.stroke();
+
+      //this.ctx.fillRect(this.canvasWidth - 500, this.canvasHeight - 150, 300, 150);
   
       if(selectedUnit) {
+        const spriteSheet = this.getSpriteSheet(0);
+        const type = selectedUnit.getComponent(Unit).value;
+        const spritePos = this.getSpriteSheetPosition(type);
+
+        this.ctx.drawImage(
+          spriteSheet,
+          spritePos.x,
+          spritePos.y,
+          spritePos.width,
+          spritePos.height,
+          this.canvasWidth - 550, 
+          this.canvasHeight - 150,
+          100,
+          100
+        );
+
         const health = selectedUnit.getComponent(Health).value;
         const damage = selectedUnit.getComponent(Damage).value;
         const range = selectedUnit.getComponent(Range).value;
@@ -128,16 +104,17 @@ export class HudSystem extends System {
         this.ctx.fillStyle = "black";
         this.ctx.textAlign = "center";
 
-        this.ctx.fillText("HP: " + health, this.canvasWidth - 50, 45);
-        this.ctx.fillText("DG: " + damage, this.canvasWidth - 120, 45);
-        this.ctx.fillText("RA: " + range, this.canvasWidth - 190, 45);
-        this.ctx.fillText("SI: " + sight, this.canvasWidth - 50, 85);
-        this.ctx.fillText("SP: " + speed, this.canvasWidth - 120, 85);
+        this.ctx.fillText("HP: " + health, this.canvasWidth - 250, this.canvasHeight - 45);
+        this.ctx.fillText("DG: " + damage, this.canvasWidth - 320, this.canvasHeight - 45);
+        this.ctx.fillText("RA: " + range, this.canvasWidth - 390, this.canvasHeight - 45);
+        this.ctx.fillText("SI: " + sight, this.canvasWidth - 250, this.canvasHeight - 85);
+        this.ctx.fillText("SP: " + speed, this.canvasWidth - 320, this.canvasHeight - 85);
       }
     }
   }
 
   drawMap() {
+    console.log("in");
     this.ctx.fillStyle = "black";
     this.ctx.fillRect(this.canvasWidth - 250, 10, 240, 150);
 
@@ -145,6 +122,33 @@ export class HudSystem extends System {
     this.ctx.lineWidth = 2;
     this.ctx.strokeStyle = "white";
     this.ctx.strokeRect(this.canvasWidth - 220, 30, 180, 100);
+  }
+
+  getSpriteSheet(type) {
+    const spriteSheets = this.queries.unitImages.results;
+
+    for (let i = 0; i < spriteSheets.length; i++) {
+        let image = spriteSheets[i].getMutableComponent(Image);
+        let imageType = image.name.substr(0, image.name.indexOf("."));
+    
+        if (imageType == type) {
+            return image.value;
+        }
+    }
+
+    console.error("Could not find corresponding sprite sheet from given type");
+    return "Error";
+  }
+
+  getSpriteSheetPosition(variation) {
+      let position = {};
+
+      position.width = 194;
+      position.height = 194;
+      position.x = (variation % 11) * 194;
+      position.y = Math.floor(variation / 11) * 194;
+
+      return position;
   }
 }
 
@@ -163,5 +167,8 @@ HudSystem.queries = {
   },
   backgroundImages: {
 		components: [Image, BackgroundImage]
+	},
+  unitImages: {
+		components: [Image, UnitImage]
 	},
 };
