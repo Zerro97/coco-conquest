@@ -27,7 +27,6 @@ export class HudSystem extends System {
 
     
     if (actionStatus.action !== ActionType.NOT_SELECTED) {
-      console.log("in");
       // Top right panel
       this.ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
       this.ctx.lineWidth = 5;
@@ -82,21 +81,44 @@ export class HudSystem extends System {
   }
 
   drawBRPanel() {
-    this.ctx.fillStyle = "rgba(150, 150, 150, 0.6)";
-    this.ctx.lineWidth = 20;
-    this.ctx.strokeStyle = "rgba(100, 100, 100, 0.8)";
+    this.ctx.fillStyle = "#d2955a";
+    this.ctx.lineWidth = 10;
+    this.ctx.strokeStyle = "#815932";
+    roundRect(
+      this.ctx,
+      this.canvasWidth - 250,
+      this.canvasHeight - 150,
+      255,
+      155,
+      { tl: 20 },
+      true,
+      true
+    );
+
+    // this.ctx.fillStyle = "rgba(150, 150, 150, 0.6)";
+    // this.ctx.lineWidth = 20;
+    // this.ctx.strokeStyle = "rgba(100, 100, 100, 0.8)";
+    const posX = this.canvasWidth - 100;
+    const posY = this.canvasHeight - 75;
+    const gradient = this.ctx.createRadialGradient(posX+30,posY-30, 1, posX,posY,60);
+
+    // Add three color stops
+    gradient.addColorStop(0, "white");
+    gradient.addColorStop(.1, "#eabb8e");
+    gradient.addColorStop(1, "#86613e");
+
+    this.ctx.fillStyle = gradient;
     this.ctx.beginPath();
-    this.ctx.arc(this.canvasWidth - 100, this.canvasHeight - 100, 60, 0, 2 * Math.PI);
+    //this.ctx.fillRect(this.canvasWidth - 100, this.canvasHeight - 100, 360, 360);
+    this.ctx.arc(posX, posY, 60, 0, 2 * Math.PI);
     this.ctx.closePath();
     this.ctx.fill();
-    this.ctx.stroke();
 
     this.ctx.font = "26px Arial";
-    this.ctx.fillStyle = "rgba(50, 50, 50, 0.8)";
+    this.ctx.fillStyle = "rgb(40, 40, 40)";
     this.ctx.textAlign = "center";
-
-    this.ctx.fillText("NEXT", this.canvasWidth - 100, this.canvasHeight - 110);
-    this.ctx.fillText("TURN", this.canvasWidth - 100, this.canvasHeight - 75);
+    this.ctx.fillText("NEXT", this.canvasWidth - 100, this.canvasHeight - 85);
+    this.ctx.fillText("TURN", this.canvasWidth - 100, this.canvasHeight - 50);
   }
 }
 
