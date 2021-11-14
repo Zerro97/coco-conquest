@@ -1,5 +1,5 @@
 import { System } from "../../Library/Ecsy";
-import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, Radius, ScreenStatus, Selectable, Size, ActionStatus, Unit } from "../../Component";
+import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, Radius, ScreenStatus, ScreenFocusStatus, Selectable, Size, ActionStatus, Unit } from "../../Component";
 import { isInsideCircle, isInsideHexagon, isInsideRectangle } from "../../Util";
 import { Shape, TileSize, ActionType } from "../../Type";
 
@@ -10,7 +10,6 @@ export class MouseHandlerSystem extends System {
 	execute(delta, time) {
 		this.trackClickBuffer();
 		this.checkMouseClick();
-
 		this.checkHover();
 		this.checkSelect();
 	}
@@ -40,6 +39,8 @@ export class MouseHandlerSystem extends System {
 			}
 		}
 	}
+
+  
 
 	checkHover() {
 		const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
@@ -87,6 +88,7 @@ export class MouseHandlerSystem extends System {
 	checkSelect() {
 		const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
 		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+    const focusStatus = this.queries.screenFocusStatus.results[0].getMutableComponent(ScreenFocusStatus);
 
 		if(mouseStatus.isMouseClicked) {
 			let isSelected = false;
@@ -127,6 +129,7 @@ export class MouseHandlerSystem extends System {
 							if(!object.hasComponent(CurrentSelect)) {
 								object.addComponent(CurrentSelect);
 								isSelected = true;
+                focusStatus.startFocusing = true;
 							}
 						}
 						break;
@@ -154,6 +157,9 @@ MouseHandlerSystem.queries = {
 	screenStatus: {
 		components: [ScreenStatus]
 	},
+  screenFocusStatus: {
+    components: [ScreenFocusStatus]
+  },
 	hoverableObjects: {
 		components: [Hoverable, CanvasPosition]
 	},

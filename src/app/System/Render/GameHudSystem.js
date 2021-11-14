@@ -43,11 +43,11 @@ export class GameHudSystem extends System {
         break;
       case ActionType.MOVE:
         // 3) Draw movement hud
-        this.drawMoveHud();
+        //this.drawMoveHud();
         break;
       case ActionType.ATTACK:
         // 4) Draw attack hud
-        this.drawAttackHud();
+        //this.drawAttackHud();
         break;
     }
   }

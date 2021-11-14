@@ -1,8 +1,8 @@
 import { System } from "../../Library/Ecsy";
 import {
-  ActionStatus, CurrentSelect, Damage, Health, Range, Sight, Speed, Tile, Unit, Building
+  ActionStatus, CurrentSelect, Damage, Health, Range, Sight, Speed, Tile, Unit, Building, BackgroundImage, Image
 } from "../../Component";
-import { ActionType } from "../../Type";
+import { ActionType, BackgroundType } from "../../Type";
 import { roundRect } from "../../Util";
 
 export class HudSystem extends System {
@@ -13,12 +13,77 @@ export class HudSystem extends System {
   }
 
   drawHud() {
-    this.drawTRPanel();
-    this.drawTPanel();
+    //this.drawTRPanel();
+    //this.drawTPanel();
     this.drawBRPanel();
   }
 
   drawTRPanel() {
+    this.drawMap();
+  }
+
+  drawTPanel(){
+
+  }
+
+  drawBRPanel() {
+    this.drawUnitPanel();
+    // this.ctx.fillStyle = "#d2955a";
+    // this.ctx.lineWidth = 10;
+    // this.ctx.strokeStyle = "#815932";
+    // roundRect(
+    //   this.ctx,
+    //   this.canvasWidth - 250,
+    //   this.canvasHeight - 150,
+    //   255,
+    //   155,
+    //   { tl: 20 },
+    //   true,
+    //   true
+    // );
+    
+    // this.ctx.fillStyle = "rgba(150, 150, 150, 0.6)";
+    // this.ctx.lineWidth = 20;
+    // this.ctx.strokeStyle = "rgba(100, 100, 100, 0.8)";
+    const posX = this.canvasWidth - 100;
+    const posY = this.canvasHeight - 75;
+
+    //#54422b
+    //const woodImage = this.queries.backgroundImages.results[BackgroundType.WOOD_1].getMutableComponent(Image);
+    //this.ctx1.drawImage(woodImage.value, 500, 500);
+
+    // this.ctx.fillStyle = "#170f0c";
+    // this.ctx.lineWidth = 2;
+    // this.ctx.strokeStyle = "#746b5c";
+    // this.ctx.beginPath();
+    // this.ctx.arc(posX, posY, 64, 0, 2 * Math.PI);
+    // this.ctx.closePath();
+    // this.ctx.fill();
+    // this.ctx.stroke();
+
+    const gradient = this.ctx.createRadialGradient(posX+30,posY-30, 1, posX,posY,60);
+    
+    // Add three color stops
+    gradient.addColorStop(0, "white");
+    gradient.addColorStop(.1, "#eabb8e");
+    gradient.addColorStop(1, "#86613e");
+
+    this.ctx.fillStyle = gradient;
+    this.ctx.beginPath();
+    this.ctx.arc(posX, posY, 60, 0, 2 * Math.PI);
+    //this.ctx.clip();
+    this.ctx.closePath();
+    this.ctx.fill();
+    //this.ctx.drawImage(woodImage.value, posX-60, posY-60, 120, 120);
+
+    this.ctx.font = "26px Arial";
+    this.ctx.fillStyle = "rgb(40, 40, 40)";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText("NEXT", this.canvasWidth - 100, this.canvasHeight - 85);
+    this.ctx.fillText("TURN", this.canvasWidth - 100, this.canvasHeight - 50);
+  }
+
+  drawUnitPanel() {
     const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
 
     const selectedTile = this.queries.selectedTile.results[0];
@@ -68,57 +133,18 @@ export class HudSystem extends System {
         this.ctx.fillText("RA: " + range, this.canvasWidth - 190, 45);
         this.ctx.fillText("SI: " + sight, this.canvasWidth - 50, 85);
         this.ctx.fillText("SP: " + speed, this.canvasWidth - 120, 85);
-      } else if(selectedBuilding) {
-        console.log("Building");
-      } else if(selectedTile) {
-        console.log("Tile");
       }
     }
   }
 
-  drawTPanel(){
+  drawMap() {
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(this.canvasWidth - 250, 10, 240, 150);
 
-  }
-
-  drawBRPanel() {
-    this.ctx.fillStyle = "#d2955a";
-    this.ctx.lineWidth = 10;
-    this.ctx.strokeStyle = "#815932";
-    roundRect(
-      this.ctx,
-      this.canvasWidth - 250,
-      this.canvasHeight - 150,
-      255,
-      155,
-      { tl: 20 },
-      true,
-      true
-    );
-
-    // this.ctx.fillStyle = "rgba(150, 150, 150, 0.6)";
-    // this.ctx.lineWidth = 20;
-    // this.ctx.strokeStyle = "rgba(100, 100, 100, 0.8)";
-    const posX = this.canvasWidth - 100;
-    const posY = this.canvasHeight - 75;
-    const gradient = this.ctx.createRadialGradient(posX+30,posY-30, 1, posX,posY,60);
-
-    // Add three color stops
-    gradient.addColorStop(0, "white");
-    gradient.addColorStop(.1, "#eabb8e");
-    gradient.addColorStop(1, "#86613e");
-
-    this.ctx.fillStyle = gradient;
-    this.ctx.beginPath();
-    //this.ctx.fillRect(this.canvasWidth - 100, this.canvasHeight - 100, 360, 360);
-    this.ctx.arc(posX, posY, 60, 0, 2 * Math.PI);
-    this.ctx.closePath();
-    this.ctx.fill();
-
-    this.ctx.font = "26px Arial";
-    this.ctx.fillStyle = "rgb(40, 40, 40)";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText("NEXT", this.canvasWidth - 100, this.canvasHeight - 85);
-    this.ctx.fillText("TURN", this.canvasWidth - 100, this.canvasHeight - 50);
+    this.ctx.fillStyle = "white";
+    this.ctx.lineWidth = 2;
+    this.ctx.strokeStyle = "white";
+    this.ctx.strokeRect(this.canvasWidth - 220, 30, 180, 100);
   }
 }
 
@@ -134,5 +160,8 @@ HudSystem.queries = {
   },
   selectedBuilding: {
     components: [CurrentSelect, Building]
-  }
+  },
+  backgroundImages: {
+		components: [Image, BackgroundImage]
+	},
 };

@@ -1,4 +1,4 @@
-export const UnitType = {
+export const IconType = {
 	STRENGTH: 0,
     AGILITY: 1,
     CONSTITUTION: 2,

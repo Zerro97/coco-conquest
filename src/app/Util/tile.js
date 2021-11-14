@@ -104,6 +104,16 @@ export function applyTransformation(x, y, translation, scale, canvas) {
 	};
 }
 
+/**
+ * 
+ */
+export function reverseTransformation(x, y, translation, scale, canvas) {
+  return { 
+		x: (x - canvas.width/2) * scale.x - translation.x + canvas.width/2,
+		y: (y - canvas.height/2) * scale.y - translation.y + canvas.height/2
+	};
+}
+
 // const scaledX = (x - width/2) * scale;
 // const scaledY= (y - height/2) * scale;
 // return {x: scaledX + centerX, y: scaledY + centerY};

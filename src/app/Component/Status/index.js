@@ -1,3 +1,4 @@
-export { ScreenStatus } from "./ScreenStatus.js";
-export { GameStatus } from "./GameStatus.js";
-export { ActionStatus } from "./ActionStatus.js";
+export * from "./ScreenStatus.js";
+export * from "./ScreenFocusStatus.js";
+export * from "./GameStatus.js";
+export * from "./ActionStatus.js";

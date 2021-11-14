@@ -1,5 +1,6 @@
 import { System } from "../../Library/Ecsy";
-import { ScreenStatus, MouseStatus } from "../../Component";
+import { ScreenStatus, MouseStatus, CurrentSelect, Tile, MapPosition, CanvasPosition, ScreenFocusStatus } from "../../Component";
+import { isInsideRectangle, applyTransformation, reverseTransformation } from "../../Util";
 
 export class ScreenSystem extends System {
 	execute(delta, time) {
@@ -29,6 +30,12 @@ export class ScreenSystem extends System {
   }
 
   updateScreen() {
+    this.checkMouseWheel();
+    //this.checkScreenMove();
+    this.checkFocus();
+  }
+
+  checkMouseWheel() {
     const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
     const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
 
@@ -49,6 +56,84 @@ export class ScreenSystem extends System {
 
     mouseStatus.wheelY = 0;
   }
+
+  checkScreenMove() {
+    const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+    const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
+    const mouseX = mouseStatus.x;
+    const mouseY = mouseStatus.y;
+
+    if(mouseX < 50) {
+      screenStatus.x -= Math.abs(mouseX-100) * 0.1;
+    }
+
+    if(mouseY < 50) {
+      screenStatus.y -= Math.abs(mouseY-100) * 0.1;
+    }
+
+    if(mouseX > this.canvasWidth - 50) {
+      screenStatus.x += Math.abs(this.canvasWidth - mouseX - 100) * 0.1;
+    }
+
+    if(mouseY > this.canvasHeight - 50) {
+      screenStatus.y += Math.abs(this.canvasHeight - mouseY - 100) * 0.1;
+    }
+  }
+
+  checkFocus() {
+    const selectedTile = this.queries.selectedTile.results[0];
+    
+    if(selectedTile) {
+      const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
+      const focusStatus = this.queries.screenFocusStatus.results[0].getMutableComponent(ScreenFocusStatus);
+      const canvasPos = selectedTile.getMutableComponent(CanvasPosition);
+
+      const transCenter = reverseTransformation(
+        this.canvasWidth/2, 
+        this.canvasHeight/2, 
+        {x: screenStatus.x, y: screenStatus.y}, 
+        {x: screenStatus.scaleX, y: screenStatus.scaleY}, 
+        {width: this.canvasWidth, height: this.canvasHeight}
+      );
+      // transCenter.x -= this.canvasWidth/2;
+      // transCenter.y -= this.canvasHeight/2;
+
+      // console.log(transCenter, this.canvasWidth/2, this.canvasHeight/2);
+
+      // const original = applyTransformation(
+      //   transCenter.x, 
+      //   transCenter.y, 
+      //   {x: screenStatus.x, y: screenStatus.y}, 
+      //   {x: screenStatus.scaleX, y: screenStatus.scaleY}, 
+      //   {width: this.canvasWidth, height: this.canvasHeight}
+      // );
+
+      // const transPos = reverseTransformation(
+      //   canvasPos.x, 
+      //   canvasPos.y, 
+      //   {x: screenStatus.x, y: screenStatus.y}, 
+      //   {x: screenStatus.scaleX, y: screenStatus.scaleY}, 
+      //   {width: this.canvasWidth, height: this.canvasHeight}
+      // );
+
+      if(focusStatus.startFocusing) {
+        focusStatus.prevCenterX = transCenter.x;//this.canvasWidth/2;
+        focusStatus.prevCenterY = transCenter.y; //this.canvasHeight/2;
+        focusStatus.startFocusing = false;
+        console.log(focusStatus.prevCenterX, focusStatus.prevCenterY, canvasPos.x, canvasPos.y);
+      }
+
+      const dx = Math.abs(focusStatus.prevCenterX - canvasPos.x);
+      const dy = Math.abs(focusStatus.prevCenterY - canvasPos.y);
+      const length = Math.hypot(dx, dy);
+
+      
+      if(!isInsideRectangle(transCenter.x - 50, transCenter.y - 50, canvasPos.x, canvasPos.y, 100, 100)) {
+        screenStatus.x -= canvasPos.x/length;
+        screenStatus.y -= canvasPos.y/length;
+      }
+    }
+  }
 }
 
 ScreenSystem.queries = {
@@ -58,4 +143,10 @@ ScreenSystem.queries = {
   screenStatus: {
     components: [ScreenStatus],
   },
+  screenFocusStatus: {
+    components: [ScreenFocusStatus],
+  },
+  selectedTile: {
+    components: [CurrentSelect, Tile, MapPosition, CanvasPosition],
+  }
 };
