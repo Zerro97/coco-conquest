@@ -1,6 +1,7 @@
 import { System } from "../../Library/Ecsy";
 import { ScreenStatus, MouseStatus, CurrentSelect, Tile, MapPosition, CanvasPosition, ScreenFocusStatus } from "../../Component";
 import { isInsideRectangle, applyTransformation, reverseTransformation } from "../../Util";
+import { TileSize } from "../../Type";
 
 export class ScreenSystem extends System {
 	execute(delta, time) {
@@ -88,49 +89,34 @@ export class ScreenSystem extends System {
       const focusStatus = this.queries.screenFocusStatus.results[0].getMutableComponent(ScreenFocusStatus);
       const canvasPos = selectedTile.getMutableComponent(CanvasPosition);
 
-      const transCenter = reverseTransformation(
-        this.canvasWidth/2, 
-        this.canvasHeight/2, 
+      const transPos = reverseTransformation(
+        canvasPos.x + TileSize.REGULAR, 
+        canvasPos.y + TileSize.REGULAR, 
         {x: screenStatus.x, y: screenStatus.y}, 
         {x: screenStatus.scaleX, y: screenStatus.scaleY}, 
         {width: this.canvasWidth, height: this.canvasHeight}
       );
-      // transCenter.x -= this.canvasWidth/2;
-      // transCenter.y -= this.canvasHeight/2;
 
-      // console.log(transCenter, this.canvasWidth/2, this.canvasHeight/2);
-
-      // const original = applyTransformation(
-      //   transCenter.x, 
-      //   transCenter.y, 
-      //   {x: screenStatus.x, y: screenStatus.y}, 
-      //   {x: screenStatus.scaleX, y: screenStatus.scaleY}, 
-      //   {width: this.canvasWidth, height: this.canvasHeight}
-      // );
-
-      // const transPos = reverseTransformation(
-      //   canvasPos.x, 
-      //   canvasPos.y, 
-      //   {x: screenStatus.x, y: screenStatus.y}, 
-      //   {x: screenStatus.scaleX, y: screenStatus.scaleY}, 
-      //   {width: this.canvasWidth, height: this.canvasHeight}
-      // );
+      const destX = this.canvasWidth/2;
+      const destY = this.canvasHeight/2;
 
       if(focusStatus.startFocusing) {
-        focusStatus.prevCenterX = transCenter.x;//this.canvasWidth/2;
-        focusStatus.prevCenterY = transCenter.y; //this.canvasHeight/2;
+        focusStatus.x = transPos.x;
+        focusStatus.y = transPos.y;
+        focusStatus.curX = focusStatus.x;
+        focusStatus.curY = focusStatus.y;
         focusStatus.startFocusing = false;
-        console.log(focusStatus.prevCenterX, focusStatus.prevCenterY, canvasPos.x, canvasPos.y);
       }
 
-      const dx = Math.abs(focusStatus.prevCenterX - canvasPos.x);
-      const dy = Math.abs(focusStatus.prevCenterY - canvasPos.y);
-      const length = Math.hypot(dx, dy);
-
+      const dx = focusStatus.x - destX;
+      const dy = focusStatus.y - destY;
+      const length = Math.hypot(Math.abs(dx), Math.abs(dy));
       
-      if(!isInsideRectangle(transCenter.x - 50, transCenter.y - 50, canvasPos.x, canvasPos.y, 100, 100)) {
-        screenStatus.x -= canvasPos.x/length;
-        screenStatus.y -= canvasPos.y/length;
+      if(!isInsideRectangle(destX, destY, focusStatus.curX, focusStatus.curY, 30, 30)) {
+        screenStatus.x += dx/length * 30;
+        screenStatus.y += dy/length * 30;
+        focusStatus.curX -= dx/length * 30;
+        focusStatus.curY -= dy/length * 30;
       }
     }
   }
