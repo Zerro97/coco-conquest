@@ -112,11 +112,11 @@ export class ScreenSystem extends System {
       const dy = focusStatus.y - destY;
       const length = Math.hypot(Math.abs(dx), Math.abs(dy));
       
-      if(!isInsideRectangle(destX, destY, focusStatus.curX, focusStatus.curY, 30, 30)) {
-        screenStatus.x += dx/length * 30;
-        screenStatus.y += dy/length * 30;
-        focusStatus.curX -= dx/length * 30;
-        focusStatus.curY -= dy/length * 30;
+      if(!isInsideRectangle(destX, destY, focusStatus.curX, focusStatus.curY, 50, 50)) {
+        screenStatus.x += dx/length * 50;
+        screenStatus.y += dy/length * 50;
+        focusStatus.curX -= dx/length * 50;
+        focusStatus.curY -= dy/length * 50;
       }
     }
   }

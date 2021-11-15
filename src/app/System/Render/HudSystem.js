@@ -30,7 +30,7 @@ export class HudSystem extends System {
     this.drawUnitPanel();
 
     const posX = this.canvasWidth - 110;
-    const posY = this.canvasHeight - 90;
+    const posY = this.canvasHeight - 100;
 
     const gradient = this.ctx.createRadialGradient(posX+40, posY-40, 1, posX, posY, 80);
     
@@ -66,11 +66,24 @@ export class HudSystem extends System {
       this.ctx.lineWidth = 5;
       this.ctx.strokeStyle = "rgb(100, 100, 100)";
 
+      const startPoint = {x: this.canvasWidth - 205, y: this.canvasHeight - 205};
+
       this.ctx.beginPath();
-      this.ctx.moveTo(this.canvasWidth - 580, this.canvasHeight - 180);
-      this.ctx.lineTo(this.canvasWidth - 155, this.canvasHeight - 180);
-      this.ctx.arc(this.canvasWidth - 110, this.canvasHeight - 90, 90, -Math.PI/1.5, Math.PI/1.5, true);
+      this.ctx.moveTo(startPoint.x, startPoint.y);
+      this.ctx.bezierCurveTo(startPoint.x + 20, startPoint.y - 20, startPoint.x + 55, startPoint.y + 15, startPoint.x + 35, startPoint.y + 35);
+      //this.ctx.lineTo(this.canvasWidth - 155, this.canvasHeight - 200);
+      this.ctx.arc(this.canvasWidth - 110, this.canvasHeight - 100, 100, -Math.PI/1.5, Math.PI/1.5, true);
       this.ctx.lineTo(this.canvasWidth - 155, this.canvasHeight);
+      this.ctx.lineTo(this.canvasWidth - 180, this.canvasHeight);
+      this.ctx.arc(this.canvasWidth - 180, this.canvasHeight - 100, 100, Math.PI/1.5, -Math.PI/1.5, false);
+      this.ctx.closePath();
+      this.ctx.fill();
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.canvasWidth - 580, this.canvasHeight - 190);
+      this.ctx.lineTo(this.canvasWidth - 255, this.canvasHeight - 190);
+      this.ctx.arc(this.canvasWidth - 210, this.canvasHeight - 100, 100, -Math.PI/1.5, Math.PI/1.5, true);
+      this.ctx.lineTo(this.canvasWidth - 255, this.canvasHeight);
       this.ctx.lineTo(this.canvasWidth - 580, this.canvasHeight);
       this.ctx.closePath();
       this.ctx.fill();
@@ -114,7 +127,6 @@ export class HudSystem extends System {
   }
 
   drawMap() {
-    console.log("in");
     this.ctx.fillStyle = "black";
     this.ctx.fillRect(this.canvasWidth - 250, 10, 240, 150);
 

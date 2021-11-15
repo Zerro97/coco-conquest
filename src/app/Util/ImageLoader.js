@@ -49,10 +49,9 @@ export class ImageLoader {
 		for(const key in this[type]) {
 			const image = new Image();
 
-			console.log(this[type][key], key);
 			image.src = this[type][key];
 			await image.decode();
-			//console.log('in');
+
 			images[key] = image;
 		}
 
