@@ -1,6 +1,6 @@
 import { System } from "../../Library/Ecsy";
 import {
-  ActionStatus, CurrentSelect, Damage, Health, Range, Sight, Speed, Tile, Unit, Building, BackgroundImage, Image, UnitImage
+  ActionStatus, CurrentSelect, Damage, Health, Range, Sight, Speed, Tile, Unit, Building, BackgroundImage, Image, UnitImage, IconImage
 } from "../../Component";
 import { ActionType, BackgroundType } from "../../Type";
 import { roundRect, arcToPoint } from "../../Util";
@@ -103,10 +103,18 @@ export class HudSystem extends System {
         }
         this.ctx.fill();
         this.ctx.stroke();
-        
+
+        // Unit
         const spriteSheet = this.getSpriteSheet(0);
         const type = selectedUnit.getComponent(Unit).value;
         const spritePos = this.getSpriteSheetPosition(type);
+
+        // Icon
+        const iconSpriteSheet1 = this.getIconSpriteSheet(0);
+        const iconSpriteSheet2 = this.getIconSpriteSheet(1);
+        const damagePos = this.getIconSpriteSheetPosition(0);
+        const rangePos = this.getIconSpriteSheetPosition(16);
+        const speedPos = this.getIconSpriteSheetPosition(24);
 
         this.ctx.drawImage(
           spriteSheet,
@@ -120,21 +128,56 @@ export class HudSystem extends System {
           120
         );
 
+        
+
         const health = selectedUnit.getComponent(Health).value;
         const damage = selectedUnit.getComponent(Damage).value;
         const range = selectedUnit.getComponent(Range).value;
         const sight = selectedUnit.getComponent(Sight).value;
         const speed = selectedUnit.getComponent(Speed).value;
 
-        this.ctx.font = "18px Arial";
+        this.ctx.font = "22px Arial";
         this.ctx.fillStyle = "black";
         this.ctx.textAlign = "center";
 
-        this.ctx.fillText("HP: " + health, this.canvasWidth - 350, this.canvasHeight - 45);
-        this.ctx.fillText("DG: " + damage, this.canvasWidth - 420, this.canvasHeight - 45);
-        this.ctx.fillText("RA: " + range, this.canvasWidth - 490, this.canvasHeight - 45);
-        this.ctx.fillText("SI: " + sight, this.canvasWidth - 350, this.canvasHeight - 85);
-        this.ctx.fillText("SP: " + speed, this.canvasWidth - 420, this.canvasHeight - 85);
+        this.ctx.drawImage(
+          iconSpriteSheet1,
+          damagePos.x,
+          damagePos.y,
+          damagePos.width,
+          damagePos.height,
+          this.canvasWidth - 520, 
+          this.canvasHeight - 120,
+          50,
+          50
+        );
+        this.ctx.fillText(damage, this.canvasWidth - 495, this.canvasHeight - 45);
+
+        this.ctx.drawImage(
+          iconSpriteSheet1,
+          rangePos.x,
+          rangePos.y,
+          rangePos.width,
+          rangePos.height,
+          this.canvasWidth - 460, 
+          this.canvasHeight - 120,
+          50,
+          50
+        );
+        this.ctx.fillText(range, this.canvasWidth - 435, this.canvasHeight - 45);
+
+        this.ctx.drawImage(
+          iconSpriteSheet2,
+          speedPos.x,
+          speedPos.y,
+          speedPos.width,
+          speedPos.height,
+          this.canvasWidth - 400, 
+          this.canvasHeight - 120,
+          50,
+          50
+        );
+        this.ctx.fillText(speed, this.canvasWidth - 375, this.canvasHeight - 45);
       }
     }
   }
@@ -147,6 +190,33 @@ export class HudSystem extends System {
     this.ctx.lineWidth = 2;
     this.ctx.strokeStyle = "white";
     this.ctx.strokeRect(this.canvasWidth - 220, 30, 180, 100);
+  }
+
+  getIconSpriteSheet(type) {
+    const spriteSheets = this.queries.iconImages.results;
+
+    for (let i = 0; i < spriteSheets.length; i++) {
+        let image = spriteSheets[i].getMutableComponent(Image);
+        let imageType = image.name.substr(0, image.name.indexOf("."));
+    
+        if (imageType == type) {
+            return image.value;
+        }
+    }
+
+    console.error("Could not find corresponding sprite sheet from given type");
+    return "Error";
+  }
+
+  getIconSpriteSheetPosition(variation) {
+      let position = {};
+
+      position.width = 250;
+      position.height = 250;
+      position.x = (variation % 8) * 250;
+      position.y = Math.floor(variation / 8) * 250;
+
+      return position;
   }
 
   getSpriteSheet(type) {
@@ -195,5 +265,8 @@ HudSystem.queries = {
 	},
   unitImages: {
 		components: [Image, UnitImage]
+	},
+  iconImages: {
+		components: [Image, IconImage]
 	},
 };
