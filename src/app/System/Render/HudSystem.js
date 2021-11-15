@@ -3,7 +3,7 @@ import {
   ActionStatus, CurrentSelect, Damage, Health, Range, Sight, Speed, Tile, Unit, Building, BackgroundImage, Image, UnitImage
 } from "../../Component";
 import { ActionType, BackgroundType } from "../../Type";
-import { roundRect } from "../../Util";
+import { roundRect, arcToPoint } from "../../Util";
 
 export class HudSystem extends System {
   execute(delta, time) {
@@ -61,36 +61,49 @@ export class HudSystem extends System {
 
     
     if (actionStatus.action !== ActionType.NOT_SELECTED) {
-      // Top right panel
+      const p0 = {x: this.canvasWidth - 205, y: this.canvasHeight - 205};
+      const p1 = {x: p0.x + 35, y: p0.y + 35};
+      const p2 = {x: p0.x + 35, y: p0.y + 170};
+      const p3 = {x: p0.x, y: p0.y + 205};
+      const c = {x: this.canvasWidth - 110, y: this.canvasHeight - 100};
+      
+      const arc1 = arcToPoint(p1, p2, c);
+      const arc2 = arcToPoint(p3, p0, c);
+
       this.ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-      this.ctx.lineWidth = 5;
-      this.ctx.strokeStyle = "rgb(100, 100, 100)";
-
-      const startPoint = {x: this.canvasWidth - 205, y: this.canvasHeight - 205};
-
       this.ctx.beginPath();
-      this.ctx.moveTo(startPoint.x, startPoint.y);
-      this.ctx.bezierCurveTo(startPoint.x + 20, startPoint.y - 20, startPoint.x + 55, startPoint.y + 15, startPoint.x + 35, startPoint.y + 35);
-      //this.ctx.lineTo(this.canvasWidth - 155, this.canvasHeight - 200);
-      this.ctx.arc(this.canvasWidth - 110, this.canvasHeight - 100, 100, -Math.PI/1.5, Math.PI/1.5, true);
-      this.ctx.lineTo(this.canvasWidth - 155, this.canvasHeight);
-      this.ctx.lineTo(this.canvasWidth - 180, this.canvasHeight);
-      this.ctx.arc(this.canvasWidth - 180, this.canvasHeight - 100, 100, Math.PI/1.5, -Math.PI/1.5, false);
+      this.ctx.moveTo(p0.x, p0.y);
+      this.ctx.lineTo(p1.x, p1.y);
+      this.ctx.arc(c.x, c.y, arc1.rad, arc1.start, arc1.end, true);
+      this.ctx.lineTo(p3.x, p3.y);
+      this.ctx.arc(c.x, c.y, arc2.rad, arc2.start, arc2.end, false);
       this.ctx.closePath();
       this.ctx.fill();
 
+      const p4 = {x: this.canvasWidth - 140, y: this.canvasHeight - 180};
+      const p5 = {x: this.canvasWidth - 140, y: this.canvasHeight - 20};
+      const arc3 = arcToPoint(p4, p5, {x: this.canvasWidth - 30, y: this.canvasHeight - 100});
+
       this.ctx.beginPath();
-      this.ctx.moveTo(this.canvasWidth - 580, this.canvasHeight - 190);
-      this.ctx.lineTo(this.canvasWidth - 255, this.canvasHeight - 190);
-      this.ctx.arc(this.canvasWidth - 210, this.canvasHeight - 100, 100, -Math.PI/1.5, Math.PI/1.5, true);
-      this.ctx.lineTo(this.canvasWidth - 255, this.canvasHeight);
-      this.ctx.lineTo(this.canvasWidth - 580, this.canvasHeight);
+      this.ctx.moveTo(this.canvasWidth - 650, this.canvasHeight - 180);
+      this.ctx.lineTo(p4.x, p4.y);
+      this.ctx.arc(p5.x, this.canvasHeight - 100, arc3.rad, arc3.start, arc3.end, true);
+      this.ctx.lineTo(this.canvasWidth - 650, this.canvasHeight - 20);
+      this.ctx.arc(this.canvasWidth - 540, this.canvasHeight - 100, arc3.rad, arc3.start, arc3.end, true);
       this.ctx.closePath();
       this.ctx.fill();
-
-      //this.ctx.fillRect(this.canvasWidth - 500, this.canvasHeight - 150, 300, 150);
   
       if(selectedUnit) {
+        this.ctx.fillStyle = "red";
+        this.ctx.strokeStyle = "black";
+        this.ctx.lineWidth = 3;
+        this.ctx.beginPath();
+        for(let i=0; i<12; i++) {
+          this.ctx.rect(this.canvasWidth - 520 + (i*15), this.canvasHeight - 160, 15, 30);
+        }
+        this.ctx.fill();
+        this.ctx.stroke();
+        
         const spriteSheet = this.getSpriteSheet(0);
         const type = selectedUnit.getComponent(Unit).value;
         const spritePos = this.getSpriteSheetPosition(type);
@@ -101,10 +114,10 @@ export class HudSystem extends System {
           spritePos.y,
           spritePos.width,
           spritePos.height,
-          this.canvasWidth - 550, 
-          this.canvasHeight - 150,
-          100,
-          100
+          this.canvasWidth - 660, 
+          this.canvasHeight - 170,
+          120,
+          120
         );
 
         const health = selectedUnit.getComponent(Health).value;
@@ -117,11 +130,11 @@ export class HudSystem extends System {
         this.ctx.fillStyle = "black";
         this.ctx.textAlign = "center";
 
-        this.ctx.fillText("HP: " + health, this.canvasWidth - 250, this.canvasHeight - 45);
-        this.ctx.fillText("DG: " + damage, this.canvasWidth - 320, this.canvasHeight - 45);
-        this.ctx.fillText("RA: " + range, this.canvasWidth - 390, this.canvasHeight - 45);
-        this.ctx.fillText("SI: " + sight, this.canvasWidth - 250, this.canvasHeight - 85);
-        this.ctx.fillText("SP: " + speed, this.canvasWidth - 320, this.canvasHeight - 85);
+        this.ctx.fillText("HP: " + health, this.canvasWidth - 350, this.canvasHeight - 45);
+        this.ctx.fillText("DG: " + damage, this.canvasWidth - 420, this.canvasHeight - 45);
+        this.ctx.fillText("RA: " + range, this.canvasWidth - 490, this.canvasHeight - 45);
+        this.ctx.fillText("SI: " + sight, this.canvasWidth - 350, this.canvasHeight - 85);
+        this.ctx.fillText("SP: " + speed, this.canvasWidth - 420, this.canvasHeight - 85);
       }
     }
   }

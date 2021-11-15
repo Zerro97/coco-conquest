@@ -100,3 +100,21 @@ export function tilesInRange(tile, n) {
 
 	return results;
 }
+
+/**
+ * Given center point, starting point and end point,
+ * find an angle to be used to make arc to the given end point
+ * @param {*} p1 
+ * @param {*} p2 
+ * @param {*} p3 
+ * @returns 
+ */
+export function arcToPoint(p1, p2, c1) {
+	const diffX = p1.x - c1.x;
+    const diffY = p1.y - c1.y;
+    const radius = Math.abs(Math.sqrt(diffX*diffX + diffY*diffY));
+    const startAngle = Math.atan2(diffY, diffX);
+    const endAngle   = Math.atan2(p2.y - c1.y, p2.x - c1.x);
+
+	return {rad: radius, start: startAngle, end: endAngle};
+}
