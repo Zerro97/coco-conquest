@@ -172,6 +172,7 @@ const mapGenerator = new MapGenerator(world);
 // Create Map
 mapGenerator.registerTileMap(tileMap);
 mapGenerator.generateTiles();
+mapGenerator.generateRegions(8);
 
 // Adding Units
 unitGenerator.generateUnit(12, 5, 10);

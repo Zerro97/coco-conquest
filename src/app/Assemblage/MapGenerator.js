@@ -1,5 +1,5 @@
-import { Tile, Unit, Health, Damage, Sight, Range, Speed, MapPosition, GameObject, Hoverable, Selectable, CanvasPosition } from "../Component";
-import { cubeToPixel, evenrToCube, StatManager } from "../Util";
+import { Tile, MapPosition, GameObject, Hoverable, Selectable, CanvasPosition, Region } from "../Component";
+import { cubeToPixel, evenrToCube } from "../Util";
 import { GameObjectType, Shape, TileSize } from "../Type";
 
 export class MapGenerator {
@@ -8,17 +8,6 @@ export class MapGenerator {
 		this.tileMap = [];
 		this.unitMap = [];
 		this.buildingMap = [];
-	}
-
-	/**
-     * Generate a 2d array of map
-     * 
-     * @param {*} x number of columns
-     * @param {*} y number of rows
-     * @param {*} type type of map
-     */
-	generateMap(x, y, type) {
-        
 	}
 
 	/**
@@ -49,12 +38,41 @@ export class MapGenerator {
 		}
 	}
 
+	
+	/**
+     * Generate a 2d array of map
+     * 
+     * @param {*} x number of columns
+     * @param {*} y number of rows
+     * @param {*} type type of map
+     */
+	generateMap(x, y, type) {
+        
+	}
+
+	/**
+     * Generate a 2d array of map
+     * 
+     * @param {*} x number of columns
+     * @param {*} y number of rows
+     * @param {*} type type of map
+     */
+	generateRegions(num) {
+        for(let i=0; i<num; i++) {
+			this.world
+				.createEntity()
+				.addComponent(Region);
+		}
+	}
+
 	/**
      * Generate all the tiles from pre-defined map json
      */
 	generateTiles() {
+		let count = 0;
+
 		for(let row=0; row<this.tileMap.length; row++) {
-			for(let col=0; col<this.tileMap[0].length; col++) {
+			for(let col=0; col<this.tileMap[row].length; col++) {
 				let cube = evenrToCube(row, col);
 				let pixel = cubeToPixel(cube.x, cube.z, TileSize.REGULAR);
 
@@ -66,10 +84,14 @@ export class MapGenerator {
 					.addComponent(Hoverable, {shape: Shape.HEXAGON})
 					.addComponent(Selectable, {shape: Shape.HEXAGON})
 					.addComponent(Tile, {
+						id: count,
 						base: this.tileMap[row][col][0],
 						type: this.tileMap[row][col][1],
 						variation: this.tileMap[row][col][2]
-					});
+					})
+					.addComponent(Region);
+
+				count++;
 			}
 		}
 	}

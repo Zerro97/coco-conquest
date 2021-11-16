@@ -3,6 +3,7 @@ import { Component, Types } from "../../Library/Ecsy";
 export class Tile extends Component {}
 
 Tile.schema = {
+	id: { type: Types.Number },
 	// 	0: PLAIN, 1: MOUNTAIN, 2: OCEAN, 3: MOOR, 4: City
 	base: { type: Types.Number, default: 0 },
 

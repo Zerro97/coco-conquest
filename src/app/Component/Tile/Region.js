@@ -3,8 +3,11 @@ import { Component, Types } from "../../Library/Ecsy";
 export class Region extends Component {}
 
 /**
- * Contains list of tile map positions
+ * Store to which region the tile belongs to
  */
  Region.schema = {
-	value: { type: Types.Array },
+	// Region id that the tile belong to.
+	region: { type: Types.Number, default: -1 },
+	// Store id of player owning this region. -1 if no one owns it
+	player: { type: Types.Number }
 };

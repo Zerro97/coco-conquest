@@ -32,8 +32,7 @@ export class TileSystem extends System {
   drawTileImage() {
     this.queries.tiles.results.forEach((entity) => {
       let tile = entity.getMutableComponent(Tile);
-      let tilePos = entity.getMutableComponent(MapPosition);
-      let canvasPos = cubeToPixel(tilePos.x, tilePos.z, TileSize.REGULAR);
+      let canvasPos = entity.getMutableComponent(CanvasPosition);
 
       const spriteSheet = this.getSpriteSheet(tile.type);
       const spritePos = this.getSpriteSheetPosition(tile.variation);
@@ -87,10 +86,10 @@ export class TileSystem extends System {
   getSpriteSheetPosition(variation) {
     let position = {};
 
-    position.width = 186;
-    position.height = 190;
-    position.x = (variation % 9) * 210 + 12;
-    position.y = Math.floor(variation / 9) * 210 + 10;
+    position.width = 93;
+    position.height = 95;
+    position.x = (variation % 9) * 105 + 6;
+    position.y = Math.floor(variation / 9) * 105 + 5;
 
     return position;
   }
