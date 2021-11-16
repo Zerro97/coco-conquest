@@ -50,7 +50,7 @@ export class MapGenerator {
 	}
 
 	/**
-     * Generate all the tiles 
+     * Generate all the tiles from pre-defined map json
      */
 	generateTiles() {
 		for(let row=0; row<this.tileMap.length; row++) {

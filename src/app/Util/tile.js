@@ -64,56 +64,14 @@ export function drawImageTile(ctx, x, y, image) {
 	ctx.restore();
 }
 
-/**
- * Given x, y position of the tile,
- * return the actual pixel position of tile in canvas
- *
- * @param {*} x
- * @param {*} y
- * @param {*} r
- */
-export function evenrToPixel(x, y, r) {
-	let canvasX = r * Math.sqrt(3) * (x - 0.5 * (y & 1));
-	let canvasY = ((r * 3) / 2) * y;
-
-	return { x: canvasX, y: canvasY };
+export function drawBoundary(ctx, x, y, r, edge) {
+	const angle = (2 * Math.PI) / 6;
+	
+	for (var i = 0; i < 6; i++) {
+		if(edge[i]) {
+			ctx.moveTo(x + r * Math.sin(angle * i), y + r * Math.cos(angle * i));
+		} else {
+			ctx.lineTo(x + r * Math.sin(angle * i), y + r * Math.cos(angle * i));
+		}
+	}
 }
-
-export function cubeToPixel(x, z, r) {
-	let canvasX = r * (Math.sqrt(3) * x + (Math.sqrt(3) / 2) * z);
-	let canvasY = r * ((3 / 2) * z);
-
-	return { x: canvasX, y: canvasY };
-}
-
-
-
-/**
- * Apply given transformation to a point
- * Currently only translation & scale transformation
- * are handled (with translate applied first and then scale).
- *
- * @param {*} x
- * @param {*} y
- * @param {*} transformation
- */
-export function applyTransformation(x, y, translation, scale, canvas) {
-	return { 
-		x: (x + translation.x - canvas.width/2) / scale.x + canvas.width/2, 
-		y: (y + translation.y - canvas.height/2) / scale.y + canvas.height/2
-	};
-}
-
-/**
- * 
- */
-export function reverseTransformation(x, y, translation, scale, canvas) {
-  return { 
-		x: (x - canvas.width/2) * scale.x - translation.x + canvas.width/2,
-		y: (y - canvas.height/2) * scale.y - translation.y + canvas.height/2
-	};
-}
-
-// const scaledX = (x - width/2) * scale;
-// const scaledY= (y - height/2) * scale;
-// return {x: scaledX + centerX, y: scaledY + centerY};
