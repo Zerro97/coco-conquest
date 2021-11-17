@@ -174,8 +174,10 @@ const unitGenerator = new UnitGenerator(world);
 const mapGenerator = new MapGenerator(world);
 
 // Create Map
-mapGenerator.registerMap(tileMap);
-mapGenerator.generateTiles();
+//mapGenerator.registerMap(tileMap);
+//mapGenerator.generateTiles();
+mapGenerator.generateBiomeRegion();
+mapGenerator.generateMap();
 
 // Adding Units
 unitGenerator.generateUnit(12, 5, 10);
