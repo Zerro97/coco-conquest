@@ -7,7 +7,7 @@ export class Region extends Component {}
  */
  Region.schema = {
 	// Region id that the tile belong to.
-	region: { type: Types.Number, default: -1 },
+	region: { type: Types.Number },
 	// Store id of player owning this region. -1 if no one owns it
 	player: { type: Types.Number }
 };

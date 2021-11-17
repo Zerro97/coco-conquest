@@ -7,6 +7,7 @@ import {
   CanvasPosition,
   TileImage,
   Image,
+  Region,
 } from "../../Component";
 import {
   cubeToPixel,
@@ -32,6 +33,7 @@ export class TileSystem extends System {
   drawTileImage() {
     this.queries.tiles.results.forEach((entity) => {
       let tile = entity.getMutableComponent(Tile);
+      let region = entity.getMutableComponent(Region);
       let canvasPos = entity.getMutableComponent(CanvasPosition);
 
       const spriteSheet = this.getSpriteSheet(tile.type);
@@ -48,6 +50,11 @@ export class TileSystem extends System {
         TileSize.REGULAR * 2,
         TileSize.REGULAR * 2
       );
+
+      this.ctx.font = "26px Arial";
+      this.ctx.fillStyle = "red";
+      this.ctx.textAlign = "center";
+      this.ctx.fillText(region.region, canvasPos.x, canvasPos.y);
     });
   }
 

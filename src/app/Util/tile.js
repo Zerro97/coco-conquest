@@ -67,11 +67,16 @@ export function drawImageTile(ctx, x, y, image) {
 export function drawBoundary(ctx, x, y, r, edge) {
 	const angle = (2 * Math.PI) / 6;
 	
+	ctx.strokeStyle = "white";
+	ctx.lineWidth = 5;
+	ctx.beginPath();
+	ctx.moveTo(x + r * Math.sin(angle * -1), y + r * Math.cos(angle * -1));
 	for (var i = 0; i < 6; i++) {
 		if(edge[i]) {
-			ctx.moveTo(x + r * Math.sin(angle * i), y + r * Math.cos(angle * i));
-		} else {
 			ctx.lineTo(x + r * Math.sin(angle * i), y + r * Math.cos(angle * i));
+		} else {
+			ctx.moveTo(x + r * Math.sin(angle * i), y + r * Math.cos(angle * i));
 		}
 	}
+	ctx.stroke();
 }

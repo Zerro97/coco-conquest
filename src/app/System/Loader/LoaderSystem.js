@@ -17,17 +17,16 @@ import { TileSize } from "../../Type";
 
 export class LoaderSystem extends System {
 	execute(delta, time) {
-    // Bring images to ECS system
+		// Bring images to ECS system
 		this.loadImages();
 
-    // Initial screen position
+		// Initial screen position
 		this.setInitialPosition();
 
-    // Map Preparation
-    this.generateTileMap();
-    this.assignTileToMap();
-    this.generateRegions();
-		this.assignRegions(8);
+		// Map Preparation
+		this.generateTileMap();
+		this.assignTileToMap();
+		this.assignRegions(50);
 
 		this.stop();
 	}
@@ -82,21 +81,6 @@ export class LoaderSystem extends System {
 		screenStatus.y = canvasPos.y - this.canvasHeight/2;
 	}
 
-  /**
-     * Generate a 2d array of map
-     * 
-     * @param {*} x number of columns
-     * @param {*} y number of rows
-     * @param {*} type type of map
-     */
-	generateRegions(num) {
-    for(let i=0; i<num; i++) {
-			this.world
-				.createEntity()
-				.addComponent(Region);
-		}
-	}
-
   generateTileMap() {
     const tileMap = this.queries.tileMap.results;
 
@@ -143,11 +127,11 @@ export class LoaderSystem extends System {
 		let centers = [];
 
 		for(let i=0; i<num; i++) {
-			centers.push({x: Math.random() * this.mapWidth, y: Math.random() * this.mapHeight});
+			centers.push({x: Math.random() * (this.mapWidth - 2) + 2, y: Math.random() * (this.mapHeight - 2) + 2});
 		}
 
 		this.queries.tiles.results.forEach(tile => {
-			let region = tile.getMutableComponent(Region).region;
+			let region = tile.getMutableComponent(Region);
 			let mapPos = tile.getComponent(MapPosition);
 			let evenRPos = cubeToEvenr(mapPos.x, mapPos.z);
 
@@ -165,7 +149,7 @@ export class LoaderSystem extends System {
 				}
 			}
 
-			region = index;
+			region.region = index;
 		});
 	}
 }

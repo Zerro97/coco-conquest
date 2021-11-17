@@ -20,19 +20,20 @@ export class RegionSystem extends System {
   drawTerritoryBoundary() {
     const tileMap = this.queries.tileMap.results[0].getMutableComponent(TileMap).value;
 
+
     for(const x in tileMap) {
       for(const y in tileMap[x]) {
         for(const z in tileMap[x][y]) {
           const posX = Number(x);
           const posY = Number(y);
           const posZ = Number(z);
-          const curRegion = tileMap[x][y][z].getMutableComponent(Region).region;
+          const curRegion = tileMap[x][y][z].getMutableComponent(Region);
           const canvasPos = tileMap[x][y][z].getMutableComponent(CanvasPosition);
 
-          const edges = this.getEdges(tileMap, curRegion, posX, posY, posZ);
-          console.log(curRegion, edges);
+          const edges = this.getEdges(tileMap, curRegion.region, posX, posY, posZ);
           
           drawBoundary(this.ctx, canvasPos.x, canvasPos.y, TileSize.REGULAR, edges);
+
         }
       }
     }
@@ -41,32 +42,33 @@ export class RegionSystem extends System {
   getEdges(tileMap, curRegion, posX, posY, posZ) {
     let edges = [false, false, false, false, false, false];
 
-    if(tileMap[posX] && 
-      tileMap[posX][posY+1] &&
-      tileMap[posX][posY+1][posZ-1]?.getMutableComponent(Region).region !== curRegion) {
+    if(tileMap[posX-1] &&
+      tileMap[posX-1][posY] &&
+      tileMap[posX-1][posY][posZ+1]?.getMutableComponent(Region).region !== curRegion) {
       edges[0] = true;
     } 
-    else if(tileMap[posX] && 
+    if(tileMap[posX] && 
       tileMap[posX][posY-1] &&
       tileMap[posX][posY-1][posZ+1]?.getMutableComponent(Region).region !== curRegion) {
       edges[1] = true;
     } 
-    else if(tileMap[posX+1] && 
-      tileMap[posX+1][posY] &&
-      tileMap[posX+1][posY][posZ-1]?.getMutableComponent(Region).region !== curRegion) {
-      edges[2] = true;
-    } 
-    else if(tileMap[posX-1] &&
-      tileMap[posX-1][posY] &&
-      tileMap[posX-1][posY][posZ+1]?.getMutableComponent(Region).region !== curRegion) {
-      edges[3] = true;
-    } 
-    else if(tileMap[posX+1] && 
+    if(tileMap[posX+1] && 
       tileMap[posX+1][posY-1] &&
       tileMap[posX+1][posY-1][posZ]?.getMutableComponent(Region).region !== curRegion) {
+      edges[2] = true;
+    } 
+    if(tileMap[posX+1] && 
+      tileMap[posX+1][posY] &&
+      tileMap[posX+1][posY][posZ-1]?.getMutableComponent(Region).region !== curRegion) {
+      edges[3] = true;
+    } 
+    if(tileMap[posX] && 
+      tileMap[posX][posY+1] &&
+      tileMap[posX][posY+1][posZ-1]?.getMutableComponent(Region).region !== curRegion) {
       edges[4] = true;
     } 
-    else if(tileMap[posX-1] && 
+    
+    if(tileMap[posX-1] && 
       tileMap[posX-1][posY+1] &&
       tileMap[posX-1][posY+1][posZ]?.getMutableComponent(Region).region !== curRegion) {
       edges[5] = true;

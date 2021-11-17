@@ -99,7 +99,7 @@ function registerSystems() {
 			canvasWidth: mainCanvas.width, 
 			canvasHeight: mainCanvas.height
 		})
-    .registerSystem(System.RegionSystem, {
+		.registerSystem(System.RegionSystem, {
 			priority: 11, 
 			ctx: ctx,
 			canvasWidth: mainCanvas.width, 
