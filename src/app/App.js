@@ -7,8 +7,6 @@ import * as System from "./System";
 
 // Map
 import tileMap from "./Assets/Map/Tile/map_1.json";
-import unitMap from "./Assets/Map/Unit/map_1.json";
-import buildingMap from "./Assets/Map/Building/map_1.json";
 
 // Loader & Generator
 import { ImageLoader } from "./Util/ImageLoader";
@@ -101,20 +99,26 @@ function registerSystems() {
 			canvasWidth: mainCanvas.width, 
 			canvasHeight: mainCanvas.height
 		})
+    .registerSystem(System.RegionSystem, {
+			priority: 11, 
+			ctx: ctx,
+			canvasWidth: mainCanvas.width, 
+			canvasHeight: mainCanvas.height
+		})
 		.registerSystem(System.UnitRenderSystem, {
-			priority: 11,
+			priority: 12,
 			ctx: ctx,
 			canvasWidth: mainCanvas.width, 
 			canvasHeight: mainCanvas.height
 		})
 		.registerSystem(System.RenderSystem, {
-			priority: 12, 
+			priority: 13, 
 			ctx: ctx, 
 			canvasWidth: mainCanvas.width, 
 			canvasHeight: mainCanvas.height
 		})
 		.registerSystem(System.GameHudSystem, {
-			priority: 13, 
+			priority: 14, 
 			ctx: ctx, 
 			canvasWidth: mainCanvas.width, 
 			canvasHeight: mainCanvas.height
@@ -170,9 +174,8 @@ const unitGenerator = new UnitGenerator(world);
 const mapGenerator = new MapGenerator(world);
 
 // Create Map
-mapGenerator.registerTileMap(tileMap);
+mapGenerator.registerMap(tileMap);
 mapGenerator.generateTiles();
-mapGenerator.generateRegions(8);
 
 // Adding Units
 unitGenerator.generateUnit(12, 5, 10);

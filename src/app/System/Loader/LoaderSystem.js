@@ -9,16 +9,25 @@ import {
 	ScreenStatus, 
 	Region,
 	Tile,
+  TileMap,
 	MapPosition
 } from "../../Component";
-import { cubeToEvenr, evenrToPixel } from "../../Util";
+import { cubeToEvenr, evenrToCube, evenrToPixel } from "../../Util";
 import { TileSize } from "../../Type";
 
 export class LoaderSystem extends System {
 	execute(delta, time) {
+    // Bring images to ECS system
 		this.loadImages();
+
+    // Initial screen position
 		this.setInitialPosition();
-		this.assignRegion(8);
+
+    // Map Preparation
+    this.generateTileMap();
+    this.assignTileToMap();
+    this.generateRegions();
+		this.assignRegions(8);
 
 		this.stop();
 	}
@@ -73,11 +82,64 @@ export class LoaderSystem extends System {
 		screenStatus.y = canvasPos.y - this.canvasHeight/2;
 	}
 
+  /**
+     * Generate a 2d array of map
+     * 
+     * @param {*} x number of columns
+     * @param {*} y number of rows
+     * @param {*} type type of map
+     */
+	generateRegions(num) {
+    for(let i=0; i<num; i++) {
+			this.world
+				.createEntity()
+				.addComponent(Region);
+		}
+	}
+
+  generateTileMap() {
+    const tileMap = this.queries.tileMap.results;
+
+    if(tileMap.length === 0) {
+      const map = {};
+
+      this.queries.tiles.results.forEach(tile => {
+        const mapPos = tile.getMutableComponent(MapPosition);
+        const x = Math.sign(mapPos.x) == "-0" ? 0 : mapPos.x;
+        const y = Math.sign(mapPos.y) == "-0" ? 0 : mapPos.y;
+        const z = Math.sign(mapPos.z) == "-0" ? 0 : mapPos.z;
+
+        if(!map[x]) {
+          map[x] = {};
+        }
+        if(!map[x][y]) {
+          map[x][y] = {};
+        }
+        if(!map[x][y][z]) {
+          map[x][y][z] = {};
+        }
+      });
+
+      this.world
+        .createEntity()
+        .addComponent(TileMap, {value: map});
+    }
+  }
+
+  assignTileToMap() {
+    const tileMap = this.queries.tileMap.results[0].getMutableComponent(TileMap).value;
+
+    this.queries.tiles.results.forEach(tile => {
+      const mapPos = tile.getMutableComponent(MapPosition);
+      tileMap[mapPos.x][mapPos.y][mapPos.z] = tile;
+    });
+  }
+
 	/**
 	 * 
 	 * @param {*} num 
 	 */
-	assignRegion(num) {
+	assignRegions(num) {
 		let centers = [];
 
 		for(let i=0; i<num; i++) {
@@ -117,5 +179,8 @@ LoaderSystem.queries = {
 	},
 	tiles: {
 		components: [Tile, Region]
-	}
+	},
+  tileMap: {
+    components: [TileMap]
+  }
 };

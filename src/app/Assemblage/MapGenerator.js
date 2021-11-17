@@ -1,38 +1,20 @@
-import { Tile, MapPosition, GameObject, Hoverable, Selectable, CanvasPosition, Region } from "../Component";
+import { Tile, MapPosition, GameObject, Hoverable, Selectable, CanvasPosition, Region, TileMap } from "../Component";
 import { cubeToPixel, evenrToCube } from "../Util";
 import { GameObjectType, Shape, TileSize } from "../Type";
 
 export class MapGenerator {
 	constructor(world) {
 		this.world = world;
-		this.tileMap = [];
-		this.unitMap = [];
-		this.buildingMap = [];
+		this.map = [];
 	}
 
 	/**
 	 * 
 	 * @param {Array} map 2d array
 	 */
-	registerTileMap(map) {
+	registerMap(map) {
 		if(Array.isArray(map) && Array.isArray(map[0])) {
 			this.tileMap = map;
-		} else {
-			console.error("Map has to be 2d array");
-		}
-	}
-
-	registerUnitMap(map) {
-		if(Array.isArray(map) && Array.isArray(map[0])) {
-			this.unitMap = map;
-		} else {
-			console.error("Map has to be 2d array");
-		}
-	}
-
-	registerBuildingMap(map) {
-		if(Array.isArray(map) && Array.isArray(map[0])) {
-			this.buildingMap = map;
 		} else {
 			console.error("Map has to be 2d array");
 		}
@@ -48,21 +30,6 @@ export class MapGenerator {
      */
 	generateMap(x, y, type) {
         
-	}
-
-	/**
-     * Generate a 2d array of map
-     * 
-     * @param {*} x number of columns
-     * @param {*} y number of rows
-     * @param {*} type type of map
-     */
-	generateRegions(num) {
-        for(let i=0; i<num; i++) {
-			this.world
-				.createEntity()
-				.addComponent(Region);
-		}
 	}
 
 	/**
