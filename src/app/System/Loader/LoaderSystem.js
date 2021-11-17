@@ -26,7 +26,7 @@ export class LoaderSystem extends System {
 		// Map Preparation
 		this.generateTileMap();
 		this.assignTileToMap();
-		this.assignRegions(50);
+		this.assignRegions(10);
 
 		this.stop();
 	}
@@ -75,7 +75,7 @@ export class LoaderSystem extends System {
 
 	setInitialPosition() {
 		let screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
-		let canvasPos = evenrToPixel(this.mapHeight/2, this.mapWidth/2, TileSize.REGULAR);
+		let canvasPos = evenrToPixel(this.mapWidth/2, this.mapHeight/2, TileSize.REGULAR);
 
 		screenStatus.x = canvasPos.x - this.canvasWidth/2;
 		screenStatus.y = canvasPos.y - this.canvasHeight/2;
@@ -126,8 +126,14 @@ export class LoaderSystem extends System {
 	assignRegions(num) {
 		let centers = [];
 
-		for(let i=0; i<num; i++) {
-			centers.push({x: Math.random() * (this.mapWidth - 2) + 2, y: Math.random() * (this.mapHeight - 2) + 2});
+    const avgCount = Math.ceil(Math.sqrt(num));
+    const avgWidth = this.mapWidth / avgCount;
+    const avgHeight = this.mapHeight / avgCount;
+
+		for(let i=0; i<avgCount; i++) {
+      for(let j=0; j<avgCount; j++) {
+        centers.push({x: Math.random() * avgWidth + avgWidth * i, y: Math.random() * avgHeight + avgHeight * j});
+      }
 		}
 
 		this.queries.tiles.results.forEach(tile => {

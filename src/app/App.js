@@ -59,8 +59,8 @@ function registerSystems() {
 			buildingImages: buildingImages, 
 			backgroundImages: backgroundImages,
 
-			mapWidth: tileMap.length, 
-			mapHeight: tileMap[0].length, 
+			mapWidth: tileMap[0].length, 
+			mapHeight: tileMap.length, 
 			canvasWidth: mainCanvas.width, 
 			canvasHeight: mainCanvas.height
 		})
