@@ -1,12 +1,12 @@
-import { Tile, MapPosition, GameObject, Hoverable, Selectable, CanvasPosition, Region, TileMap } from "../Component";
+import { Tile, MapPosition, GameObject, Hoverable, Selectable, RightSelectable, CanvasPosition, Region, TileMap } from "../Component";
 import { cubeToPixel, evenrToCube } from "../Util";
 import { GameObjectType, Shape, TileSize } from "../Type";
 
 export class MapGenerator {
-	constructor(world, size = 20) {
+	constructor(world, size = 15) {
 		this.world = world;
 		this.map = [];
-    // SMALL: 15, REGULAR: 20, BIG: 30, HUGE: 40
+    // TINY: 15, SMALL: 20, REGULAR: 30, BIG: 40, HUGE: 60
     this.size = size; 
     this.biomeMap = [];
 
@@ -206,6 +206,7 @@ export class MapGenerator {
 					.addComponent(CanvasPosition, {x: pixel.x, y: pixel.y}) 
 					.addComponent(Hoverable, {shape: Shape.HEXAGON})
 					.addComponent(Selectable, {shape: Shape.HEXAGON})
+          .addComponent(RightSelectable, {shape: Shape.HEXAGON})
 					.addComponent(Tile, {
 						id: count,
 						base: this.tileMap[row][col][0],
@@ -234,6 +235,7 @@ export class MapGenerator {
       .addComponent(CanvasPosition, {x: pixel.x, y: pixel.y}) 
       .addComponent(Hoverable, {shape: Shape.HEXAGON})
       .addComponent(Selectable, {shape: Shape.HEXAGON})
+      .addComponent(RightSelectable, {shape: Shape.HEXAGON})
       .addComponent(Tile, {
         id: id,
         base: 0,

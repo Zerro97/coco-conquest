@@ -51,7 +51,7 @@ export function drawAttackingTile(ctx, x, y) {
 }
 
 export function drawMovingTile(ctx, x, y) {
-	drawHexagon(ctx, x, y, "rgba(255, 255, 255, 0.3)", "rgba(255, 255, 255, 0.1)");
+	drawHexagon(ctx, x, y, "rgba(61, 133, 198, 1)", "rgba(61, 133, 198, 0.3)");
 }
 
 export function drawImageTile(ctx, x, y, image) {

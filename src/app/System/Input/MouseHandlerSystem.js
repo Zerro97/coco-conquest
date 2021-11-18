@@ -1,5 +1,21 @@
 import { System } from "../../Library/Ecsy";
-import { CanvasPosition, CurrentHover, CurrentSelect, Hoverable, MapPosition, MouseStatus, Radius, ScreenStatus, ScreenFocusStatus, Selectable, Size, ActionStatus, Unit } from "../../Component";
+import { 
+  CanvasPosition, 
+  CurrentHover, 
+  CurrentSelect, 
+  CurrentRightSelect,
+  Hoverable,
+  MapPosition, 
+  MouseStatus, 
+  Radius, 
+  ScreenStatus, 
+  ScreenFocusStatus, 
+  Selectable, 
+  RightSelectable,
+  Size, 
+  ActionStatus,
+  Unit 
+} from "../../Component";
 import { isInsideCircle, isInsideHexagon, isInsideRectangle } from "../../Util";
 import { Shape, TileSize, ActionType } from "../../Type";
 
@@ -12,18 +28,24 @@ export class MouseHandlerSystem extends System {
 		this.checkMouseClick();
 		this.checkHover();
 		this.checkSelect();
+    this.checkRightSelect();
 	}
 
 	checkMouseClick() {
 		const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
 		// Allow only one game frame to have isMouseCLicked to be true
 		mouseStatus.isMouseClicked = false;
+    mouseStatus.isRightMouseClicked = false;
 
-		// When mouse is up after mouse down within 20 game frame
+		// When mouse is up after mouse down within 30 game frame
 		// set isMouseClicked to true
 		if(mouseStatus.clickBuffer !== -1 && !mouseStatus.isMouseDown) {
 			mouseStatus.isMouseClicked = true;
 			mouseStatus.clickBuffer = -1;
+		}
+    if(mouseStatus.rightClickBuffer !== -1 && !mouseStatus.isRightMouseDown) {
+			mouseStatus.isRightMouseClicked = true;
+			mouseStatus.rightClickBuffer = -1;
 		}
 	}
 
@@ -38,9 +60,16 @@ export class MouseHandlerSystem extends System {
 				mouseStatus.clickBuffer = -1;
 			}
 		}
-	}
 
-  
+    if(mouseStatus.isRightMouseDown) {
+			if(mouseStatus.rightClickBuffer !== -1) {
+				mouseStatus.rightClickBuffer += 1;
+			}
+			if(mouseStatus.rightClickBuffer === 30) {
+				mouseStatus.rightClickBuffer = -1;
+			}
+		}
+	}
 
 	checkHover() {
 		const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
@@ -144,6 +173,59 @@ export class MouseHandlerSystem extends System {
 			}
 		}
 	}
+
+  checkRightSelect() {
+		const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+    const focusStatus = this.queries.screenFocusStatus.results[0].getMutableComponent(ScreenFocusStatus);
+
+		if(mouseStatus.isRightMouseClicked) {
+			let isSelected = false;
+
+			const mouseTransX = mouseStatus.mapX;
+			const mouseTransY = mouseStatus.mapY;
+			
+			// Loop through all the selectable objects
+			this.queries.rightSelectableObjects.results.forEach((object) => {
+				object.removeComponent(CurrentRightSelect);
+
+				let objectPosition = object.getMutableComponent(CanvasPosition);
+				let objectShape = object.getMutableComponent(RightSelectable).shape;
+
+				switch(objectShape) {
+					case Shape.RECTANGLE: {
+						let size = object.getComponent(Size);
+						if(isInsideRectangle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, size.width, size.height)) {
+							if(!object.hasComponent(CurrentRightSelect)) {
+								object.addComponent(CurrentRightSelect);
+								isSelected = true;
+							}
+						}
+						break;
+					}
+					case Shape.CIRCLE: {
+						let radius = object.getMutableComponent(Radius);
+						if(isInsideCircle(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, radius)) {
+							if(!object.hasComponent(CurrentRightSelect)) {
+								object.addComponent(CurrentRightSelect);
+								isSelected = true;
+							}
+						}
+						break;
+					}
+					case Shape.HEXAGON: {
+						if(isInsideHexagon(objectPosition.x, objectPosition.y, mouseTransX, mouseTransY, TileSize.REGULAR)) {
+							if(!object.hasComponent(CurrentRightSelect)) {
+								object.addComponent(CurrentRightSelect);
+								isSelected = true;
+							}
+						}
+						break;
+					}
+				}
+			});
+		}
+	}
 }
 
 // Define a query of entities
@@ -165,6 +247,9 @@ MouseHandlerSystem.queries = {
 	},
 	selectableObjects: {
 		components: [Selectable, CanvasPosition]
+	},
+  rightSelectableObjects: {
+		components: [RightSelectable, CanvasPosition]
 	},
 	units: {
 		components: [Unit]

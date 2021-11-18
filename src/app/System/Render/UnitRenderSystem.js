@@ -20,10 +20,11 @@ import {
     Image
 } from "../../Component";
 import { TileSize, UnitType } from "../../Type";
-import { cubeToPixel } from "../../Util";
+import { cubeToPixel, drawMovingTile } from "../../Util";
 
 export class UnitRenderSystem extends System {
 	execute(delta, time) {
+    this.drawMovementRange();
 		this.drawUnits();
 	}
 
@@ -48,6 +49,15 @@ export class UnitRenderSystem extends System {
 			);
 		});
 	}
+
+  drawMovementRange() {
+    this.queries.units.results.forEach((entity) => {
+			const range = entity.getComponent(Range).value;
+      const canvasPos = entity.getComponent(CanvasPosition);
+
+      drawMovingTile(this.ctx, canvasPos.x, canvasPos.y);
+		});
+  }
 
     getSpriteSheet(type) {
         const spriteSheets = this.queries.unitImages.results;

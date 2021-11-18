@@ -29,5 +29,6 @@ MouseStatus.schema = {
 	isRightMouseClicked: { type: Types.Boolean, default: true },
 
 	// Timer since last mouse down for determining if it's a click
-	clickBuffer: { type: Types.Number, default: -1}
+	clickBuffer: { type: Types.Number, default: -1},
+  rightClickBuffer: { type: Types.Number, default: -1}
 };

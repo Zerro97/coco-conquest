@@ -7,15 +7,31 @@ import { applyTransformation } from "../../Util";
  */
 export class MouseListenerSystem extends System {
 	execute(delta, time) {
+    // Disable default right click
+    document.addEventListener("contextmenu", function(e){
+      e.preventDefault();
+    }, false);
+
 		document.addEventListener("pointerdown", (e) => {
 			const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
-			mouseStatus.isMouseDown = true;
-			mouseStatus.clickBuffer = 0;
+
+      if(e.button === 0) {
+        mouseStatus.isMouseDown = true;
+        mouseStatus.clickBuffer = 0;
+      } else if(e.button === 2) {
+        mouseStatus.isRightMouseDown = true;
+        mouseStatus.rightClickBuffer = 0;
+      }
 		});
 
 		document.addEventListener("pointerup", (e) => {
 			const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
-			mouseStatus.isMouseDown = false;
+
+      if(e.button === 0) {
+        mouseStatus.isMouseDown = false;
+      } else if(e.button === 2) {
+        mouseStatus.isRightMouseDown = false;
+      }
 		});
 
 		document.addEventListener("pointermove", (e) => {
