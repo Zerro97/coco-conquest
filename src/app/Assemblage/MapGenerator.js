@@ -13,7 +13,14 @@ export class MapGenerator {
     for(let i=0; i<size; i++) {
       this.biomeMap.push([]);
       for(let j=0; j<size; j++) {
-        this.biomeMap[i].push(Math.random() > 0.5 ? 29 : 28);
+        let type = 30;
+        if(Math.random() < 0.2) {
+          type = 28;
+        }
+        if(Math.random() < 0.2) {
+          type = 29;
+        }
+        this.biomeMap[i].push(type);
       }
     }
 	}
@@ -74,18 +81,91 @@ export class MapGenerator {
             index = k;
           }
         }
-        
-        //console.log(index);
         this.biomeMap[row][col] = randMapping[index];
-        if(row === 1 || col === 1 || row === this.size-2 || col === this.size-2) {
+        
+        // Create outer ocean
+        if(row === 1 || col === 1 || row === this.size-2 || col === this.size-2 &&
+           row >0 && row < this.size-1 && col > 0 && col < this.size-1) {
           if(Math.random() < 0.5) {
             this.biomeMap[row][col] = 30;
           }
         }
+        if(row === 2 || col === 2 || row === this.size-3 || col === this.size-3 &&
+           row > 1 && row < this.size-2 && col > 1 && col < this.size-2) {
+          const neighborTypes = this.getNeighbors(this.biomeMap, row, col);
+          let hasOceanNeighbor = false;
+          for(let i=0; i<6; i++) {
+            if(neighborTypes[i] === 30 || neighborTypes[i] === 29 || neighborTypes[i] === 28) {
+              hasOceanNeighbor = true;
+            }
+          }
+
+          if(Math.random() < 0.2 && hasOceanNeighbor ) {
+            this.biomeMap[row][col] = 30;
+          }
+        }
+        if((row === 3 || col === 3 || row === this.size-4 || col === this.size-4) &&
+         row > 2 && row < this.size-3 && col > 2 && col < this.size-3) {
+          const neighborTypes = this.getNeighbors(this.biomeMap, row, col);
+          console.log(neighborTypes, this.biomeMap[row][col], row, col);
+          let hasOceanNeighbor = false;
+          for(let i=0; i<6; i++) {
+            if(neighborTypes[i] === 30 || neighborTypes[i] === 29 || neighborTypes[i] === 28) {
+              hasOceanNeighbor = true;
+            }
+          }
+
+          if(Math.random() < 0.2 && hasOceanNeighbor ) {
+            this.biomeMap[row][col] = 30;
+          }
+        }
+
+        // Create mountains
+        if(Math.random() < 0.05) {
+          this.biomeMap[row][col] = 24; // 24 ~ 27
+        }
+        const neighborTypes = this.getNeighbors(this.biomeMap, row, col);
+        let hasMountainNeighbor = false;
+        for(let i=0; i<6; i++) {
+          if(neighborTypes[i] === 24 || neighborTypes[i] === 25 || neighborTypes[i] === 26 || neighborTypes[i] === 27) {
+            hasMountainNeighbor = true;
+          }
+        }
+        if(Math.random() < 0.15 && hasMountainNeighbor) {
+          this.biomeMap[row][col] = 24;
+        }
+
+        // Create swamp
+        if(this.biomeMap[row][col] === 12) {
+          this.biomeMap[row][col] = 20;
+        }
       }
     }
+  }
 
-    console.log(this.biomeMap);
+  getNeighbors(map, row, col) {
+    const neighbors = [-1, -1, -1, -1, -1, -1];
+
+    if(map[row-1] && map[row-1][col]) {
+      neighbors[0] = map[row-1][col];
+    }
+    if(map[row] && map[row][col+1]) {
+      neighbors[1] = map[row][col+1];
+    }
+    if(map[row+1] && map[row+1][col]) {
+      neighbors[2] = map[row+1][col];
+    }
+    if(map[row+1] && map[row+1][col-1]) {
+      neighbors[3] = map[row+1][col-1];
+    }
+    if(map[row] &&  map[row][col-1]) {
+      neighbors[4] = map[row][col-1];
+    }
+    if(map[row-1] && map[row-1][col-1]) {
+      neighbors[5] = map[row-1][col-1];
+    }
+
+    return neighbors;
   }
 
 	
@@ -146,7 +226,6 @@ export class MapGenerator {
     let cube = evenrToCube(row, col);
     let pixel = cubeToPixel(cube.x, cube.z, TileSize.REGULAR);
     let variation = type === 30 ? 0 : Math.floor(Math.random() * 10);
-    console.log(type === 30 ? "A" : "AB");
 
     this.world
       .createEntity()
