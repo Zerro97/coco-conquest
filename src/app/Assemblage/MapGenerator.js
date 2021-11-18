@@ -107,7 +107,6 @@ export class MapGenerator {
         if((row === 3 || col === 3 || row === this.size-4 || col === this.size-4) &&
          row > 2 && row < this.size-3 && col > 2 && col < this.size-3) {
           const neighborTypes = this.getNeighbors(this.biomeMap, row, col);
-          console.log(neighborTypes, this.biomeMap[row][col], row, col);
           let hasOceanNeighbor = false;
           for(let i=0; i<6; i++) {
             if(neighborTypes[i] === 30 || neighborTypes[i] === 29 || neighborTypes[i] === 28) {
@@ -199,6 +198,11 @@ export class MapGenerator {
 				let cube = evenrToCube(row, col);
 				let pixel = cubeToPixel(cube.x, cube.z, TileSize.REGULAR);
 
+        let base = this.tileMap[row][col][0];
+        let type = this.tileMap[row][col][1];
+        let variation = this.tileMap[row][col][2];
+        let weight = this.getTileWeight(type);
+
 				this.world
 					.createEntity()
 					.addComponent(GameObject, {value: GameObjectType.TILE})
@@ -209,9 +213,9 @@ export class MapGenerator {
           .addComponent(RightSelectable, {shape: Shape.HEXAGON})
 					.addComponent(Tile, {
 						id: count,
-						base: this.tileMap[row][col][0],
-						type: this.tileMap[row][col][1],
-						variation: this.tileMap[row][col][2]
+						base: base,
+						type: type,
+						variation: variation
 					})
 					.addComponent(Region);
 
@@ -220,13 +224,11 @@ export class MapGenerator {
 		}
 	}
 
-  /**
-   * 
-   */
   createTile(id, row, col, type) {
     let cube = evenrToCube(row, col);
     let pixel = cubeToPixel(cube.x, cube.z, TileSize.REGULAR);
     let variation = type === 30 ? 0 : Math.floor(Math.random() * 10);
+    let weight = this.getTileWeight(type);
 
     this.world
       .createEntity()
@@ -240,8 +242,29 @@ export class MapGenerator {
         id: id,
         base: 0,
         type: type,
-        variation: variation
+        variation: variation,
+        weight: weight
       })
       .addComponent(Region);
+  }
+
+  getTileWeight(type) {
+    let weight = -1;
+
+    if(type < 8) {
+      weight = 2;
+    } else if(type >= 8 && type < 16) {
+      weight = 1;
+    } else if(type >= 16 && type < 20) {
+      weight = 2;
+    } else if(type >= 20 && type < 24) {
+      weight = 3;
+    } else if(type >= 24 && type < 28) {
+      weight = 2;
+    } else if(type >= 28) {
+      weight = 1;
+    }
+
+    return weight;
   }
 }

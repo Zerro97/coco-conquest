@@ -64,10 +64,10 @@ export function drawImageTile(ctx, x, y, image) {
 	ctx.restore();
 }
 
-export function drawBoundary(ctx, x, y, r, edge) {
+export function drawBoundary(ctx, x, y, r, edge, color = "white") {
 	const angle = (2 * Math.PI) / 6;
 	
-	ctx.strokeStyle = "white";
+	ctx.strokeStyle = color;
 	ctx.lineWidth = 5;
 	ctx.beginPath();
 	ctx.moveTo(x + r * Math.sin(angle * -1), y + r * Math.cos(angle * -1));

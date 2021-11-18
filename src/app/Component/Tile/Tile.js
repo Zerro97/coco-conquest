@@ -11,5 +11,8 @@ Tile.schema = {
 	type: { type: Types.Number, default: 0 },
 
 	// Different image sets for a single type
-	variation: { type: Types.Number, default: 0 }
+	variation: { type: Types.Number, default: 0 },
+
+  // Cost for moving across this tile
+  weight: { type: Types.Number , default: 1}
 };

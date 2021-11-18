@@ -88,6 +88,10 @@ export function cubeDistance(a, b) {
 	return Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y), Math.abs(a.z - b.z));
 }
 
+/**
+ * Given a tile cube coordinate and range
+ * return tile coordinates within range
+ */
 export function tilesInRange(tile, n) {
 	let results = [];
 	
@@ -100,6 +104,8 @@ export function tilesInRange(tile, n) {
 
 	return results;
 }
+
+
 
 /**
  * Given center point, starting point and end point,

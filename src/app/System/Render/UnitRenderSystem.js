@@ -17,10 +17,10 @@ import {
 	UnitImage,
 	CurrentFocus,
 	CurrentSelect,
-    Image
+  Image
 } from "../../Component";
 import { TileSize, UnitType } from "../../Type";
-import { cubeToPixel, drawMovingTile } from "../../Util";
+import { cubeToPixel, drawMovingTile, tilesInRange, drawBoundary } from "../../Util";
 
 export class UnitRenderSystem extends System {
 	execute(delta, time) {
@@ -51,12 +51,22 @@ export class UnitRenderSystem extends System {
 	}
 
   drawMovementRange() {
-    this.queries.units.results.forEach((entity) => {
-			const range = entity.getComponent(Range).value;
-      const canvasPos = entity.getComponent(CanvasPosition);
+    const selectedUnit = this.queries.selectedUnit.results[0];
 
-      drawMovingTile(this.ctx, canvasPos.x, canvasPos.y);
-		});
+    if(selectedUnit) {
+      const range = selectedUnit.getComponent(Range).value;
+      const mapPos = selectedUnit.getComponent(MapPosition);
+
+      
+
+      // const tiles = tilesInRange(mapPos, range);
+
+      // for(let i=0; i<tiles.length; i++) {
+      //   const pos = cubeToPixel(tiles[i].x, tiles[i].z, TileSize.REGULAR);
+      //   const edges = [false, false, false, false, false, false];
+      //   drawMovingTile(this.ctx, pos.x, pos.y);
+      // }
+    }
   }
 
     getSpriteSheet(type) {
@@ -94,6 +104,9 @@ UnitRenderSystem.queries = {
 	unitImages: {
 		components: [Image, UnitImage]
 	},
+  selectedUnit: {
+    components: [CurrentSelect, Unit, MapPosition, CanvasPosition]
+  },
 	control: {
 		components: [Block, Timer]
 	},
@@ -102,8 +115,5 @@ UnitRenderSystem.queries = {
 	},
 	focusedUnit: {
 		components: [CurrentFocus, Unit, MapPosition]
-	},
-	selectedUnit: {
-		components: [CurrentSelect, Unit, MapPosition]
 	},
 };
