@@ -35,6 +35,7 @@ export class TileSystem extends System {
       let tile = entity.getMutableComponent(Tile);
       let region = entity.getMutableComponent(Region);
       let canvasPos = entity.getMutableComponent(CanvasPosition);
+      let mapPos = entity.getMutableComponent(MapPosition);
 
       const spriteSheet = this.getSpriteSheet(tile.type);
       const spritePos = this.getSpriteSheetPosition(tile.variation);
@@ -51,10 +52,11 @@ export class TileSystem extends System {
         TileSize.REGULAR * 2
       );
 
-      this.ctx.font = "26px Arial";
+      this.ctx.font = "20px Arial";
       this.ctx.fillStyle = "red";
       this.ctx.textAlign = "center";
-      this.ctx.fillText(region.region, canvasPos.x, canvasPos.y);
+      //this.ctx.fillText(region.region, canvasPos.x, canvasPos.y);
+      this.ctx.fillText(mapPos.x + " " + mapPos.y + " " + mapPos.z, canvasPos.x, canvasPos.y);
     });
   }
 

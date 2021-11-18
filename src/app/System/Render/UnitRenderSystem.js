@@ -7,7 +7,8 @@ import {
 	Damage, 
 	Sight, 
 	Range, 
-	Speed, 
+	Speed,
+  Tile,
 	MapPosition,
 	CanvasPosition, 
 	ActionStatus, 
@@ -17,15 +18,17 @@ import {
 	UnitImage,
 	CurrentFocus,
 	CurrentSelect,
-  Image
+  Image,
+  TileMap
 } from "../../Component";
 import { TileSize, UnitType } from "../../Type";
-import { cubeToPixel, drawMovingTile, tilesInRange, drawBoundary } from "../../Util";
+import { cubeToPixel, drawMovingTile, tilesInRange, drawBoundary, getTilesInRange } from "../../Util";
 
 export class UnitRenderSystem extends System {
 	execute(delta, time) {
     this.drawMovementRange();
 		this.drawUnits();
+    //this.stop();
 	}
 
 	drawUnits() {
@@ -54,10 +57,58 @@ export class UnitRenderSystem extends System {
     const selectedUnit = this.queries.selectedUnit.results[0];
 
     if(selectedUnit) {
-      const range = selectedUnit.getComponent(Range).value;
-      const mapPos = selectedUnit.getComponent(MapPosition);
+      const tileMap = this.queries.tileMap.results[0].getMutableComponent(TileMap).value;
+      const speed = 10; //selectedUnit.getComponent(Speed).value;
+      const pos = selectedUnit.getComponent(MapPosition);
+      const mapPos = {x: pos.x, y: pos.y, z: pos.z};
 
-      
+      //const weightMap = getTilesInRange(mapPos, range * 2);
+      let weightMap = getTilesInRange(mapPos, 10 * 2); 
+      // for(const x in distMap) {
+      //   for(const y in distMap[x]) {
+      //     for(const z in distMap[x][y]) {
+      //       if(tileMap[x] && tileMap[x][y] && tileMap[x][y][z]) {
+      //         weightMap[x][y][z] = tileMap[x][y][z].getComponent(Tile).weight;
+      //       }
+      //     }
+      //   }
+      // }
+
+      //weightMap[mapPos.x][mapPos.y][mapPos.z] = 1;
+      let nodes = [{x: mapPos.x, y: mapPos.y, z: mapPos.z, weight: 1}];
+      while(nodes.length !== 0) {
+        let new_nodes = [];
+        nodes.forEach(node => {
+          console.log(node);
+          for(let x=-1; x <= 1; x++) {
+            for(let y = Math.max(-1, -x-1); y <= Math.min(1, -x+1); y++){
+              let z = -x -y;
+
+              if(!(x === 0 && y === 0 && z === 0)) {
+                let curWeight = node.weight + tileMap[node.x + x][node.y + y][node.z + z].getComponent(Tile).weight;
+  
+                // TODO: check if the tile is out of map bounds
+                if (curWeight < weightMap[node.x + x][node.y + y][node.z + z] && curWeight < speed) {
+                  weightMap[node.x + x][node.y + y][node.z + z] = curWeight;
+                  new_nodes.push({x: node.x + x, y: node.y + y, z: node.z + z, weight: curWeight});
+                }
+              }
+            }
+          }
+        });
+
+        nodes = new_nodes;
+        console.log(tileMap); //Error at: [12][-17][5]
+        console.log("END", nodes);
+      }
+      //console.log(weightMap);
+      this.stop();
+
+      // for(let i=0; i<range; i++) {
+      //   for(let j=0; j<range; j++) {
+          
+      //   }
+      // }
 
       // const tiles = tilesInRange(mapPos, range);
 
@@ -116,4 +167,7 @@ UnitRenderSystem.queries = {
 	focusedUnit: {
 		components: [CurrentFocus, Unit, MapPosition]
 	},
+  tileMap: {
+    components: [TileMap]
+  }
 };

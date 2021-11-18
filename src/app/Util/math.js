@@ -81,7 +81,11 @@ export function evenrToCube(row, col){
 	let cubeZ = row;
 	let cubeY = -cubeX - cubeZ;
 
-	return {x: cubeX, y: cubeY, z: cubeZ};
+  let x = Math.sign(cubeX) == "-0" ? 0 : cubeX;
+  let y = Math.sign(cubeY) == "-0" ? 0 : cubeY;
+  let z = Math.sign(cubeZ) == "-0" ? 0 : cubeZ;
+
+	return {x: x, y: y, z: z};
 }
 
 export function cubeDistance(a, b) {
@@ -105,7 +109,28 @@ export function tilesInRange(tile, n) {
 	return results;
 }
 
+/**
+ * Used for calculating movement range
+ * 
+ * @param {*} tile 
+ * @param {*} n 
+ * @returns 
+ */
+export function getTilesInRange(tile, n) {
+  let results = {};
+	
+	for(let x=-n; x <= n; x++) {
+    results[tile.x + x] = {};
+		for(let y = Math.max(-n, -x-n); y <= Math.min(n, -x+n); y++){
+			let z = -x -y;
 
+      results[tile.x + x][tile.y + y] = {};
+      results[tile.x + x][tile.y + y][tile.z + z] = Number.MAX_VALUE;
+		}
+	}
+
+	return results;
+}
 
 /**
  * Given center point, starting point and end point,
