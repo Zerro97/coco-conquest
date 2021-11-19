@@ -19,16 +19,38 @@ import {
 	UnitImage,
 	Velocity,
 	CurrentFocus,
-	CurrentSelect
+	CurrentSelect,
+  CurrentRightSelect,
+  Tile
 } from "../../Component";
 import { ActionType, TileSize, UnitType } from "../../Type";
 import { cubeToPixel } from "../../Util";
 
 export class UnitSystem extends System {
 	execute(delta, time) {
+    this.moveUnit();
 		//this.attackUnit();
 		//this.stop();
 	}
+
+  moveUnit() {
+    const selectedUnit = this.queries.selectedUnit.results[0];
+    const movingTile = this.queries.movingTile.results[0];
+
+    if(selectedUnit && movingTile) {
+      let originalPos = selectedUnit.getMutableComponent(MapPosition);
+      let originalCanvasPos = selectedUnit.getMutableComponent(CanvasPosition);
+      let movingPos = movingTile.getMutableComponent(MapPosition);
+      let movingCanvasPos = movingTile.getMutableComponent(CanvasPosition);
+  
+      originalPos.x = movingPos.x;
+      originalPos.y = movingPos.y;
+      originalPos.z = movingPos.z;
+      originalCanvasPos.x = movingCanvasPos.x;
+      originalCanvasPos.y = movingCanvasPos.y;
+      originalCanvasPos.z = movingCanvasPos.z;
+    }
+  }
 
 	attackUnit() {
 		const actionEntity = this.queries.actionStatus.results[0];
@@ -93,4 +115,7 @@ UnitSystem.queries = {
 	selectedUnit: {
 		components: [CurrentSelect, Unit, MapPosition]
 	},
+  movingTile: {
+    components: [CurrentRightSelect, Tile]
+  }
 };

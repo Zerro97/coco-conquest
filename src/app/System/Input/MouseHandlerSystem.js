@@ -179,6 +179,12 @@ export class MouseHandlerSystem extends System {
 		const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
     const focusStatus = this.queries.screenFocusStatus.results[0].getMutableComponent(ScreenFocusStatus);
 
+    // Remove current right select to allow only one frame to contain
+    // current right select
+    this.queries.rightSelectableObjects.results.forEach((object) => {
+      object.removeComponent(CurrentRightSelect);
+    });
+
 		if(mouseStatus.isRightMouseClicked) {
 			let isSelected = false;
 
@@ -187,8 +193,6 @@ export class MouseHandlerSystem extends System {
 			
 			// Loop through all the selectable objects
 			this.queries.rightSelectableObjects.results.forEach((object) => {
-				object.removeComponent(CurrentRightSelect);
-
 				let objectPosition = object.getMutableComponent(CanvasPosition);
 				let objectShape = object.getMutableComponent(RightSelectable).shape;
 

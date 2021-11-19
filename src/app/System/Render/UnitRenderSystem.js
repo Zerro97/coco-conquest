@@ -58,23 +58,12 @@ export class UnitRenderSystem extends System {
 
     if(selectedUnit) {
       const tileMap = this.queries.tileMap.results[0].getMutableComponent(TileMap).value;
-      const speed = 2;//selectedUnit.getComponent(Speed).value;
+      const speed = selectedUnit.getComponent(Speed).value;
       const pos = selectedUnit.getComponent(MapPosition);
       const mapPos = {x: pos.x, y: pos.y, z: pos.z};
 
-      //const weightMap = getTilesInRange(mapPos, range * 2);
       let weightMap = getTilesInRange(mapPos, speed * 2); 
-      // for(const x in distMap) {
-      //   for(const y in distMap[x]) {
-      //     for(const z in distMap[x][y]) {
-      //       if(tileMap[x] && tileMap[x][y] && tileMap[x][y][z]) {
-      //         weightMap[x][y][z] = tileMap[x][y][z].getComponent(Tile).weight;
-      //       }
-      //     }
-      //   }
-      // }
 
-      //weightMap[mapPos.x][mapPos.y][mapPos.z] = 1;
       let nodes = [{x: mapPos.x, y: mapPos.y, z: mapPos.z, weight: 0}];
       while(nodes.length !== 0) {
         let new_nodes = [];
@@ -111,19 +100,6 @@ export class UnitRenderSystem extends System {
           }
         }
       }
-      // for(let i=0; i<range; i++) {
-      //   for(let j=0; j<range; j++) {
-          
-      //   }
-      // }
-
-      // const tiles = tilesInRange(mapPos, range);
-
-      // for(let i=0; i<tiles.length; i++) {
-      //   const pos = cubeToPixel(tiles[i].x, tiles[i].z, TileSize.REGULAR);
-      //   const edges = [false, false, false, false, false, false];
-      //   drawMovingTile(this.ctx, pos.x, pos.y);
-      // }
     }
   }
 

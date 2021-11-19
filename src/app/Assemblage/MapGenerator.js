@@ -264,7 +264,8 @@ export class MapGenerator {
       // Mountain is not passable for most unit
       weight = 999;
     } else if(type >= 28) {
-      weight = 1;
+      // Ocean is not passable for land units
+      weight = 999;
     }
 
     return weight;
