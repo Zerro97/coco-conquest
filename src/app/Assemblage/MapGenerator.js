@@ -258,9 +258,11 @@ export class MapGenerator {
     } else if(type >= 16 && type < 20) {
       weight = 2;
     } else if(type >= 20 && type < 24) {
-      weight = 3;
+      // Swamp is not passable until research
+      weight = 999;
     } else if(type >= 24 && type < 28) {
-      weight = 2;
+      // Mountain is not passable for most unit
+      weight = 999;
     } else if(type >= 28) {
       weight = 1;
     }
