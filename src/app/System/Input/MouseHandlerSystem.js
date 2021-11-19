@@ -14,7 +14,8 @@ import {
   RightSelectable,
   Size, 
   ActionStatus,
-  Unit 
+  Unit, 
+  PreviousSelect
 } from "../../Component";
 import { isInsideCircle, isInsideHexagon, isInsideRectangle } from "../../Util";
 import { Shape, TileSize, ActionType } from "../../Type";
@@ -127,8 +128,15 @@ export class MouseHandlerSystem extends System {
 			
 			// Loop through all the selectable objects
 			this.queries.selectableObjects.results.forEach((object) => {
-				object.removeComponent(CurrentSelect);
+        if(object.hasComponent(PreviousSelect)) {
+          object.removeComponent(PreviousSelect);
+        }
 
+        if(object.hasComponent(CurrentSelect)) {
+          object.addComponent(PreviousSelect);
+          object.removeComponent(CurrentSelect);
+        }
+				
 				let objectPosition = object.getMutableComponent(CanvasPosition);
 				let objectShape = object.getMutableComponent(Selectable).shape;
 

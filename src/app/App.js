@@ -161,6 +161,12 @@ world
 	.createEntity()
 	.addComponent(Component.Block)
 	.addComponent(Component.Timer);
+world
+	.createEntity()
+	.addComponent(Component.WeightMap, {value: {}});
+world
+  .createEntity()
+  .addComponent(Component.PreviousSelect);
 
 // Store image objects as entity
 imageLoader.generateTileImage();

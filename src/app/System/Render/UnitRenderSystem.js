@@ -19,7 +19,8 @@ import {
 	CurrentFocus,
 	CurrentSelect,
   Image,
-  TileMap
+  TileMap,
+  WeightMap
 } from "../../Component";
 import { TileSize, UnitType } from "../../Type";
 import { cubeToPixel, drawMovingTile, tilesInRange, drawBoundary, getTilesInRange } from "../../Util";
@@ -55,40 +56,10 @@ export class UnitRenderSystem extends System {
 
   drawMovementRange() {
     const selectedUnit = this.queries.selectedUnit.results[0];
+    const weightMap = this.queries.weightMap.results[0].getMutableComponent(WeightMap).value;
 
-    if(selectedUnit) {
-      const tileMap = this.queries.tileMap.results[0].getMutableComponent(TileMap).value;
+    if(selectedUnit && Object.keys(weightMap).length !== 0) {
       const speed = selectedUnit.getComponent(Speed).value;
-      const pos = selectedUnit.getComponent(MapPosition);
-      const mapPos = {x: pos.x, y: pos.y, z: pos.z};
-
-      let weightMap = getTilesInRange(mapPos, speed * 2); 
-
-      let nodes = [{x: mapPos.x, y: mapPos.y, z: mapPos.z, weight: 0}];
-      while(nodes.length !== 0) {
-        let new_nodes = [];
-        nodes.forEach(node => {
-          for(let x=-1; x <= 1; x++) {
-            for(let y = Math.max(-1, -x-1); y <= Math.min(1, -x+1); y++){
-              let z = -x -y;
-
-              if(!(x === 0 && y === 0 && z === 0) &&
-               tileMap[node.x + x] &&
-               tileMap[node.x + x][node.y + y] &&
-               tileMap[node.x + x][node.y + y][node.z + z]) {
-                let curWeight = node.weight + tileMap[node.x + x][node.y + y][node.z + z].getComponent(Tile).weight;
-  
-                if (curWeight < weightMap[node.x + x][node.y + y][node.z + z] && curWeight <= speed) {
-                  weightMap[node.x + x][node.y + y][node.z + z] = curWeight;
-                  new_nodes.push({x: node.x + x, y: node.y + y, z: node.z + z, weight: curWeight});
-                }
-              }
-            }
-          }
-        });
-
-        nodes = new_nodes;
-      }
 
       for(const x in weightMap) {
         for(const y in weightMap[x]) {
@@ -152,5 +123,8 @@ UnitRenderSystem.queries = {
 	},
   tileMap: {
     components: [TileMap]
+  },
+  weightMap: {
+    components: [WeightMap]
   }
 };

@@ -1,2 +1,2 @@
-export { Block } from "./Block.js";
-export { Timer } from "./Timer.js";
+export * from "./Block.js";
+export * from "./Timer.js";

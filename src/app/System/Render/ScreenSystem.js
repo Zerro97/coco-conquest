@@ -20,9 +20,6 @@ export class ScreenSystem extends System {
     this.ctx.translate(this.canvasWidth/2, this.canvasHeight/2);
     this.ctx.scale(screenStatus.scaleX, screenStatus.scaleY);
     this.ctx.translate(-this.canvasWidth/2, -this.canvasHeight/2);
-    
-    this.ctx.fillStyle = "red";
-    this.ctx.fillRect(this.canvasWidth/2, this.canvasHeight/2, 5, 5);
 	}
 
   clearCanvas() {
