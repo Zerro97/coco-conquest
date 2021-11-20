@@ -21,15 +21,10 @@ mainCanvas.width = window.innerWidth;
 mainCanvas.height = window.innerHeight;
 let ctx = mainCanvas.getContext("2d");
 
-// let layer1Canvas = document.querySelector("#layer_1");
-// layer1Canvas.width = window.innerWidth;
-// layer1Canvas.height = window.innerHeight;
-// let ctx1 = mainCanvas.getContext("2d");
-
 // Display loading text
 ctx.font = "50px Arial";
 ctx.textAlign = "center";
-ctx.fillText("Loading...", mainCanvas.width/2, mainCanvas.height/2);
+ctx.fillText("Loading...", mainCanvas.width / 2, mainCanvas.height / 2);
 
 // Load all images
 let imageLoader = new ImageLoader(world);
@@ -40,133 +35,122 @@ let buildingImages = await imageLoader.loadBuildingImages();
 let iconImages = await imageLoader.loadIconImages();
 let backgroundImages = await imageLoader.loadBackgroundImages();
 
-// Register components 
+// Map Size
+const MAP_SIZE = 25;
+
+// Register components
 function registerComponents() {
-	Object.keys(Component).forEach((comp) => {
-		world.registerComponent(Component[comp]);
-	});
+  Object.keys(Component).forEach((comp) => {
+    world.registerComponent(Component[comp]);
+  });
 }
 
-// Register systems 
+// Register systems
 function registerSystems() {
-	world
-		.registerSystem(System.LoaderSystem, {
-			priority: -99, 
+  world
+    .registerSystem(System.LoaderSystem, {
+      priority: -99,
 
-			tileImages: tileImages,
-			iconImages: iconImages, 
-			unitImages: unitImages,
-			buildingImages: buildingImages, 
-			backgroundImages: backgroundImages,
+      tileImages: tileImages,
+      iconImages: iconImages,
+      unitImages: unitImages,
+      buildingImages: buildingImages,
+      backgroundImages: backgroundImages,
 
-			mapWidth: tileMap[0].length, 
-			mapHeight: tileMap.length, 
-			canvasWidth: mainCanvas.width, 
-			canvasHeight: mainCanvas.height
-		})
-		.registerSystem(System.KeyboardListenerSystem, {
-			priority: -10
-		})
-		.registerSystem(System.MouseListenerSystem, {
-			priority: -10,
-			canvasWidth: mainCanvas.width, 
-			canvasHeight: mainCanvas.height
-		})
-		.registerSystem(System.KeyboardHandlerSystem, {
-			priority: 0
-		})
-		.registerSystem(System.MouseHandlerSystem, {
-			priority: 0
-		})
-		.registerSystem(System.ScreenSystem, {
-			priority: 5, 
-			ctx: ctx, 
-			canvasWidth: mainCanvas.width, 
-			canvasHeight: mainCanvas.height
-		})
-		.registerSystem(System.MovementSystem, {
-			priority: 5
-		})
-		.registerSystem(System.ActionSystem, {
-			priority: 5
-		})
-		.registerSystem(System.UnitSystem, {
-			priority: 5
-		})
-		.registerSystem(System.TileSystem, {
-			priority: 10, 
-			ctx: ctx,
-			canvasWidth: mainCanvas.width, 
-			canvasHeight: mainCanvas.height
-		})
-		.registerSystem(System.RegionSystem, {
-			priority: 11, 
-			ctx: ctx,
-			canvasWidth: mainCanvas.width, 
-			canvasHeight: mainCanvas.height
-		})
-		.registerSystem(System.UnitRenderSystem, {
-			priority: 12,
-			ctx: ctx,
-			canvasWidth: mainCanvas.width, 
-			canvasHeight: mainCanvas.height
-		})
-		.registerSystem(System.RenderSystem, {
-			priority: 13, 
-			ctx: ctx, 
-			canvasWidth: mainCanvas.width, 
-			canvasHeight: mainCanvas.height
-		})
-		.registerSystem(System.GameHudSystem, {
-			priority: 14, 
-			ctx: ctx, 
-			canvasWidth: mainCanvas.width, 
-			canvasHeight: mainCanvas.height
-		})
-		.registerSystem(System.HudSystem, {
-			priority: 20, 
-			ctx: ctx,
-			canvasWidth: mainCanvas.width, 
-			canvasHeight: mainCanvas.height,
-		});
+      mapWidth: MAP_SIZE,
+      mapHeight: MAP_SIZE,
+      canvasWidth: mainCanvas.width,
+      canvasHeight: mainCanvas.height,
+    })
+    .registerSystem(System.KeyboardListenerSystem, {
+      priority: -10,
+    })
+    .registerSystem(System.MouseListenerSystem, {
+      priority: -10,
+      canvasWidth: mainCanvas.width,
+      canvasHeight: mainCanvas.height,
+    })
+    .registerSystem(System.KeyboardHandlerSystem, {
+      priority: 0,
+    })
+    .registerSystem(System.MouseHandlerSystem, {
+      priority: 0,
+    })
+    .registerSystem(System.ScreenSystem, {
+      priority: 5,
+      ctx: ctx,
+      canvasWidth: mainCanvas.width,
+      canvasHeight: mainCanvas.height,
+    })
+    .registerSystem(System.MovementSystem, {
+      priority: 5,
+    })
+    .registerSystem(System.ActionSystem, {
+      priority: 5,
+    })
+    .registerSystem(System.UnitSystem, {
+      priority: 5,
+    })
+    .registerSystem(System.TileSystem, {
+      priority: 10,
+      ctx: ctx,
+      canvasWidth: mainCanvas.width,
+      canvasHeight: mainCanvas.height,
+    })
+    .registerSystem(System.RegionSystem, {
+      priority: 11,
+      ctx: ctx,
+      canvasWidth: mainCanvas.width,
+      canvasHeight: mainCanvas.height,
+    })
+    .registerSystem(System.UnitRenderSystem, {
+      priority: 12,
+      ctx: ctx,
+      canvasWidth: mainCanvas.width,
+      canvasHeight: mainCanvas.height,
+    })
+    .registerSystem(System.RenderSystem, {
+      priority: 13,
+      ctx: ctx,
+      canvasWidth: mainCanvas.width,
+      canvasHeight: mainCanvas.height,
+    })
+    .registerSystem(System.GameHudSystem, {
+      priority: 14,
+      ctx: ctx,
+      canvasWidth: mainCanvas.width,
+      canvasHeight: mainCanvas.height,
+    })
+    .registerSystem(System.HudSystem, {
+      priority: 20,
+      ctx: ctx,
+      canvasWidth: mainCanvas.width,
+      canvasHeight: mainCanvas.height,
+    });
 }
 
-// Register systems 
+// Register systems
 registerComponents();
 registerSystems();
 
 // Singleton entities
-world
-	.createEntity()
-	.addComponent(Component.ScreenStatus);
-world
-	.createEntity()
-	.addComponent(Component.ScreenFocusStatus);
-world
-	.createEntity()
-	.addComponent(Component.ActionStatus)
-	.addComponent(Component.MovePosition)
-	.addComponent(Component.AttackPosition)
-	.addComponent(Component.SelectPosition);
-world
-	.createEntity()
-	.addComponent(Component.GameStatus);
-world
-	.createEntity()
-	.addComponent(Component.MouseStatus);
-world
-	.createEntity()
-	.addComponent(Component.KeyboardStatus);
-world
-	.createEntity()
-	.addComponent(Component.Block)
-	.addComponent(Component.Timer);
-world
-	.createEntity()
-	.addComponent(Component.WeightMap, {value: {}});
+world.createEntity().addComponent(Component.ScreenStatus);
+world.createEntity().addComponent(Component.ScreenFocusStatus);
 world
   .createEntity()
-  .addComponent(Component.PreviousSelect);
+  .addComponent(Component.ActionStatus)
+  .addComponent(Component.MovePosition)
+  .addComponent(Component.AttackPosition)
+  .addComponent(Component.SelectPosition);
+world.createEntity().addComponent(Component.GameStatus);
+world.createEntity().addComponent(Component.MouseStatus);
+world.createEntity().addComponent(Component.KeyboardStatus);
+world
+  .createEntity()
+  .addComponent(Component.Block)
+  .addComponent(Component.Timer);
+world.createEntity().addComponent(Component.WeightMap, { value: {} });
+world.createEntity().addComponent(Component.PreviousSelect);
 
 // Store image objects as entity
 imageLoader.generateTileImage();
@@ -177,7 +161,7 @@ imageLoader.generateBackgroundImage();
 
 // Generators
 const unitGenerator = new UnitGenerator(world);
-const mapGenerator = new MapGenerator(world);
+const mapGenerator = new MapGenerator(world, MAP_SIZE);
 
 // Create Map
 //mapGenerator.registerMap(tileMap);
