@@ -4,6 +4,8 @@ import {
   CurrentHover,
   CurrentSelect,
   CurrentRightSelect,
+  CurrentHudHover,
+  CurrentHudSelect,
   Hoverable,
   MapPosition,
   MouseStatus,
@@ -16,7 +18,9 @@ import {
   ActionStatus,
   Unit,
   PreviousSelect,
-  Shape
+  Shape,
+  HudHoverable,
+  HudSelectable
 } from "../../Component";
 import { isInsideCircle, isInsideHexagon, isInsideRectangle } from "../../Util";
 import { ObjectShape, TileSize, ActionType } from "../../Type";
@@ -38,8 +42,7 @@ export class MouseHandlerSystem extends System {
   }
 
   checkMouseClick() {
-    const mouseStatus =
-      this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+    const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
     // Allow only one game frame to have isMouseCLicked to be true
     mouseStatus.isMouseClicked = false;
     mouseStatus.isRightMouseClicked = false;
@@ -57,8 +60,7 @@ export class MouseHandlerSystem extends System {
   }
 
   trackClickBuffer() {
-    const mouseStatus =
-      this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+    const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
 
     if (mouseStatus.isMouseDown) {
       if (mouseStatus.clickBuffer !== -1) {
@@ -83,12 +85,138 @@ export class MouseHandlerSystem extends System {
     const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
     const mouseX = mouseStatus.x;
     const mouseY = mouseStatus.y;
+
+    this.queries.hudHoverableObjects.results.forEach(object => {
+      object.removeComponent(CurrentHudHover);
+
+      let canvasPos = object.getComponent(CanvasPosition);
+      let objectShape = object.getComponent(Shape).type;
+
+      switch (objectShape) {
+        case ObjectShape.RECTANGLE: {
+          let size = object.getComponent(Size);
+          if (
+            isInsideRectangle(
+              canvasPos.x,
+              canvasPos.y,
+              mouseX,
+              mouseY,
+              size.width,
+              size.height
+            )
+          ) {
+            if (!object.hasComponent(CurrentHudHover)) {
+              object.addComponent(CurrentHudHover);
+            }
+          }
+          break;
+        }
+        case ObjectShape.CIRCLE: {
+          let radius = object.getMutableComponent(Radius).value;
+          if (
+            isInsideCircle(
+              canvasPos.x,
+              canvasPos.y,
+              mouseX,
+              mouseY,
+              radius
+            )
+          ) {
+            
+            if (!object.hasComponent(CurrentHudHover)) {
+              object.addComponent(CurrentHudHover);
+            }
+          }
+          break;
+        }
+        case ObjectShape.HEXAGON: {
+          if (
+            isInsideHexagon(
+              canvasPos.x,
+              canvasPos.y,
+              mouseX,
+              mouseY,
+              TileSize.REGULAR
+            )
+          ) {
+            if (!object.hasComponent(CurrentHudHover)) {
+              object.addComponent(CurrentHudHover);
+            }
+          }
+          break;
+        }
+      }
+    });
   }
 
   checkHudSelect() {
     const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
     const mouseX = mouseStatus.x;
     const mouseY = mouseStatus.y;
+
+    this.queries.hudSelectableObjects.results.forEach(object => {
+      object.removeComponent(CurrentHudSelect);
+
+      if (mouseStatus.isMouseClicked) {
+        let canvasPos = object.getComponent(CanvasPosition);
+        let objectShape = object.getComponent(Shape).type;
+  
+        switch (objectShape) {
+          case ObjectShape.RECTANGLE: {
+            let size = object.getComponent(Size);
+            if (
+              isInsideRectangle(
+                canvasPos.x,
+                canvasPos.y,
+                mouseX,
+                mouseY,
+                size.width,
+                size.height
+              )
+            ) {
+              if (!object.hasComponent(CurrentHudSelect)) {
+                object.addComponent(CurrentHudSelect);
+              }
+            }
+            break;
+          }
+          case ObjectShape.CIRCLE: {
+            let radius = object.getMutableComponent(Radius).value;
+            if (
+              isInsideCircle(
+                canvasPos.x,
+                canvasPos.y,
+                mouseX,
+                mouseY,
+                radius
+              )
+            ) {
+              
+              if (!object.hasComponent(CurrentHudSelect)) {
+                object.addComponent(CurrentHudSelect);
+              }
+            }
+            break;
+          }
+          case ObjectShape.HEXAGON: {
+            if (
+              isInsideHexagon(
+                canvasPos.x,
+                canvasPos.y,
+                mouseX,
+                mouseY,
+                TileSize.REGULAR
+              )
+            ) {
+              if (!object.hasComponent(CurrentHudSelect)) {
+                object.addComponent(CurrentHudSelect);
+              }
+            }
+            break;
+          }
+        }
+      }
+    });
   }
 
   checkHover() {
@@ -104,41 +232,6 @@ export class MouseHandlerSystem extends System {
       let objectShape = object.getMutableComponent(Shape).type;
 
       switch (objectShape) {
-        case ObjectShape.RECTANGLE: {
-          let size = object.getComponent(Size);
-          if (
-            isInsideRectangle(
-              objectPosition.x,
-              objectPosition.y,
-              mouseTransX,
-              mouseTransY,
-              size.width,
-              size.height
-            )
-          ) {
-            if (!object.hasComponent(CurrentHover)) {
-              object.addComponent(CurrentHover);
-            }
-          }
-          break;
-        }
-        case ObjectShape.CIRCLE: {
-          let radius = object.getMutableComponent(Radius);
-          if (
-            isInsideCircle(
-              objectPosition.x,
-              objectPosition.y,
-              mouseTransX,
-              mouseTransY,
-              radius
-            )
-          ) {
-            if (!object.hasComponent(CurrentHover)) {
-              object.addComponent(CurrentHover);
-            }
-          }
-          break;
-        }
         case ObjectShape.HEXAGON: {
           if (
             isInsideHexagon(
@@ -185,43 +278,6 @@ export class MouseHandlerSystem extends System {
         let objectShape = object.getMutableComponent(Shape).type;
 
         switch (objectShape) {
-          case ObjectShape.RECTANGLE: {
-            let size = object.getComponent(Size);
-            if (
-              isInsideRectangle(
-                objectPosition.x,
-                objectPosition.y,
-                mouseTransX,
-                mouseTransY,
-                size.width,
-                size.height
-              )
-            ) {
-              if (!object.hasComponent(CurrentSelect)) {
-                object.addComponent(CurrentSelect);
-                isSelected = true;
-              }
-            }
-            break;
-          }
-          case ObjectShape.CIRCLE: {
-            let radius = object.getMutableComponent(Radius);
-            if (
-              isInsideCircle(
-                objectPosition.x,
-                objectPosition.y,
-                mouseTransX,
-                mouseTransY,
-                radius
-              )
-            ) {
-              if (!object.hasComponent(CurrentSelect)) {
-                object.addComponent(CurrentSelect);
-                isSelected = true;
-              }
-            }
-            break;
-          }
           case ObjectShape.HEXAGON: {
             if (
               isInsideHexagon(
@@ -279,43 +335,6 @@ export class MouseHandlerSystem extends System {
         let objectShape = object.getMutableComponent(Shape).type;
 
         switch (objectShape) {
-          case ObjectShape.RECTANGLE: {
-            let size = object.getComponent(Size);
-            if (
-              isInsideRectangle(
-                objectPosition.x,
-                objectPosition.y,
-                mouseTransX,
-                mouseTransY,
-                size.width,
-                size.height
-              )
-            ) {
-              if (!object.hasComponent(CurrentRightSelect)) {
-                object.addComponent(CurrentRightSelect);
-                isSelected = true;
-              }
-            }
-            break;
-          }
-          case ObjectShape.CIRCLE: {
-            let radius = object.getMutableComponent(Radius);
-            if (
-              isInsideCircle(
-                objectPosition.x,
-                objectPosition.y,
-                mouseTransX,
-                mouseTransY,
-                radius
-              )
-            ) {
-              if (!object.hasComponent(CurrentRightSelect)) {
-                object.addComponent(CurrentRightSelect);
-                isSelected = true;
-              }
-            }
-            break;
-          }
           case ObjectShape.HEXAGON: {
             if (
               isInsideHexagon(
@@ -353,6 +372,10 @@ MouseHandlerSystem.queries = {
   screenFocusStatus: {
     components: [ScreenFocusStatus],
   },
+  selectecdUnit: {
+    components: [CurrentSelect, Unit],
+  },
+
   hoverableObjects: {
     components: [Hoverable, CanvasPosition],
   },
@@ -362,7 +385,10 @@ MouseHandlerSystem.queries = {
   rightSelectableObjects: {
     components: [RightSelectable, CanvasPosition, Shape],
   },
-  selectecdUnit: {
-    components: [CurrentSelect, Unit],
+  hudHoverableObjects: {
+    components: [HudHoverable, CanvasPosition]
   },
+  hudSelectableObjects: {
+    components: [HudSelectable, CanvasPosition]
+  }
 };

@@ -94,6 +94,9 @@ function registerSystems() {
     .registerSystem(System.UnitSystem, {
       priority: 5,
     })
+    .registerSystem(System.HudSystem, {
+      priority: 6,
+    })
     .registerSystem(System.TileSystem, {
       priority: 10,
       ctx: ctx,
@@ -124,7 +127,7 @@ function registerSystems() {
       canvasWidth: mainCanvas.width,
       canvasHeight: mainCanvas.height,
     })
-    .registerSystem(System.HudSystem, {
+    .registerSystem(System.HudRenderSystem, {
       priority: 20,
       ctx: ctx,
       canvasWidth: mainCanvas.width,

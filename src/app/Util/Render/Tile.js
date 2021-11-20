@@ -1,4 +1,4 @@
-import { TileSize } from "../Type";
+import { TileSize } from "../../Type";
 
 /**
  * Given the center of hexagon (in canvas coordinate),
@@ -32,7 +32,6 @@ function drawHexagon(ctx, x, y, outColor, inColor) {
 	ctx.stroke();
 	ctx.restore();
 }
-
 
 export function drawBaseTile(ctx, x, y) {
 	drawHexagon(ctx, x, y, "rgba(255, 255, 255, 0.1)", "rgba(255, 255, 255, 0.01)");

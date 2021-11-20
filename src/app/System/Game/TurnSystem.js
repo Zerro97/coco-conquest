@@ -3,7 +3,7 @@ import {  } from "../../Component";
 import {  } from "../../Type";
 import {  } from "../../Util";
 
-export class UnitSystem extends System {
+export class TurnSystem extends System {
   execute(delta, time) {
 
   }
@@ -13,7 +13,7 @@ export class UnitSystem extends System {
   } 
 }
 
-UnitSystem.queries = {
+TurnSystem.queries = {
   turn: {
     components: [Turn]
   }

@@ -19,7 +19,7 @@ import {
   Building
 } from "../../../Component";
 import { ActionType, TileSize } from "../../../Type";
-import { tilesInRange, cubeToPixel, drawAttackingTile, drawCancelIcon, drawSelectIcon, drawMovingTile } from "../../../Util";
+import { tilesInRange, cubeToPixel, drawAttackingTile, drawMovingTile } from "../../../Util";
 
 export class GameHudSystem extends System {
   execute(delta, time) {
@@ -39,7 +39,7 @@ export class GameHudSystem extends System {
         break;
       case ActionType.SELECTED:
         // 2) Draw unit's available action options
-        this.drawOptionHud();
+        //this.drawOptionHud();
         break;
       case ActionType.MOVE:
         // 3) Draw movement hud
@@ -50,95 +50,6 @@ export class GameHudSystem extends System {
         //this.drawAttackHud();
         break;
     }
-  }
-
-  drawOptionHud() {
-    const actionEntity = this.queries.actionStatus.results[0];
-    const actionStatus = actionEntity.getMutableComponent(ActionStatus);
-
-    const selectedUnit = this.queries.selectedUnit.results[0];
-
-    if(selectedUnit) {
-      const canvasPos = selectedUnit.getMutableComponent(CanvasPosition);
-
-      const iconImages = [];
-      this.queries.images.results.forEach((entity) => {
-        if (entity.hasComponent(IconImage)) {
-          iconImages.push({
-            name: entity.getMutableComponent(Image).name,
-            value: entity.getMutableComponent(Image).value,
-          });
-        }
-      });
-  
-      drawSelectIcon(
-        this.ctx,
-        canvasPos.x,
-        canvasPos.y,
-        iconImages[0].value,
-        iconImages[0].value
-      );
-    }
-  }
-
-  drawAttackHud() {
-    const actionEntity = this.queries.actionStatus.results[0];
-    const selectPosition = actionEntity.getMutableComponent(SelectPosition);
-
-    const selectedUnit = this.getSelectedObject();
-    const range = selectedUnit.getComponent(Range).value;
-
-    let mapPos = { x: selectPosition.x, z: selectPosition.z };
-    let canvasPos = cubeToPixel(mapPos.x, mapPos.z, TileSize.REGULAR);
-
-    let tiles = tilesInRange(
-      {
-        x: selectPosition.x,
-        y: selectPosition.y,
-        z: selectPosition.z,
-      },
-      range
-    );
-
-    tiles.forEach((tile) => {
-      const pixelPos = cubeToPixel(tile.x, tile.z, TileSize.REGULAR);
-      drawAttackingTile(this.ctx, pixelPos.x, pixelPos.y);
-    });
-    this.drawUnits();
-    this.drawBuildings();
-
-    // Draw Cancel Button
-    drawCancelIcon(this.ctx, canvasPos.x, canvasPos.y);
-  }
-
-  drawMoveHud() {
-    const actionEntity = this.queries.actionStatus.results[0];
-    const selectPosition = actionEntity.getMutableComponent(SelectPosition);
-
-    const selectedUnit = this.getSelectedObject();
-    const speed = selectedUnit.getComponent(Speed).value;
-
-    let mapPos = { x: selectPosition.x, z: selectPosition.z };
-    let canvasPos = cubeToPixel(mapPos.x, mapPos.z, TileSize.REGULAR);
-
-    let tiles = tilesInRange(
-      {
-        x: selectPosition.x,
-        y: selectPosition.y,
-        z: selectPosition.z,
-      },
-      speed
-    );
-
-    tiles.forEach((tile) => {
-      const pixelPos = cubeToPixel(tile.x, tile.z, TileSize.REGULAR);
-      drawMovingTile(this.ctx, pixelPos.x, pixelPos.y);
-    });
-
-    this.drawUnits();
-    this.drawBuildings();
-
-    drawCancelIcon(this.ctx, canvasPos.x, canvasPos.y);
   }
 }
 

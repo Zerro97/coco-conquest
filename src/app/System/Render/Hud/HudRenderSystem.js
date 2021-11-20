@@ -14,22 +14,63 @@ import {
   Image, 
   UnitImage, 
   IconImage, 
-  Turn
+  Turn,
+  CurrentHudHover,
+  CurrentHudSelect,
+  CanvasPosition,
+  Hud,
+  Radius
 } from "../../../Component";
-import { ActionType, BackgroundType, IconType } from "../../../Type";
-import { roundRect, arcToPoint } from "../../../Util";
+import { ActionType, BackgroundType, IconType, HudType } from "../../../Type";
+import { roundRect, arcToPoint, drawTurnButton, drawHoveringTurnButton } from "../../../Util";
 
-export class HudSystem extends System {
+export class HudRenderSystem extends System {
   execute(delta, time) {
     this.ctx.restore();
 
-    this.drawHud();
+    this.drawHudEntities();
+    this.drawNotHudEntities();
+    this.drawHoveringHuds();
   }
 
-  drawHud() {
+  drawNotHudEntities() {
     this.drawTPanel();
     this.drawTRPanel();
-    this.drawBRPanel();
+    this.drawUnitPanel();
+  }
+
+  drawHudEntities() {
+    this.queries.huds.results.forEach(hud => {
+      const pos = hud.getComponent(CanvasPosition);
+      const type = hud.getComponent(Hud).type;
+
+      switch (type) {
+        case HudType.TURN_BUTTON: {
+          const radius = hud.getComponent(Radius).value;
+
+          drawTurnButton(this.ctx, pos, radius);
+          break;
+        }
+      }
+    });
+  }
+
+  drawHoveringHuds() {
+    const hud = this.queries.currentHudHover.results[0];
+
+    if(hud) {
+      const pos = hud.getComponent(CanvasPosition);
+      const type = hud.getComponent(Hud).type;
+  
+      switch (type) {
+        case HudType.TURN_BUTTON: {
+          const radius = hud.getComponent(Radius).value;
+  
+          drawHoveringTurnButton(this.ctx, pos, radius);
+          break;
+        }
+      }
+    }
   }
 
   drawTRPanel() {
@@ -124,42 +165,8 @@ export class HudSystem extends System {
     this.ctx.fillText("Turn", this.canvasWidth/2, 65);
   }
 
-  drawBRPanel() {
-    this.drawUnitPanel();
 
-    const posX = this.canvasWidth - 90;
-    const posY = this.canvasHeight - 90;
-
-    // Draw outer transparent white circle
-    const grad1 = this.ctx.createLinearGradient(posX, posY - 90, posX, posY + 90);
-    grad1.addColorStop(0, "white");
-    grad1.addColorStop(0.7, "rgba(255, 255, 255, 0)");
-
-    this.ctx.fillStyle = grad1;
-    this.ctx.beginPath();
-    this.ctx.arc(posX, posY, 90, 0, 2 * Math.PI);
-    this.ctx.closePath();
-    this.ctx.fill();
-
-    // Draw inner dark blue circle
-    const grad2 = this.ctx.createRadialGradient(posX, posY, 1, posX, posY, 60);
-    grad2.addColorStop(0, "rgb(41, 54, 96)");
-    grad2.addColorStop(.7, "rgb(41, 54, 96)");
-    grad2.addColorStop(1, "rgb(28, 33, 50)");
-
-    this.ctx.fillStyle = grad2;
-    this.ctx.beginPath();
-    this.ctx.arc(posX, posY, 60, 0, 2 * Math.PI);
-    this.ctx.closePath();
-    this.ctx.fill();
-
-    // Write text
-    this.ctx.font = "26px Arial";
-    this.ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText("END", posX, posY - 5);
-    this.ctx.fillText("TURN", posX, posY + 25);
-  }
+  
 
   drawUnitPanel() {
     const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);
@@ -379,7 +386,7 @@ export class HudSystem extends System {
   }
 }
 
-HudSystem.queries = {
+HudRenderSystem.queries = {
   actionStatus: {
     components: [ActionStatus],
   },
@@ -403,5 +410,14 @@ HudSystem.queries = {
 	},
   turn: {
     components: [Turn]
-  }
+  },
+  huds: {
+    components: [Hud, CanvasPosition]
+  },
+  currentHudHover: {
+    components: [Hud, CurrentHudHover]
+  },
+  currentHudSelect: {
+    components: [Hud, CurrentHudSelect]
+  },
 };

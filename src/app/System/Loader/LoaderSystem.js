@@ -6,15 +6,20 @@ import {
   IconImage,
   TileImage,
   BackgroundImage,
+  HudHoverable,
+  HudSelectable,
   ScreenStatus,
   Region,
   Tile,
   TileMap,
   MapPosition,
+  CanvasPosition,
+  Shape,
+  Radius,
   Hud
 } from "../../Component";
 import { cubeToEvenr, evenrToCube, evenrToPixel } from "../../Util";
-import { TileSize } from "../../Type";
+import { TileSize, HudType, ObjectShape } from "../../Type";
 
 export class LoaderSystem extends System {
   execute(delta, time) {
@@ -36,9 +41,15 @@ export class LoaderSystem extends System {
   }
 
   generateHuds() {
+    // Turn button at bottom right
     this.world
       .createEntity()
-      .addComponent(Hud);
+      .addComponent(Hud, {type: HudType.TURN_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth - 90, y: this.canvasHeight - 90})
+      .addComponent(Shape, {type: ObjectShape.CIRCLE})
+      .addComponent(Radius, {value: 60});
   }
 
   loadImages() {
