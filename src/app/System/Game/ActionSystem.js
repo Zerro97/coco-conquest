@@ -61,11 +61,11 @@ export class ActionSystem extends System {
 				break;
 			case ActionType.ATTACK:
 				// 2a) If the player is attacking
-				this.checkAttack(mouseX, mouseY);
+				//this.checkAttack(mouseX, mouseY);
 				break;
 			case ActionType.MOVE:
 				// 2b) If the player is moving
-				this.checkMovement(mouseX, mouseY);
+				//this.checkMovement(mouseX, mouseY);
 				break;
 			}
 		}

@@ -36,7 +36,7 @@ let iconImages = await imageLoader.loadIconImages();
 let backgroundImages = await imageLoader.loadBackgroundImages();
 
 // Map Size
-const MAP_SIZE = 25;
+const MAP_SIZE = 15;
 
 // Register components
 function registerComponents() {
