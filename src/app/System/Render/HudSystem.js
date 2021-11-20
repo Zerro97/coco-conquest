@@ -2,7 +2,7 @@ import { System } from "../../Library/Ecsy";
 import {
   ActionStatus, CurrentSelect, Damage, Health, Range, Sight, Speed, Tile, Unit, Building, BackgroundImage, Image, UnitImage, IconImage
 } from "../../Component";
-import { ActionType, BackgroundType } from "../../Type";
+import { ActionType, BackgroundType, IconType } from "../../Type";
 import { roundRect, arcToPoint } from "../../Util";
 
 export class HudSystem extends System {
@@ -23,7 +23,58 @@ export class HudSystem extends System {
   }
 
   drawTPanel(){
+    this.ctx.fillStyle = "rgb(39, 42, 54)";
+    this.ctx.fillRect(0, 0, this.canvasWidth, 50);
 
+    const iconSpriteSheet2 = this.getIconSpriteSheet(1);
+    const coin = this.getIconSpriteSheetPosition(IconType.COIN);
+    const production = this.getIconSpriteSheetPosition(IconType.AXE);
+
+    const iconSpriteSheet1 = this.getIconSpriteSheet(0);
+    const science = this.getIconSpriteSheetPosition(IconType.INTELLIGENCE);
+
+    this.ctx.drawImage(
+      iconSpriteSheet2,
+      coin.x,
+      coin.y,
+      coin.width,
+      coin.height,
+      10, 
+      10,
+      30,
+      30
+    );
+
+    this.ctx.font = "20px Arial";
+    this.ctx.fillStyle = "white";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText(100, 70, 30);
+
+    this.ctx.drawImage(
+      iconSpriteSheet2,
+      production.x,
+      production.y,
+      production.width,
+      production.height,
+      120, 
+      10,
+      30,
+      30
+    );
+    this.ctx.fillText(20, 180, 30);
+
+    this.ctx.drawImage(
+      iconSpriteSheet1,
+      science.x,
+      science.y,
+      science.width,
+      science.height,
+      230, 
+      10,
+      30,
+      30
+    );
+    this.ctx.fillText(30, 290, 30);
   }
 
   drawBRPanel() {
@@ -128,8 +179,6 @@ export class HudSystem extends System {
           120
         );
 
-        
-
         const health = selectedUnit.getComponent(Health).value;
         const damage = selectedUnit.getComponent(Damage).value;
         const range = selectedUnit.getComponent(Range).value;
@@ -210,6 +259,10 @@ export class HudSystem extends System {
 
   getIconSpriteSheetPosition(variation) {
       let position = {};
+
+      if(variation >= 64) {
+        variation %= 63;
+      }
 
       position.width = 250;
       position.height = 250;

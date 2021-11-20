@@ -1,7 +1,7 @@
 import { Component, Types } from "../../Library/Ecsy";
 
-export class Player extends Component {}
+export class Team extends Component {}
 
-Player.schema = {
+Team.schema = {
 	value: { type: Types.Number },
 };

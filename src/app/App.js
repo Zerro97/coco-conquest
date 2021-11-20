@@ -137,23 +137,41 @@ registerComponents();
 registerSystems();
 
 // Singleton entities
-world.createEntity().addComponent(Component.ScreenStatus);
-world.createEntity().addComponent(Component.ScreenFocusStatus);
+world
+  .createEntity()
+  .addComponent(Component.ScreenStatus);
+world
+  .createEntity()
+  .addComponent(Component.ScreenFocusStatus);
 world
   .createEntity()
   .addComponent(Component.ActionStatus)
   .addComponent(Component.MovePosition)
   .addComponent(Component.AttackPosition)
   .addComponent(Component.SelectPosition);
-world.createEntity().addComponent(Component.GameStatus);
-world.createEntity().addComponent(Component.MouseStatus);
-world.createEntity().addComponent(Component.KeyboardStatus);
+world
+  .createEntity()
+  .addComponent(Component.GameStatus);
+world
+  .createEntity()
+  .addComponent(Component.MouseStatus);
+world
+  .createEntity()
+  .addComponent(Component.KeyboardStatus);
 world
   .createEntity()
   .addComponent(Component.Block)
   .addComponent(Component.Timer);
-world.createEntity().addComponent(Component.WeightMap, { value: {} });
-world.createEntity().addComponent(Component.PreviousSelect);
+world
+  .createEntity()
+  .addComponent(Component.WeightMap, { value: {} });
+world
+  .createEntity()
+  .addComponent(Component.PreviousSelect);
+world
+  .createEntity()
+  .addComponent(Component.Turn);
+
 
 // Store image objects as entity
 imageLoader.generateTileImage();

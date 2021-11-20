@@ -25,7 +25,7 @@ import {
   TileMap,
   WeightMap,
   PreviousSelect,
-  Player
+  Team
 } from "../../Component";
 import { ActionType, TileSize, UnitType } from "../../Type";
 import { cubeToPixel, getTilesInRange } from "../../Util";
@@ -145,8 +145,8 @@ export class UnitSystem extends System {
   
           weightMap.value = {};
         } else {
-          let selectTeam = selectedUnit.getComponent(Player)?.value;
-          let targetTeam = targetUnit.getComponent(Player)?.value;
+          let selectTeam = selectedUnit.getComponent(Team)?.value;
+          let targetTeam = targetUnit.getComponent(Team)?.value;
           
           if(selectTeam !== targetTeam) {
             this.attackUnit(selectedUnit, targetUnit);
