@@ -1,4 +1,4 @@
-import { Unit, Health, Damage, Sight, Range, Speed, MapPosition, CanvasPosition, GameObject, Selectable } from "../Component";
+import { Unit, Health, Damage, Sight, Range, Speed, MapPosition, CanvasPosition, GameObject, Selectable, Player } from "../Component";
 import { evenrToCube, cubeToPixel, StatManager } from "../Util";
 import { GameObjectType, Shape, TileSize } from "../Type";
 
@@ -17,7 +17,7 @@ export class UnitGenerator {
 	 * @param {*} x 
 	 * @param {*} y 
 	 */
-	generateUnit(type = 0, x = 0, y = 0) {
+	generateUnit(type = 0, x = 0, y = 0, player = 0) {
 		let statManager = new StatManager();
 		let stat = statManager.getStat(type);
 		let cube = evenrToCube(x, y);
@@ -34,6 +34,7 @@ export class UnitGenerator {
 			.addComponent(Damage, {value: stat.DAMAGE})
 			.addComponent(Sight, {value: stat.SIGHT})
 			.addComponent(Range, {value: stat.RANGE})
-			.addComponent(Speed, {value: stat.SPEED});
+			.addComponent(Speed, {value: stat.SPEED})
+      .addComponent(Player, {value: player});
 	}
 }

@@ -173,9 +173,9 @@ mapGenerator.generateBiomeRegion();
 mapGenerator.generateMap();
 
 // Adding Units
-unitGenerator.generateUnit(UnitType.ARCHER , 5, 10);
-unitGenerator.generateUnit(UnitType.WARRIOR , 5, 9);
-unitGenerator.generateUnit(UnitType.SKELETON , 7, 10);
-unitGenerator.generateUnit(UnitType.WEREWOLF , 7, 9);
+unitGenerator.generateUnit(UnitType.ARCHER , 5, 10, 0);
+unitGenerator.generateUnit(UnitType.WARRIOR , 5, 9, 0);
+unitGenerator.generateUnit(UnitType.SKELETON , 7, 10, 1);
+unitGenerator.generateUnit(UnitType.WEREWOLF , 7, 9, 1);
 
 export { world };
