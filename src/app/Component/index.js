@@ -12,3 +12,4 @@ export * from "./Shape";
 export * from "./Tile";
 export * from "./Team";
 export * from "./Turn";
+export * from "./Select";

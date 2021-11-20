@@ -8,9 +8,10 @@ import {
   CanvasPosition,
   Region,
   TileMap,
+  Shape
 } from "../Component";
 import { cubeToPixel, evenrToCube } from "../Util";
-import { GameObjectType, Shape, TileSize } from "../Type";
+import { GameObjectType, ObjectShape, TileSize } from "../Type";
 
 export class MapGenerator {
   constructor(world, size = 20) {
@@ -274,9 +275,10 @@ export class MapGenerator {
           .addComponent(GameObject, { value: GameObjectType.TILE })
           .addComponent(MapPosition, { x: cube.x, y: cube.y, z: cube.z })
           .addComponent(CanvasPosition, { x: pixel.x, y: pixel.y })
-          .addComponent(Hoverable, { shape: Shape.HEXAGON })
-          .addComponent(Selectable, { shape: Shape.HEXAGON })
-          .addComponent(RightSelectable, { shape: Shape.HEXAGON })
+          .addComponent(Hoverable)
+          .addComponent(Selectable)
+          .addComponent(RightSelectable)
+          .addComponent(Shape, { type: ObjectShape.HEXAGON })
           .addComponent(Tile, {
             id: count,
             base: base,
@@ -301,9 +303,10 @@ export class MapGenerator {
       .addComponent(GameObject, { value: GameObjectType.TILE })
       .addComponent(MapPosition, { x: cube.x, y: cube.y, z: cube.z })
       .addComponent(CanvasPosition, { x: pixel.x, y: pixel.y })
-      .addComponent(Hoverable, { shape: Shape.HEXAGON })
-      .addComponent(Selectable, { shape: Shape.HEXAGON })
-      .addComponent(RightSelectable, { shape: Shape.HEXAGON })
+      .addComponent(Hoverable)
+      .addComponent(Selectable)
+      .addComponent(RightSelectable)
+      .addComponent(Shape, { type: ObjectShape.HEXAGON })
       .addComponent(Tile, {
         id: id,
         base: 0,

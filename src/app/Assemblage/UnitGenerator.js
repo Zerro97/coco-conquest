@@ -1,10 +1,9 @@
-import { Unit, Health, Damage, Sight, Range, Speed, MapPosition, CanvasPosition, GameObject, Selectable, Team } from "../Component";
+import { Unit, Health, Damage, Sight, Range, Speed, MapPosition, CanvasPosition, GameObject, Selectable, Team, Shape } from "../Component";
 import { evenrToCube, cubeToPixel, StatManager } from "../Util";
-import { GameObjectType, Shape, TileSize } from "../Type";
+import { GameObjectType, ObjectShape, TileSize } from "../Type";
 
 /**
  * Used for registering tile entity to the world
- * Uses map (2d array) as input to register tiles
  */
 export class UnitGenerator {
 	constructor(world) {
@@ -29,7 +28,8 @@ export class UnitGenerator {
 			.addComponent(GameObject, {value: GameObjectType.UNIT})
 			.addComponent(MapPosition, {x: cube.x, y: cube.y, z: cube.z})
 			.addComponent(CanvasPosition, {x: pixel.x, y: pixel.y})
-			.addComponent(Selectable, {shape: Shape.HEXAGON})
+			.addComponent(Selectable)
+      .addComponent(Shape, { type: ObjectShape.HEXAGON })
 			.addComponent(Health, {value: stat.HEALTH})
 			.addComponent(Damage, {value: stat.DAMAGE})
 			.addComponent(Sight, {value: stat.SIGHT})

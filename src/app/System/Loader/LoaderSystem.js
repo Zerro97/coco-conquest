@@ -11,6 +11,7 @@ import {
   Tile,
   TileMap,
   MapPosition,
+  Hud
 } from "../../Component";
 import { cubeToEvenr, evenrToCube, evenrToPixel } from "../../Util";
 import { TileSize } from "../../Type";
@@ -23,12 +24,21 @@ export class LoaderSystem extends System {
     // Initial screen position
     this.setInitialPosition();
 
+    // Generate hud entities
+    this.generateHuds();
+
     // Map Preparation
     this.generateTileMap();
     this.assignTileToMap();
     this.assignRegions(10);
 
     this.stop();
+  }
+
+  generateHuds() {
+    this.world
+      .createEntity()
+      .addComponent(Hud);
   }
 
   loadImages() {

@@ -170,7 +170,7 @@ world
   .addComponent(Component.PreviousSelect);
 world
   .createEntity()
-  .addComponent(Component.Turn);
+  .addComponent(Component.Turn, { currentTurn: 0, maxTurn: 300 });
 
 
 // Store image objects as entity

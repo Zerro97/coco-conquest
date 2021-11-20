@@ -1,1 +1,2 @@
-export { DamagePopup } from "./DamagePopup.js";
+export * from "./DamagePopup.js";
+export * from "./Hud.js";

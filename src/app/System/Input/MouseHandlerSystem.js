@@ -16,9 +16,10 @@ import {
   ActionStatus,
   Unit,
   PreviousSelect,
+  Shape
 } from "../../Component";
 import { isInsideCircle, isInsideHexagon, isInsideRectangle } from "../../Util";
-import { Shape, TileSize, ActionType } from "../../Type";
+import { ObjectShape, TileSize, ActionType } from "../../Type";
 
 /**
  * Store mouse event data to entity
@@ -27,6 +28,10 @@ export class MouseHandlerSystem extends System {
   execute(delta, time) {
     this.trackClickBuffer();
     this.checkMouseClick();
+
+    this.checkHudHover();
+    this.checkHudSelect();
+
     this.checkHover();
     this.checkSelect();
     this.checkRightSelect();
@@ -74,6 +79,18 @@ export class MouseHandlerSystem extends System {
     }
   }
 
+  checkHudHover() {
+    const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+    const mouseX = mouseStatus.x;
+    const mouseY = mouseStatus.y;
+  }
+
+  checkHudSelect() {
+    const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+    const mouseX = mouseStatus.x;
+    const mouseY = mouseStatus.y;
+  }
+
   checkHover() {
     const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
     const mouseTransX = mouseStatus.mapX;
@@ -84,10 +101,10 @@ export class MouseHandlerSystem extends System {
       object.removeComponent(CurrentHover);
 
       let objectPosition = object.getMutableComponent(CanvasPosition);
-      let objectShape = object.getMutableComponent(Selectable).shape;
+      let objectShape = object.getMutableComponent(Shape).type;
 
       switch (objectShape) {
-        case Shape.RECTANGLE: {
+        case ObjectShape.RECTANGLE: {
           let size = object.getComponent(Size);
           if (
             isInsideRectangle(
@@ -105,7 +122,7 @@ export class MouseHandlerSystem extends System {
           }
           break;
         }
-        case Shape.CIRCLE: {
+        case ObjectShape.CIRCLE: {
           let radius = object.getMutableComponent(Radius);
           if (
             isInsideCircle(
@@ -122,7 +139,7 @@ export class MouseHandlerSystem extends System {
           }
           break;
         }
-        case Shape.HEXAGON: {
+        case ObjectShape.HEXAGON: {
           if (
             isInsideHexagon(
               objectPosition.x,
@@ -143,14 +160,9 @@ export class MouseHandlerSystem extends System {
   }
 
   checkSelect() {
-    const mouseStatus =
-      this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
-    const actionStatus =
-      this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
-    const focusStatus =
-      this.queries.screenFocusStatus.results[0].getMutableComponent(
-        ScreenFocusStatus
-      );
+    const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+    const actionStatus = this.queries.actionStatus.results[0].getMutableComponent(ActionStatus);
+    const focusStatus = this.queries.screenFocusStatus.results[0].getMutableComponent(ScreenFocusStatus);
 
     if (mouseStatus.isMouseClicked) {
       let isSelected = false;
@@ -170,10 +182,10 @@ export class MouseHandlerSystem extends System {
         }
 
         let objectPosition = object.getMutableComponent(CanvasPosition);
-        let objectShape = object.getMutableComponent(Selectable).shape;
+        let objectShape = object.getMutableComponent(Shape).type;
 
         switch (objectShape) {
-          case Shape.RECTANGLE: {
+          case ObjectShape.RECTANGLE: {
             let size = object.getComponent(Size);
             if (
               isInsideRectangle(
@@ -192,7 +204,7 @@ export class MouseHandlerSystem extends System {
             }
             break;
           }
-          case Shape.CIRCLE: {
+          case ObjectShape.CIRCLE: {
             let radius = object.getMutableComponent(Radius);
             if (
               isInsideCircle(
@@ -210,7 +222,7 @@ export class MouseHandlerSystem extends System {
             }
             break;
           }
-          case Shape.HEXAGON: {
+          case ObjectShape.HEXAGON: {
             if (
               isInsideHexagon(
                 objectPosition.x,
@@ -264,10 +276,10 @@ export class MouseHandlerSystem extends System {
       // Loop through all the selectable objects
       this.queries.rightSelectableObjects.results.forEach((object) => {
         let objectPosition = object.getMutableComponent(CanvasPosition);
-        let objectShape = object.getMutableComponent(RightSelectable).shape;
+        let objectShape = object.getMutableComponent(Shape).type;
 
         switch (objectShape) {
-          case Shape.RECTANGLE: {
+          case ObjectShape.RECTANGLE: {
             let size = object.getComponent(Size);
             if (
               isInsideRectangle(
@@ -286,7 +298,7 @@ export class MouseHandlerSystem extends System {
             }
             break;
           }
-          case Shape.CIRCLE: {
+          case ObjectShape.CIRCLE: {
             let radius = object.getMutableComponent(Radius);
             if (
               isInsideCircle(
@@ -304,7 +316,7 @@ export class MouseHandlerSystem extends System {
             }
             break;
           }
-          case Shape.HEXAGON: {
+          case ObjectShape.HEXAGON: {
             if (
               isInsideHexagon(
                 objectPosition.x,
@@ -345,10 +357,10 @@ MouseHandlerSystem.queries = {
     components: [Hoverable, CanvasPosition],
   },
   selectableObjects: {
-    components: [Selectable, CanvasPosition],
+    components: [Selectable, CanvasPosition, Shape],
   },
   rightSelectableObjects: {
-    components: [RightSelectable, CanvasPosition],
+    components: [RightSelectable, CanvasPosition, Shape],
   },
   selectecdUnit: {
     components: [CurrentSelect, Unit],

@@ -1,9 +1,23 @@
-import { System } from "../../Library/Ecsy";
+import { System } from "../../../Library/Ecsy";
 import {
-  ActionStatus, CurrentSelect, Damage, Health, Range, Sight, Speed, Tile, Unit, Building, BackgroundImage, Image, UnitImage, IconImage
-} from "../../Component";
-import { ActionType, BackgroundType, IconType } from "../../Type";
-import { roundRect, arcToPoint } from "../../Util";
+  ActionStatus, 
+  CurrentSelect, 
+  Damage, 
+  Health, 
+  Range, 
+  Sight, 
+  Speed, 
+  Tile, 
+  Unit, 
+  Building, 
+  BackgroundImage, 
+  Image, 
+  UnitImage, 
+  IconImage, 
+  Turn
+} from "../../../Component";
+import { ActionType, BackgroundType, IconType } from "../../../Type";
+import { roundRect, arcToPoint } from "../../../Util";
 
 export class HudSystem extends System {
   execute(delta, time) {
@@ -13,8 +27,8 @@ export class HudSystem extends System {
   }
 
   drawHud() {
-    this.drawTRPanel();
     this.drawTPanel();
+    this.drawTRPanel();
     this.drawBRPanel();
   }
 
@@ -26,6 +40,11 @@ export class HudSystem extends System {
     this.ctx.fillStyle = "rgb(39, 42, 54)";
     this.ctx.fillRect(0, 0, this.canvasWidth, 50);
 
+    this.drawResources();
+    this.drawTurn();
+  }
+
+  drawResources() {
     const iconSpriteSheet2 = this.getIconSpriteSheet(1);
     const coin = this.getIconSpriteSheetPosition(IconType.COIN);
     const production = this.getIconSpriteSheetPosition(IconType.AXE);
@@ -77,29 +96,68 @@ export class HudSystem extends System {
     this.ctx.fillText(30, 290, 30);
   }
 
+  drawTurn() {
+    const turn = this.queries.turn.results[0].getComponent(Turn);
+
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.canvasWidth/2 - 80, -20);
+    this.ctx.lineTo(this.canvasWidth/2 - 80, 65);
+    this.ctx.lineTo(this.canvasWidth/2, 90);
+    this.ctx.lineTo(this.canvasWidth/2 + 80, 65);
+    this.ctx.lineTo(this.canvasWidth/2 + 80, -20);
+    this.ctx.closePath();
+
+    this.ctx.fillStyle = "rgb(52, 60, 89)";
+    this.ctx.strokeStyle = "white";
+    this.ctx.lineWidth = 5;
+    this.ctx.fill();
+    this.ctx.stroke();
+
+    this.ctx.font = "40px Arial";
+    this.ctx.fillStyle = "white";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText(turn.currentTurn, this.canvasWidth/2, 40);
+
+    this.ctx.font = "16px Arial";
+    this.ctx.fillStyle = "rgba(255, 255, 255, 0.6";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText("Turn", this.canvasWidth/2, 65);
+  }
+
   drawBRPanel() {
     this.drawUnitPanel();
 
-    const posX = this.canvasWidth - 110;
-    const posY = this.canvasHeight - 100;
+    const posX = this.canvasWidth - 90;
+    const posY = this.canvasHeight - 90;
 
-    const gradient = this.ctx.createRadialGradient(posX+40, posY-40, 1, posX, posY, 80);
-    
-    // Add three color stops
-    gradient.addColorStop(0, "white");
-    gradient.addColorStop(.1, "#eabb8e");
-    gradient.addColorStop(1, "#86613e");
+    // Draw outer transparent white circle
+    const grad1 = this.ctx.createLinearGradient(posX, posY - 90, posX, posY + 90);
+    grad1.addColorStop(0, "white");
+    grad1.addColorStop(0.7, "rgba(255, 255, 255, 0)");
 
-    this.ctx.fillStyle = gradient;
+    this.ctx.fillStyle = grad1;
     this.ctx.beginPath();
-    this.ctx.arc(posX, posY, 80, 0, 2 * Math.PI);
+    this.ctx.arc(posX, posY, 90, 0, 2 * Math.PI);
     this.ctx.closePath();
     this.ctx.fill();
 
+    // Draw inner dark blue circle
+    const grad2 = this.ctx.createRadialGradient(posX, posY, 1, posX, posY, 60);
+    grad2.addColorStop(0, "rgb(41, 54, 96)");
+    grad2.addColorStop(.7, "rgb(41, 54, 96)");
+    grad2.addColorStop(1, "rgb(28, 33, 50)");
+
+    this.ctx.fillStyle = grad2;
+    this.ctx.beginPath();
+    this.ctx.arc(posX, posY, 60, 0, 2 * Math.PI);
+    this.ctx.closePath();
+    this.ctx.fill();
+
+    // Write text
     this.ctx.font = "26px Arial";
-    this.ctx.fillStyle = "rgb(40, 40, 40)";
+    this.ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
     this.ctx.textAlign = "center";
-    this.ctx.fillText("NEXT", posX, posY - 5);
+    this.ctx.fillText("END", posX, posY - 5);
     this.ctx.fillText("TURN", posX, posY + 25);
   }
 
@@ -232,13 +290,34 @@ export class HudSystem extends System {
   }
 
   drawMap() {
+    this.ctx.fillStyle = "rgb(41, 54, 96)";
+    this.ctx.fillRect(0, this.canvasHeight - 170, 260, 170);
+
+    let grad1 = this.ctx.createLinearGradient(0, 0, 260, 0);
+    grad1.addColorStop(0, "rgb(28, 33, 50)");
+    grad1.addColorStop(0.05, "rgba(28, 33, 50, 0)");
+    grad1.addColorStop(0.95, "rgba(28, 33, 50, 0)");
+    grad1.addColorStop(1.0, "rgb(28, 33, 50)");
+
+    let grad2 = this.ctx.createLinearGradient(0, this.canvasHeight - 170, 0, this.canvasHeight);
+    grad2.addColorStop(0, "rgb(28, 33, 50)");
+    grad2.addColorStop(0.05, "rgba(28, 33, 50, 0)");
+    grad2.addColorStop(0.95, "rgba(28, 33, 50, 0)");
+    grad2.addColorStop(1.0, "rgb(28, 33, 50)");
+
+    this.ctx.fillStyle = grad1;
+    this.ctx.fillRect(0, this.canvasHeight - 170, 260, 170);
+
+    this.ctx.fillStyle = grad2;
+    this.ctx.fillRect(0, this.canvasHeight - 170, 260, 170);
+
     this.ctx.fillStyle = "black";
-    this.ctx.fillRect(this.canvasWidth - 250, 10, 240, 150);
+    this.ctx.fillRect(10, this.canvasHeight - 160, 240, 150);
 
     this.ctx.fillStyle = "white";
     this.ctx.lineWidth = 2;
     this.ctx.strokeStyle = "white";
-    this.ctx.strokeRect(this.canvasWidth - 220, 30, 180, 100);
+    this.ctx.strokeRect(30, this.canvasHeight - 140, 200, 110);
   }
 
   getIconSpriteSheet(type) {
@@ -322,4 +401,7 @@ HudSystem.queries = {
   iconImages: {
 		components: [Image, IconImage]
 	},
+  turn: {
+    components: [Turn]
+  }
 };

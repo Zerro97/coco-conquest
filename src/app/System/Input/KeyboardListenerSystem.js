@@ -1,5 +1,5 @@
 import { System } from "../../Library/Ecsy";
-import { Tile, Unit, Building, MapPosition, GameObject, Hud, ScreenStatus } from "../../Component";
+import { ScreenStatus } from "../../Component";
 
 /**
  * Handles all the events that could happen when 
@@ -39,18 +39,6 @@ export class KeyboardListenerSystem extends System {
 
 // Define a query of entities
 KeyboardListenerSystem.queries = {
-	hud: {
-		components: [Hud]
-	},
-	tile: {
-		components: [Tile, MapPosition, GameObject]
-	},
-	unit: {
-		components: [Unit, MapPosition, GameObject]
-	},
-	building: {
-		components: [Building]
-	},
 	screenStatus: {
 		components: [ScreenStatus]
 	}
