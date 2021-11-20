@@ -5,6 +5,9 @@ import { World } from "./Library/Ecsy";
 import * as Component from "./Component";
 import * as System from "./System";
 
+// Type
+import { UnitType } from "./Type";
+
 // Map
 import tileMap from "./Assets/Map/Tile/map_1.json";
 
@@ -170,7 +173,9 @@ mapGenerator.generateBiomeRegion();
 mapGenerator.generateMap();
 
 // Adding Units
-unitGenerator.generateUnit(12, 5, 10);
-unitGenerator.generateUnit(70, 5, 9);
+unitGenerator.generateUnit(UnitType.ARCHER , 5, 10);
+unitGenerator.generateUnit(UnitType.WARRIOR , 5, 9);
+unitGenerator.generateUnit(UnitType.SKELETON , 7, 10);
+unitGenerator.generateUnit(UnitType.WEREWOLF , 7, 9);
 
 export { world };

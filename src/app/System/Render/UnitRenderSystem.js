@@ -23,7 +23,7 @@ import {
   WeightMap
 } from "../../Component";
 import { TileSize, UnitType } from "../../Type";
-import { cubeToPixel, drawMovingTile, tilesInRange, drawBoundary, getTilesInRange } from "../../Util";
+import { cubeToPixel, drawMovingTile, tilesInRange, drawBoundary, getTilesInRange, drawAttackingTile } from "../../Util";
 
 export class UnitRenderSystem extends System {
 	execute(delta, time) {
@@ -55,6 +55,7 @@ export class UnitRenderSystem extends System {
 	}
 
   drawMovementRange() {
+    const enemyUnits = this.queries.units.results;
     const selectedUnit = this.queries.selectedUnit.results[0];
     const weightMap = this.queries.weightMap.results[0].getMutableComponent(WeightMap).value;
 
@@ -66,7 +67,21 @@ export class UnitRenderSystem extends System {
           for(const z in weightMap[x][y]) {
             if(weightMap[x][y][z] <= speed) {
               const pixelPos = cubeToPixel(x, z, TileSize.REGULAR);
-              drawMovingTile(this.ctx, pixelPos.x, pixelPos.y);
+              let hasEnemyUnit = false;
+
+              enemyUnits.forEach(unit => {
+                let unitPos = unit.getComponent(MapPosition);
+
+                if(unitPos.x == x && unitPos.y == y && unitPos.z == z) {
+                  hasEnemyUnit = true;
+                }
+              });
+
+              if(hasEnemyUnit) {
+                drawAttackingTile(this.ctx, pixelPos.x, pixelPos.y);
+              } else {
+                drawMovingTile(this.ctx, pixelPos.x, pixelPos.y);
+              }
             }
           }
         }

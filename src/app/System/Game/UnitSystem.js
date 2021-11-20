@@ -25,6 +25,7 @@ import {
   TileMap,
   WeightMap,
   PreviousSelect,
+  Player
 } from "../../Component";
 import { ActionType, TileSize, UnitType } from "../../Type";
 import { cubeToPixel, getTilesInRange } from "../../Util";
@@ -44,11 +45,15 @@ export class UnitSystem extends System {
 
     let weightMap = this.queries.weightMap.results[0].getMutableComponent(WeightMap);
 
+    // Fix for weightmap not updating when background was selected instead of unit
     if(!selectedUnit) {
       weightMap.value = {};
     }
-    // Only update movement range when unit is selected
-    // and movement range isn't updated yet
+
+    // Only update movement range when:
+    // 1) unit is selected,
+    // 2) movement range isn't updated yet
+    // 3) different unit is selected
     if (
       selectedUnit && (Object.keys(weightMap.value).length === 0 ||
       (previousUnit && previousUnit.getComponent(Unit) !== selectedUnit.getComponent(Unit)))
@@ -105,8 +110,8 @@ export class UnitSystem extends System {
   }
 
   moveUnit() {
-    let weightMap =
-      this.queries.weightMap.results[0].getMutableComponent(WeightMap);
+    let weightMap = this.queries.weightMap.results[0].getMutableComponent(WeightMap);
+    const allUnits = this.queries.units.results;
     const selectedUnit = this.queries.selectedUnit.results[0];
     const movingTile = this.queries.movingTile.results[0];
 
@@ -121,14 +126,31 @@ export class UnitSystem extends System {
         weightMap.value[movingPos.x][movingPos.y] &&
         weightMap.value[movingPos.x][movingPos.y][movingPos.z] < 999
       ) {
-        originalPos.x = movingPos.x;
-        originalPos.y = movingPos.y;
-        originalPos.z = movingPos.z;
-        originalCanvasPos.x = movingCanvasPos.x;
-        originalCanvasPos.y = movingCanvasPos.y;
-        originalCanvasPos.z = movingCanvasPos.z;
+        let targetUnit = {};
 
-        weightMap.value = {};
+        allUnits.forEach(unit => {
+          let unitPos = unit.getComponent(MapPosition);
+          if(unitPos.x === movingPos.x && unitPos.y === movingPos.y && unitPos.z === movingPos.z) {
+            targetUnit = unit;
+          }
+        });
+
+        if(Object.keys(targetUnit).length === 0) {
+          originalPos.x = movingPos.x;
+          originalPos.y = movingPos.y;
+          originalPos.z = movingPos.z;
+          originalCanvasPos.x = movingCanvasPos.x;
+          originalCanvasPos.y = movingCanvasPos.y;
+          originalCanvasPos.z = movingCanvasPos.z;
+  
+          weightMap.value = {};
+        } else {
+          let playerNum = targetUnit.getComponent(Player)?.value;
+
+          if(playerNum !== 1) {
+            this.attackUnit();
+          }
+        }
       }
     }
   }

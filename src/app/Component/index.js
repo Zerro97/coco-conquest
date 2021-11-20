@@ -10,3 +10,4 @@ export * from "./Hud";
 export * from "./Input";
 export * from "./Shape";
 export * from "./Tile";
+export * from "./Player";

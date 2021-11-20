@@ -1,123 +1,123 @@
 export const Human = {
-    VILLAGER: {
-        NAME: "Villager",
-        TYPE: 0,
-        DAMAGE: 1,
-        HEALTH: 5,
-        RANGE: 2,
-        SPEED: 2,
-        SIGHT: 3
-    },
+  VILLAGER: {
+      NAME: "Villager",
+      TYPE: 0,
+      DAMAGE: 1,
+      HEALTH: 5,
+      RANGE: 1,
+      SPEED: 2,
+      SIGHT: 3
+  },
 	ELDER: {
-        NAME: "Elder",
-        TYPE: 1,
-        DAMAGE: 1,
-        HEALTH: 5,
-        RANGE: 2,
-        SPEED: 2,
-        SIGHT: 3
-    },
+      NAME: "Elder",
+      TYPE: 1,
+      DAMAGE: 1,
+      HEALTH: 3,
+      RANGE: 1,
+      SPEED: 2,
+      SIGHT: 2
+  },
 	WORKER: {
-        NAME: "Worker",
-        TYPE: 2,
-        DAMAGE: 1,
-        HEALTH: 5,
-        RANGE: 2,
-        SPEED: 2,
-        SIGHT: 3
-    },
+      NAME: "Worker",
+      TYPE: 2,
+      DAMAGE: 1,
+      HEALTH: 5,
+      RANGE: 1,
+      SPEED: 2,
+      SIGHT: 3
+  },
 	MINER: {
-        NAME: "Worker",
-        TYPE: 3,
-        DAMAGE: 1,
-        HEALTH: 5,
-        RANGE: 2,
-        SPEED: 2,
-        SIGHT: 3
-    },
+      NAME: "Miner",
+      TYPE: 3,
+      DAMAGE: 1,
+      HEALTH: 5,
+      RANGE: 1,
+      SPEED: 2,
+      SIGHT: 3
+  },
 	FARMER: {
-        NAME: "Worker",
-        TYPE: 4,
-        DAMAGE: 1,
-        HEALTH: 5,
-        RANGE: 2,
-        SPEED: 2,
-        SIGHT: 3
-    },
+      NAME: "Farmer",
+      TYPE: 4,
+      DAMAGE: 1,
+      HEALTH: 5,
+      RANGE: 1,
+      SPEED: 2,
+      SIGHT: 3
+  },
 	ADVENTURER: {
-        NAME: "Worker",
-        TYPE: 5,
-        DAMAGE: 1,
-        HEALTH: 5,
-        RANGE: 2,
-        SPEED: 2,
-        SIGHT: 3
-    },
+      NAME: "Adventurer",
+      TYPE: 5,
+      DAMAGE: 2,
+      HEALTH: 8,
+      RANGE: 1,
+      SPEED: 3,
+      SIGHT: 3
+  },
 	HERO: {
-        NAME: "Worker",
-        TYPE: 6,
-        DAMAGE: 1,
-        HEALTH: 5,
-        RANGE: 2,
-        SPEED: 2,
-        SIGHT: 3
-    },
+      NAME: "Hero",
+      TYPE: 6,
+      DAMAGE: 3,
+      HEALTH: 15,
+      RANGE: 1,
+      SPEED: 3,
+      SIGHT: 3
+  },
 	TRADER: {
-        NAME: "Worker",
+        NAME: "Trader",
         TYPE: 7,
         DAMAGE: 1,
         HEALTH: 5,
-        RANGE: 2,
-        SPEED: 2,
+        RANGE: 1,
+        SPEED: 3,
         SIGHT: 3
     },
 	PRIEST: {
-        NAME: "Worker",
+        NAME: "Priest",
         TYPE: 8,
-        DAMAGE: 1,
-        HEALTH: 5,
-        RANGE: 2,
-        SPEED: 2,
-        SIGHT: 3
+        DAMAGE: 2,
+        HEALTH: 10,
+        RANGE: 1,
+        SPEED: 3,
+        SIGHT: 4
     },
 	DRUID: {
-        NAME: "Worker",
+        NAME: "Druid",
         TYPE: 9,
-        DAMAGE: 1,
-        HEALTH: 5,
+        DAMAGE: 3,
+        HEALTH: 10,
         RANGE: 2,
-        SPEED: 2,
-        SIGHT: 3
+        SPEED: 3,
+        SIGHT: 4
     },
 	WARRIOR: {
-        NAME: "Worker",
+        NAME: "Warrior",
         TYPE: 10,
-        DAMAGE: 1,
-        HEALTH: 5,
-        RANGE: 2,
+        DAMAGE: 2,
+        HEALTH: 10,
+        RANGE: 1,
         SPEED: 2,
         SIGHT: 3
     },
 	PIKEMAN: {
-        NAME: "Worker",
+        NAME: "Pikeman",
         TYPE: 11,
-        DAMAGE: 1,
-        HEALTH: 5,
-        RANGE: 2,
-        SPEED: 2,
+        DAMAGE: 2,
+        HEALTH: 15,
+        RANGE: 1,
+        SPEED: 3,
         SIGHT: 3
     },
 	ARCHER: {
-        NAME: "Worker",
+        NAME: "Archer",
         TYPE: 12,
-        DAMAGE: 1,
-        HEALTH: 5,
+        DAMAGE: 2,
+        HEALTH: 8,
         RANGE: 2,
-        SPEED: 2,
+        SPEED: 3,
         SIGHT: 3
     },
 	KNIGHT: {
-        NAME: "Worker",
+        NAME: "Knight",
         TYPE: 13,
         DAMAGE: 1,
         HEALTH: 5,
@@ -126,7 +126,7 @@ export const Human = {
         SIGHT: 3
     },
 	PALADIN: {
-        NAME: "Worker",
+        NAME: "Paladin",
         TYPE: 14,
         DAMAGE: 1,
         HEALTH: 5,
@@ -135,7 +135,7 @@ export const Human = {
         SIGHT: 3
     },
 	MAGE: {
-        NAME: "Worker",
+        NAME: "Mage",
         TYPE: 15,
         DAMAGE: 1,
         HEALTH: 5,
@@ -144,7 +144,7 @@ export const Human = {
         SIGHT: 3
     },
 	BARBARIAN: {
-        NAME: "Worker",
+        NAME: "Barbarian",
         TYPE: 16,
         DAMAGE: 1,
         HEALTH: 5,
@@ -153,7 +153,7 @@ export const Human = {
         SIGHT: 3
     },
 	BANDIT: {
-        NAME: "Worker",
+        NAME: "Bandit",
         TYPE: 17,
         DAMAGE: 1,
         HEALTH: 5,
@@ -162,7 +162,7 @@ export const Human = {
         SIGHT: 3
     },
 	ROGUE: {
-        NAME: "Worker",
+        NAME: "Rogue",
         TYPE: 18,
         DAMAGE: 1,
         HEALTH: 5,
@@ -171,7 +171,7 @@ export const Human = {
         SIGHT: 3
     },
 	PEOPLE: {
-        NAME: "Worker",
+        NAME: "People",
         TYPE: 64,
         DAMAGE: 1,
         HEALTH: 5,
@@ -180,7 +180,7 @@ export const Human = {
         SIGHT: 3
     },
 	WORKERS: {
-        NAME: "Worker",
+        NAME: "Workers",
         TYPE: 65,
         DAMAGE: 1,
         HEALTH: 5,
@@ -189,7 +189,7 @@ export const Human = {
         SIGHT: 3
     },
 	TRADER_WITH_DONKEY: {
-        NAME: "Worker",
+        NAME: "Trader (Donkey)",
         TYPE: 66,
         DAMAGE: 1,
         HEALTH: 5,
@@ -198,7 +198,7 @@ export const Human = {
         SIGHT: 3
     },
 	TRADER_WITH_WAGON: {
-        NAME: "Worker",
+        NAME: "Trader (Wagon)",
         TYPE: 67,
         DAMAGE: 1,
         HEALTH: 5,
@@ -207,7 +207,7 @@ export const Human = {
         SIGHT: 3
     },
 	ADVENTURER_WITH_HORSE: {
-        NAME: "Worker",
+        NAME: "Adventurer (Horse)",
         TYPE: 68,
         DAMAGE: 1,
         HEALTH: 5,
@@ -216,7 +216,7 @@ export const Human = {
         SIGHT: 3
     },
 	HERO_WITH_HORSE: {
-        NAME: "Worker",
+        NAME: "Hero (Horse)",
         TYPE: 69,
         DAMAGE: 1,
         HEALTH: 5,
@@ -225,7 +225,7 @@ export const Human = {
         SIGHT: 3
     },
 	PARTY: {
-        NAME: "Worker",
+        NAME: "Party",
         TYPE: 70,
         DAMAGE: 1,
         HEALTH: 5,
@@ -234,7 +234,7 @@ export const Human = {
         SIGHT: 3
     },
 	SOLDIERS: {
-        NAME: "Worker",
+        NAME: "Soldiers",
         TYPE: 71,
         DAMAGE: 1,
         HEALTH: 5,
@@ -243,7 +243,7 @@ export const Human = {
         SIGHT: 3
     },
 	BANDITS: {
-        NAME: "Worker",
+        NAME: "Bandits",
         TYPE: 72,
         DAMAGE: 1,
         HEALTH: 5,
@@ -252,7 +252,7 @@ export const Human = {
         SIGHT: 3
     },
 	KNIGHT_WITH_HORSE: {
-        NAME: "Worker",
+        NAME: "Knight (Horse)",
         TYPE: 73,
         DAMAGE: 1,
         HEALTH: 5,
@@ -261,7 +261,7 @@ export const Human = {
         SIGHT: 3
     },
 	PALADIN_WITH_HORSE: {
-        NAME: "Worker",
+        NAME: "Paladin (Horse)",
         TYPE: 74,
         DAMAGE: 1,
         HEALTH: 5,
