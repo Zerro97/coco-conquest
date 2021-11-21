@@ -1,11 +1,11 @@
-import { Unit, Health, Damage, Sight, Range, Speed, MapPosition, CanvasPosition, GameObject, Selectable, Team, Shape } from "../Component";
+import { MapPosition, CanvasPosition, GameObject, Selectable, Team, Shape, Building } from "../Component";
 import { evenrToCube, cubeToPixel, StatManager } from "../Util";
 import { GameObjectType, ObjectShape, TileSize } from "../Type";
 
 /**
  * Used for registering tile entity to the world
  */
-export class UnitGenerator {
+export class BuildingGenerator {
 	constructor(world) {
 		this.world = world;
 	}
@@ -16,7 +16,7 @@ export class UnitGenerator {
 	 * @param {*} x 
 	 * @param {*} y 
 	 */
-	generateUnit(type = 0, x = 0, y = 0, team = 0) {
+	generateBuilding(type = 0, x = 0, y = 0, team = 0) {
 		let statManager = new StatManager();
 		let stat = statManager.getStat(type);
 		let cube = evenrToCube(x, y);
@@ -24,17 +24,12 @@ export class UnitGenerator {
 
 		this.world
 			.createEntity()
-			.addComponent(Unit, {value: type})
-			.addComponent(GameObject, {value: GameObjectType.UNIT})
+			.addComponent(Building, {value: type})
+			.addComponent(GameObject, {value: GameObjectType.BUILDING})
 			.addComponent(MapPosition, {x: cube.x, y: cube.y, z: cube.z})
 			.addComponent(CanvasPosition, {x: pixel.x, y: pixel.y})
 			.addComponent(Selectable)
-			.addComponent(Shape, { type: ObjectShape.HEXAGON })
-			.addComponent(Health, {value: stat.HEALTH})
-			.addComponent(Damage, {value: stat.DAMAGE})
-			.addComponent(Sight, {value: stat.SIGHT})
-			.addComponent(Range, {value: stat.RANGE})
-			.addComponent(Speed, {value: stat.SPEED})
-			.addComponent(Team, {value: team});
+            .addComponent(Shape, { type: ObjectShape.HEXAGON })
+            .addComponent(Team, {value: team});
 	}
 }

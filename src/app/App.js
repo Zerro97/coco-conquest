@@ -6,7 +6,7 @@ import * as Component from "./Component";
 import * as System from "./System";
 
 // Type
-import { UnitType } from "./Type";
+import { BuildingType, UnitType } from "./Type";
 
 // Map
 import tileMap from "./Assets/Map/Tile/map_1.json";
@@ -14,6 +14,7 @@ import tileMap from "./Assets/Map/Tile/map_1.json";
 // Loader & Generator
 import { ImageLoader } from "./Util/ImageLoader";
 import { MapGenerator, UnitGenerator } from "./Assemblage";
+import { BuildingGenerator } from "./Assemblage/BuildingGenerator";
 
 // Initialize the world
 let world = new World({ entityPoolSize: 10000 });
@@ -112,20 +113,26 @@ function registerSystems() {
       canvasWidth: mainCanvas.width,
       canvasHeight: mainCanvas.height,
     })
-    .registerSystem(System.UnitRenderSystem, {
+    .registerSystem(System.BuildingRenderSystem, {
       priority: 12,
       ctx: ctx,
       canvasWidth: mainCanvas.width,
       canvasHeight: mainCanvas.height,
     })
-    .registerSystem(System.RenderSystem, {
+    .registerSystem(System.UnitRenderSystem, {
       priority: 13,
       ctx: ctx,
       canvasWidth: mainCanvas.width,
       canvasHeight: mainCanvas.height,
     })
-    .registerSystem(System.GameHudSystem, {
+    .registerSystem(System.RenderSystem, {
       priority: 14,
+      ctx: ctx,
+      canvasWidth: mainCanvas.width,
+      canvasHeight: mainCanvas.height,
+    })
+    .registerSystem(System.GameHudSystem, {
+      priority: 15,
       ctx: ctx,
       canvasWidth: mainCanvas.width,
       canvasHeight: mainCanvas.height,
@@ -191,6 +198,7 @@ imageLoader.generateBackgroundImage();
 
 // Generators
 const unitGenerator = new UnitGenerator(world);
+const buildingGenerator = new BuildingGenerator(world);
 const mapGenerator = new MapGenerator(world, MAP_SIZE);
 
 // Create Map
@@ -204,5 +212,8 @@ unitGenerator.generateUnit(UnitType.ARCHER , 5, 10, 0);
 unitGenerator.generateUnit(UnitType.WARRIOR , 5, 9, 0);
 unitGenerator.generateUnit(UnitType.SKELETON , 7, 10, 1);
 unitGenerator.generateUnit(UnitType.WEREWOLF , 7, 9, 1);
+
+// Adding Buildings
+buildingGenerator.generateBuilding(BuildingType.CASTLE, 6, 9, 0);
 
 export { world };
