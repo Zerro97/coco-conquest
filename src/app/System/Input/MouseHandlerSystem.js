@@ -33,12 +33,17 @@ export class MouseHandlerSystem extends System {
     this.trackClickBuffer();
     this.checkMouseClick();
 
-    this.checkHudHover();
-    this.checkHudSelect();
+    let isHudHovering = this.checkHudHover();
+    let isHudSelecting = this.checkHudSelect();
 
-    this.checkHover();
-    this.checkSelect();
-    this.checkRightSelect();
+    if(!isHudHovering) {
+      this.checkHover();
+    }
+
+    if(!isHudSelecting) {
+      this.checkSelect();
+      this.checkRightSelect();
+    }
   }
 
   checkMouseClick() {
@@ -82,6 +87,8 @@ export class MouseHandlerSystem extends System {
   }
 
   checkHudHover() {
+    let isHovering = false;
+
     const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
     const mouseX = mouseStatus.x;
     const mouseY = mouseStatus.y;
@@ -105,6 +112,8 @@ export class MouseHandlerSystem extends System {
               size.height
             )
           ) {
+            isHovering = true;
+
             if (!object.hasComponent(CurrentHudHover)) {
               object.addComponent(CurrentHudHover);
             }
@@ -122,7 +131,8 @@ export class MouseHandlerSystem extends System {
               radius
             )
           ) {
-            
+            isHovering = true;
+
             if (!object.hasComponent(CurrentHudHover)) {
               object.addComponent(CurrentHudHover);
             }
@@ -139,6 +149,8 @@ export class MouseHandlerSystem extends System {
               TileSize.REGULAR
             )
           ) {
+            isHovering = true;
+
             if (!object.hasComponent(CurrentHudHover)) {
               object.addComponent(CurrentHudHover);
             }
@@ -147,9 +159,13 @@ export class MouseHandlerSystem extends System {
         }
       }
     });
+
+    return isHovering;
   }
 
   checkHudSelect() {
+    let isSelecting = false;
+
     const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
     const mouseX = mouseStatus.x;
     const mouseY = mouseStatus.y;
@@ -174,6 +190,8 @@ export class MouseHandlerSystem extends System {
                 size.height
               )
             ) {
+              isSelecting = true;
+
               if (!object.hasComponent(CurrentHudSelect)) {
                 object.addComponent(CurrentHudSelect);
               }
@@ -191,7 +209,8 @@ export class MouseHandlerSystem extends System {
                 radius
               )
             ) {
-              
+              isSelecting = true;
+
               if (!object.hasComponent(CurrentHudSelect)) {
                 object.addComponent(CurrentHudSelect);
               }
@@ -208,6 +227,8 @@ export class MouseHandlerSystem extends System {
                 TileSize.REGULAR
               )
             ) {
+              isSelecting = true;
+
               if (!object.hasComponent(CurrentHudSelect)) {
                 object.addComponent(CurrentHudSelect);
               }
@@ -217,6 +238,8 @@ export class MouseHandlerSystem extends System {
         }
       }
     });
+
+    return isSelecting;
   }
 
   checkHover() {

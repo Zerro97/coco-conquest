@@ -109,7 +109,8 @@ export class ScreenSystem extends System {
       const dy = focusStatus.y - destY;
       const length = Math.hypot(Math.abs(dx), Math.abs(dy));
       
-      if(!isInsideRectangle(destX, destY, focusStatus.curX, focusStatus.curY, 50, 50)) {
+      // If the translation reached the center of screen
+      if(!isInsideRectangle(destX -25, destY -25, focusStatus.curX, focusStatus.curY, 50, 50)) {
         screenStatus.x += dx/length * 50;
         screenStatus.y += dy/length * 50;
         focusStatus.curX -= dx/length * 50;

@@ -16,7 +16,8 @@ import {
   CanvasPosition,
   Shape,
   Radius,
-  Hud
+  Hud,
+  Size
 } from "../../Component";
 import { cubeToEvenr, evenrToCube, evenrToPixel } from "../../Util";
 import { TileSize, HudType, ObjectShape } from "../../Type";
@@ -50,6 +51,23 @@ export class LoaderSystem extends System {
       .addComponent(CanvasPosition, {x: this.canvasWidth - 90, y: this.canvasHeight - 90})
       .addComponent(Shape, {type: ObjectShape.CIRCLE})
       .addComponent(Radius, {value: 60});
+
+    // Map at bottom left
+    this.world
+      .createEntity()
+      .addComponent(Hud, {type: HudType.MAP})
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: 10, y: this.canvasHeight - 160})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 240, height: 150});
+
+    this.world
+      .createEntity()
+      .addComponent(Hud, {type: HudType.PRODUCTION_PANEL})
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: 0, y: 50})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 300, height: this.canvasHeight - 220});
   }
 
   loadImages() {

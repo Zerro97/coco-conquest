@@ -19,10 +19,11 @@ import {
   CurrentHudSelect,
   CanvasPosition,
   Hud,
-  Radius
+  Radius,
+  Size
 } from "../../../Component";
 import { ActionType, BackgroundType, IconType, HudType } from "../../../Type";
-import { roundRect, arcToPoint, drawTurnButton, drawHoveringTurnButton } from "../../../Util";
+import { roundRect, arcToPoint, drawTurnButton, drawHoveringTurnButton, drawMap, drawProductionPanel } from "../../../Util";
 
 export class HudRenderSystem extends System {
   execute(delta, time) {
@@ -34,8 +35,9 @@ export class HudRenderSystem extends System {
   }
 
   drawNotHudEntities() {
-    this.drawTPanel();
-    this.drawTRPanel();
+    this.drawTopPanel();
+    this.drawResources();
+    this.drawTurn();
     this.drawUnitPanel();
   }
 
@@ -47,8 +49,20 @@ export class HudRenderSystem extends System {
       switch (type) {
         case HudType.TURN_BUTTON: {
           const radius = hud.getComponent(Radius).value;
-
           drawTurnButton(this.ctx, pos, radius);
+
+          break;
+        }
+        case HudType.MAP: {
+          const size = hud.getComponent(Size);
+          drawMap(this.ctx, pos, size);
+
+          break;
+        }
+        case HudType.PRODUCTION_PANEL: {
+          const size = hud.getComponent(Size);
+          drawProductionPanel(this.ctx, pos, size);
+
           break;
         }
       }
@@ -73,16 +87,9 @@ export class HudRenderSystem extends System {
     }
   }
 
-  drawTRPanel() {
-    this.drawMap();
-  }
-
-  drawTPanel(){
+  drawTopPanel(){
     this.ctx.fillStyle = "rgb(39, 42, 54)";
     this.ctx.fillRect(0, 0, this.canvasWidth, 50);
-
-    this.drawResources();
-    this.drawTurn();
   }
 
   drawResources() {
@@ -296,36 +303,7 @@ export class HudRenderSystem extends System {
     }
   }
 
-  drawMap() {
-    this.ctx.fillStyle = "rgb(41, 54, 96)";
-    this.ctx.fillRect(0, this.canvasHeight - 170, 260, 170);
-
-    let grad1 = this.ctx.createLinearGradient(0, 0, 260, 0);
-    grad1.addColorStop(0, "rgb(28, 33, 50)");
-    grad1.addColorStop(0.05, "rgba(28, 33, 50, 0)");
-    grad1.addColorStop(0.95, "rgba(28, 33, 50, 0)");
-    grad1.addColorStop(1.0, "rgb(28, 33, 50)");
-
-    let grad2 = this.ctx.createLinearGradient(0, this.canvasHeight - 170, 0, this.canvasHeight);
-    grad2.addColorStop(0, "rgb(28, 33, 50)");
-    grad2.addColorStop(0.05, "rgba(28, 33, 50, 0)");
-    grad2.addColorStop(0.95, "rgba(28, 33, 50, 0)");
-    grad2.addColorStop(1.0, "rgb(28, 33, 50)");
-
-    this.ctx.fillStyle = grad1;
-    this.ctx.fillRect(0, this.canvasHeight - 170, 260, 170);
-
-    this.ctx.fillStyle = grad2;
-    this.ctx.fillRect(0, this.canvasHeight - 170, 260, 170);
-
-    this.ctx.fillStyle = "black";
-    this.ctx.fillRect(10, this.canvasHeight - 160, 240, 150);
-
-    this.ctx.fillStyle = "white";
-    this.ctx.lineWidth = 2;
-    this.ctx.strokeStyle = "white";
-    this.ctx.strokeRect(30, this.canvasHeight - 140, 200, 110);
-  }
+  
 
   getIconSpriteSheet(type) {
     const spriteSheets = this.queries.iconImages.results;

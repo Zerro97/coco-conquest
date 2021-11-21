@@ -26,7 +26,7 @@ export function isInsideCircle(circleX, circleY, pointX, pointY, radius){
  * @returns 
  */
 export function isInsideRectangle(rectX, rectY, pointX, pointY, width, height){
-	return pointX < rectX + width/2 && pointX > rectX - width/2 && pointY < rectY + height/2 && pointY > rectY - height/2;
+	return pointX < rectX + width && pointX > rectX && pointY < rectY + height && pointY > rectY;
 }
 
 /**
