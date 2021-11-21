@@ -57,10 +57,11 @@ export class LoaderSystem extends System {
       .createEntity()
       .addComponent(Hud, {type: HudType.MAP})
       .addComponent(HudSelectable)
-      .addComponent(CanvasPosition, {x: 10, y: this.canvasHeight - 160})
+      .addComponent(CanvasPosition, {x: 0, y: this.canvasHeight - 170})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 240, height: 150});
+      .addComponent(Size, {width: 300, height: 170});
 
+    // Production panel at left (shown when clicking city)
     this.world
       .createEntity()
       .addComponent(Hud, {type: HudType.PRODUCTION_PANEL})

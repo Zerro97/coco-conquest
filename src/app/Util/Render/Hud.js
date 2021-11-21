@@ -1,3 +1,35 @@
+function drawOutline(ctx, pos, size, offset = {x: 0, y: 0}) {
+  ctx.beginPath();
+  ctx.rect(pos.x - offset.x, pos.y - offset.y, size.width + offset.x * 2, size.height + offset.y * 2);
+  ctx.closePath();
+  ctx.fillStyle = "white";
+  ctx.fill();
+
+  let grad1 = ctx.createLinearGradient(pos.x - offset.x, pos.y - offset.y, pos.x + size.width + offset.x, pos.y - offset.y);
+  grad1.addColorStop(0, "rgb(50, 50, 50)");
+  grad1.addColorStop(0.008, "rgba(233, 233, 234, 0)");
+  grad1.addColorStop(0.992, "rgba(233, 233, 234, 0)");
+  grad1.addColorStop(1, "rgb(50, 50, 50)");
+
+  ctx.fillStyle = grad1;
+  ctx.beginPath();
+  ctx.rect(pos.x - offset.x, pos.y - offset.y, size.width + offset.x * 2, size.height + offset.y * 2);
+  ctx.closePath();
+  ctx.fill();
+
+  let grad2 = ctx.createLinearGradient(pos.x - offset.x, pos.y - offset.y, pos.x - offset.x, pos.y + size.height + offset.y);
+  grad2.addColorStop(0, "rgb(50, 50, 50)");
+  grad2.addColorStop(0.008, "rgba(233, 233, 234, 0)");
+  grad2.addColorStop(0.992, "rgba(233, 233, 234, 0)");
+  grad2.addColorStop(1, "rgb(50, 50, 50)");
+
+  ctx.fillStyle = grad2;
+  ctx.beginPath();
+  ctx.rect(pos.x - offset.x, pos.y - offset.y, size.width + offset.x * 2, size.height + offset.y * 2);
+  ctx.closePath();
+  ctx.fill();
+}
+
 export function drawTurnButton(ctx, pos, radius) {
   // Draw outer transparent white circle
   const grad1 = ctx.createLinearGradient(pos.x, pos.y - 90, pos.x, pos.y + 90);
@@ -31,33 +63,11 @@ export function drawTurnButton(ctx, pos, radius) {
 }
 
 export function drawMap(ctx, pos, size) {
-  // Draw outer rectangle
-  ctx.fillStyle = "rgb(41, 54, 96)";
-  ctx.fillRect(pos.x - 10, pos.y - 10, size.width + 20, size.height + 20);
-
-  let grad1 = ctx.createLinearGradient(pos.x - 10, pos.y - 10, pos.x + size.width + 20, pos.y - 10);
-  grad1.addColorStop(0, "rgb(28, 33, 50)");
-  grad1.addColorStop(0.05, "rgba(28, 33, 50, 0)");
-  grad1.addColorStop(0.95, "rgba(28, 33, 50, 0)");
-  grad1.addColorStop(1.0, "rgb(28, 33, 50)");
-
-  ctx.fillStyle = grad1;
-  ctx.fillRect(pos.x - 10, pos.y - 10, size.width + 20, size.height + 20);
-
-  let grad2 = ctx.createLinearGradient(pos.x - 10, pos.y - 10, pos.x - 10, pos.y + size.height + 20);
-  grad2.addColorStop(0, "rgb(28, 33, 50)");
-  grad2.addColorStop(0.05, "rgba(28, 33, 50, 0)");
-  grad2.addColorStop(0.95, "rgba(28, 33, 50, 0)");
-  grad2.addColorStop(1.0, "rgb(28, 33, 50)");
-
-  ctx.fillStyle = grad2;
-  ctx.fillRect(pos.x - 10, pos.y - 10, size.width + 20, size.height + 20);
+  drawOutline(ctx, pos, size);
 
   // Draw map
   ctx.fillStyle = "black";
-  ctx.fillRect(pos.x, pos.y, size.width, size.height);
-
-  //240, 150
+  ctx.fillRect(pos.x + 4, pos.y + 4, size.width - 8, size.height - 8);
 
   // Draw map pos rectangle
   ctx.fillStyle = "white";
@@ -67,13 +77,13 @@ export function drawMap(ctx, pos, size) {
 }
 
 export function drawProductionPanel(ctx, pos, size) {
+  drawOutline(ctx, pos, size);
+
   ctx.fillStyle = "rgb(39, 42, 54)";
-  ctx.strokeStyle = "rgb(233, 233, 234)";
   ctx.beginPath();
-  ctx.rect(pos.x , pos.y, size.width, size.height);
+  ctx.rect(pos.x + 4, pos.y + 4, size.width - 8, size.height - 8);
   ctx.closePath();
   ctx.fill();
-  ctx.stroke();
 }
 
 export function drawProductionButton(ctx, pos, size) {
