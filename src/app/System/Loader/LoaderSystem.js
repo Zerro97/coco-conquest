@@ -87,20 +87,24 @@ export class LoaderSystem extends System {
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 290, height: 30});
 
+    // Buttons for units
     for(let i=0; i< 8; i++) {
       this.world
         .createEntity()
         .addComponent(Hud, {type: HudType.PRODUCTION_BUTTON})
         .addComponent(CanvasPosition, {x: 5, y: 100 + i * 32})
+        .addComponent(HudHoverable)
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 290, height: 30});
     }
 
+    // Buttons for buildings
     for(let i=0; i< 8; i++) {
       this.world
         .createEntity()
         .addComponent(Hud, {type: HudType.PRODUCTION_BUTTON})
         .addComponent(CanvasPosition, {x: 5, y: 410 + i * 32})
+        .addComponent(HudHoverable)
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 290, height: 30});
     }

@@ -23,7 +23,7 @@ import {
   Size,
   Team
 } from "../../../Component";
-import { ActionType, BackgroundType, IconType, HudType } from "../../../Type";
+import { ActionType, BackgroundType, IconType, HudType, BuildingType } from "../../../Type";
 import { 
   roundRect, 
   arcToPoint, 
@@ -35,7 +35,8 @@ import {
   drawProductionPanel,
   drawProductionCategory,
   drawProductionButton,
-  drawSelectedTeamIcon
+  drawSelectedTeamIcon,
+  drawHoveringProductionButton
 } from "../../../Util";
 
 export class HudRenderSystem extends System {
@@ -55,6 +56,10 @@ export class HudRenderSystem extends System {
   }
 
   drawHudEntities() {
+    // Conditions for drawing some huds
+    const selectedBuilding = this.queries.selectedBuilding.results[0];
+    const isCastleSelected = selectedBuilding?.getComponent(Building).value === BuildingType.CASTLE;
+
     this.queries.huds.results.forEach(hud => {
       const pos = hud.getComponent(CanvasPosition);
       const type = hud.getComponent(Hud).type;
@@ -73,26 +78,34 @@ export class HudRenderSystem extends System {
           break;
         }
         case HudType.PRODUCTION_PANEL: {
-          const size = hud.getComponent(Size);
-          drawProductionPanel(this.ctx, pos, size);
+          if(isCastleSelected) {
+            const size = hud.getComponent(Size);
+            drawProductionPanel(this.ctx, pos, size);
+          }
 
           break;
         }
         case HudType.PRODUCTION_UNIT: {
-          const size = hud.getComponent(Size);
-          drawProductionCategory(this.ctx, pos, size, "Units");
+          if(isCastleSelected) {
+            const size = hud.getComponent(Size);
+            drawProductionCategory(this.ctx, pos, size, "Units");
+          }
 
           break;
         }
         case HudType.PRODUCTION_BUILDING: {
-          const size = hud.getComponent(Size);
-          drawProductionCategory(this.ctx, pos, size, "Buildings");
+          if(isCastleSelected) {
+            const size = hud.getComponent(Size);
+            drawProductionCategory(this.ctx, pos, size, "Buildings");
+          }
 
           break;
         }
         case HudType.PRODUCTION_BUTTON: {
-          const size = hud.getComponent(Size);
-          drawProductionButton(this.ctx, pos, size, "Warrior");
+          if(isCastleSelected) {
+            const size = hud.getComponent(Size);
+            drawProductionButton(this.ctx, pos, size, "Warrior");
+          }
 
           break;
         }
@@ -125,6 +138,12 @@ export class HudRenderSystem extends System {
           const radius = hud.getComponent(Radius).value;
   
           drawHoveringTurnButton(this.ctx, pos, radius);
+          break;
+        }
+        case HudType.PRODUCTION_BUTTON: {
+          const size = hud.getComponent(Size);
+          drawHoveringProductionButton(this.ctx, pos, size, "Warrior");
+
           break;
         }
       }

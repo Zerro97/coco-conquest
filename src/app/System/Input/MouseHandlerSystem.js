@@ -299,6 +299,7 @@ export class MouseHandlerSystem extends System {
 
         let objectPosition = object.getMutableComponent(CanvasPosition);
         let objectShape = object.getMutableComponent(Shape).type;
+        
 
         switch (objectShape) {
           case ObjectShape.HEXAGON: {
