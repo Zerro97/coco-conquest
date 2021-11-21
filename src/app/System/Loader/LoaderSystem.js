@@ -17,7 +17,9 @@ import {
   Shape,
   Radius,
   Hud,
-  Size
+  Size,
+  Team,
+  GlobalStatus
 } from "../../Component";
 import { cubeToEvenr, evenrToCube, evenrToPixel } from "../../Util";
 import { TileSize, HudType, ObjectShape } from "../../Type";
@@ -101,6 +103,19 @@ export class LoaderSystem extends System {
         .addComponent(CanvasPosition, {x: 5, y: 410 + i * 32})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 290, height: 30});
+    }
+
+    const globalStatus = this.queries.globalStatus.results[0].getComponent(GlobalStatus);
+    const teamCount = globalStatus.teamCount;
+
+    for(let i=0; i< teamCount; i++) {
+      this.world
+        .createEntity()
+        .addComponent(Hud, {type: HudType.TEAM_ICON})
+        .addComponent(CanvasPosition, {x: this.canvasWidth - 40 - i * 50, y: 80})
+        .addComponent(Shape, {type: ObjectShape.CIRCLE})
+        .addComponent(Radius, {value: 22})
+        .addComponent(Team, {value: i});
     }
   }
 
@@ -267,4 +282,7 @@ LoaderSystem.queries = {
   tileMap: {
     components: [TileMap],
   },
+  globalStatus: {
+    components: [GlobalStatus]
+  }
 };

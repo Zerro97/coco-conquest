@@ -16,7 +16,7 @@ export class HudSystem extends System {
       switch(type) {
         case HudType.TURN_BUTTON: {
           const turn = this.queries.turn.results[0].getMutableComponent(Turn);
-          turn.currentTurn += 1;
+          turn.turnProgress += 1;
           
           break;
         }

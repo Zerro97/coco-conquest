@@ -79,6 +79,9 @@ function registerSystems() {
     .registerSystem(System.MouseHandlerSystem, {
       priority: 0,
     })
+    .registerSystem(System.GlobalGameSystem, {
+      priority: 5
+    })
     .registerSystem(System.ScreenSystem, {
       priority: 5,
       ctx: ctx,
@@ -171,6 +174,9 @@ world
 world
   .createEntity()
   .addComponent(Component.PreviousSelect);
+world
+  .createEntity()
+  .addComponent(Component.GlobalStatus, { teamCount: 4 });
 world
   .createEntity()
   .addComponent(Component.Turn, { currentTurn: 0, maxTurn: 300 });

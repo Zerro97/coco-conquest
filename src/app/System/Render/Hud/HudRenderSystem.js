@@ -20,7 +20,8 @@ import {
   CanvasPosition,
   Hud,
   Radius,
-  Size
+  Size,
+  Team
 } from "../../../Component";
 import { ActionType, BackgroundType, IconType, HudType } from "../../../Type";
 import { 
@@ -30,9 +31,11 @@ import {
   drawHoveringTurnButton, 
   drawMap, 
   drawTurnBox,
+  drawTeamIcon,
   drawProductionPanel,
   drawProductionCategory,
-  drawProductionButton
+  drawProductionButton,
+  drawSelectedTeamIcon
 } from "../../../Util";
 
 export class HudRenderSystem extends System {
@@ -90,6 +93,19 @@ export class HudRenderSystem extends System {
         case HudType.PRODUCTION_BUTTON: {
           const size = hud.getComponent(Size);
           drawProductionButton(this.ctx, pos, size, "Warrior");
+
+          break;
+        }
+        case HudType.TEAM_ICON: {
+          const radius = hud.getComponent(Radius).value;
+          const team = hud.getComponent(Team).value;
+          const currentTurn = this.queries.turn.results[0].getComponent(Turn).turnProgress;
+
+          if(currentTurn === team) {
+            drawSelectedTeamIcon(this.ctx, pos, radius, team+1);
+          } else {
+            drawTeamIcon(this.ctx, pos, radius, team+1);
+          }
 
           break;
         }
@@ -400,5 +416,5 @@ HudRenderSystem.queries = {
   },
   currentHudSelect: {
     components: [Hud, CurrentHudSelect]
-  },
+  }
 };
