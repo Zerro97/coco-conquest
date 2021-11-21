@@ -69,6 +69,39 @@ export class LoaderSystem extends System {
       .addComponent(CanvasPosition, {x: 0, y: 50})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 300, height: this.canvasHeight - 220});
+
+    // Production categories
+    this.world
+      .createEntity()
+      .addComponent(Hud, {type: HudType.PRODUCTION_UNIT})
+      .addComponent(CanvasPosition, {x: 5, y: 60})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 290, height: 30});
+
+    this.world
+      .createEntity()
+      .addComponent(Hud, {type: HudType.PRODUCTION_BUILDING})
+      .addComponent(CanvasPosition, {x: 5, y: 370})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 290, height: 30});
+
+    for(let i=0; i< 8; i++) {
+      this.world
+        .createEntity()
+        .addComponent(Hud, {type: HudType.PRODUCTION_BUTTON})
+        .addComponent(CanvasPosition, {x: 5, y: 100 + i * 32})
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 290, height: 30});
+    }
+
+    for(let i=0; i< 8; i++) {
+      this.world
+        .createEntity()
+        .addComponent(Hud, {type: HudType.PRODUCTION_BUTTON})
+        .addComponent(CanvasPosition, {x: 5, y: 410 + i * 32})
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 290, height: 30});
+    }
   }
 
   loadImages() {

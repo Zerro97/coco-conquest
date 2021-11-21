@@ -23,7 +23,17 @@ import {
   Size
 } from "../../../Component";
 import { ActionType, BackgroundType, IconType, HudType } from "../../../Type";
-import { roundRect, arcToPoint, drawTurnButton, drawHoveringTurnButton, drawMap, drawProductionPanel } from "../../../Util";
+import { 
+  roundRect, 
+  arcToPoint, 
+  drawTurnButton, 
+  drawHoveringTurnButton, 
+  drawMap, 
+  drawTurnBox,
+  drawProductionPanel,
+  drawProductionCategory,
+  drawProductionButton
+} from "../../../Util";
 
 export class HudRenderSystem extends System {
   execute(delta, time) {
@@ -62,6 +72,24 @@ export class HudRenderSystem extends System {
         case HudType.PRODUCTION_PANEL: {
           const size = hud.getComponent(Size);
           drawProductionPanel(this.ctx, pos, size);
+
+          break;
+        }
+        case HudType.PRODUCTION_UNIT: {
+          const size = hud.getComponent(Size);
+          drawProductionCategory(this.ctx, pos, size, "Units");
+
+          break;
+        }
+        case HudType.PRODUCTION_BUILDING: {
+          const size = hud.getComponent(Size);
+          drawProductionCategory(this.ctx, pos, size, "Buildings");
+
+          break;
+        }
+        case HudType.PRODUCTION_BUTTON: {
+          const size = hud.getComponent(Size);
+          drawProductionButton(this.ctx, pos, size, "Warrior");
 
           break;
         }
@@ -147,33 +175,8 @@ export class HudRenderSystem extends System {
   drawTurn() {
     const turn = this.queries.turn.results[0].getComponent(Turn);
 
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.canvasWidth/2 - 80, -20);
-    this.ctx.lineTo(this.canvasWidth/2 - 80, 65);
-    this.ctx.lineTo(this.canvasWidth/2, 90);
-    this.ctx.lineTo(this.canvasWidth/2 + 80, 65);
-    this.ctx.lineTo(this.canvasWidth/2 + 80, -20);
-    this.ctx.closePath();
-
-    this.ctx.fillStyle = "rgb(52, 60, 89)";
-    this.ctx.strokeStyle = "white";
-    this.ctx.lineWidth = 5;
-    this.ctx.fill();
-    this.ctx.stroke();
-
-    this.ctx.font = "40px Arial";
-    this.ctx.fillStyle = "white";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText(turn.currentTurn, this.canvasWidth/2, 40);
-
-    this.ctx.font = "16px Arial";
-    this.ctx.fillStyle = "rgba(255, 255, 255, 0.6";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText("Turn", this.canvasWidth/2, 65);
+    drawTurnBox(this.ctx, {x: this.canvasWidth/2 + 80, y: -10}, turn.currentTurn);
   }
-
-
-  
 
   drawUnitPanel() {
     const actionStatus = this.queries.actionStatus.results[0].getComponent(ActionStatus);

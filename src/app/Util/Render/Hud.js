@@ -1,11 +1,11 @@
-function drawOutline(ctx, pos, size, offset = {x: 0, y: 0}) {
+function drawOutline(ctx, pos, size) {
   ctx.beginPath();
-  ctx.rect(pos.x - offset.x, pos.y - offset.y, size.width + offset.x * 2, size.height + offset.y * 2);
+  ctx.rect(pos.x, pos.y, size.width, size.height);
   ctx.closePath();
   ctx.fillStyle = "white";
   ctx.fill();
 
-  let grad1 = ctx.createLinearGradient(pos.x - offset.x, pos.y - offset.y, pos.x + size.width + offset.x, pos.y - offset.y);
+  let grad1 = ctx.createLinearGradient(pos.x, pos.y, pos.x + size.width, pos.y);
   grad1.addColorStop(0, "rgb(50, 50, 50)");
   grad1.addColorStop(0.008, "rgba(233, 233, 234, 0)");
   grad1.addColorStop(0.992, "rgba(233, 233, 234, 0)");
@@ -13,11 +13,11 @@ function drawOutline(ctx, pos, size, offset = {x: 0, y: 0}) {
 
   ctx.fillStyle = grad1;
   ctx.beginPath();
-  ctx.rect(pos.x - offset.x, pos.y - offset.y, size.width + offset.x * 2, size.height + offset.y * 2);
+  ctx.rect(pos.x, pos.y, size.width, size.height);
   ctx.closePath();
   ctx.fill();
 
-  let grad2 = ctx.createLinearGradient(pos.x - offset.x, pos.y - offset.y, pos.x - offset.x, pos.y + size.height + offset.y);
+  let grad2 = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y + size.height);
   grad2.addColorStop(0, "rgb(50, 50, 50)");
   grad2.addColorStop(0.008, "rgba(233, 233, 234, 0)");
   grad2.addColorStop(0.992, "rgba(233, 233, 234, 0)");
@@ -25,7 +25,7 @@ function drawOutline(ctx, pos, size, offset = {x: 0, y: 0}) {
 
   ctx.fillStyle = grad2;
   ctx.beginPath();
-  ctx.rect(pos.x - offset.x, pos.y - offset.y, size.width + offset.x * 2, size.height + offset.y * 2);
+  ctx.rect(pos.x, pos.y, size.width, size.height);
   ctx.closePath();
   ctx.fill();
 }
@@ -62,6 +62,32 @@ export function drawTurnButton(ctx, pos, radius) {
   ctx.fillText("TURN", pos.x, pos.y + 25);
 }
 
+export function drawTurnBox(ctx, pos, text) {
+  ctx.beginPath();
+  ctx.moveTo(pos.x, pos.y);
+  ctx.lineTo(pos.x, pos.y + 75);
+  ctx.lineTo(pos.x - 80, pos.y + 100);
+  ctx.lineTo(pos.x - 160, pos.y + 75);
+  ctx.lineTo(pos.x - 160, pos.y - 10);
+  ctx.closePath();
+
+  ctx.fillStyle = "rgb(52, 60, 89)";
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = 5;
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.font = "40px Arial";
+  ctx.fillStyle = "white";
+  ctx.textAlign = "center";
+  ctx.fillText(text, pos.x - 80, pos.y + 50);
+
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.6";
+  ctx.textAlign = "center";
+  ctx.fillText("Turn", pos.x - 80, pos.y + 75);
+}
+
 export function drawMap(ctx, pos, size) {
   drawOutline(ctx, pos, size);
 
@@ -79,13 +105,109 @@ export function drawMap(ctx, pos, size) {
 export function drawProductionPanel(ctx, pos, size) {
   drawOutline(ctx, pos, size);
 
-  ctx.fillStyle = "rgb(39, 42, 54)";
+  ctx.fillStyle = "rgb(52, 60, 89)";
   ctx.beginPath();
   ctx.rect(pos.x + 4, pos.y + 4, size.width - 8, size.height - 8);
   ctx.closePath();
   ctx.fill();
 }
 
-export function drawProductionButton(ctx, pos, size) {
+export function drawProductionCategory(ctx, pos, size, text) {
+  // Outer box
+  ctx.fillStyle = "rgb(221,174,79)";
+  ctx.strokeStyle = "rgb(22, 30, 59)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(pos.x + 6, pos.y - 3);
+  ctx.lineTo(pos.x + size.width - 6, pos.y - 3);
+  ctx.lineTo(pos.x + size.width - 3, pos.y);
+  ctx.lineTo(pos.x + size.width - 3, pos.y + size.height);
+  ctx.lineTo(pos.x + size.width - 6, pos.y + size.height + 3);
+  ctx.lineTo(pos.x + 6, pos.y + size.height + 3);
+  ctx.lineTo(pos.x + 3, pos.y + size.height);
+  ctx.lineTo(pos.x + 3, pos.y);
+  ctx.lineTo(pos.x + 6, pos.y - 3);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
 
+  // Inner box
+  let grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y + size.height);
+  grad.addColorStop(0, "rgb(249,250,252)");
+  grad.addColorStop(0.3, "rgb(210,219,235)");
+  grad.addColorStop(0.7, "rgb(210,219,235)");
+  grad.addColorStop(1, "rgb(249,250,252)");
+
+  ctx.save();
+  ctx.fillStyle = grad;
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "rgb(29, 32, 44)";
+  ctx.beginPath();
+  ctx.moveTo(pos.x + 20, pos.y);
+  ctx.lineTo(pos.x + size.width - 20, pos.y);
+  ctx.bezierCurveTo(
+    pos.x + size.width - 5, pos.y + size.height - 10, 
+    pos.x + size.width - 5, pos.y + 10, 
+    pos.x + size.width - 20, pos.y + size.height
+  );
+  ctx.lineTo(pos.x + 20, pos.y + size.height);
+  ctx.bezierCurveTo(
+    pos.x + 5, pos.y + 10, 
+    pos.x + 5, pos.y + size.height - 10, 
+    pos.x + 20, pos.y
+  );
+  ctx.clip();
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+  
+  // Transparent upper half
+  ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+  ctx.fillRect(pos.x + 3, pos.y - 3, size.width - 6, size.height/2 + 3);
+  ctx.restore();
+
+  // Text
+  ctx.font = "20px Arial";
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
+  ctx.fillText(text, pos.x + size.width/2, pos.y + 22);
+}
+
+export function drawProductionButton(ctx, pos, size, text) {
+  let grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y + size.height);
+  grad.addColorStop(0, "rgb(86, 99, 141)");
+  grad.addColorStop(0.3, "rgb(66, 79, 121)");
+  grad.addColorStop(0.7, "rgb(66, 79, 121)");
+  grad.addColorStop(1, "rgb(86, 99, 141)");
+
+  ctx.save();
+  ctx.fillStyle = grad;
+  ctx.strokeStyle = "rgb(22, 30, 59)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(pos.x + 6, pos.y);
+  ctx.lineTo(pos.x + size.width - 6, pos.y);
+  ctx.lineTo(pos.x + size.width - 3, pos.y + 3);
+  ctx.lineTo(pos.x + size.width - 3, pos.y + size.height - 3);
+  ctx.lineTo(pos.x + size.width - 6, pos.y + size.height);
+  ctx.lineTo(pos.x + 6, pos.y + size.height);
+  ctx.lineTo(pos.x + 3, pos.y + size.height - 3);
+  ctx.lineTo(pos.x + 3, pos.y + 3);
+  ctx.lineTo(pos.x + 6, pos.y);
+  ctx.clip();
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  // Transparent upper half
+  ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+  ctx.fillRect(pos.x + 3, pos.y, size.width - 6, size.height/2);
+  ctx.restore();
+
+  // Text
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "white";
+  ctx.textAlign = "left";
+  ctx.fillText(text, pos.x + 15, pos.y + 20);
+  ctx.fillText("1", pos.x + size.width - 25, pos.y + 20);
 }
