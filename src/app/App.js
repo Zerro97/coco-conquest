@@ -183,11 +183,10 @@ world
   .addComponent(Component.PreviousSelect);
 world
   .createEntity()
-  .addComponent(Component.GlobalStatus, { teamCount: 4 });
+  .addComponent(Component.GlobalStatus, { teamCount: 4, myTeamId: 0 });
 world
   .createEntity()
   .addComponent(Component.Turn, { currentTurn: 0, maxTurn: 300 });
-
 
 // Store image objects as entity
 imageLoader.generateTileImage();

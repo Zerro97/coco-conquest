@@ -20,16 +20,23 @@ import {
 	CurrentSelect,
   Image,
   TileMap,
-  WeightMap
+  WeightMap,
+  Turn,
+  GlobalStatus
 } from "../../Component";
 import { TileSize, UnitType } from "../../Type";
 import { cubeToPixel, drawMovingTile, tilesInRange, drawBoundary, getTilesInRange, drawAttackingTile } from "../../Util";
 
 export class UnitRenderSystem extends System {
 	execute(delta, time) {
-    this.drawMovementRange();
+    const globalStatus = this.queries.globalStatus.results[0].getComponent(GlobalStatus);
+    const turnStatus = this.queries.turn.results[0].getComponent(Turn);
+    const isPlayerTurn = turnStatus.turnProgress === globalStatus.myTeamId;
+
+    if(isPlayerTurn) {
+      this.drawMovementRange();
+    }
 		this.drawUnits();
-    //this.stop();
 	}
 
 	drawUnits() {
@@ -141,5 +148,11 @@ UnitRenderSystem.queries = {
   },
   weightMap: {
     components: [WeightMap]
+  },
+  turn: {
+    components: [Turn]
+  },
+  globalStatus: {
+    components: [GlobalStatus]
   }
 };

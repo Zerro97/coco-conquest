@@ -25,15 +25,23 @@ import {
   TileMap,
   WeightMap,
   PreviousSelect,
-  Team
+  Team,
+  GlobalStatus,
+  Turn
 } from "../../Component";
 import { ActionType, TileSize, UnitType } from "../../Type";
 import { cubeToPixel, getTilesInRange } from "../../Util";
 
 export class UnitSystem extends System {
   execute(delta, time) {
-    this.updateMovementRange();
-    this.moveUnit();
+    const globalStatus = this.queries.globalStatus.results[0].getComponent(GlobalStatus);
+    const turnStatus = this.queries.turn.results[0].getComponent(Turn);
+    const isPlayerTurn = turnStatus.turnProgress === globalStatus.myTeamId;
+
+    if(isPlayerTurn) {
+      this.updateMovementRange();
+      this.moveUnit();
+    }
     //this.attackUnit();
     //this.stop();
   }
@@ -213,4 +221,10 @@ UnitSystem.queries = {
   tileMap: {
     components: [TileMap],
   },
+  turn: {
+    components: [Turn]
+  },
+  globalStatus: {
+    components: [GlobalStatus]
+  }
 };
