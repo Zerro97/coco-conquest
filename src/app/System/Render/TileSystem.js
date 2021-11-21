@@ -55,8 +55,8 @@ export class TileSystem extends System {
       this.ctx.font = "20px Arial";
       this.ctx.fillStyle = "red";
       this.ctx.textAlign = "center";
-      this.ctx.fillText(region.region, canvasPos.x, canvasPos.y);
-      //this.ctx.fillText(mapPos.x + " " + mapPos.y + " " + mapPos.z, canvasPos.x, canvasPos.y);
+      //this.ctx.fillText(region.region, canvasPos.x, canvasPos.y);
+      this.ctx.fillText(mapPos.x + " " + mapPos.y + " " + mapPos.z, canvasPos.x, canvasPos.y);
     });
   }
 

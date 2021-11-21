@@ -130,6 +130,10 @@ export class HudRenderSystem extends System {
     const hud = this.queries.currentHudHover.results[0];
 
     if(hud) {
+      // Conditions for drawing some huds
+      const selectedBuilding = this.queries.selectedBuilding.results[0];
+      const isCastleSelected = selectedBuilding?.getComponent(Building).value === BuildingType.CASTLE;
+
       const pos = hud.getComponent(CanvasPosition);
       const type = hud.getComponent(Hud).type;
   
@@ -141,8 +145,10 @@ export class HudRenderSystem extends System {
           break;
         }
         case HudType.PRODUCTION_BUTTON: {
-          const size = hud.getComponent(Size);
-          drawHoveringProductionButton(this.ctx, pos, size, "Warrior");
+          if(isCastleSelected) {
+            const size = hud.getComponent(Size);
+            drawHoveringProductionButton(this.ctx, pos, size, "Warrior");
+          }
 
           break;
         }

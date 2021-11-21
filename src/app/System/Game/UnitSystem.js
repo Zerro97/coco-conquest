@@ -27,7 +27,8 @@ import {
   PreviousSelect,
   Team,
   GlobalStatus,
-  Turn
+  Turn,
+  ScreenFocusStatus
 } from "../../Component";
 import { ActionType, TileSize, UnitType } from "../../Type";
 import { cubeToPixel, getTilesInRange } from "../../Util";
@@ -118,7 +119,11 @@ export class UnitSystem extends System {
   }
 
   moveUnit() {
+    const focusStatus = this.queries.screenFocusStatus.results[0].getMutableComponent(ScreenFocusStatus);
+
     let weightMap = this.queries.weightMap.results[0].getMutableComponent(WeightMap);
+    const tileMap = this.queries.tileMap.results[0].getMutableComponent(TileMap).value;
+    
     const allUnits = this.queries.units.results;
     const selectedUnit = this.queries.selectedUnit.results[0];
     const movingTile = this.queries.movingTile.results[0];
@@ -144,6 +149,19 @@ export class UnitSystem extends System {
         });
 
         if(Object.keys(targetUnit).length === 0) {
+          // Update the selected tile (also focus screen to moved tile)
+          let originalTile = tileMap[originalPos.x][originalPos.y][originalPos.z];
+          let movedTile = tileMap[movingPos.x][movingPos.y][movingPos.z];
+
+          if(originalTile.hasComponent(CurrentSelect)) {
+            originalTile.removeComponent(CurrentSelect);
+          }
+          if(!movedTile.hasComponent(CurrentSelect)) {
+            movedTile.addComponent(CurrentSelect);
+            focusStatus.startFocusing = true;
+          }
+
+          // Move the unit
           originalPos.x = movingPos.x;
           originalPos.y = movingPos.y;
           originalPos.z = movingPos.z;
@@ -153,6 +171,7 @@ export class UnitSystem extends System {
   
           weightMap.value = {};
         } else {
+          // Attack the unit if it's different team
           let selectTeam = selectedUnit.getComponent(Team)?.value;
           let targetTeam = targetUnit.getComponent(Team)?.value;
           
@@ -226,5 +245,8 @@ UnitSystem.queries = {
   },
   globalStatus: {
     components: [GlobalStatus]
+  },
+  screenFocusStatus: {
+    components: [ScreenFocusStatus]
   }
 };

@@ -22,7 +22,8 @@ import {
   TileMap,
   WeightMap,
   Turn,
-  GlobalStatus
+  GlobalStatus,
+  Team
 } from "../../Component";
 import { TileSize, UnitType } from "../../Type";
 import { cubeToPixel, drawMovingTile, tilesInRange, drawBoundary, getTilesInRange, drawAttackingTile } from "../../Util";
@@ -34,7 +35,7 @@ export class UnitRenderSystem extends System {
     const isPlayerTurn = turnStatus.turnProgress === globalStatus.myTeamId;
 
     if(isPlayerTurn) {
-      this.drawMovementRange();
+      this.drawMovementRange(globalStatus.myTeamId);
     }
 		this.drawUnits();
 	}
@@ -61,12 +62,14 @@ export class UnitRenderSystem extends System {
 		});
 	}
 
-  drawMovementRange() {
+  drawMovementRange(playerId) {
     const enemyUnits = this.queries.units.results;
     const selectedUnit = this.queries.selectedUnit.results[0];
+    const selectedTeam = selectedUnit?.getComponent(Team).value;
     const weightMap = this.queries.weightMap.results[0].getMutableComponent(WeightMap).value;
 
-    if(selectedUnit && Object.keys(weightMap).length !== 0) {
+    // If there is selected unit, selected unit belongs to player
+    if(selectedUnit && Object.keys(weightMap).length !== 0 && selectedTeam === playerId) {
       const speed = selectedUnit.getComponent(Speed).value;
 
       for(const x in weightMap) {
