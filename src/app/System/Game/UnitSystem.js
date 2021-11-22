@@ -14,9 +14,7 @@ import {
   MovePosition,
   AttackPosition,
   SelectPosition,
-  SelectedUnit,
   DamagePopup,
-  UnitImage,
   Velocity,
   CurrentFocus,
   CurrentSelect,
@@ -30,8 +28,8 @@ import {
   Turn,
   ScreenFocusStatus
 } from "../../Component";
-import { ActionType, TileSize, UnitType } from "../../Type";
-import { cubeToPixel, getTilesInRange } from "../../Util";
+import {  } from "../../Type";
+import { getTilesInRange } from "../../Util";
 
 export class UnitSystem extends System {
   execute(delta, time) {
@@ -82,6 +80,7 @@ export class UnitSystem extends System {
           for (let x = -1; x <= 1; x++) {
             for (let y = Math.max(-1, -x - 1); y <= Math.min(1, -x + 1); y++) {
               let z = -x - y;
+              console.log(tileMap);
 
               if (
                 !(x === 0 && y === 0 && z === 0) &&

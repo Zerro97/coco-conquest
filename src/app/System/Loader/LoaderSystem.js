@@ -52,15 +52,15 @@ export class LoaderSystem extends System {
     // Generate hud entities
     this.generateHuds();
 
-    // Map Preparation
-    this.generateTileMap();
-    this.assignTileToMap();
-    this.assignRegions(10);
-
     // Map & Unit Generation
     this.generateInitialMap();
     this.generateInitialBuilding();
     this.generateInitialUnit();
+
+    // Map Preparation
+    this.generateTileMap();
+    this.assignTileToMap();
+    this.assignRegions(10);
 
     this.stop();
   }
@@ -268,6 +268,7 @@ export class LoaderSystem extends System {
 
     if (tileMap.length === 0) {
       const map = {};
+      console.log(this.queries.tiles);
 
       this.queries.tiles.results.forEach((tile) => {
         const mapPos = tile.getMutableComponent(MapPosition);
