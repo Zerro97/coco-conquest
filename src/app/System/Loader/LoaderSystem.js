@@ -32,6 +32,8 @@ export class LoaderSystem extends System {
     // Initial screen position
     this.setInitialPosition();
 
+    this.generateSingletons();
+
     // Generate hud entities
     this.generateHuds();
 
@@ -41,6 +43,10 @@ export class LoaderSystem extends System {
     this.assignRegions(10);
 
     this.stop();
+  }
+  
+  generateSingletons() {
+
   }
 
   generateHuds() {

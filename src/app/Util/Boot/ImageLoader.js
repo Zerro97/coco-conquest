@@ -5,7 +5,7 @@ import {
 	IconImage, 
 	TileImage,
 	BackgroundImage
-} from "../Component";
+} from "../../Component";
 
 export class ImageLoader {
 	constructor(world) {
@@ -30,19 +30,19 @@ export class ImageLoader {
 
 		switch(type) {
 		case "tileImages":
-			this[type] = this.importAll(require.context("../Assets/Images/Tiles", false, /\.(png|jpe?g|svg)$/));
+			this[type] = this.importAll(require.context("../../Assets/Images/Tiles", false, /\.(png|jpe?g|svg)$/));
 			break;
 		case "iconImages":
-			this[type] = this.importAll(require.context("../Assets/Images/Icons", false, /\.(png|jpe?g|svg)$/));
+			this[type] = this.importAll(require.context("../../Assets/Images/Icons", false, /\.(png|jpe?g|svg)$/));
 			break;
 		case "unitImages":
-			this[type] = this.importAll(require.context("../Assets/Images/Units", false, /\.(png|jpe?g|svg)$/));
+			this[type] = this.importAll(require.context("../../Assets/Images/Units", false, /\.(png|jpe?g|svg)$/));
 			break;
 		case "buildingImages":
-			this[type] = this.importAll(require.context("../Assets/Images/Buildings", false, /\.(png|jpe?g|svg)$/));
+			this[type] = this.importAll(require.context("../../Assets/Images/Buildings", false, /\.(png|jpe?g|svg)$/));
 			break;
 		case "backgroundImages":
-			this[type] = this.importAll(require.context("../Assets/Images/Background", false, /\.(png|jpe?g|svg)$/));
+			this[type] = this.importAll(require.context("../../Assets/Images/Background", false, /\.(png|jpe?g|svg)$/));
 			break;
 		}
 		

@@ -20,7 +20,6 @@ export class RegionSystem extends System {
   drawTerritoryBoundary() {
     const tileMap = this.queries.tileMap.results[0].getMutableComponent(TileMap).value;
 
-
     for(const x in tileMap) {
       for(const y in tileMap[x]) {
         for(const z in tileMap[x][y]) {
