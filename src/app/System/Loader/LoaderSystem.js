@@ -19,20 +19,35 @@ import {
   Hud,
   Size,
   Team,
-  GlobalStatus
+  GlobalStatus,
+  ScreenFocusStatus,
+  ActionStatus,
+  MovePosition,
+  AttackPosition,
+  SelectPosition,
+  MouseStatus,
+  KeyboardStatus,
+  Block,
+  Timer,
+  WeightMap,
+  PreviousSelect,
+  GameStatus,
+  Turn
 } from "../../Component";
+import { MapGenerator, UnitGenerator, BuildingGenerator } from "../../Assemblage";
 import { cubeToEvenr, evenrToCube, evenrToPixel } from "../../Util";
-import { TileSize, HudType, ObjectShape } from "../../Type";
+import { TileSize, HudType, ObjectShape, UnitType, BuildingType } from "../../Type";
 
 export class LoaderSystem extends System {
   execute(delta, time) {
     // Bring images to ECS system
     this.loadImages();
 
+    // Create all the singleton instances
+    this.generateSingletons();
+
     // Initial screen position
     this.setInitialPosition();
-
-    this.generateSingletons();
 
     // Generate hud entities
     this.generateHuds();
@@ -42,11 +57,76 @@ export class LoaderSystem extends System {
     this.assignTileToMap();
     this.assignRegions(10);
 
+    // Map & Unit Generation
+    this.generateInitialMap();
+    this.generateInitialBuilding();
+    this.generateInitialUnit();
+
     this.stop();
+  }
+
+  generateInitialUnit() {
+    const unitGenerator = new UnitGenerator(this.world);
+    
+    // Adding Units
+    unitGenerator.generateUnit(UnitType.ARCHER , 5, 10, 0);
+    unitGenerator.generateUnit(UnitType.WARRIOR , 5, 9, 0);
+    unitGenerator.generateUnit(UnitType.SKELETON , 7, 10, 1);
+    unitGenerator.generateUnit(UnitType.WEREWOLF , 7, 9, 1);
+  }
+
+  generateInitialBuilding() {
+    const buildingGenerator = new BuildingGenerator(this.world);
+        
+    // Adding Buildings
+    buildingGenerator.generateBuilding(BuildingType.CASTLE, 6, 9, 0);
+  }
+
+  generateInitialMap() {
+    const mapGenerator = new MapGenerator(this.world, 15);
+
+    // Create Map
+    mapGenerator.generateBiomeRegion();
+    mapGenerator.generateMap();
   }
   
   generateSingletons() {
-
+    // Singleton entities
+    this.world
+      .createEntity()
+      .addComponent(ScreenStatus);
+    this.world
+      .createEntity()
+      .addComponent(ScreenFocusStatus);
+    this.world
+      .createEntity()
+      .addComponent(ActionStatus)
+      .addComponent(MovePosition)
+      .addComponent(AttackPosition)
+      .addComponent(SelectPosition);
+    this.world
+      .createEntity()
+      .addComponent(MouseStatus);
+    this.world
+      .createEntity()
+      .addComponent(KeyboardStatus);
+    this.world
+      .createEntity()
+      .addComponent(Block)
+      .addComponent(Timer);
+    this.world
+      .createEntity()
+      .addComponent(WeightMap, { value: {} });
+    this.world
+      .createEntity()
+      .addComponent(PreviousSelect);
+    this.world
+      .createEntity()
+      .addComponent(GlobalStatus, { teamCount: 4, myTeamId: 0 })
+      .addComponent(GameStatus);
+    this.world
+      .createEntity()
+      .addComponent(Turn, { currentTurn: 0, maxTurn: 300 });
   }
 
   generateHuds() {
@@ -172,8 +252,7 @@ export class LoaderSystem extends System {
   }
 
   setInitialPosition() {
-    let screenStatus =
-      this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
+    let screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
     let canvasPos = evenrToPixel(
       this.mapWidth / 2,
       this.mapHeight / 2,

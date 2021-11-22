@@ -23,11 +23,19 @@ export class BootManager {
         this.backgroundImages = null;
 	}
 
-    boot() {
-        this.loadImages();
+    async boot() {
+        this.displayLoading();
+
+        await this.loadImages();
         this.registerComponents();
         this.registerSystems();
         this.generateImages();
+    }
+
+    displayLoading() {
+        this.ctx.font = "50px Arial";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("Loading...", this.canvasWidth / 2, this.canvasHeight / 2);
     }
 
     async loadImages() {

@@ -1,2 +1,3 @@
-export { MapGenerator } from "./MapGenerator.js";
-export { UnitGenerator } from "./UnitGenerator.js";
+export * from "./MapGenerator.js";
+export * from "./UnitGenerator.js";
+export * from "./BuildingGenerator.js";
