@@ -1,4 +1,4 @@
-import { System } from "../../Library/Ecsy";
+import { System } from "../../../Library/Ecsy";
 import {
 	Block,
 	Timer,
@@ -24,9 +24,9 @@ import {
   Turn,
   GlobalStatus,
   Team
-} from "../../Component";
-import { TileSize, UnitType } from "../../Type";
-import { cubeToPixel, drawMovingTile, tilesInRange, drawBoundary, getTilesInRange, drawAttackingTile } from "../../Util";
+} from "../../../Component";
+import { TileSize, UnitType } from "../../../Type";
+import { cubeToPixel, drawMovingTile, tilesInRange, drawBoundary, getTilesInRange, drawAttackingTile } from "../../../Util";
 
 export class UnitRenderSystem extends System {
 	execute(delta, time) {

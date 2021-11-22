@@ -1,4 +1,4 @@
-import { TileSize } from "../../Type";
+import { TileSize } from "../../../Type";
 
 /**
  * Given the center of hexagon (in canvas coordinate),

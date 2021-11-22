@@ -1,4 +1,4 @@
-import { System } from "../../../Library/Ecsy";
+import { System } from "../../../../Library/Ecsy";
 import {
   ScreenStatus,
   ActionStatus,
@@ -17,9 +17,9 @@ import {
   Tile,
   Unit,
   Building
-} from "../../../Component";
-import { ActionType, TileSize } from "../../../Type";
-import { tilesInRange, cubeToPixel, drawAttackingTile, drawMovingTile } from "../../../Util";
+} from "../../../../Component";
+import { ActionType, TileSize } from "../../../../Type";
+import { tilesInRange, cubeToPixel, drawAttackingTile, drawMovingTile } from "../../../../Util";
 
 export class GameHudSystem extends System {
   execute(delta, time) {

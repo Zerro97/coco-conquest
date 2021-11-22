@@ -1,4 +1,4 @@
-import { System } from "../../Library/Ecsy";
+import { System } from "../../../Library/Ecsy";
 import {
   Unit,
   UnitImage,
@@ -23,11 +23,11 @@ import {
   SelectedTile,
   SelectedUnit,
   SelectedBuilding,
-} from "../../Component";
+} from "../../../Component";
 import {
   cubeToPixel,
-} from "../../Util";
-import { TileSize } from "../../Type";
+} from "../../../Util";
+import { TileSize } from "../../../Type";
 
 /**
  * Handles all the drawing

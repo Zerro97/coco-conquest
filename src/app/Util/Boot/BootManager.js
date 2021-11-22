@@ -82,9 +82,12 @@ export class BootManager {
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.KeyboardHandlerSystem, {
-                priority: 0,
+                priority: -5,
             })
             .registerSystem(System.MouseHandlerSystem, {
+                priority: -5,
+            })
+            .registerSystem(System.SceneSystem, {
                 priority: 0,
             })
             .registerSystem(System.GlobalGameSystem, {
@@ -108,7 +111,13 @@ export class BootManager {
             .registerSystem(System.HudSystem, {
                 priority: 6,
             })
-            .registerSystem(System.TileSystem, {
+            .registerSystem(System.MenuRenderSystem, {
+                priority: 10,
+                ctx: this.ctx,
+                canvasWidth: this.canvasWidth,
+                canvasHeight: this.canvasHeight,
+            })
+            .registerSystem(System.TileRenderSystem, {
                 priority: 10,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,

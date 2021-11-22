@@ -1,5 +1,5 @@
-import { System } from "../../Library/Ecsy";
-import { Velocity, CanvasPosition } from "../../Component";
+import { System } from "../../../Library/Ecsy";
+import { Velocity, CanvasPosition } from "../../../Component";
 
 export class MovementSystem extends System {
 	// This method will get called on every frame by default

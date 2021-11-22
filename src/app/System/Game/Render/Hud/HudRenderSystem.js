@@ -1,4 +1,4 @@
-import { System } from "../../../Library/Ecsy";
+import { System } from "../../../../Library/Ecsy";
 import {
   ActionStatus, 
   CurrentSelect, 
@@ -22,8 +22,8 @@ import {
   Radius,
   Size,
   Team
-} from "../../../Component";
-import { ActionType, BackgroundType, IconType, HudType, BuildingType } from "../../../Type";
+} from "../../../../Component";
+import { ActionType, BackgroundType, IconType, HudType, BuildingType } from "../../../../Type";
 import { 
   roundRect, 
   arcToPoint, 
@@ -37,7 +37,7 @@ import {
   drawProductionButton,
   drawSelectedTeamIcon,
   drawHoveringProductionButton
-} from "../../../Util";
+} from "../../../../Util";
 
 export class HudRenderSystem extends System {
   execute(delta, time) {

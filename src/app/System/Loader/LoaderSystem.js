@@ -33,11 +33,12 @@ import {
   PreviousSelect,
   GameStatus,
   Turn,
-  SceneStatus
+  SceneStatus,
+  MenuHud
 } from "../../Component";
 import { MapGenerator, UnitGenerator, BuildingGenerator } from "../../Assemblage";
 import { cubeToEvenr, evenrToCube, evenrToPixel } from "../../Util";
-import { TileSize, HudType, ObjectShape, UnitType, BuildingType, SceneType } from "../../Type";
+import { TileSize, HudType, ObjectShape, UnitType, BuildingType, SceneType, MenuHudType } from "../../Type";
 
 export class LoaderSystem extends System {
   execute(delta, time) {
@@ -46,6 +47,9 @@ export class LoaderSystem extends System {
 
     // Create all the singleton instances
     this.generateSingletons();
+
+    // Generate menu hud entities
+    this.generateMenuHuds();
 
     // Initial screen position
     this.setInitialPosition();
@@ -131,6 +135,21 @@ export class LoaderSystem extends System {
     this.world
       .createEntity()
       .addComponent(SceneStatus, { currentScene: SceneType.MENU });
+  }
+
+  generateMenuHuds() {
+    // MENU
+    // Menu Buttons
+    for(let i=0; i<4; i++) {
+      this.world
+        .createEntity()
+        .addComponent(MenuHud, {type: MenuHudType.MENU_BUTTON})
+        .addComponent(HudHoverable)
+        .addComponent(HudSelectable)
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + i * 50})
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 200, height: 50});
+    }
   }
 
   generateHuds() {

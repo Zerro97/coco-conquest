@@ -1,7 +1,7 @@
-import { System } from "../../Library/Ecsy";
-import { ScreenStatus, MouseStatus, CurrentSelect, Tile, MapPosition, CanvasPosition, ScreenFocusStatus } from "../../Component";
-import { isInsideRectangle, applyTransformation, reverseTransformation } from "../../Util";
-import { TileSize } from "../../Type";
+import { System } from "../../../Library/Ecsy";
+import { ScreenStatus, MouseStatus, CurrentSelect, Tile, MapPosition, CanvasPosition, ScreenFocusStatus } from "../../../Component";
+import { isInsideRectangle, applyTransformation, reverseTransformation } from "../../../Util";
+import { TileSize } from "../../../Type";
 
 export class ScreenSystem extends System {
 	execute(delta, time) {

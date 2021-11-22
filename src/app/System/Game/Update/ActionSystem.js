@@ -1,4 +1,4 @@
-import { System } from "../../Library/Ecsy";
+import { System } from "../../../Library/Ecsy";
 import {
 	Hud,
 	Tile,
@@ -18,14 +18,14 @@ import {
 	MovePosition,
 	AttackPosition,
 	SelectPosition
-} from "../../Component";
+} from "../../../Component";
 import {
 	cubeDistance,
 	cubeToPixel,
 	isInsideHexagon,
 	applyTransformation,
 	isInsideCircle,
-} from "../../Util";
+} from "../../../Util";
 import {
 	ActionType,
 	GameObjectType,
@@ -33,7 +33,7 @@ import {
 	MovementType,
 	TileStatus,
   TileSize,
-} from "../../Type";
+} from "../../../Type";
 
 /**
  * Handles all the events that could happen when

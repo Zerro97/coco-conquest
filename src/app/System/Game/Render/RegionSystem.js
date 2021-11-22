@@ -1,15 +1,15 @@
-import { System } from "../../Library/Ecsy";
+import { System } from "../../../Library/Ecsy";
 import {
   Tile,
   MapPosition,
   CanvasPosition,
   Region,
   TileMap,
-} from "../../Component";
+} from "../../../Component";
 import {
   drawBoundary,
-} from "../../Util";
-import { TileSize } from "../../Type";
+} from "../../../Util";
+import { TileSize } from "../../../Type";
 
 export class RegionSystem extends System {
   // This method will get called on every frame by default

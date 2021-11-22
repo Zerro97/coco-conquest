@@ -1,4 +1,4 @@
-import { System } from "../../Library/Ecsy";
+import { System } from "../../../Library/Ecsy";
 import {
   Tile,
   MapPosition,
@@ -9,26 +9,20 @@ import {
   Image,
   Region,
   SceneStatus
-} from "../../Component";
+} from "../../../Component";
 import {
   cubeToPixel,
   drawHoveringTile,
   drawSelectedTile,
   drawImageTile,
-} from "../../Util";
-import { TileSize, SceneType } from "../../Type";
+} from "../../../Util";
+import { TileSize, SceneType } from "../../../Type";
 
-export class TileSystem extends System {
+export class TileRenderSystem extends System {
   // This method will get called on every frame by default
   execute(delta, time) {
-    const scene = this.queries.sceneStatus.results[0].getComponent(SceneStatus);
-
-    if(scene.currentScene === SceneType.GAME) {
-      this.drawTiles();
-      this.updateTiles();
-    } else {
-      this.stop();
-    }
+    this.drawTiles();
+    this.updateTiles();
   }
 
   drawTiles() {
@@ -118,7 +112,7 @@ export class TileSystem extends System {
 }
 
 // Define a query of entities
-TileSystem.queries = {
+TileRenderSystem.queries = {
   currentHover: {
     components: [CurrentHover, CanvasPosition, Tile],
   },

@@ -1,7 +1,7 @@
-import { System } from "../../Library/Ecsy";
-import { Turn, GlobalStatus } from "../../Component";
-import {  } from "../../Type";
-import {  } from "../../Util";
+import { System } from "../../../Library/Ecsy";
+import { Turn, GlobalStatus } from "../../../Component";
+import {  } from "../../../Type";
+import {  } from "../../../Util";
 
 export class GlobalGameSystem extends System {
   execute(delta, time) {

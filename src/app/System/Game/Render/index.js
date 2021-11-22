@@ -1,5 +1,5 @@
 export * from "./Hud";
-export * from "./TileSystem.js";
+export * from "./TileRenderSystem.js";
 export * from "./RenderSystem.js";
 export * from "./ScreenSystem.js";
 export * from "./UnitRenderSystem.js";

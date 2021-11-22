@@ -1,6 +1,6 @@
-import { System } from "../../Library/Ecsy";
-import { Hud, CurrentHudSelect, Turn } from "../../Component";
-import { HudType } from "../../Type";
+import { System } from "../../../Library/Ecsy";
+import { Hud, CurrentHudSelect, Turn } from "../../../Component";
+import { HudType } from "../../../Type";
 
 export class HudSystem extends System {
   execute(delta, time) {

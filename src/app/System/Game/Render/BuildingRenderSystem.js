@@ -1,4 +1,4 @@
-import { System } from "../../Library/Ecsy";
+import { System } from "../../../Library/Ecsy";
 import {
     Block,
     Timer,
@@ -23,9 +23,9 @@ import {
     WeightMap,
     Building,
     BuildingImage
-} from "../../Component";
-import { TileSize, UnitType } from "../../Type";
-import { cubeToPixel, drawMovingTile, tilesInRange, drawBoundary, getTilesInRange, drawAttackingTile } from "../../Util";
+} from "../../../Component";
+import { TileSize, UnitType } from "../../../Type";
+import { cubeToPixel, drawMovingTile, tilesInRange, drawBoundary, getTilesInRange, drawAttackingTile } from "../../../Util";
 
 export class BuildingRenderSystem extends System {
 	execute(delta, time) {
