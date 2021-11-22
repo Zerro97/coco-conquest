@@ -7,3 +7,4 @@ export * from "./ObjectShape.js";
 export * from "./HudType.js";
 export * from "./IconType.js";
 export * from "./BackgroundType.js";
+export * from "./SceneType.js";

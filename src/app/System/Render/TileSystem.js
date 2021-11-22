@@ -8,6 +8,7 @@ import {
   TileImage,
   Image,
   Region,
+  SceneStatus
 } from "../../Component";
 import {
   cubeToPixel,
@@ -15,13 +16,19 @@ import {
   drawSelectedTile,
   drawImageTile,
 } from "../../Util";
-import { TileSize } from "../../Type";
+import { TileSize, SceneType } from "../../Type";
 
 export class TileSystem extends System {
   // This method will get called on every frame by default
   execute(delta, time) {
-    this.drawTiles();
-    this.updateTiles();
+    const scene = this.queries.sceneStatus.results[0].getComponent(SceneStatus);
+
+    if(scene.currentScene === SceneType.GAME) {
+      this.drawTiles();
+      this.updateTiles();
+    } else {
+      this.stop();
+    }
   }
 
   drawTiles() {
@@ -124,4 +131,7 @@ TileSystem.queries = {
   tileImages: {
     components: [Image, TileImage],
   },
+  sceneStatus: {
+    components: [SceneStatus]
+  }
 };

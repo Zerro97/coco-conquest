@@ -32,11 +32,12 @@ import {
   WeightMap,
   PreviousSelect,
   GameStatus,
-  Turn
+  Turn,
+  SceneStatus
 } from "../../Component";
 import { MapGenerator, UnitGenerator, BuildingGenerator } from "../../Assemblage";
 import { cubeToEvenr, evenrToCube, evenrToPixel } from "../../Util";
-import { TileSize, HudType, ObjectShape, UnitType, BuildingType } from "../../Type";
+import { TileSize, HudType, ObjectShape, UnitType, BuildingType, SceneType } from "../../Type";
 
 export class LoaderSystem extends System {
   execute(delta, time) {
@@ -127,6 +128,9 @@ export class LoaderSystem extends System {
     this.world
       .createEntity()
       .addComponent(Turn, { currentTurn: 0, maxTurn: 300 });
+    this.world
+      .createEntity()
+      .addComponent(SceneStatus, { currentScene: SceneType.MENU });
   }
 
   generateHuds() {
