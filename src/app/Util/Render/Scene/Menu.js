@@ -28,3 +28,13 @@ export function drawMenuButton(ctx, pos, text) {
     ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
     ctx.fillText(text, pos.x + 100, pos.y + 27);
 }
+
+export function drawPlayerBox(ctx, pos) {
+    ctx.fillStyle = "red";
+    ctx.fillRect(pos.x, pos.y, 100, 40);
+}
+
+export function drawStartButton(ctx, pos) {
+    ctx.fillStyle = "red";
+    ctx.fillRect(pos.x, pos.y, 100, 40);
+}

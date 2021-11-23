@@ -11,5 +11,9 @@ export const MenuHudType = {
     JOIN_GAME_BUTTON: 6,
     
     SINGLE_GO_BACK_BUTTON: 7,
-    MULTI_GO_BACK_BUTTON: 8
+    MULTI_GO_BACK_BUTTON: 8,
+
+    // Set Up Game
+    PLAYER_BOX: 9,
+    START_BUTTON: 10
 };

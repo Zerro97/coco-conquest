@@ -1,7 +1,7 @@
 import { System } from "../../../Library/Ecsy";
 import { SceneStatus, CurrentHudHover, MenuHud, CanvasPosition, MenuScene, SinglePlayScene, MultiPlayScene, SettingScene, SetUpScene, LoadScene, JoinScene, EndScene, LoadingScene } from "../../../Component";
 import { SceneType, MenuHudType } from "../../../Type";
-import { drawMenuButton, drawHoverMenuButton } from "../../../Util";
+import { drawMenuButton, drawHoverMenuButton, drawPlayerBox, drawStartButton } from "../../../Util";
 
 export class MenuRenderSystem extends System {
 	// This method will get called on every frame by default
@@ -176,7 +176,6 @@ export class MenuRenderSystem extends System {
 
         // Menu
         this.queries.multiPlayHud.results.forEach(hud => {
-            
             const type = hud.getComponent(MenuHud).type;
             const pos = hud.getComponent(CanvasPosition);
             
@@ -231,7 +230,8 @@ export class MenuRenderSystem extends System {
     }
 
     drawSetUpGame() {
-
+        drawPlayerBox();
+        drawStartButton();
     }
 
     drawLoadGame() {
