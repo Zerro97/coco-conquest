@@ -71,9 +71,27 @@ export class MenuRenderSystem extends System {
             const type = hud.getComponent(MenuHud).type;
             
             switch(type) {
-                case MenuHudType.MENU_BUTTON: {
+                case MenuHudType.SINGLE_PLAY_BUTTON: {
                     const pos = hud.getComponent(CanvasPosition);
                     drawMenuButton(this.ctx, pos, "Single Play");
+
+                    break;
+                }
+                case MenuHudType.MULTI_PLAY_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawMenuButton(this.ctx, pos, "Multi Play");
+
+                    break;
+                }
+                case MenuHudType.SETTING_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawMenuButton(this.ctx, pos, "Settings");
+
+                    break;
+                }
+                case MenuHudType.EXIT_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawMenuButton(this.ctx, pos, "Exit");
 
                     break;
                 }
@@ -85,9 +103,27 @@ export class MenuRenderSystem extends System {
             const type = hud.getComponent(MenuHud).type;
 
             switch(type) {
-                case MenuHudType.MENU_BUTTON: {
+                case MenuHudType.SINGLE_PLAY_BUTTON: {
                     const pos = hud.getComponent(CanvasPosition);
                     drawHoverMenuButton(this.ctx, pos, "Single Play");
+
+                    break;
+                }
+                case MenuHudType.MULTI_PLAY_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawHoverMenuButton(this.ctx, pos, "Multi Play");
+
+                    break;
+                }
+                case MenuHudType.SETTING_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawHoverMenuButton(this.ctx, pos, "Settings");
+
+                    break;
+                }
+                case MenuHudType.EXIT_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawHoverMenuButton(this.ctx, pos, "Exit");
 
                     break;
                 }

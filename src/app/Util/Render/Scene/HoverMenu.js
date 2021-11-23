@@ -1,11 +1,6 @@
 export function drawHoverMenuButton(ctx, pos, text) {
-    const grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y + 40);
-    grad.addColorStop(0, "rgba(11, 24, 66, 0)");
-    grad.addColorStop(0.3, "rgb(11, 24, 66)");
-    grad.addColorStop(0.7, "rgb(11, 24, 66)");
-    grad.addColorStop(1, "rgba(11, 24, 66, 0)");
-
     // Menu Box
+    ctx.filter = "blur(3px)";
     ctx.beginPath();
     ctx.moveTo(pos.x, pos.y);
     ctx.lineTo(pos.x + 200, pos.y);
@@ -24,8 +19,9 @@ export function drawHoverMenuButton(ctx, pos, text) {
     ctx.lineTo(pos.x, pos.y);
 
     ctx.closePath();
-    ctx.fillStyle = grad;
+    ctx.fillStyle = "rgb(11, 24, 66)";
     ctx.fill();
+    ctx.filter = "none";
 
     // Menu Text
     ctx.font = "25px Arial";

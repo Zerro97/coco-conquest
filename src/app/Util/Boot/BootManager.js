@@ -111,6 +111,9 @@ export class BootManager {
             .registerSystem(System.HudSystem, {
                 priority: 6,
             })
+            .registerSystem(System.MenuSystem, {
+                priority: 5,
+            })
             .registerSystem(System.MenuRenderSystem, {
                 priority: 10,
                 ctx: this.ctx,

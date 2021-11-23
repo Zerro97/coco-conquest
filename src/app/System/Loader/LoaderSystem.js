@@ -140,10 +140,17 @@ export class LoaderSystem extends System {
   generateMenuHuds() {
     // MENU
     // Menu Buttons
+    let menuButtonTypes = [
+      MenuHudType.SINGLE_PLAY_BUTTON,
+      MenuHudType.MULTI_PLAY_BUTTON,
+      MenuHudType.SETTING_BUTTON,
+      MenuHudType.EXIT_BUTTON
+    ];
+
     for(let i=0; i<4; i++) {
       this.world
         .createEntity()
-        .addComponent(MenuHud, {type: MenuHudType.MENU_BUTTON})
+        .addComponent(MenuHud, {type: menuButtonTypes[i]})
         .addComponent(HudHoverable)
         .addComponent(HudSelectable)
         .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + i * 50})
