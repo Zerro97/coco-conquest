@@ -157,6 +157,42 @@ export class LoaderSystem extends System {
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 200, height: 50});
     }
+
+    // Single/Multi Play Buttons
+    let singleMultiButtonTypes = [
+      MenuHudType.SETUP_GAME_BUTTON,
+      MenuHudType.LOAD_GAME_BUTTON,
+      MenuHudType.JOIN_GAME_BUTTON,
+    ];
+
+    for(let i=0; i<3; i++) {
+      this.world
+        .createEntity()
+        .addComponent(MenuHud, {type: singleMultiButtonTypes[i]})
+        .addComponent(HudHoverable)
+        .addComponent(HudSelectable)
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + i * 50})
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 200, height: 50});
+    }
+
+    this.world
+        .createEntity()
+        .addComponent(MenuHud, {type: MenuHudType.SINGLE_GO_BACK_BUTTON})
+        .addComponent(HudHoverable)
+        .addComponent(HudSelectable)
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + 100})
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 200, height: 50});
+
+    this.world
+        .createEntity()
+        .addComponent(MenuHud, {type: MenuHudType.MULTI_GO_BACK_BUTTON})
+        .addComponent(HudHoverable)
+        .addComponent(HudSelectable)
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + 150})
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 200, height: 50});
   }
 
   generateHuds() {

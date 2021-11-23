@@ -128,23 +128,161 @@ export class MenuRenderSystem extends System {
                     break;
                 }
             }
-        });
-
-            
-            //drawHoverMenuButton(this.ctx, {x: this.canvasWidth/2 - 100, y: 350 + i * 50}, texts[i]);
-        
+        });  
     }
 
     drawSinglePlay() {
+        // Title
+        this.ctx.font = "60px Arial";
+        this.ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("GAME TITLE", this.canvasWidth/2, 250);
 
+        // Menu
+        this.queries.menuHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            
+            switch(type) {
+                case MenuHudType.SETUP_GAME_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawMenuButton(this.ctx, pos, "Set Up Game");
+
+                    break;
+                }
+                case MenuHudType.LOAD_GAME_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawMenuButton(this.ctx, pos, "Load Game");
+
+                    break;
+                }
+                case MenuHudType.SINGLE_GO_BACK_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawMenuButton(this.ctx, pos, "Go Back");
+
+                    break;
+                }
+            }
+        });
+
+        // Hovering Menu
+        this.queries.hoveringMenuHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+
+            switch(type) {
+                case MenuHudType.SETUP_GAME_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawHoverMenuButton(this.ctx, pos, "Set Up Game");
+
+                    break;
+                }
+                case MenuHudType.LOAD_GAME_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawHoverMenuButton(this.ctx, pos, "Load Game");
+
+                    break;
+                }
+                case MenuHudType.SINGLE_GO_BACK_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawHoverMenuButton(this.ctx, pos, "Go Back");
+
+                    break;
+                }
+            }
+        });
     }
 
     drawMultiPlay() {
+        // Title
+        this.ctx.font = "60px Arial";
+        this.ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("GAME TITLE", this.canvasWidth/2, 250);
 
+        // Menu
+        this.queries.menuHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            
+            switch(type) {
+                case MenuHudType.SETUP_GAME_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawMenuButton(this.ctx, pos, "Set Up Game");
+
+                    break;
+                }
+                case MenuHudType.LOAD_GAME_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawMenuButton(this.ctx, pos, "Load Game");
+
+                    break;
+                }
+                case MenuHudType.JOIN_GAME_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawMenuButton(this.ctx, pos, "Join Game");
+
+                    break;
+                }
+                case MenuHudType.MULTI_GO_BACK_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawMenuButton(this.ctx, pos, "Go Back");
+
+                    break;
+                }
+            }
+        });
+
+        // Hovering Menu
+        this.queries.hoveringMenuHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+
+            switch(type) {
+                case MenuHudType.SETUP_GAME_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawHoverMenuButton(this.ctx, pos, "Set Up Game");
+
+                    break;
+                }
+                case MenuHudType.LOAD_GAME_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawHoverMenuButton(this.ctx, pos, "Load Game");
+
+                    break;
+                }
+                case MenuHudType.JOIN_GAME_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawHoverMenuButton(this.ctx, pos, "Join Game");
+
+                    break;
+                }
+                case MenuHudType.MULTI_GO_BACK_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawHoverMenuButton(this.ctx, pos, "Go Back");
+
+                    break;
+                }
+            }
+        });
     }
 
     drawSetting() {
+        // Title
+        this.ctx.font = "60px Arial";
+        this.ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("GAME TITLE", this.canvasWidth/2, 250);
 
+        // Menu
+        this.queries.menuHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            
+            switch(type) {
+                case MenuHudType.SINGLE_PLAY_BUTTON: {
+                    const pos = hud.getComponent(CanvasPosition);
+                    drawMenuButton(this.ctx, pos, "Single Play");
+
+                    break;
+                }
+            }
+        });
     }
 
     drawSetUpGame() {

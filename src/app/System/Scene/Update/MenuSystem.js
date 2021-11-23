@@ -9,14 +9,14 @@ export class MenuSystem extends System {
     }
 
 	checkSceneTransition() {
-
-        const scene = this.queries.sceneStatus.results[0].getMutableComponent(SceneStatus);
 		const selectedMenu = this.queries.selectedMenuHud.results[0];
 		
 		if(selectedMenu) {
+			const scene = this.queries.sceneStatus.results[0].getMutableComponent(SceneStatus);
 			const type = selectedMenu.getComponent(MenuHud).type;
 
 			switch(type) {
+				// Main Menu
 				case MenuHudType.SINGLE_PLAY_BUTTON: {
 					scene.currentScene = SceneType.SINGLE_PLAY;
 					break;
@@ -32,6 +32,28 @@ export class MenuSystem extends System {
 				case MenuHudType.EXIT_BUTTON: {
 					break;
 				}
+				// Single/Multi Play Scene
+				case MenuHudType.SETUP_GAME_BUTTON: {
+					//scene.currentScene = SceneType.GAME;
+					break;
+				}
+				case MenuHudType.LOAD_GAME_BUTTON: {
+					//scene.currentScene = SceneType.GAME;
+					break;
+				}
+				case MenuHudType.JOIN_GAME_BUTTON: {
+					//scene.currentScene = SceneType.GAME;
+					break;
+				}
+				case MenuHudType.SINGLE_GO_BACK_BUTTON: {
+					scene.currentScene = SceneType.MENU;
+					break;
+				}
+				case MenuHudType.MULTI_GO_BACK_BUTTON: {
+					scene.currentScene = SceneType.MENU;
+					break;
+				}
+				// 
 			}
 		}
 	}
