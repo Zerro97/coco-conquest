@@ -6,7 +6,9 @@ import {
     HudSelectable,
     CanvasPosition,
     Shape,
-    Size
+    Size,
+    Scene,
+    MenuScene
 } from "../../Component";
 import { 
     RegionSystem,
@@ -32,8 +34,7 @@ export class SceneSystem extends System {
     this.stopGame();
 
     if(scene) {
-        console.log("CHANGED");
-        this.updateHuds(scene.currentScene);
+        this.updateHudInScene(scene.currentScene);
     }
   }
 
@@ -61,134 +62,22 @@ export class SceneSystem extends System {
     this.world.getSystem(UnitSystem).stop();
   }
 
-  updateHuds(scene) {
-      this.queries.menuHuds.results.forEach(hud => {
-          hud.remove();
-      });
+  /**
+   * On scene change, add all the huds associated with the scene
+   * HudSelectable component
+   */
+  updateHudInScene(scene) {
+    this.queries.menuHuds.results.forEach(hud => {
+        hud.removeComponent(HudSelectable);
+    });
 
-      switch(scene) {
-        case SceneType.MENU: {
-            this.updateMenu();
-            break;
+    this.queries.menuHuds.results.forEach(hud => {
+        let hudScene = hud.getComponent(Scene).value;
+
+        if(hudScene === scene) {
+            hud.addComponent(HudSelectable);
         }
-        case SceneType.SINGLE_PLAY: {
-            this.updateSinglePlay();
-            break;
-        }
-        case SceneType.MULTI_PLAY: {
-            this.updateMultiPlay();
-            break;
-        }
-        case SceneType.SETTING: {
-            this.updateSetting();
-            break;
-        }
-        case SceneType.SETUP_GAME: {
-            this.updateSetUpGame();
-            break;
-        }
-        case SceneType.LOAD_GAME: {
-            this.updateLoadGame();
-            break;
-        }
-        case SceneType.JOIN_GAME: {
-            this.updateJoinGame();
-            break;
-        }
-        case SceneType.LOADING_GAME: {
-            this.updateLoadingGame();
-            break;
-        }
-        case SceneType.END_GAME: {
-            this.updateEndGame();
-            break;
-        }
-      }
-  }
-
-  updateMenu() {
-    // Menu Buttons
-    let menuButtonTypes = [
-        MenuHudType.SINGLE_PLAY_BUTTON,
-        MenuHudType.MULTI_PLAY_BUTTON,
-        MenuHudType.SETTING_BUTTON,
-        MenuHudType.EXIT_BUTTON
-    ];
-
-    for(let i=0; i<4; i++) {
-        this.world
-            .createEntity()
-            .addComponent(MenuHud, {type: menuButtonTypes[i]})
-            .addComponent(HudHoverable)
-            .addComponent(HudSelectable)
-            .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + i * 50})
-            .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-            .addComponent(Size, {width: 200, height: 50});
-    }
-  }
-
-  updateSinglePlay() {
-      // Single/Multi Play Buttons
-      let singlePlayButtonTypes = [
-        MenuHudType.SETUP_GAME_BUTTON,
-        MenuHudType.LOAD_GAME_BUTTON,
-        MenuHudType.SINGLE_GO_BACK_BUTTON
-      ];
-  
-      for(let i=0; i<3; i++) {
-        this.world
-          .createEntity()
-          .addComponent(MenuHud, {type: singlePlayButtonTypes[i]})
-          .addComponent(HudHoverable)
-          .addComponent(HudSelectable)
-          .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + i * 50})
-          .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-          .addComponent(Size, {width: 200, height: 50});
-      }
-  }
-
-  updateMultiPlay() {
-    let multiPlayButtonTypes = [
-        MenuHudType.SETUP_GAME_BUTTON,
-        MenuHudType.LOAD_GAME_BUTTON,
-        MenuHudType.JOIN_GAME_BUTTON,
-        MenuHudType.MULTI_GO_BACK_BUTTON
-    ];
-
-    for(let i=0; i<4; i++) {
-        this.world
-            .createEntity()
-            .addComponent(MenuHud, {type: multiPlayButtonTypes[i]})
-            .addComponent(HudHoverable)
-            .addComponent(HudSelectable)
-            .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + 100})
-            .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-            .addComponent(Size, {width: 200, height: 50});
-    }
-  }
-
-  updateSetting() {
-
-  }
-
-  updateSetUpGame() {
-
-  }
-
-  updateLoadGame() {
-
-  }
-
-  updateJoinGame() {
-
-  }
-
-  updateLoadingGame() {
-
-  }
-
-  updateEndGame() {
-
+    });
   }
 }
 

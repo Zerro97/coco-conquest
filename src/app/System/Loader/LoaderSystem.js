@@ -34,7 +34,11 @@ import {
   GameStatus,
   Turn,
   SceneStatus,
-  MenuHud
+  MenuHud,
+  Scene,
+  MenuScene,
+  SinglePlayScene,
+  MultiPlayScene
 } from "../../Component";
 import { MapGenerator, UnitGenerator, BuildingGenerator } from "../../Assemblage";
 import { cubeToEvenr, evenrToCube, evenrToPixel } from "../../Util";
@@ -138,7 +142,6 @@ export class LoaderSystem extends System {
   }
 
   generateMenuHuds() {
-    // MENU
     // Menu Buttons
     let menuButtonTypes = [
       MenuHudType.SINGLE_PLAY_BUTTON,
@@ -155,44 +158,51 @@ export class LoaderSystem extends System {
         .addComponent(HudSelectable)
         .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + i * 50})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 200, height: 50});
+        .addComponent(Size, {width: 200, height: 50})
+        .addComponent(MenuScene)
+        .addComponent(Scene, {value: SceneType.MENU});
     }
 
-    // Single/Multi Play Buttons
-    let singleMultiButtonTypes = [
+    // Single Play Buttons
+    let singlePlayButtonTypes = [
       MenuHudType.SETUP_GAME_BUTTON,
       MenuHudType.LOAD_GAME_BUTTON,
-      MenuHudType.JOIN_GAME_BUTTON,
+      MenuHudType.SINGLE_GO_BACK_BUTTON,
     ];
 
     for(let i=0; i<3; i++) {
       this.world
         .createEntity()
-        .addComponent(MenuHud, {type: singleMultiButtonTypes[i]})
+        .addComponent(MenuHud, {type: singlePlayButtonTypes[i]})
         .addComponent(HudHoverable)
         .addComponent(HudSelectable)
         .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + i * 50})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 200, height: 50});
+        .addComponent(Size, {width: 200, height: 50})
+        .addComponent(SinglePlayScene)
+        .addComponent(Scene, {value: SceneType.SINGLE_PLAY});
     }
 
-    this.world
-        .createEntity()
-        .addComponent(MenuHud, {type: MenuHudType.SINGLE_GO_BACK_BUTTON})
-        .addComponent(HudHoverable)
-        .addComponent(HudSelectable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + 100})
-        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 200, height: 50});
+    // Multi Play Buttons
+    let multiPlayButtonTypes = [
+      MenuHudType.SETUP_GAME_BUTTON,
+      MenuHudType.LOAD_GAME_BUTTON,
+      MenuHudType.JOIN_GAME_BUTTON,
+      MenuHudType.MULTI_GO_BACK_BUTTON,
+    ];
 
-    this.world
+    for(let i=0; i<4; i++) {
+      this.world
         .createEntity()
-        .addComponent(MenuHud, {type: MenuHudType.MULTI_GO_BACK_BUTTON})
+        .addComponent(MenuHud, {type: multiPlayButtonTypes[i]})
         .addComponent(HudHoverable)
         .addComponent(HudSelectable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + 150})
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + i * 50})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 200, height: 50});
+        .addComponent(Size, {width: 200, height: 50})
+        .addComponent(MultiPlayScene)
+        .addComponent(Scene, {value: SceneType.MULTI_PLAY});
+    }
   }
 
   generateHuds() {

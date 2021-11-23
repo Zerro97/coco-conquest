@@ -1,5 +1,5 @@
 import { System } from "../../../Library/Ecsy";
-import { SceneStatus, CurrentHudHover, MenuHud, CanvasPosition } from "../../../Component";
+import { SceneStatus, CurrentHudHover, MenuHud, CanvasPosition, MenuScene, SinglePlayScene, MultiPlayScene, SettingScene, SetUpScene, LoadScene, JoinScene, EndScene, LoadingScene } from "../../../Component";
 import { SceneType, MenuHudType } from "../../../Type";
 import { drawMenuButton, drawHoverMenuButton } from "../../../Util";
 
@@ -69,30 +69,23 @@ export class MenuRenderSystem extends System {
         // Menu
         this.queries.menuHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
             
             switch(type) {
                 case MenuHudType.SINGLE_PLAY_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawMenuButton(this.ctx, pos, "Single Play");
-
                     break;
                 }
                 case MenuHudType.MULTI_PLAY_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawMenuButton(this.ctx, pos, "Multi Play");
-
                     break;
                 }
                 case MenuHudType.SETTING_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawMenuButton(this.ctx, pos, "Settings");
-
                     break;
                 }
                 case MenuHudType.EXIT_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawMenuButton(this.ctx, pos, "Exit");
-
                     break;
                 }
             }
@@ -101,30 +94,23 @@ export class MenuRenderSystem extends System {
         // Hovering Menu
         this.queries.hoveringMenuHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
 
             switch(type) {
                 case MenuHudType.SINGLE_PLAY_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawHoverMenuButton(this.ctx, pos, "Single Play");
-
                     break;
                 }
                 case MenuHudType.MULTI_PLAY_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawHoverMenuButton(this.ctx, pos, "Multi Play");
-
                     break;
                 }
                 case MenuHudType.SETTING_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawHoverMenuButton(this.ctx, pos, "Settings");
-
                     break;
                 }
                 case MenuHudType.EXIT_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawHoverMenuButton(this.ctx, pos, "Exit");
-
                     break;
                 }
             }
@@ -139,52 +125,42 @@ export class MenuRenderSystem extends System {
         this.ctx.fillText("GAME TITLE", this.canvasWidth/2, 250);
 
         // Menu
-        this.queries.menuHud.results.forEach(hud => {
+        this.queries.singlePlayHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
             
             switch(type) {
                 case MenuHudType.SETUP_GAME_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawMenuButton(this.ctx, pos, "Set Up Game");
-
                     break;
                 }
                 case MenuHudType.LOAD_GAME_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawMenuButton(this.ctx, pos, "Load Game");
-
                     break;
                 }
                 case MenuHudType.SINGLE_GO_BACK_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawMenuButton(this.ctx, pos, "Go Back");
-
                     break;
                 }
             }
         });
 
         // Hovering Menu
-        this.queries.hoveringMenuHud.results.forEach(hud => {
+        this.queries.hoveringSinglePlayHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
 
             switch(type) {
                 case MenuHudType.SETUP_GAME_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawHoverMenuButton(this.ctx, pos, "Set Up Game");
-
                     break;
                 }
                 case MenuHudType.LOAD_GAME_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawHoverMenuButton(this.ctx, pos, "Load Game");
-
                     break;
                 }
                 case MenuHudType.SINGLE_GO_BACK_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawHoverMenuButton(this.ctx, pos, "Go Back");
-
                     break;
                 }
             }
@@ -199,64 +175,51 @@ export class MenuRenderSystem extends System {
         this.ctx.fillText("GAME TITLE", this.canvasWidth/2, 250);
 
         // Menu
-        this.queries.menuHud.results.forEach(hud => {
+        this.queries.multiPlayHud.results.forEach(hud => {
+            
             const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
             
             switch(type) {
                 case MenuHudType.SETUP_GAME_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawMenuButton(this.ctx, pos, "Set Up Game");
-
                     break;
                 }
                 case MenuHudType.LOAD_GAME_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawMenuButton(this.ctx, pos, "Load Game");
-
                     break;
                 }
                 case MenuHudType.JOIN_GAME_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawMenuButton(this.ctx, pos, "Join Game");
-
                     break;
                 }
                 case MenuHudType.MULTI_GO_BACK_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawMenuButton(this.ctx, pos, "Go Back");
-
                     break;
                 }
             }
         });
 
         // Hovering Menu
-        this.queries.hoveringMenuHud.results.forEach(hud => {
+        this.queries.hoveringMultiPlayHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
 
             switch(type) {
                 case MenuHudType.SETUP_GAME_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawHoverMenuButton(this.ctx, pos, "Set Up Game");
-
                     break;
                 }
                 case MenuHudType.LOAD_GAME_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawHoverMenuButton(this.ctx, pos, "Load Game");
-
                     break;
                 }
                 case MenuHudType.JOIN_GAME_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawHoverMenuButton(this.ctx, pos, "Join Game");
-
                     break;
                 }
                 case MenuHudType.MULTI_GO_BACK_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
                     drawHoverMenuButton(this.ctx, pos, "Go Back");
-
                     break;
                 }
             }
@@ -264,25 +227,7 @@ export class MenuRenderSystem extends System {
     }
 
     drawSetting() {
-        // Title
-        this.ctx.font = "60px Arial";
-        this.ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-        this.ctx.textAlign = "center";
-        this.ctx.fillText("GAME TITLE", this.canvasWidth/2, 250);
 
-        // Menu
-        this.queries.menuHud.results.forEach(hud => {
-            const type = hud.getComponent(MenuHud).type;
-            
-            switch(type) {
-                case MenuHudType.SINGLE_PLAY_BUTTON: {
-                    const pos = hud.getComponent(CanvasPosition);
-                    drawMenuButton(this.ctx, pos, "Single Play");
-
-                    break;
-                }
-            }
-        });
     }
 
     drawSetUpGame() {
@@ -312,9 +257,57 @@ MenuRenderSystem.queries = {
 		components: [SceneStatus]
 	},
     menuHud: {
-        components: [MenuHud]
+        components: [MenuHud, MenuScene]
     },
     hoveringMenuHud: {
-        components: [CurrentHudHover, MenuHud]
+        components: [CurrentHudHover, MenuHud, MenuScene]
+    },
+    singlePlayHud: {
+        components: [MenuHud, SinglePlayScene]
+    },
+    hoveringSinglePlayHud: {
+        components: [CurrentHudHover, MenuHud, SinglePlayScene]
+    },
+    multiPlayHud: {
+        components: [MenuHud, MultiPlayScene]
+    },
+    hoveringMultiPlayHud: {
+        components: [CurrentHudHover, MenuHud, MultiPlayScene]
+    },
+    settingHud: {
+        components: [MenuHud, SettingScene]
+    },
+    hoveringSettingHud: {
+        components: [CurrentHudHover, MenuHud, SettingScene]
+    },
+    setUpHud: {
+        components: [MenuHud, SetUpScene]
+    },
+    hoveringSetUpHud: {
+        components: [CurrentHudHover, MenuHud, SetUpScene]
+    },
+    loadHud: {
+        components: [MenuHud, LoadScene]
+    },
+    hoveringLoadHud: {
+        components: [CurrentHudHover, MenuHud, LoadScene]
+    },
+    joinHud: {
+        components: [MenuHud, JoinScene]
+    },
+    hoveringJoinHud: {
+        components: [CurrentHudHover, MenuHud, JoinScene]
+    },
+    loadingHud: {
+        components: [MenuHud, LoadingScene]
+    },
+    hoveringLoadingHud: {
+        components: [CurrentHudHover, MenuHud, LoadingScene]
+    },
+    endHud: {
+        components: [MenuHud, EndScene]
+    },
+    hoveringEndHud: {
+        components: [CurrentHudHover, MenuHud, EndScene]
     }
 };
