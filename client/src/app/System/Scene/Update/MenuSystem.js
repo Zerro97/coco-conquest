@@ -1,5 +1,5 @@
 import { System } from "../../../Library/Ecsy";
-import { CurrentHudSelect, SceneStatus, MenuHud, Team } from "../../../Component";
+import { CurrentHudSelect, SceneStatus, MenuHud, Team, SocketEvents } from "../../../Component";
 import { MenuHudType, SceneType } from "../../../Type";
 
 export class MenuSystem extends System {
@@ -10,6 +10,7 @@ export class MenuSystem extends System {
 
 	checkMenuHudAction() {
 		const selectedMenu = this.queries.selectedMenuHud.results[0];
+		const socketAction = this.queries.socketAction.results[0].getMutableComponent(SocketEvents);
 		
 		if(selectedMenu) {
 			const scene = this.queries.sceneStatus.results[0].getMutableComponent(SceneStatus);
@@ -38,6 +39,7 @@ export class MenuSystem extends System {
 					break;
 				}
 				case MenuHudType.MULTI_SETUP_GAME_BUTTON: {
+					socketAction.creatingRoom = true;
 					scene.currentScene = SceneType.MULTI_SETUP_GAME;
 					break;
 				}
@@ -46,7 +48,7 @@ export class MenuSystem extends System {
 					break;
 				}
 				case MenuHudType.JOIN_GAME_BUTTON: {
-					//scene.currentScene = SceneType.GAME;
+					socketAction.joiningRoom = true;
 					break;
 				}
 				case MenuHudType.SINGLE_GO_BACK_BUTTON: {
@@ -88,5 +90,8 @@ MenuSystem.queries = {
 	},
 	selectedMenuHud: {
         components: [CurrentHudSelect, MenuHud]
-    }
+    },
+	socketAction: {
+		components: [SocketEvents]
+	}
 };

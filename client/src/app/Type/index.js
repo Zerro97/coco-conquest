@@ -9,3 +9,4 @@ export * from "./MenuHudType.js";
 export * from "./IconType.js";
 export * from "./BackgroundType.js";
 export * from "./SceneType.js";
+export * from "./SocketEvent.js";

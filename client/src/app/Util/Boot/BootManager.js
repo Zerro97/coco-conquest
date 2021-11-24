@@ -1,4 +1,5 @@
 import { ImageLoader } from "./ImageLoader";
+import { io } from "socket.io-client";
 
 import * as Component from "../../Component";
 import * as System from "../../System";
@@ -21,6 +22,9 @@ export class BootManager {
         this.buildingImages = null;
         this.iconImages = null;
         this.backgroundImages = null;
+
+        // Network
+        this.socket = io("http://localhost:3000");
 	}
 
     async boot() {
@@ -113,6 +117,14 @@ export class BootManager {
             })
             .registerSystem(System.MenuSystem, {
                 priority: 5,
+            })
+            .registerSystem(System.SocketListenerSystem, {
+                priority: 9,
+                socket: this.socket
+            })
+            .registerSystem(System.SocketEmitSystem, {
+                priority: 9,
+                socket: this.socket
             })
             .registerSystem(System.MenuRenderSystem, {
                 priority: 10,

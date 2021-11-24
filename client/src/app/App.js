@@ -2,11 +2,6 @@ import "regenerator-runtime/runtime";
 import { World } from "./Library/Ecsy";
 import { BootManager } from "./Util";
 
-import { io } from "socket.io-client";
-
-const socket = io("http://localhost:3000");
-console.log(socket);
-
 ////////////////////////////////////////////
 //
 //              ECSY GAME

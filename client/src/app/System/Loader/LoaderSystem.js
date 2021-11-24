@@ -40,7 +40,8 @@ import {
   SinglePlayScene,
   MultiPlayScene,
   SingleSetUpScene,
-  MultiSetUpScene
+  MultiSetUpScene,
+  SocketEvents
 } from "../../Component";
 import { 
   RegionSystem,
@@ -160,6 +161,9 @@ export class LoaderSystem extends System {
     this.world
       .createEntity()
       .addComponent(SceneStatus, { currentScene: SceneType.MULTI_SETUP_GAME });
+    this.world
+    .createEntity()
+    .addComponent(SocketEvents);
   }
 
   generateMenuHuds() {
