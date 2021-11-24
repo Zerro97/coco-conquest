@@ -1,9 +1,21 @@
-node_modules/
-coverage/
-dist/
+# Client
+client/node_modules/
+client/coverage/
+client/dist/
 
-.DS_Store
-*.log
+client/.DS_Store
+client/*.log
 
-npm-debug.log
-package-lock.json
+client/npm-debug.log
+client/package-lock.json
+
+# Server
+server/node_modules/
+server/coverage/
+server/dist/
+
+server/.DS_Store
+server/*.log
+
+server/npm-debug.log
+server/package-lock.json
