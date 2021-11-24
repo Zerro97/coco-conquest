@@ -53,7 +53,15 @@ export class MenuSystem extends System {
 					scene.currentScene = SceneType.MENU;
 					break;
 				}
-				// 
+				// Setup Scene
+				case MenuHudType.START_BUTTON: {
+					scene.currentScene = SceneType.GAME;
+					break;
+				}
+				case MenuHudType.SINGLE_SETUP_GO_BACK_BUTTON: {
+					scene.currentScene = SceneType.SINGLE_PLAY;
+					break;
+				}
 			}
 		}
 	}

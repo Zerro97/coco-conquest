@@ -41,6 +41,21 @@ import {
   MultiPlayScene,
   SetUpScene
 } from "../../Component";
+import { 
+  RegionSystem,
+  RenderSystem,
+  ScreenSystem,
+  TileRenderSystem,
+  UnitRenderSystem,
+  BuildingRenderSystem,
+  GameHudSystem,
+  HudRenderSystem,
+  ActionSystem,
+  GlobalGameSystem,
+  HudSystem,
+  MovementSystem,
+  UnitSystem
+} from "../../System";
 import { MapGenerator, UnitGenerator, BuildingGenerator } from "../../Assemblage";
 import { cubeToEvenr, evenrToCube, evenrToPixel } from "../../Util";
 import { TileSize, HudType, ObjectShape, UnitType, BuildingType, SceneType, MenuHudType } from "../../Type";
@@ -72,6 +87,10 @@ export class LoaderSystem extends System {
     this.assignTileToMap();
     this.assignRegions(10);
 
+    // Stop all game related systems
+    this.stopGame();
+
+    //
     this.stop();
   }
 
@@ -139,7 +158,7 @@ export class LoaderSystem extends System {
       .addComponent(Turn, { currentTurn: 0, maxTurn: 300 });
     this.world
       .createEntity()
-      .addComponent(SceneStatus, { currentScene: SceneType.MENU });
+      .addComponent(SceneStatus, { currentScene: SceneType.SETUP_GAME });
   }
 
   generateMenuHuds() {
@@ -212,9 +231,20 @@ export class LoaderSystem extends System {
         .addComponent(MenuHud, {type: MenuHudType.PLAYER_BOX})
         .addComponent(HudHoverable)
         .addComponent(HudSelectable)
-        .addComponent(CanvasPosition, {x: 100, y: 70 + i * 55})
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 500, y: 100 + i * 55})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 220, height: 50})
+        .addComponent(Size, {width: 260, height: 50})
+        .addComponent(SetUpScene)
+        .addComponent(Scene, {value: SceneType.SETUP_GAME});
+      
+      this.world
+        .createEntity()
+        .addComponent(MenuHud, {type: MenuHudType.PLAYER_TEAM_BUTTON})
+        .addComponent(HudHoverable)
+        .addComponent(HudSelectable)
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 220, y: 100 + i * 55})
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 50, height: 50})
         .addComponent(SetUpScene)
         .addComponent(Scene, {value: SceneType.SETUP_GAME});
     }
@@ -224,9 +254,20 @@ export class LoaderSystem extends System {
       .addComponent(MenuHud, {type: MenuHudType.START_BUTTON})
       .addComponent(HudHoverable)
       .addComponent(HudSelectable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 110, y: 1000})
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 330, y: 730})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 220, height: 40})
+      .addComponent(Size, {width: 220, height: 50})
+      .addComponent(SetUpScene)
+      .addComponent(Scene, {value: SceneType.SETUP_GAME});
+
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.SINGLE_SETUP_GO_BACK_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 550, y: 730})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 220, height: 50})
       .addComponent(SetUpScene)
       .addComponent(Scene, {value: SceneType.SETUP_GAME});
   }
@@ -458,6 +499,25 @@ export class LoaderSystem extends System {
 
       region.region = index;
     });
+  }
+
+  stopGame() {
+      // Render
+      this.world.getSystem(RegionSystem).stop();
+      this.world.getSystem(RenderSystem).stop();
+      this.world.getSystem(ScreenSystem).stop();
+      this.world.getSystem(TileRenderSystem).stop();
+      this.world.getSystem(UnitRenderSystem).stop();
+      this.world.getSystem(BuildingRenderSystem).stop();
+      this.world.getSystem(GameHudSystem).stop();
+      this.world.getSystem(HudRenderSystem).stop();
+  
+      // Update
+      this.world.getSystem(ActionSystem).stop();
+      this.world.getSystem(GlobalGameSystem).stop();
+      this.world.getSystem(HudSystem).stop();
+      this.world.getSystem(MovementSystem).stop();
+      this.world.getSystem(UnitSystem).stop();
   }
 }
 

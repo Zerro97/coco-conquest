@@ -1,3 +1,35 @@
+function drawOutline(ctx, pos, size) {
+    ctx.beginPath();
+    ctx.rect(pos.x, pos.y, size.width, size.height);
+    ctx.closePath();
+    ctx.fillStyle = "white";
+    ctx.fill();
+  
+    let grad1 = ctx.createLinearGradient(pos.x, pos.y, pos.x + size.width, pos.y);
+    grad1.addColorStop(0, "rgb(50, 50, 50)");
+    grad1.addColorStop(0.02, "rgba(255, 255, 255, 0)");
+    grad1.addColorStop(0.98, "rgba(255, 255, 255, 0)");
+    grad1.addColorStop(1, "rgb(50, 50, 50)");
+  
+    ctx.fillStyle = grad1;
+    ctx.beginPath();
+    ctx.rect(pos.x, pos.y, size.width, size.height);
+    ctx.closePath();
+    ctx.fill();
+  
+    let grad2 = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y + size.height);
+    grad2.addColorStop(0, "rgb(50, 50, 50)");
+    grad2.addColorStop(0.2, "rgba(233, 233, 234, 0)");
+    grad2.addColorStop(0.8, "rgba(233, 233, 234, 0)");
+    grad2.addColorStop(1, "rgb(50, 50, 50)");
+  
+    ctx.fillStyle = grad2;
+    ctx.beginPath();
+    ctx.rect(pos.x, pos.y, size.width, size.height);
+    ctx.closePath();
+    ctx.fill();
+}
+
 export function drawHoverMenuButton(ctx, pos, size, text) {
     // Menu Box
     ctx.filter = "blur(3px)";
@@ -27,4 +59,38 @@ export function drawHoverMenuButton(ctx, pos, size, text) {
     ctx.font = "25px Arial";
     ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
     ctx.fillText(text, pos.x + size.width/2, pos.y + size.height/2 + 7);
+}
+
+export function drawHoveringStartButton(ctx, pos, size) {
+    drawOutline(ctx, pos, size);
+
+    const grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y+size.height);
+    grad.addColorStop(0, "rgb(41,164,110)");
+    grad.addColorStop(0.3, "rgb(24,102,73)");
+    grad.addColorStop(0.7, "rgb(24,102,73)");
+    grad.addColorStop(1, "rgb(41,164,110)");
+
+    ctx.fillStyle = grad;
+    ctx.fillRect(pos.x + 4, pos.y + 4, size.width - 8, size.height - 8);
+
+    ctx.font = "25px Arial";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.fillText("START", pos.x + size.width/2, pos.y + size.height/2 + 10);
+}
+
+export function drawHoveringSetupBackButton(ctx, pos, size) {
+    drawOutline(ctx, pos, size);
+
+    const grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y+size.height);
+    grad.addColorStop(0, "rgb(36, 49, 91)");
+    grad.addColorStop(0.3, "rgb(56, 69, 111)");
+    grad.addColorStop(0.7, "rgb(56, 69, 111)");
+    grad.addColorStop(1, "rgb(36, 49, 91)");
+
+    ctx.fillStyle = grad;
+    ctx.fillRect(pos.x + 4, pos.y + 4, size.width - 8, size.height - 8);
+
+    ctx.font = "25px Arial";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.fillText("GO BACK", pos.x + size.width/2, pos.y + size.height/2 + 10);
 }
