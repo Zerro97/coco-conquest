@@ -27,6 +27,7 @@ import {
 } from "../../System";
 import {  } from "../../Util";
 import { MenuHudType, SceneType, ObjectShape } from "../../Type";
+import {MenuRenderSystem, MenuSystem} from ".";
 
 export class SceneSystem extends System {
   execute(delta, time) {
@@ -38,8 +39,10 @@ export class SceneSystem extends System {
 
         if(scene.currentScene === SceneType.GAME) {
           this.startGame();
+          this.stopMenu();
         } else {
           this.stopGame();
+          this.startMenu();
         }
     }
   }
@@ -80,6 +83,16 @@ export class SceneSystem extends System {
     this.world.getSystem(HudSystem).stop();
     this.world.getSystem(MovementSystem).stop();
     this.world.getSystem(UnitSystem).stop();
+  }
+
+  startMenu() {
+    this.world.getSystem(MenuSystem).play();
+    this.world.getSystem(MenuRenderSystem).play();
+  }
+
+  stopMenu() {
+    this.world.getSystem(MenuSystem).stop();
+    this.world.getSystem(MenuRenderSystem).stop();
   }
 
   /**

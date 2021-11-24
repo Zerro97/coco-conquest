@@ -138,12 +138,13 @@ export function drawPlayerBox(ctx, pos, size) {
     ctx.stroke();
 }
 
-export function drawPlayerTeamButton(ctx, pos, size) {
+export function drawPlayerTeamButton(ctx, pos, size, team) {
     const grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y + size.height);
     grad.addColorStop(0, "rgb(36, 49, 91)");
     grad.addColorStop(0.5, "rgb(26, 39, 81)");
     grad.addColorStop(1, "rgb(26, 39, 81)");
 
+    ctx.save();
     ctx.beginPath();
     ctx.moveTo(pos.x, pos.y);
     ctx.lineTo(pos.x + size.width, pos.y);
@@ -154,13 +155,23 @@ export function drawPlayerTeamButton(ctx, pos, size) {
     ctx.lineTo(pos.x - 5, pos.y + size.height - 5);
     ctx.lineTo(pos.x - 5, pos.y + 5);
     ctx.lineTo(pos.x, pos.y);
+    ctx.clip();
     ctx.closePath();
 
     ctx.fillStyle = grad;
     ctx.fill();
     ctx.strokeStyle = "rgb(0, 0, 10)";
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 2;
     ctx.stroke();
+
+    // Draw transparent upper half
+    ctx.fillStyle = "rgba(255, 255, 255, 0.03)";
+    ctx.fillRect(pos.x - 5, pos.y, size.width + 10, size.height/2);
+    ctx.restore();
+
+    ctx.font = "25px Arial";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+    ctx.fillText(team, pos.x + size.width/2, pos.y + size.height/2 + 10);
 }
 
 export function drawStartButton(ctx, pos, size) {

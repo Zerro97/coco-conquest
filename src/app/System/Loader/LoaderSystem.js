@@ -39,7 +39,8 @@ import {
   MenuScene,
   SinglePlayScene,
   MultiPlayScene,
-  SetUpScene
+  SingleSetUpScene,
+  MultiSetUpScene
 } from "../../Component";
 import { 
   RegionSystem,
@@ -158,7 +159,7 @@ export class LoaderSystem extends System {
       .addComponent(Turn, { currentTurn: 0, maxTurn: 300 });
     this.world
       .createEntity()
-      .addComponent(SceneStatus, { currentScene: SceneType.SETUP_GAME });
+      .addComponent(SceneStatus, { currentScene: SceneType.MULTI_SETUP_GAME });
   }
 
   generateMenuHuds() {
@@ -185,7 +186,7 @@ export class LoaderSystem extends System {
 
     // Single Play Buttons
     let singlePlayButtonTypes = [
-      MenuHudType.SETUP_GAME_BUTTON,
+      MenuHudType.SINGLE_SETUP_GAME_BUTTON,
       MenuHudType.LOAD_GAME_BUTTON,
       MenuHudType.SINGLE_GO_BACK_BUTTON,
     ];
@@ -205,7 +206,7 @@ export class LoaderSystem extends System {
 
     // Multi Play Buttons
     let multiPlayButtonTypes = [
-      MenuHudType.SETUP_GAME_BUTTON,
+      MenuHudType.MULTI_SETUP_GAME_BUTTON,
       MenuHudType.LOAD_GAME_BUTTON,
       MenuHudType.JOIN_GAME_BUTTON,
       MenuHudType.MULTI_GO_BACK_BUTTON,
@@ -224,7 +225,7 @@ export class LoaderSystem extends System {
         .addComponent(Scene, {value: SceneType.MULTI_PLAY});
     }
 
-    // Set Up Game
+    // Set Up Single Player Game
     for(let i=0; i<8; i++) {
       this.world
         .createEntity()
@@ -234,8 +235,8 @@ export class LoaderSystem extends System {
         .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 500, y: 100 + i * 55})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 260, height: 50})
-        .addComponent(SetUpScene)
-        .addComponent(Scene, {value: SceneType.SETUP_GAME});
+        .addComponent(SingleSetUpScene)
+        .addComponent(Scene, {value: SceneType.SINGLE_SETUP_GAME});
       
       this.world
         .createEntity()
@@ -245,8 +246,9 @@ export class LoaderSystem extends System {
         .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 220, y: 100 + i * 55})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 50, height: 50})
-        .addComponent(SetUpScene)
-        .addComponent(Scene, {value: SceneType.SETUP_GAME});
+        .addComponent(SingleSetUpScene)
+        .addComponent(Scene, {value: SceneType.SINGLE_SETUP_GAME})
+        .addComponent(Team, {value: i % 4});
     }
 
     this.world
@@ -257,8 +259,8 @@ export class LoaderSystem extends System {
       .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 330, y: 730})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 220, height: 50})
-      .addComponent(SetUpScene)
-      .addComponent(Scene, {value: SceneType.SETUP_GAME});
+      .addComponent(SingleSetUpScene)
+      .addComponent(Scene, {value: SceneType.SINGLE_SETUP_GAME});
 
     this.world
       .createEntity()
@@ -268,8 +270,56 @@ export class LoaderSystem extends System {
       .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 550, y: 730})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 220, height: 50})
-      .addComponent(SetUpScene)
-      .addComponent(Scene, {value: SceneType.SETUP_GAME});
+      .addComponent(SingleSetUpScene)
+      .addComponent(Scene, {value: SceneType.SINGLE_SETUP_GAME});
+
+    // Set Up Multi Player Game
+    for(let i=0; i<8; i++) {
+      this.world
+        .createEntity()
+        .addComponent(MenuHud, {type: MenuHudType.PLAYER_BOX})
+        .addComponent(HudHoverable)
+        .addComponent(HudSelectable)
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 500, y: 100 + i * 55})
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 260, height: 50})
+        .addComponent(MultiSetUpScene)
+        .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME});
+      
+      this.world
+        .createEntity()
+        .addComponent(MenuHud, {type: MenuHudType.PLAYER_TEAM_BUTTON})
+        .addComponent(HudHoverable)
+        .addComponent(HudSelectable)
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 220, y: 100 + i * 55})
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 50, height: 50})
+        .addComponent(MultiSetUpScene)
+        .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME})
+        .addComponent(Team, {value: i % 4});
+    }
+
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.START_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 330, y: 730})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 220, height: 50})
+      .addComponent(MultiSetUpScene)
+      .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME});
+
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.MULTI_SETUP_GO_BACK_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 550, y: 730})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 220, height: 50})
+      .addComponent(MultiSetUpScene)
+      .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME});
   }
 
   generateHuds() {

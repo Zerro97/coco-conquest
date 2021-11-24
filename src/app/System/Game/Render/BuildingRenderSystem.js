@@ -73,10 +73,10 @@ export class BuildingRenderSystem extends System {
     getSpriteSheetPosition(variation) {
         let position = {};
 
-        position.width = 170;
-        position.height = 170;
-        position.x = (variation % 9) * 210 + 20;
-        position.y = Math.floor(variation / 9) * 210 + 20;
+        position.width = 85;
+        position.height = 85;
+        position.x = (variation % 9) * 105 + 10;
+        position.y = Math.floor(variation / 9) * 105 + 10;
 
         return position;
     }

@@ -61,6 +61,42 @@ export function drawHoverMenuButton(ctx, pos, size, text) {
     ctx.fillText(text, pos.x + size.width/2, pos.y + size.height/2 + 7);
 }
 
+export function drawHoveringPlayerTeamButton(ctx, pos, size, team) {
+    const grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y + size.height);
+    grad.addColorStop(0, "rgb(46, 59, 101)");
+    grad.addColorStop(0.5, "rgb(36, 49, 91)");
+    grad.addColorStop(1, "rgb(36, 49, 91)");
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+    ctx.lineTo(pos.x + size.width, pos.y);
+    ctx.lineTo(pos.x + size.width + 5, pos.y + 5);
+    ctx.lineTo(pos.x + size.width + 5, pos.y + size.height - 5);
+    ctx.lineTo(pos.x + size.width, pos.y + size.height);
+    ctx.lineTo(pos.x, pos.y + size.height);
+    ctx.lineTo(pos.x - 5, pos.y + size.height - 5);
+    ctx.lineTo(pos.x - 5, pos.y + 5);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.clip();
+    ctx.closePath();
+
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.strokeStyle = "rgb(0, 0, 10)";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Draw transparent upper half
+    ctx.fillStyle = "rgba(255, 255, 255, 0.03)";
+    ctx.fillRect(pos.x - 5, pos.y, size.width + 10, size.height/2);
+    ctx.restore();
+
+    ctx.font = "25px Arial";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.fillText(team, pos.x + size.width/2, pos.y + size.height/2 + 10);
+}
+
 export function drawHoveringStartButton(ctx, pos, size) {
     drawOutline(ctx, pos, size);
 

@@ -1,5 +1,22 @@
 import { System } from "../../../Library/Ecsy";
-import { SceneStatus, CurrentHudHover, MenuHud, CanvasPosition, MenuScene, SinglePlayScene, MultiPlayScene, SettingScene, SetUpScene, LoadScene, JoinScene, EndScene, LoadingScene, Size } from "../../../Component";
+import { 
+    SceneStatus,
+    CurrentHudHover,
+    MenuHud, 
+    CanvasPosition, 
+    MenuScene, 
+    SinglePlayScene, 
+    MultiPlayScene, 
+    SettingScene, 
+    SingleSetUpScene, 
+    MultiSetUpScene, 
+    LoadScene, 
+    JoinScene, 
+    EndScene, 
+    LoadingScene, 
+    Size, 
+    Team 
+} from "../../../Component";
 import { SceneType, MenuHudType } from "../../../Type";
 import { 
     drawMenuButton, 
@@ -10,7 +27,8 @@ import {
     drawHoveringStartButton,
     drawSetupBackButton,
     drawHoveringSetupBackButton,
-    drawPlayerTeamButton
+    drawPlayerTeamButton,
+    drawHoveringPlayerTeamButton
 } from "../../../Util";
 
 export class MenuRenderSystem extends System {
@@ -37,8 +55,12 @@ export class MenuRenderSystem extends System {
                 this.drawSetting();
                 break;
             }
-            case SceneType.SETUP_GAME: {
-                this.drawSetUpGame();
+            case SceneType.SINGLE_SETUP_GAME: {
+                this.drawSingleSetUpGame();
+                break;
+            }
+            case SceneType.MULTI_SETUP_GAME: {
+                this.drawMultiSetUpGame();
                 break;
             }
             case SceneType.LOAD_GAME: {
@@ -143,7 +165,7 @@ export class MenuRenderSystem extends System {
             const size = hud.getComponent(Size);
             
             switch(type) {
-                case MenuHudType.SETUP_GAME_BUTTON: {
+                case MenuHudType.SINGLE_SETUP_GAME_BUTTON: {
                     drawMenuButton(this.ctx, pos, size, "Set Up Game");
                     break;
                 }
@@ -165,7 +187,7 @@ export class MenuRenderSystem extends System {
             const size = hud.getComponent(Size);
 
             switch(type) {
-                case MenuHudType.SETUP_GAME_BUTTON: {
+                case MenuHudType.SINGLE_SETUP_GAME_BUTTON: {
                     drawHoverMenuButton(this.ctx, pos, size, "Set Up Game");
                     break;
                 }
@@ -195,7 +217,7 @@ export class MenuRenderSystem extends System {
             const size = hud.getComponent(Size);
             
             switch(type) {
-                case MenuHudType.SETUP_GAME_BUTTON: {
+                case MenuHudType.MULTI_SETUP_GAME_BUTTON: {
                     drawMenuButton(this.ctx, pos, size, "Set Up Game");
                     break;
                 }
@@ -221,7 +243,7 @@ export class MenuRenderSystem extends System {
             const size = hud.getComponent(Size);
 
             switch(type) {
-                case MenuHudType.SETUP_GAME_BUTTON: {
+                case MenuHudType.MULTI_SETUP_GAME_BUTTON: {
                     drawHoverMenuButton(this.ctx, pos, size, "Set Up Game");
                     break;
                 }
@@ -245,10 +267,10 @@ export class MenuRenderSystem extends System {
 
     }
 
-    drawSetUpGame() {
+    drawSingleSetUpGame() {
         drawSetupPanels(this.ctx, { width: this.canvasWidth, height: this.canvasHeight });
 
-        this.queries.setUpHud.results.forEach(hud => {
+        this.queries.singleSetUpHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
             const pos = hud.getComponent(CanvasPosition);
             const size = hud.getComponent(Size);
@@ -259,7 +281,9 @@ export class MenuRenderSystem extends System {
                     break;
                 }
                 case MenuHudType.PLAYER_TEAM_BUTTON: {
-                    drawPlayerTeamButton(this.ctx, pos, size);
+                    const team = hud.getComponent(Team).value;
+                    drawPlayerTeamButton(this.ctx, pos, size, team + 1);
+
                     break;
                 }
                 case MenuHudType.START_BUTTON: {
@@ -274,7 +298,7 @@ export class MenuRenderSystem extends System {
         });
 
         // Hovering Menu
-        this.queries.hoveringSetUpHud.results.forEach(hud => {
+        this.queries.hoveringSingleSetUpHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
             const pos = hud.getComponent(CanvasPosition);
             const size = hud.getComponent(Size);
@@ -285,7 +309,9 @@ export class MenuRenderSystem extends System {
                     break;
                 }
                 case MenuHudType.PLAYER_TEAM_BUTTON: {
-                    drawPlayerTeamButton(this.ctx, pos, size);
+                    const team = hud.getComponent(Team).value;
+                    drawHoveringPlayerTeamButton(this.ctx, pos, size, team + 1);
+
                     break;
                 }
                 case MenuHudType.START_BUTTON: {
@@ -293,6 +319,65 @@ export class MenuRenderSystem extends System {
                     break;
                 }
                 case MenuHudType.SINGLE_SETUP_GO_BACK_BUTTON: {
+                    drawHoveringSetupBackButton(this.ctx, pos, size);
+                    break;
+                }
+            }
+        });
+    }
+
+    drawMultiSetUpGame() {
+        drawSetupPanels(this.ctx, { width: this.canvasWidth, height: this.canvasHeight });
+
+        this.queries.multiSetUpHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+            
+            switch(type) {
+                case MenuHudType.PLAYER_BOX: {
+                    drawPlayerBox(this.ctx, pos, size);
+                    break;
+                }
+                case MenuHudType.PLAYER_TEAM_BUTTON: {
+                    const team = hud.getComponent(Team).value;
+                    drawPlayerTeamButton(this.ctx, pos, size, team + 1);
+
+                    break;
+                }
+                case MenuHudType.START_BUTTON: {
+                    drawStartButton(this.ctx, pos, size);
+                    break;
+                }
+                case MenuHudType.MULTI_SETUP_GO_BACK_BUTTON: {
+                    drawSetupBackButton(this.ctx, pos, size);
+                    break;
+                }
+            }
+        });
+
+        // Hovering Menu
+        this.queries.hoveringMultiSetUpHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+            
+            switch(type) {
+                case MenuHudType.PLAYER_BOX: {
+                    drawPlayerBox(this.ctx, pos, size);
+                    break;
+                }
+                case MenuHudType.PLAYER_TEAM_BUTTON: {
+                    const team = hud.getComponent(Team).value;
+                    drawHoveringPlayerTeamButton(this.ctx, pos, size, team + 1);
+
+                    break;
+                }
+                case MenuHudType.START_BUTTON: {
+                    drawHoveringStartButton(this.ctx, pos, size);
+                    break;
+                }
+                case MenuHudType.MULTI_SETUP_GO_BACK_BUTTON: {
                     drawHoveringSetupBackButton(this.ctx, pos, size);
                     break;
                 }
@@ -346,11 +431,17 @@ MenuRenderSystem.queries = {
     hoveringSettingHud: {
         components: [CurrentHudHover, MenuHud, SettingScene]
     },
-    setUpHud: {
-        components: [MenuHud, SetUpScene]
+    singleSetUpHud: {
+        components: [MenuHud, SingleSetUpScene]
     },
-    hoveringSetUpHud: {
-        components: [CurrentHudHover, MenuHud, SetUpScene]
+    hoveringSingleSetUpHud: {
+        components: [CurrentHudHover, MenuHud, SingleSetUpScene]
+    },
+    multiSetUpHud: {
+        components: [MenuHud, MultiSetUpScene]
+    },
+    hoveringMultiSetUpHud: {
+        components: [CurrentHudHover, MenuHud, MultiSetUpScene]
     },
     loadHud: {
         components: [MenuHud, LoadScene]

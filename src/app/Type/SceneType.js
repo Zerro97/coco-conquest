@@ -11,11 +11,12 @@ export const SceneType = {
     MULTI_PLAY: 2,
     SETTING: 3,
 
-    SETUP_GAME: 4,
-    LOAD_GAME: 5,
-    JOIN_GAME: 6,
+    SINGLE_SETUP_GAME: 4,
+    MULTI_SETUP_GAME: 5,
+    LOAD_GAME: 6,
+    JOIN_GAME: 7,
 
-    LOADING_GAME: 7,
-    GAME: 8,
-    END_GAME: 9
+    LOADING_GAME: 8,
+    GAME: 9,
+    END_GAME: 10
 };
