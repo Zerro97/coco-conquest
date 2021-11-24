@@ -1,5 +1,5 @@
 import { System } from "../../../Library/Ecsy";
-import { SceneStatus, CurrentHudHover, MenuHud, CanvasPosition, MenuScene, SinglePlayScene, MultiPlayScene, SettingScene, SetUpScene, LoadScene, JoinScene, EndScene, LoadingScene } from "../../../Component";
+import { SceneStatus, CurrentHudHover, MenuHud, CanvasPosition, MenuScene, SinglePlayScene, MultiPlayScene, SettingScene, SetUpScene, LoadScene, JoinScene, EndScene, LoadingScene, Size } from "../../../Component";
 import { SceneType, MenuHudType } from "../../../Type";
 import { drawMenuButton, drawHoverMenuButton, drawPlayerBox, drawStartButton } from "../../../Util";
 
@@ -70,22 +70,23 @@ export class MenuRenderSystem extends System {
         this.queries.menuHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
             const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
             
             switch(type) {
                 case MenuHudType.SINGLE_PLAY_BUTTON: {
-                    drawMenuButton(this.ctx, pos, "Single Play");
+                    drawMenuButton(this.ctx, pos, size, "Single Play");
                     break;
                 }
                 case MenuHudType.MULTI_PLAY_BUTTON: {
-                    drawMenuButton(this.ctx, pos, "Multi Play");
+                    drawMenuButton(this.ctx, pos, size, "Multi Play");
                     break;
                 }
                 case MenuHudType.SETTING_BUTTON: {
-                    drawMenuButton(this.ctx, pos, "Settings");
+                    drawMenuButton(this.ctx, pos, size, "Settings");
                     break;
                 }
                 case MenuHudType.EXIT_BUTTON: {
-                    drawMenuButton(this.ctx, pos, "Exit");
+                    drawMenuButton(this.ctx, pos, size, "Exit");
                     break;
                 }
             }
@@ -95,22 +96,23 @@ export class MenuRenderSystem extends System {
         this.queries.hoveringMenuHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
             const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
 
             switch(type) {
                 case MenuHudType.SINGLE_PLAY_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, "Single Play");
+                    drawHoverMenuButton(this.ctx, pos, size, "Single Play");
                     break;
                 }
                 case MenuHudType.MULTI_PLAY_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, "Multi Play");
+                    drawHoverMenuButton(this.ctx, pos, size, "Multi Play");
                     break;
                 }
                 case MenuHudType.SETTING_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, "Settings");
+                    drawHoverMenuButton(this.ctx, pos, size, "Settings");
                     break;
                 }
                 case MenuHudType.EXIT_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, "Exit");
+                    drawHoverMenuButton(this.ctx, pos, size, "Exit");
                     break;
                 }
             }
@@ -128,18 +130,19 @@ export class MenuRenderSystem extends System {
         this.queries.singlePlayHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
             const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
             
             switch(type) {
                 case MenuHudType.SETUP_GAME_BUTTON: {
-                    drawMenuButton(this.ctx, pos, "Set Up Game");
+                    drawMenuButton(this.ctx, pos, size, "Set Up Game");
                     break;
                 }
                 case MenuHudType.LOAD_GAME_BUTTON: {
-                    drawMenuButton(this.ctx, pos, "Load Game");
+                    drawMenuButton(this.ctx, pos, size, "Load Game");
                     break;
                 }
                 case MenuHudType.SINGLE_GO_BACK_BUTTON: {
-                    drawMenuButton(this.ctx, pos, "Go Back");
+                    drawMenuButton(this.ctx, pos, size, "Go Back");
                     break;
                 }
             }
@@ -149,18 +152,19 @@ export class MenuRenderSystem extends System {
         this.queries.hoveringSinglePlayHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
             const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
 
             switch(type) {
                 case MenuHudType.SETUP_GAME_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, "Set Up Game");
+                    drawHoverMenuButton(this.ctx, pos, size, "Set Up Game");
                     break;
                 }
                 case MenuHudType.LOAD_GAME_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, "Load Game");
+                    drawHoverMenuButton(this.ctx, pos, size, "Load Game");
                     break;
                 }
                 case MenuHudType.SINGLE_GO_BACK_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, "Go Back");
+                    drawHoverMenuButton(this.ctx, pos, size, "Go Back");
                     break;
                 }
             }
@@ -178,22 +182,23 @@ export class MenuRenderSystem extends System {
         this.queries.multiPlayHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
             const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
             
             switch(type) {
                 case MenuHudType.SETUP_GAME_BUTTON: {
-                    drawMenuButton(this.ctx, pos, "Set Up Game");
+                    drawMenuButton(this.ctx, pos, size, "Set Up Game");
                     break;
                 }
                 case MenuHudType.LOAD_GAME_BUTTON: {
-                    drawMenuButton(this.ctx, pos, "Load Game");
+                    drawMenuButton(this.ctx, pos, size, "Load Game");
                     break;
                 }
                 case MenuHudType.JOIN_GAME_BUTTON: {
-                    drawMenuButton(this.ctx, pos, "Join Game");
+                    drawMenuButton(this.ctx, pos, size, "Join Game");
                     break;
                 }
                 case MenuHudType.MULTI_GO_BACK_BUTTON: {
-                    drawMenuButton(this.ctx, pos, "Go Back");
+                    drawMenuButton(this.ctx, pos, size, "Go Back");
                     break;
                 }
             }
@@ -203,22 +208,23 @@ export class MenuRenderSystem extends System {
         this.queries.hoveringMultiPlayHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
             const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
 
             switch(type) {
                 case MenuHudType.SETUP_GAME_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, "Set Up Game");
+                    drawHoverMenuButton(this.ctx, pos, size, "Set Up Game");
                     break;
                 }
                 case MenuHudType.LOAD_GAME_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, "Load Game");
+                    drawHoverMenuButton(this.ctx, pos, size, "Load Game");
                     break;
                 }
                 case MenuHudType.JOIN_GAME_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, "Join Game");
+                    drawHoverMenuButton(this.ctx, pos, size, "Join Game");
                     break;
                 }
                 case MenuHudType.MULTI_GO_BACK_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, "Go Back");
+                    drawHoverMenuButton(this.ctx, pos, size, "Go Back");
                     break;
                 }
             }
@@ -230,8 +236,41 @@ export class MenuRenderSystem extends System {
     }
 
     drawSetUpGame() {
-        drawPlayerBox();
-        drawStartButton();
+        // Menu
+        this.queries.setUpHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+            
+            switch(type) {
+                case MenuHudType.PLAYER_BOX: {
+                    drawPlayerBox(this.ctx, pos, size);
+                    break;
+                }
+                case MenuHudType.START_BUTTON: {
+                    drawStartButton(this.ctx, pos, size);
+                    break;
+                }
+            }
+        });
+
+        // Hovering Menu
+        this.queries.hoveringMultiPlayHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+            
+            switch(type) {
+                case MenuHudType.PLAYER_BOX: {
+                    drawPlayerBox(this.ctx, pos, size);
+                    break;
+                }
+                case MenuHudType.START_BUTTON: {
+                    drawStartButton(this.ctx, pos, size);
+                    break;
+                }
+            }
+        });
     }
 
     drawLoadGame() {

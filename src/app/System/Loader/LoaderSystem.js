@@ -157,9 +157,9 @@ export class LoaderSystem extends System {
         .addComponent(MenuHud, {type: menuButtonTypes[i]})
         .addComponent(HudHoverable)
         .addComponent(HudSelectable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + i * 50})
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 110, y: 350 + i * 50})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 200, height: 50})
+        .addComponent(Size, {width: 220, height: 40})
         .addComponent(MenuScene)
         .addComponent(Scene, {value: SceneType.MENU});
     }
@@ -177,9 +177,9 @@ export class LoaderSystem extends System {
         .addComponent(MenuHud, {type: singlePlayButtonTypes[i]})
         .addComponent(HudHoverable)
         .addComponent(HudSelectable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + i * 50})
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 110, y: 350 + i * 50})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 200, height: 50})
+        .addComponent(Size, {width: 220, height: 40})
         .addComponent(SinglePlayScene)
         .addComponent(Scene, {value: SceneType.SINGLE_PLAY});
     }
@@ -198,9 +198,9 @@ export class LoaderSystem extends System {
         .addComponent(MenuHud, {type: multiPlayButtonTypes[i]})
         .addComponent(HudHoverable)
         .addComponent(HudSelectable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + i * 50})
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 110, y: 350 + i * 50})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 200, height: 50})
+        .addComponent(Size, {width: 220, height: 40})
         .addComponent(MultiPlayScene)
         .addComponent(Scene, {value: SceneType.MULTI_PLAY});
     }
@@ -212,9 +212,9 @@ export class LoaderSystem extends System {
         .addComponent(MenuHud, {type: MenuHudType.PLAYER_BOX})
         .addComponent(HudHoverable)
         .addComponent(HudSelectable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 350 + i * 50})
+        .addComponent(CanvasPosition, {x: 100, y: 70 + i * 55})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 200, height: 50})
+        .addComponent(Size, {width: 220, height: 50})
         .addComponent(SetUpScene)
         .addComponent(Scene, {value: SceneType.SETUP_GAME});
     }
@@ -224,9 +224,9 @@ export class LoaderSystem extends System {
       .addComponent(MenuHud, {type: MenuHudType.START_BUTTON})
       .addComponent(HudHoverable)
       .addComponent(HudSelectable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 100, y: 1000})
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 110, y: 1000})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 200, height: 50})
+      .addComponent(Size, {width: 220, height: 40})
       .addComponent(SetUpScene)
       .addComponent(Scene, {value: SceneType.SETUP_GAME});
   }

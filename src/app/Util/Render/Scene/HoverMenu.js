@@ -1,22 +1,22 @@
-export function drawHoverMenuButton(ctx, pos, text) {
+export function drawHoverMenuButton(ctx, pos, size, text) {
     // Menu Box
     ctx.filter = "blur(3px)";
     ctx.beginPath();
-    ctx.moveTo(pos.x, pos.y);
-    ctx.lineTo(pos.x + 200, pos.y);
+
+    ctx.moveTo(pos.x + 15, pos.y);
+    ctx.lineTo(pos.x + size.width - 15, pos.y);
     ctx.bezierCurveTo(
-        pos.x + 230, pos.y, 
-        pos.x + 230, pos.y + 40, 
-        pos.x + 200, pos.y + 40
+        pos.x + size.width + 10, pos.y, 
+        pos.x + size.width + 10, pos.y + size.height, 
+        pos.x + size.width - 15, pos.y + size.height
     );
-    ctx.lineTo(pos.x + 200, pos.y + 40);
-    ctx.lineTo(pos.x, pos.y + 40);
+    ctx.lineTo(pos.x + size.width - 30, pos.y + size.height);
+    ctx.lineTo(pos.x + 15, pos.y + size.height);
     ctx.bezierCurveTo(
-        pos.x - 30, pos.y + 40, 
-        pos.x - 30, pos.y,
-        pos.x, pos.y 
+        pos.x - 10, pos.y + size.height, 
+        pos.x - 10, pos.y,
+        pos.x + 15, pos.y 
     );
-    ctx.lineTo(pos.x, pos.y);
 
     ctx.closePath();
     ctx.fillStyle = "rgb(11, 24, 66)";
@@ -25,6 +25,6 @@ export function drawHoverMenuButton(ctx, pos, text) {
 
     // Menu Text
     ctx.font = "25px Arial";
-    ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
-    ctx.fillText(text, pos.x + 100, pos.y + 27);
+    ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.fillText(text, pos.x + size.width/2, pos.y + size.height/2 + 7);
 }

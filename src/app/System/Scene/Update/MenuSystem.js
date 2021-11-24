@@ -34,7 +34,7 @@ export class MenuSystem extends System {
 				}
 				// Single/Multi Play Scene
 				case MenuHudType.SETUP_GAME_BUTTON: {
-					//scene.currentScene = SceneType.GAME;
+					scene.currentScene = SceneType.SETUP_GAME;
 					break;
 				}
 				case MenuHudType.LOAD_GAME_BUTTON: {
