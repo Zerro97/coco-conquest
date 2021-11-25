@@ -4,18 +4,19 @@ import {
     CurrentHudHover,
     MenuHud, 
     CanvasPosition, 
-    MenuScene, 
-    SinglePlayScene, 
-    MultiPlayScene, 
-    SettingScene, 
-    SingleSetUpScene, 
-    MultiSetUpScene, 
-    LoadScene, 
-    JoinScene, 
-    EndScene, 
-    LoadingScene, 
     Size, 
-    Team 
+    Team,
+
+    MenuScene, 
+    SettingScene, 
+    SinglePlayScene, 
+    SingleSetUpScene, 
+    LoadScene, 
+    MultiStageScene, 
+    MultiSetUpScene, 
+    LobbyScene, 
+    LoadingScene, 
+    EndScene, 
 } from "../../../Component";
 import { SceneType, MenuHudType } from "../../../Type";
 import { 
@@ -154,6 +155,10 @@ export class MenuRenderSystem extends System {
         });  
     }
 
+    drawSetting() {
+
+    }
+
     drawSinglePlay() {
         // Title
         this.ctx.font = "60px Arial";
@@ -204,70 +209,6 @@ export class MenuRenderSystem extends System {
                 }
             }
         });
-    }
-
-    drawLobby() {
-        // Title
-        this.ctx.font = "60px Arial";
-        this.ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-        this.ctx.textAlign = "center";
-        this.ctx.fillText("GAME TITLE", this.canvasWidth/2, 250);
-
-        // Menu
-        this.queries.multiPlayHud.results.forEach(hud => {
-            const type = hud.getComponent(MenuHud).type;
-            const pos = hud.getComponent(CanvasPosition);
-            const size = hud.getComponent(Size);
-            
-            switch(type) {
-                case MenuHudType.MULTI_SETUP_GAME_BUTTON: {
-                    drawMenuButton(this.ctx, pos, size, "Set Up Game");
-                    break;
-                }
-                case MenuHudType.LOAD_GAME_BUTTON: {
-                    drawMenuButton(this.ctx, pos, size, "Load Game");
-                    break;
-                }
-                case MenuHudType.JOIN_GAME_BUTTON: {
-                    drawMenuButton(this.ctx, pos, size, "Join Game");
-                    break;
-                }
-                case MenuHudType.MULTI_GO_BACK_BUTTON: {
-                    drawMenuButton(this.ctx, pos, size, "Go Back");
-                    break;
-                }
-            }
-        });
-
-        // Hovering Menu
-        this.queries.hoveringMultiPlayHud.results.forEach(hud => {
-            const type = hud.getComponent(MenuHud).type;
-            const pos = hud.getComponent(CanvasPosition);
-            const size = hud.getComponent(Size);
-
-            switch(type) {
-                case MenuHudType.MULTI_SETUP_GAME_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, size, "Set Up Game");
-                    break;
-                }
-                case MenuHudType.LOAD_GAME_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, size, "Load Game");
-                    break;
-                }
-                case MenuHudType.JOIN_GAME_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, size, "Join Game");
-                    break;
-                }
-                case MenuHudType.MULTI_GO_BACK_BUTTON: {
-                    drawHoverMenuButton(this.ctx, pos, size, "Go Back");
-                    break;
-                }
-            }
-        });
-    }
-
-    drawSetting() {
-
     }
 
     drawSingleSetUpGame() {
@@ -329,31 +270,67 @@ export class MenuRenderSystem extends System {
         });
     }
 
-    drawMultiSetUpGame() {
-        drawSetupPanels(this.ctx, { width: this.canvasWidth, height: this.canvasHeight });
+    drawLoadGame() {
 
+    }
+
+    drawLobby() {
+        // Menu
+        this.queries.lobbyHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+            
+            switch(type) {
+                case MenuHudType.LOBBY_SETUP_GAME_BUTTON: {
+                    break;
+                }
+                case MenuHudType.LOBBY_JOIN_GAME_BUTTON: {
+                    break;
+                }
+                case MenuHudType.LOBBY_GO_BACK_BUTTON: {
+                    break;
+                }
+                case MenuHudType.LOBBY_ROOM: {
+                    break;
+                }
+            }
+        });
+
+        // Hovering Menu
+        this.queries.hoveringLobbyHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+
+            switch(type) {
+                case MenuHudType.LOBBY_SETUP_GAME_BUTTON: {
+                    break;
+                }
+                case MenuHudType.LOBBY_JOIN_GAME_BUTTON: {
+                    break;
+                }
+                case MenuHudType.LOBBY_GO_BACK_BUTTON: {
+                    break;
+                }
+                case MenuHudType.LOBBY_ROOM: {
+                    break;
+                }
+            }
+        });
+    }
+
+    drawMultiSetUpGame() {
         this.queries.multiSetUpHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
             const pos = hud.getComponent(CanvasPosition);
             const size = hud.getComponent(Size);
             
             switch(type) {
-                case MenuHudType.PLAYER_BOX: {
-                    drawPlayerBox(this.ctx, pos, size);
-                    break;
-                }
-                case MenuHudType.PLAYER_TEAM_BUTTON: {
-                    const team = hud.getComponent(Team).value;
-                    drawPlayerTeamButton(this.ctx, pos, size, team + 1);
-
-                    break;
-                }
-                case MenuHudType.START_BUTTON: {
-                    drawStartButton(this.ctx, pos, size);
+                case MenuHudType.MULTI_SETUP_GAME_BUTTON: {
                     break;
                 }
                 case MenuHudType.MULTI_SETUP_GO_BACK_BUTTON: {
-                    drawSetupBackButton(this.ctx, pos, size);
                     break;
                 }
             }
@@ -366,33 +343,17 @@ export class MenuRenderSystem extends System {
             const size = hud.getComponent(Size);
             
             switch(type) {
-                case MenuHudType.PLAYER_BOX: {
-                    drawPlayerBox(this.ctx, pos, size);
-                    break;
-                }
-                case MenuHudType.PLAYER_TEAM_BUTTON: {
-                    const team = hud.getComponent(Team).value;
-                    drawHoveringPlayerTeamButton(this.ctx, pos, size, team + 1);
-
-                    break;
-                }
-                case MenuHudType.START_BUTTON: {
-                    drawHoveringStartButton(this.ctx, pos, size);
+                case MenuHudType.MULTI_SETUP_GAME_BUTTON: {
                     break;
                 }
                 case MenuHudType.MULTI_SETUP_GO_BACK_BUTTON: {
-                    drawHoveringSetupBackButton(this.ctx, pos, size);
                     break;
                 }
             }
         });
     }
 
-    drawLoadGame() {
-
-    }
-
-    drawJoinGame() {
+    drawMultiStageGame() {
 
     }
 
@@ -410,23 +371,12 @@ MenuRenderSystem.queries = {
 	sceneStatus: {
 		components: [SceneStatus]
 	},
+
     menuHud: {
         components: [MenuHud, MenuScene]
     },
     hoveringMenuHud: {
         components: [CurrentHudHover, MenuHud, MenuScene]
-    },
-    singlePlayHud: {
-        components: [MenuHud, SinglePlayScene]
-    },
-    hoveringSinglePlayHud: {
-        components: [CurrentHudHover, MenuHud, SinglePlayScene]
-    },
-    multiPlayHud: {
-        components: [MenuHud, MultiPlayScene]
-    },
-    hoveringMultiPlayHud: {
-        components: [CurrentHudHover, MenuHud, MultiPlayScene]
     },
     settingHud: {
         components: [MenuHud, SettingScene]
@@ -434,17 +384,18 @@ MenuRenderSystem.queries = {
     hoveringSettingHud: {
         components: [CurrentHudHover, MenuHud, SettingScene]
     },
+
+    singlePlayHud: {
+        components: [MenuHud, SinglePlayScene]
+    },
+    hoveringSinglePlayHud: {
+        components: [CurrentHudHover, MenuHud, SinglePlayScene]
+    },
     singleSetUpHud: {
         components: [MenuHud, SingleSetUpScene]
     },
     hoveringSingleSetUpHud: {
         components: [CurrentHudHover, MenuHud, SingleSetUpScene]
-    },
-    multiSetUpHud: {
-        components: [MenuHud, MultiSetUpScene]
-    },
-    hoveringMultiSetUpHud: {
-        components: [CurrentHudHover, MenuHud, MultiSetUpScene]
     },
     loadHud: {
         components: [MenuHud, LoadScene]
@@ -452,12 +403,26 @@ MenuRenderSystem.queries = {
     hoveringLoadHud: {
         components: [CurrentHudHover, MenuHud, LoadScene]
     },
-    joinHud: {
-        components: [MenuHud, JoinScene]
+
+    lobbyHud: {
+        components: [MenuHud, LobbyScene]
     },
-    hoveringJoinHud: {
-        components: [CurrentHudHover, MenuHud, JoinScene]
+    hoveringLobbyHud: {
+        components: [CurrentHudHover, MenuHud, LobbyScene]
     },
+    multiSetUpHud: {
+        components: [MenuHud, MultiSetUpScene]
+    },
+    hoveringMultiSetUpHud: {
+        components: [CurrentHudHover, MenuHud, MultiSetUpScene]
+    },
+    multiStageHud: {
+        components: [MenuHud, MultiStageScene]
+    },
+    hoveringMultiStageHud: {
+        components: [CurrentHudHover, MenuHud, MultiStageScene]
+    },
+
     loadingHud: {
         components: [MenuHud, LoadingScene]
     },

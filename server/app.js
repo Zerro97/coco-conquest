@@ -21,8 +21,6 @@ const onConnection = (socket) => {
   registerTileHandler(io, socket);
   registerUnitHandler(io, socket);
   registerBuildingHandler(io, socket);
-
-  console.log(io);
 }
 
 // When client connect to server

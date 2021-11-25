@@ -5,6 +5,7 @@ module.exports = (io, socket) => {
 
   const createRoom = (data) => {
     let roomExist = false;
+    console.log(data);
 
     // Check if given room exist
     for(const room in rooms) {
@@ -17,9 +18,10 @@ module.exports = (io, socket) => {
     if(!roomExist) {
       //socket.leave(socket.room);
       socket.join(data.roomId);
+      socket.emit(EventType.ROOM_CREATED, data);
+    } else {
+      // TODO: throw error
     }
-
-    socket.emit(EventType.ROOM_CREATED, data);
   }
 
   const joinRoom = (data) => {
@@ -35,9 +37,10 @@ module.exports = (io, socket) => {
     // If room exist, join
     if(roomExist) {
       socket.join(data.roomId);
+      socket.emit(EventType.ROOM_JOINED, data);
+    } else {
+      // TODO: throw error
     }
-
-    socket.emit(EventType.ROOM_JOINED, data);
   }
 
   socket.on(EventType.CREATING_ROOM, createRoom);

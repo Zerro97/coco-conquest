@@ -33,33 +33,22 @@ export class MenuSystem extends System {
 				case MenuHudType.EXIT_BUTTON: {
 					break;
 				}
-				// Single/Multi Play Scene
+
+				// Single Player Scene
 				case MenuHudType.SINGLE_SETUP_GAME_BUTTON: {
 					scene.currentScene = SceneType.SINGLE_SETUP_GAME;
-					break;
-				}
-				case MenuHudType.MULTI_SETUP_GAME_BUTTON: {
-					socketAction.creatingRoom = true;
-					scene.currentScene = SceneType.MULTI_SETUP_GAME;
 					break;
 				}
 				case MenuHudType.LOAD_GAME_BUTTON: {
 					//scene.currentScene = SceneType.GAME;
 					break;
 				}
-				case MenuHudType.JOIN_GAME_BUTTON: {
-					socketAction.joiningRoom = true;
-					break;
-				}
 				case MenuHudType.SINGLE_GO_BACK_BUTTON: {
 					scene.currentScene = SceneType.MENU;
 					break;
 				}
-				case MenuHudType.MULTI_GO_BACK_BUTTON: {
-					scene.currentScene = SceneType.MENU;
-					break;
-				}
-				// Setup Scene
+
+				// Single Player Set Up Scene
 				case MenuHudType.PLAYER_TEAM_BUTTON: {
 					let team = selectedMenu.getMutableComponent(Team);
 					team.value = (team.value + 1) % 4;
@@ -76,6 +65,23 @@ export class MenuSystem extends System {
 				}
 				case MenuHudType.MULTI_SETUP_GO_BACK_BUTTON: {
 					scene.currentScene = SceneType.LOBBY;
+					break;
+				}
+
+				// Lobby Scene
+				case MenuHudType.LOBBY_ROOM: {
+					break;
+				}
+				case MenuHudType.LOBBY_SETUP_GAME_BUTTON: {
+					scene.currentScene = SceneType.MULTI_SETUP_GAME;
+					break;
+				}
+				case MenuHudType.LOBBY_JOIN_GAME_BUTTON: {
+					socketAction.joiningRoom = true;
+					break;
+				}
+				case MenuHudType.LOBBY_GO_BACK_BUTTON: {
+					scene.currentScene = SceneType.MENU;
 					break;
 				}
 			}

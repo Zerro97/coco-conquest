@@ -1,23 +1,35 @@
 export const MenuHudType = {
-    // Buttons in main menu
+    // Main menu
     SINGLE_PLAY_BUTTON: 0,
     MULTI_PLAY_BUTTON: 1,
     SETTING_BUTTON: 2,
     EXIT_BUTTON: 3,
     
-    // Buttons in single play/multi play scene
+    // Single player menu
     SINGLE_SETUP_GAME_BUTTON: 4,
-    MULTI_SETUP_GAME_BUTTON: 5,
-    LOAD_GAME_BUTTON: 6,
-    JOIN_GAME_BUTTON: 7,
-    
-    SINGLE_GO_BACK_BUTTON: 8,
-    MULTI_GO_BACK_BUTTON: 9,
+    LOAD_GAME_BUTTON: 5,
+    SINGLE_GO_BACK_BUTTON: 6,
 
-    // Set Up Game
-    PLAYER_BOX: 10,
-    PLAYER_TEAM_BUTTON: 11,
-    START_BUTTON: 12,
-    SINGLE_SETUP_GO_BACK_BUTTON: 13,
-    MULTI_SETUP_GO_BACK_BUTTON: 14,
+    // Single player set up game
+    PLAYER_BOX: 7,
+    PLAYER_TEAM_BUTTON: 8,
+    START_BUTTON: 9,
+    SINGLE_SETUP_GO_BACK_BUTTON: 10,
+
+    // Lobby
+    LOBBY_SETUP_GAME_BUTTON: 11,
+    LOBBY_JOIN_GAME_BUTTON: 12,
+    LOBBY_GO_BACK_BUTTON: 13,
+    LOBBY_ROOM: 14,
+
+    // Multi player set up game
+    MULTI_SETUP_GAME_BUTTON: 15,
+    MULTI_SETUP_GO_BACK_BUTTON: 16,
+
+    // Multi player stage game
+    MULTI_STAGE_PLAYER_BOX: 17,
+    MULTI_STAGE_PLAYER_TEAM: 18,
+    MULTI_STAGE_READY_BUTTON: 19,
+    MULTI_STAGE_KICK_BUTTON: 20,
+    MULTI_STAGE_GO_BACK_BUTTON: 21
 };

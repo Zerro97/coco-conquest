@@ -207,3 +207,19 @@ export function drawSetupBackButton(ctx, pos, size) {
     ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
     ctx.fillText("GO BACK", pos.x + size.width/2, pos.y + size.height/2 + 10);
 }
+
+export function drawLobbyRoomHead(ctx, pos, size) {
+    ctx.beginPath();
+    ctx.rect(pos.x, pos.y, pos.x + size.width, pos.y + size.height);
+    ctx.closePath();
+    ctx.fillStyle= "red";
+    ctx.fill();
+}
+
+export function drawLobbyRoomRow(ctx, pos, size) {
+    ctx.beginPath();
+    ctx.rect(pos.x, pos.y, pos.x + size.width, pos.y + size.height);
+    ctx.closePath();
+    ctx.fillStyle= "red";
+    ctx.fill();
+}

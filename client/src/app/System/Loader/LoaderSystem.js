@@ -208,27 +208,6 @@ export class LoaderSystem extends System {
         .addComponent(Scene, {value: SceneType.SINGLE_PLAY});
     }
 
-    // Multi Play Buttons
-    let multiPlayButtonTypes = [
-      MenuHudType.MULTI_SETUP_GAME_BUTTON,
-      MenuHudType.LOAD_GAME_BUTTON,
-      MenuHudType.JOIN_GAME_BUTTON,
-      MenuHudType.MULTI_GO_BACK_BUTTON,
-    ];
-
-    for(let i=0; i<4; i++) {
-      this.world
-        .createEntity()
-        .addComponent(MenuHud, {type: multiPlayButtonTypes[i]})
-        .addComponent(HudHoverable)
-        .addComponent(HudSelectable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 110, y: 350 + i * 50})
-        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 220, height: 40})
-        .addComponent(MultiPlayScene)
-        .addComponent(Scene, {value: SceneType.LOBBY});
-    }
-
     // Set Up Single Player Game
     for(let i=0; i<8; i++) {
       this.world
@@ -278,52 +257,6 @@ export class LoaderSystem extends System {
       .addComponent(Scene, {value: SceneType.SINGLE_SETUP_GAME});
 
     // Set Up Multi Player Game
-    for(let i=0; i<8; i++) {
-      this.world
-        .createEntity()
-        .addComponent(MenuHud, {type: MenuHudType.PLAYER_BOX})
-        .addComponent(HudHoverable)
-        .addComponent(HudSelectable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 500, y: 100 + i * 55})
-        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 260, height: 50})
-        .addComponent(MultiSetUpScene)
-        .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME});
-      
-      this.world
-        .createEntity()
-        .addComponent(MenuHud, {type: MenuHudType.PLAYER_TEAM_BUTTON})
-        .addComponent(HudHoverable)
-        .addComponent(HudSelectable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 220, y: 100 + i * 55})
-        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 50, height: 50})
-        .addComponent(MultiSetUpScene)
-        .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME})
-        .addComponent(Team, {value: i % 4});
-    }
-
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.START_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudSelectable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 330, y: 730})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 220, height: 50})
-      .addComponent(MultiSetUpScene)
-      .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME});
-
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.MULTI_SETUP_GO_BACK_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudSelectable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 550, y: 730})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 220, height: 50})
-      .addComponent(MultiSetUpScene)
-      .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME});
   }
 
   generateHuds() {
