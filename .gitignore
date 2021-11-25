@@ -19,3 +19,6 @@ server/*.log
 
 server/npm-debug.log
 server/package-lock.json
+
+# Top
+/package-lock.json
