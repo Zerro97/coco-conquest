@@ -43,34 +43,37 @@ export class MenuRenderSystem extends System {
                 this.drawMenu();
                 break;
             }
-            case SceneType.SINGLE_PLAY: {
-                this.drawSinglePlay();
-                break;
-            }
-            case SceneType.MULTI_PLAY: {
-                this.drawMultiPlay();
-                break;
-            }
             case SceneType.SETTING: {
                 this.drawSetting();
+                break;
+            }
+            // Single Player
+            case SceneType.SINGLE_PLAY: {
+                this.drawSinglePlay();
                 break;
             }
             case SceneType.SINGLE_SETUP_GAME: {
                 this.drawSingleSetUpGame();
                 break;
             }
-            case SceneType.MULTI_SETUP_GAME: {
-                this.drawMultiSetUpGame();
-                break;
-            }
             case SceneType.LOAD_GAME: {
                 this.drawLoadGame();
                 break;
             }
-            case SceneType.JOIN_GAME: {
-                this.drawJoinGame();
+            // Multi Player
+            case SceneType.LOBBY: {
+                this.drawLobby();
                 break;
             }
+            case SceneType.MULTI_SETUP_GAME: {
+                this.drawMultiSetUpGame();
+                break;
+            }
+            case SceneType.MULTI_STAGE_GAME: {
+                this.drawMultiStageGame();
+                break;
+            }
+            // Actual Game
             case SceneType.LOADING_GAME: {
                 this.drawLoadingGame();
                 break;
@@ -203,7 +206,7 @@ export class MenuRenderSystem extends System {
         });
     }
 
-    drawMultiPlay() {
+    drawLobby() {
         // Title
         this.ctx.font = "60px Arial";
         this.ctx.fillStyle = "rgba(255, 255, 255, 0.9)";

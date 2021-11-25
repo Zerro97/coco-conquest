@@ -23,7 +23,7 @@ export class MenuSystem extends System {
 					break;
 				}
 				case MenuHudType.MULTI_PLAY_BUTTON: {
-					scene.currentScene = SceneType.MULTI_PLAY;
+					scene.currentScene = SceneType.LOBBY;
 					break;
 				}
 				case MenuHudType.SETTING_BUTTON: {
@@ -75,7 +75,7 @@ export class MenuSystem extends System {
 					break;
 				}
 				case MenuHudType.MULTI_SETUP_GO_BACK_BUTTON: {
-					scene.currentScene = SceneType.MULTI_PLAY;
+					scene.currentScene = SceneType.LOBBY;
 					break;
 				}
 			}

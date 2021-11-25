@@ -6,16 +6,19 @@
  */
 export const SceneType = {
 	MENU: 0,
+    SETTING: 1,
 
-    SINGLE_PLAY: 1,
-    MULTI_PLAY: 2,
-    SETTING: 3,
+    // Single Player
+    SINGLE_PLAY: 2,
+    SINGLE_SETUP_GAME: 3,
+    LOAD_GAME: 4,
 
-    SINGLE_SETUP_GAME: 4,
-    MULTI_SETUP_GAME: 5,
-    LOAD_GAME: 6,
-    JOIN_GAME: 7,
+    // Multi Player
+    LOBBY: 5,
+    MULTI_SETUP_GAME: 6,
+    MULTI_STAGE_GAME: 7,
 
+    // Actual Game
     LOADING_GAME: 8,
     GAME: 9,
     END_GAME: 10

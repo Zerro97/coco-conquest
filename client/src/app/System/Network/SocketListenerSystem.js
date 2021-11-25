@@ -7,16 +7,20 @@ export class SocketListenerSystem extends System {
   execute(delta, time) {
     const socketStatus = this.queries.socketEvents.results[0].getMutableComponent(SocketEvents);
     
+    this.onCreateRoom();
     this.onJoinRoom();
   }
 
   onCreateRoom() {
-    //this.socket.emit(SocketEvent.CREATE_ROOM, {roomId: 0, username: "Zerro"});
+    this.socket.on(SocketEvent.ROOM_CREATED, data => {
+      console.log(data);
+    });
   }
 
   onJoinRoom() {
-      //this.socket.on(SocketEvent.JOIN_ROOM)
-    //this.socket.emit(SocketEvent.JOIN_ROOM, {roomId: 0, username: "Player 1"});
+    this.socket.on(SocketEvent.ROOM_JOINED, data => {
+      console.log(data);
+    });
   }
 
   onStartGame() {

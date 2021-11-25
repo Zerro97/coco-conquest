@@ -1,19 +1,29 @@
 export const SocketEvent = {
     // Room
-    CREATE_ROOM: "room:create",
-    JOIN_ROOM: "room:join",
+    CREATING_ROOM: "room:create",
+    ROOM_CREATED: "room:onCreate",
+    JOINING_ROOM: "room:join",
+    ROOM_JOINED: "room:onJoin",
 
     // Global Game
-    START_GAME: "game:create",
-    TURN_END: "game:turn_end",
+    CREATING_GAME: "game:create",
+    GAME_CREATED: "game:onCreate",
+    ENDING_TURN: "game:turnEnd",
+    TURN_ENDED: "game:onTurnEnd",
 
     // Individual Game
-    UNIT_CREATED: "unit:create",
-    UNIT_DAMAGED: "unit:damage",
-    UNIT_MOVED: "unit:move",
+    CREATING_UNIT: "unit:create",
+    UNIT_CREATED: "unit:onCreate",
+    DAMAGING_UNIT: "unit:damage",
+    UNIT_DAMAGED: "unit:onDamage",
+    MOVING_UNIT: "unit:move",
+    UNIT_MOVED: "unit:onMove",
 
-    BUILDING_CREATED: "building:create",
-    BUILDING_DAMAGED: "building:damage",
+    CREATING_BUILDING: "building:create",
+    BUILDING_CREATED: "building:onCreate",
+    DAMAGING_BUILDING: "building:damage",
+    BUILDING_DAMAGED: "building:onDamage",
 
-    MAP_CREATED: "tile:create",
+    CREATING_MAP: "tile:create",
+    MAP_CREATED: "tile:onCreate"
 };

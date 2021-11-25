@@ -33,7 +33,6 @@ export class SceneSystem extends System {
   execute(delta, time) {
     const scene = this.queries.sceneStatus.changed[0]?.getComponent(SceneStatus);
     
-
     if(scene) {
         this.updateHudInScene(scene.currentScene);
 

@@ -160,7 +160,7 @@ export class LoaderSystem extends System {
       .addComponent(Turn, { currentTurn: 0, maxTurn: 300 });
     this.world
       .createEntity()
-      .addComponent(SceneStatus, { currentScene: SceneType.MULTI_SETUP_GAME });
+      .addComponent(SceneStatus, { currentScene: SceneType.MENU });
     this.world
     .createEntity()
     .addComponent(SocketEvents);
@@ -226,7 +226,7 @@ export class LoaderSystem extends System {
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 220, height: 40})
         .addComponent(MultiPlayScene)
-        .addComponent(Scene, {value: SceneType.MULTI_PLAY});
+        .addComponent(Scene, {value: SceneType.LOBBY});
     }
 
     // Set Up Single Player Game
@@ -288,7 +288,7 @@ export class LoaderSystem extends System {
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 260, height: 50})
         .addComponent(MultiSetUpScene)
-        .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME});
+        .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME});
       
       this.world
         .createEntity()
@@ -299,7 +299,7 @@ export class LoaderSystem extends System {
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 50, height: 50})
         .addComponent(MultiSetUpScene)
-        .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME})
+        .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME})
         .addComponent(Team, {value: i % 4});
     }
 
@@ -312,7 +312,7 @@ export class LoaderSystem extends System {
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 220, height: 50})
       .addComponent(MultiSetUpScene)
-      .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME});
+      .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME});
 
     this.world
       .createEntity()
@@ -323,7 +323,7 @@ export class LoaderSystem extends System {
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 220, height: 50})
       .addComponent(MultiSetUpScene)
-      .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME});
+      .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME});
   }
 
   generateHuds() {

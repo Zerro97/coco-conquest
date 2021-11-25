@@ -44,11 +44,11 @@ export class SocketEmitSystem extends System {
   }
 
   createRoom() {
-    this.socket.emit(SocketEvent.CREATE_ROOM, {roomId: 0, username: "Zerro"});
+    this.socket.emit(SocketEvent.CREATING_ROOM, {roomId: 0, username: "Zerro"});
   }
 
   joinRoom() {
-    this.socket.emit(SocketEvent.JOIN_ROOM, {roomId: 0, username: "Player 1"});
+    this.socket.emit(SocketEvent.JOINING_ROOM, {roomId: 0, username: "Player 1"});
   }
 
   startGame() {
