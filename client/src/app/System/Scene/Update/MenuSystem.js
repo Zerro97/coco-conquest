@@ -69,7 +69,7 @@ export class MenuSystem extends System {
 				}
 
 				// Lobby Scene
-				case MenuHudType.LOBBY_ROOM: {
+				case MenuHudType.LOBBY_ROOM_ROW: {
 					break;
 				}
 				case MenuHudType.LOBBY_SETUP_GAME_BUTTON: {

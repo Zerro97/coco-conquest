@@ -29,7 +29,13 @@ import {
     drawSetupBackButton,
     drawHoveringSetupBackButton,
     drawPlayerTeamButton,
-    drawHoveringPlayerTeamButton
+    drawHoveringPlayerTeamButton,
+    drawLobbyRoomHead,
+    drawLobbyRoomRow,
+    drawLobbyFrame,
+    drawLobbyGoBackButton,
+    drawLobbyJoinGameButton,
+    drawLobbySetUpGameButton
 } from "../../../Util";
 
 export class MenuRenderSystem extends System {
@@ -275,6 +281,8 @@ export class MenuRenderSystem extends System {
     }
 
     drawLobby() {
+        drawLobbyFrame(this.ctx, {x: this.canvasWidth/2 - 420, y: 60}, { width: 840, height: 700 });
+
         // Menu
         this.queries.lobbyHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
@@ -282,16 +290,24 @@ export class MenuRenderSystem extends System {
             const size = hud.getComponent(Size);
             
             switch(type) {
-                case MenuHudType.LOBBY_SETUP_GAME_BUTTON: {
+                case MenuHudType.LOBBY_ROOM_HEAD: {
+                    drawLobbyRoomHead(this.ctx, pos, size);
                     break;
                 }
-                case MenuHudType.LOBBY_JOIN_GAME_BUTTON: {
+                case MenuHudType.LOBBY_ROOM_ROW: {
+                    drawLobbyRoomRow(this.ctx, pos, size);
                     break;
                 }
                 case MenuHudType.LOBBY_GO_BACK_BUTTON: {
+                    drawLobbyGoBackButton(this.ctx, pos, size);
                     break;
                 }
-                case MenuHudType.LOBBY_ROOM: {
+                case MenuHudType.LOBBY_JOIN_GAME_BUTTON: {
+                    drawLobbyJoinGameButton(this.ctx, pos, size);
+                    break;
+                }
+                case MenuHudType.LOBBY_SETUP_GAME_BUTTON: {
+                    drawLobbySetUpGameButton(this.ctx, pos, size);
                     break;
                 }
             }
@@ -304,16 +320,24 @@ export class MenuRenderSystem extends System {
             const size = hud.getComponent(Size);
 
             switch(type) {
-                case MenuHudType.LOBBY_SETUP_GAME_BUTTON: {
+                case MenuHudType.LOBBY_ROOM_HEAD: {
+                    drawLobbyRoomHead(this.ctx, pos, size);
                     break;
                 }
-                case MenuHudType.LOBBY_JOIN_GAME_BUTTON: {
+                case MenuHudType.LOBBY_ROOM_ROW: {
+                    drawLobbyRoomRow(this.ctx, pos, size);
                     break;
                 }
                 case MenuHudType.LOBBY_GO_BACK_BUTTON: {
+                    drawLobbyGoBackButton(this.ctx, pos, size);
                     break;
                 }
-                case MenuHudType.LOBBY_ROOM: {
+                case MenuHudType.LOBBY_JOIN_GAME_BUTTON: {
+                    drawLobbyJoinGameButton(this.ctx, pos, size);
+                    break;
+                }
+                case MenuHudType.LOBBY_SETUP_GAME_BUTTON: {
+                    drawLobbySetUpGameButton(this.ctx, pos, size);
                     break;
                 }
             }

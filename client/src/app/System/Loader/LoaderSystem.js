@@ -41,7 +41,8 @@ import {
   MultiPlayScene,
   SingleSetUpScene,
   MultiSetUpScene,
-  SocketEvents
+  SocketEvents,
+  LobbyScene
 } from "../../Component";
 import { 
   RegionSystem,
@@ -256,7 +257,61 @@ export class LoaderSystem extends System {
       .addComponent(SingleSetUpScene)
       .addComponent(Scene, {value: SceneType.SINGLE_SETUP_GAME});
 
-    // Set Up Multi Player Game
+    // Set Up Lobby
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.LOBBY_ROOM_HEAD})
+      .addComponent(HudHoverable)
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 400, y: 80})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 800, height: 30})
+      .addComponent(LobbyScene)
+      .addComponent(Scene, {value: SceneType.LOBBY});
+
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.LOBBY_ROOM_ROW})
+      .addComponent(HudHoverable)
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 400, y: 120})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 800, height: 30})
+      .addComponent(LobbyScene)
+      .addComponent(Scene, {value: SceneType.LOBBY});
+    
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.LOBBY_GO_BACK_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 420, y: 800})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 200, height: 50})
+      .addComponent(LobbyScene)
+      .addComponent(Scene, {value: SceneType.LOBBY});
+    
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.LOBBY_JOIN_GAME_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2, y: 800})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 200, height: 50})
+      .addComponent(LobbyScene)
+      .addComponent(Scene, {value: SceneType.LOBBY});
+
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.LOBBY_SETUP_GAME_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 220, y: 800})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 200, height: 50})
+      .addComponent(LobbyScene)
+      .addComponent(Scene, {value: SceneType.LOBBY});
   }
 
   generateHuds() {
