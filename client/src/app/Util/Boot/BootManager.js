@@ -128,6 +128,7 @@ export class BootManager {
             })
             .registerSystem(System.MenuRenderSystem, {
                 priority: 10,
+                canvas: this.canvas,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,

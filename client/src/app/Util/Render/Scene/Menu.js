@@ -264,25 +264,19 @@ export function drawLobbyRoomRow(ctx, pos, size) {
     ctx.fillText("1/8", pos.x + 700, pos.y + size.height/2 + 7);
 }
 
-export function drawLobbyGoBackButton(ctx, pos, size) {
-    drawOutline(ctx, pos, size);
+export function drawMultiSetUpFrame(ctx, pos, size) {
+    ctx.beginPath();
+    ctx.rect(pos.x, pos.y, size.width, size.height);
+    ctx.closePath();
 
-    const grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y+size.height);
-    grad.addColorStop(0, "rgb(16, 29, 71)");
-    grad.addColorStop(0.3, "rgb(36, 49, 91)");
-    grad.addColorStop(0.7, "rgb(36, 49, 91)");
-    grad.addColorStop(1, "rgb(16, 29, 71)");
-
-    ctx.fillStyle = grad;
-    ctx.fillRect(pos.x + 4, pos.y + 4, size.width - 8, size.height - 8);
-
-    ctx.font = "25px Arial";
-    ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
-    ctx.textAlign = "center";
-    ctx.fillText("GO BACK", pos.x + size.width/2, pos.y + size.height/2 + 10);
+    ctx.fillStyle= "rgb(36, 49, 91)";
+    ctx.fill();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgb(6, 19, 61)";
+    ctx.stroke();
 }
 
-export function drawLobbyJoinGameButton(ctx, pos, size) {
+export function drawButton(ctx, pos, size, text) {
     drawOutline(ctx, pos, size);
 
     const grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y+size.height);
@@ -297,23 +291,5 @@ export function drawLobbyJoinGameButton(ctx, pos, size) {
     ctx.font = "25px Arial";
     ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
     ctx.textAlign = "center";
-    ctx.fillText("Join Game", pos.x + size.width/2, pos.y + size.height/2 + 10);
-}
-
-export function drawLobbySetUpGameButton(ctx, pos, size) {
-    drawOutline(ctx, pos, size);
-
-    const grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y+size.height);
-    grad.addColorStop(0, "rgb(16, 29, 71)");
-    grad.addColorStop(0.3, "rgb(36, 49, 91)");
-    grad.addColorStop(0.7, "rgb(36, 49, 91)");
-    grad.addColorStop(1, "rgb(16, 29, 71)");
-
-    ctx.fillStyle = grad;
-    ctx.fillRect(pos.x + 4, pos.y + 4, size.width - 8, size.height - 8);
-
-    ctx.font = "25px Arial";
-    ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
-    ctx.textAlign = "center";
-    ctx.fillText("Set Up Game", pos.x + size.width/2, pos.y + size.height/2 + 10);
+    ctx.fillText(text, pos.x + size.width/2, pos.y + size.height/2 + 10);
 }

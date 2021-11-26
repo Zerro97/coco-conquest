@@ -312,6 +312,31 @@ export class LoaderSystem extends System {
       .addComponent(Size, {width: 200, height: 50})
       .addComponent(LobbyScene)
       .addComponent(Scene, {value: SceneType.LOBBY});
+
+    // Multiplayer Game Set Up
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.MULTI_CONFIRM_GAME_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 100, y: 800})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 200, height: 50})
+      .addComponent(MultiSetUpScene)
+      .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME});
+
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.MULTI_SETUP_GO_BACK_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudSelectable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 300, y: 800})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 200, height: 50})
+      .addComponent(MultiSetUpScene)
+      .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME});
+
+    
   }
 
   generateHuds() {

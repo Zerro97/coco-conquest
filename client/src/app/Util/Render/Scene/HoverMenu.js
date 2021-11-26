@@ -130,3 +130,21 @@ export function drawHoveringSetupBackButton(ctx, pos, size) {
     ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
     ctx.fillText("GO BACK", pos.x + size.width/2, pos.y + size.height/2 + 10);
 }
+
+export function drawHoveringButton(ctx, pos, size, text) {
+    drawOutline(ctx, pos, size);
+
+    const grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y+size.height);
+    grad.addColorStop(0, "rgb(36, 49, 91)");
+    grad.addColorStop(0.3, "rgb(56, 69, 111)");
+    grad.addColorStop(0.7, "rgb(56, 69, 111)");
+    grad.addColorStop(1, "rgb(36, 49, 91)");
+
+    ctx.fillStyle = grad;
+    ctx.fillRect(pos.x + 4, pos.y + 4, size.width - 8, size.height - 8);
+
+    ctx.font = "25px Arial";
+    ctx.fillStyle = "rgba(255, 255, 255, 1)";
+    ctx.textAlign = "center";
+    ctx.fillText(text, pos.x + size.width/2, pos.y + size.height/2 + 10);
+}

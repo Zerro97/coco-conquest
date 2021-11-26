@@ -1,4 +1,5 @@
 import { System } from "../../../Library/Ecsy";
+import { CanvasInput } from "../../../Library/Input/CanvasInput.js";
 import { 
     SceneStatus,
     CurrentHudHover,
@@ -33,9 +34,9 @@ import {
     drawLobbyRoomHead,
     drawLobbyRoomRow,
     drawLobbyFrame,
-    drawLobbyGoBackButton,
-    drawLobbyJoinGameButton,
-    drawLobbySetUpGameButton
+    drawButton,
+    drawHoveringButton,
+    drawMultiSetUpFrame
 } from "../../../Util";
 
 export class MenuRenderSystem extends System {
@@ -299,15 +300,15 @@ export class MenuRenderSystem extends System {
                     break;
                 }
                 case MenuHudType.LOBBY_GO_BACK_BUTTON: {
-                    drawLobbyGoBackButton(this.ctx, pos, size);
+                    drawButton(this.ctx, pos, size, "Go Back");
                     break;
                 }
                 case MenuHudType.LOBBY_JOIN_GAME_BUTTON: {
-                    drawLobbyJoinGameButton(this.ctx, pos, size);
+                    drawButton(this.ctx, pos, size, "Join Game");
                     break;
                 }
                 case MenuHudType.LOBBY_SETUP_GAME_BUTTON: {
-                    drawLobbySetUpGameButton(this.ctx, pos, size);
+                    drawButton(this.ctx, pos, size, "Set Up Game");
                     break;
                 }
             }
@@ -329,15 +330,15 @@ export class MenuRenderSystem extends System {
                     break;
                 }
                 case MenuHudType.LOBBY_GO_BACK_BUTTON: {
-                    drawLobbyGoBackButton(this.ctx, pos, size);
+                    drawHoveringButton(this.ctx, pos, size, "Go Back");
                     break;
                 }
                 case MenuHudType.LOBBY_JOIN_GAME_BUTTON: {
-                    drawLobbyJoinGameButton(this.ctx, pos, size);
+                    drawHoveringButton(this.ctx, pos, size, "Join Game");
                     break;
                 }
                 case MenuHudType.LOBBY_SETUP_GAME_BUTTON: {
-                    drawLobbySetUpGameButton(this.ctx, pos, size);
+                    drawHoveringButton(this.ctx, pos, size, "Set Up Game");
                     break;
                 }
             }
@@ -345,16 +346,25 @@ export class MenuRenderSystem extends System {
     }
 
     drawMultiSetUpGame() {
+        drawMultiSetUpFrame(this.ctx, {x: this.canvasWidth/2 - 300, y: 60}, { width: 600, height: 700 });
+        //console.log(CanvasInput);
+        let input = new CanvasInput({
+            canvas: this.canvas
+        });
+        console.log(input.render());
+
         this.queries.multiSetUpHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;
             const pos = hud.getComponent(CanvasPosition);
             const size = hud.getComponent(Size);
             
             switch(type) {
-                case MenuHudType.MULTI_SETUP_GAME_BUTTON: {
+                case MenuHudType.MULTI_CONFIRM_GAME_BUTTON: {
+                    drawButton(this.ctx, pos, size, "Confirm");
                     break;
                 }
                 case MenuHudType.MULTI_SETUP_GO_BACK_BUTTON: {
+                    drawButton(this.ctx, pos, size, "Go Back");
                     break;
                 }
             }
@@ -367,10 +377,12 @@ export class MenuRenderSystem extends System {
             const size = hud.getComponent(Size);
             
             switch(type) {
-                case MenuHudType.MULTI_SETUP_GAME_BUTTON: {
+                case MenuHudType.MULTI_CONFIRM_GAME_BUTTON: {
+                    drawHoveringButton(this.ctx, pos, size, "Confirm");
                     break;
                 }
                 case MenuHudType.MULTI_SETUP_GO_BACK_BUTTON: {
+                    drawHoveringButton(this.ctx, pos, size, "Go Back");
                     break;
                 }
             }

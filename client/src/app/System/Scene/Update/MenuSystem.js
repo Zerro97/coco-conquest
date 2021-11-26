@@ -63,10 +63,6 @@ export class MenuSystem extends System {
 					scene.currentScene = SceneType.SINGLE_PLAY;
 					break;
 				}
-				case MenuHudType.MULTI_SETUP_GO_BACK_BUTTON: {
-					scene.currentScene = SceneType.LOBBY;
-					break;
-				}
 
 				// Lobby Scene
 				case MenuHudType.LOBBY_ROOM_ROW: {
@@ -82,6 +78,13 @@ export class MenuSystem extends System {
 				}
 				case MenuHudType.LOBBY_GO_BACK_BUTTON: {
 					scene.currentScene = SceneType.MENU;
+					break;
+				}
+
+				// Multi Player Set Up Scene
+				case MenuHudType.MULTI_SETUP_GO_BACK_BUTTON: {
+					console.log("IN");
+					scene.currentScene = SceneType.LOBBY;
 					break;
 				}
 			}

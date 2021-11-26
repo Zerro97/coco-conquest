@@ -24,7 +24,7 @@ export const MenuHudType = {
     LOBBY_ROOM_ROW: 15,
 
     // Multi player set up game
-    MULTI_SETUP_GAME_BUTTON: 16,
+    MULTI_CONFIRM_GAME_BUTTON: 16,
     MULTI_SETUP_GO_BACK_BUTTON: 17,
 
     // Multi player stage game
