@@ -1,5 +1,4 @@
 import { System } from "../../../Library/Ecsy";
-import { CanvasInput } from "../../../Library/Input/CanvasInput.js";
 import { 
     SceneStatus,
     CurrentHudHover,
@@ -347,11 +346,6 @@ export class MenuRenderSystem extends System {
 
     drawMultiSetUpGame() {
         drawMultiSetUpFrame(this.ctx, {x: this.canvasWidth/2 - 300, y: 60}, { width: 600, height: 700 });
-        //console.log(CanvasInput);
-        let input = new CanvasInput({
-            canvas: this.canvas
-        });
-        console.log(input.render());
 
         this.queries.multiSetUpHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;

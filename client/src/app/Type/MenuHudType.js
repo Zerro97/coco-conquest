@@ -1,36 +1,37 @@
 export const MenuHudType = {
-    // Main menu
+    // Main menu ( 0 - 9)
     SINGLE_PLAY_BUTTON: 0,
     MULTI_PLAY_BUTTON: 1,
     SETTING_BUTTON: 2,
     EXIT_BUTTON: 3,
     
-    // Single player menu
-    SINGLE_SETUP_GAME_BUTTON: 4,
-    LOAD_GAME_BUTTON: 5,
-    SINGLE_GO_BACK_BUTTON: 6,
+    // Single player menu ( 10 - 19)
+    SINGLE_SETUP_GAME_BUTTON: 10,
+    LOAD_GAME_BUTTON: 11,
+    SINGLE_GO_BACK_BUTTON: 12,
 
-    // Single player set up game
-    PLAYER_BOX: 7,
-    PLAYER_TEAM_BUTTON: 8,
-    START_BUTTON: 9,
-    SINGLE_SETUP_GO_BACK_BUTTON: 10,
+    // Single player set up game ( 20 - 39)
+    PLAYER_BOX: 20,
+    PLAYER_TEAM_BUTTON: 21,
+    START_BUTTON: 22,
+    SINGLE_SETUP_GO_BACK_BUTTON: 23,
 
-    // Lobby
-    LOBBY_SETUP_GAME_BUTTON: 11,
-    LOBBY_JOIN_GAME_BUTTON: 12,
-    LOBBY_GO_BACK_BUTTON: 13,
-    LOBBY_ROOM_HEAD: 14,
-    LOBBY_ROOM_ROW: 15,
+    // Lobby ( 40 - 49)
+    LOBBY_SETUP_GAME_BUTTON: 40,
+    LOBBY_JOIN_GAME_BUTTON: 41,
+    LOBBY_GO_BACK_BUTTON: 42,
+    LOBBY_ROOM_HEAD: 43,
+    LOBBY_ROOM_ROW: 44,
 
-    // Multi player set up game
-    MULTI_CONFIRM_GAME_BUTTON: 16,
-    MULTI_SETUP_GO_BACK_BUTTON: 17,
+    // Multi player set up game ( 50 - 69)
+    MULTI_NAME_INPUT: 50,
+    MULTI_CONFIRM_GAME_BUTTON: 51,
+    MULTI_SETUP_GO_BACK_BUTTON: 52,
 
-    // Multi player stage game
-    MULTI_STAGE_PLAYER_BOX: 18,
-    MULTI_STAGE_PLAYER_TEAM: 19,
-    MULTI_STAGE_READY_BUTTON: 20,
-    MULTI_STAGE_KICK_BUTTON: 21,
-    MULTI_STAGE_GO_BACK_BUTTON: 22
+    // Multi player stage game ( 70 - 89)
+    MULTI_STAGE_PLAYER_BOX: 70,
+    MULTI_STAGE_PLAYER_TEAM: 71,
+    MULTI_STAGE_READY_BUTTON: 72,
+    MULTI_STAGE_KICK_BUTTON: 73,
+    MULTI_STAGE_GO_BACK_BUTTON: 74
 };

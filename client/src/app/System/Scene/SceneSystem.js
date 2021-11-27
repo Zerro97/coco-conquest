@@ -23,11 +23,12 @@ import {
     GlobalGameSystem,
     HudSystem,
     MovementSystem,
-    UnitSystem
+    UnitSystem,
+    MenuRenderSystem, 
+    MenuSystem
 } from "../../System";
 import {  } from "../../Util";
 import { MenuHudType, SceneType, ObjectShape } from "../../Type";
-import {MenuRenderSystem, MenuSystem} from ".";
 
 export class SceneSystem extends System {
   execute(delta, time) {

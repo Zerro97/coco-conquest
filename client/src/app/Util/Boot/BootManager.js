@@ -44,8 +44,6 @@ export class BootManager {
 
     async loadImages() {
         // TODO: Wait until async loading function finishes...
-        console.log(await this.imageLoader.loadTileImages());
-
         this.tileImages = await this.imageLoader.loadTileImages();
         this.unitImages = await this.imageLoader.loadUnitImages();
         this.buildingImages = await this.imageLoader.loadBuildingImages();
@@ -60,20 +58,26 @@ export class BootManager {
     }
 
     registerSystems() {
-        console.log(this.tileImages);
-
         this.world
             .registerSystem(System.LoaderSystem, {
                 priority: -99,
-
                 tileImages: this.tileImages,
                 iconImages: this.iconImages,
                 unitImages: this.unitImages,
                 buildingImages: this.buildingImages,
                 backgroundImages: this.backgroundImages,
-
                 mapWidth: this.mapWidth,
                 mapHeight: this.mapHeight,
+                canvasWidth: this.canvasWidth,
+                canvasHeight: this.canvasHeight,
+            })
+            .registerSystem(System.GameLoaderSystem, {
+                priority: -98,
+                mapWidth: this.mapWidth,
+                mapHeight: this.mapHeight,
+            })
+            .registerSystem(System.HudLoaderSystem, {
+                priority: -97,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
