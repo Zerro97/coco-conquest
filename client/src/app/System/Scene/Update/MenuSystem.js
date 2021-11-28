@@ -1,6 +1,20 @@
 import { System } from "../../../Library/Ecsy";
-import { CurrentHudSelect, SceneStatus, MenuHud, Team, SocketEvents, Room } from "../../../Component";
-import { MenuHudType, SceneType } from "../../../Type";
+import { 
+  CurrentHudSelect, 
+  SceneStatus, 
+  MenuHud, 
+  Team, 
+  SocketEvents, 
+  Room,
+  HudHoverable,
+  HudSelectable,
+  CanvasPosition,
+  Shape,
+  Size,
+  LobbyScene,
+  Scene
+} from "../../../Component";
+import { MenuHudType, SceneType, ObjectShape } from "../../../Type";
 import { getRandomString } from "../../../Util";
 
 export class MenuSystem extends System {
@@ -89,8 +103,18 @@ export class MenuSystem extends System {
 				}
 
         case MenuHudType.MULTI_CONFIRM_GAME_BUTTON: {
+          const roomCount = this.queries.lobbyHud.results.length;
+
           this.world
             .createEntity()
+            .addComponent(MenuHud, {type: MenuHudType.LOBBY_ROOM_ROW})
+            .addComponent(HudHoverable)
+            .addComponent(HudSelectable)
+            .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 400, y: 120 + roomCount * 35})
+            .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+            .addComponent(Size, {width: 800, height: 30})
+            .addComponent(LobbyScene)
+            .addComponent(Scene, {value: SceneType.LOBBY})
             .addComponent(Room, {
               roomId: getRandomString(6),
               roomName: document.getElementById(MenuHudType.MULTI_NAME_INPUT).value,
@@ -99,8 +123,10 @@ export class MenuSystem extends System {
               curPlayerCount: 1,
               maxPlayerCount: 6,
             });
+
           socketAction.creatingRoom = true;
 					scene.currentScene = SceneType.MULTI_STAGE_GAME;
+
 					break;
 				}
 			}
@@ -114,9 +140,12 @@ MenuSystem.queries = {
 		components: [SceneStatus]
 	},
 	selectedMenuHud: {
-        components: [CurrentHudSelect, MenuHud]
-    },
+    components: [CurrentHudSelect, MenuHud]
+  },
 	socketAction: {
 		components: [SocketEvents]
-	}
+	},
+  lobbyHud: {
+    components: [MenuHud, LobbyScene]
+  },
 };

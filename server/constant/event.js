@@ -1,4 +1,10 @@
 module.exports = {
+    // Initial Connect
+    CONNECTING: "initial:connect",
+    CONNECTED: "initial:onConnect",
+    DISCONNECTING: "initial:disconnect",
+    DISCONNECTED: "initial:onDisconnect",
+
     // Room
     CREATING_ROOM: "room:create",
     ROOM_CREATED: "room:onCreate",

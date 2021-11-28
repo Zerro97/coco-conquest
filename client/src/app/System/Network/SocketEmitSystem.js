@@ -47,7 +47,6 @@ export class SocketEmitSystem extends System {
     const room = this.queries.rooms.added[0].getComponent(Room);
 
     if(room) {
-      console.log(room);
       this.socket.emit(SocketEvent.CREATING_ROOM, room);
     }
   }
@@ -102,7 +101,7 @@ SocketEmitSystem.queries = {
   rooms: {
     components: [Room],
     listen: {
-      added: true
+      added: [Room]
     }
   }
 };

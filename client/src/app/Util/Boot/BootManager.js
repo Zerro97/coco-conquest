@@ -81,6 +81,16 @@ export class BootManager {
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
+            .registerSystem(System.SocketListenerSystem, {
+              priority: -96,
+              socket: this.socket,
+              canvasWidth: this.canvasWidth,
+              canvasHeight: this.canvasHeight
+            })
+            .registerSystem(System.SocketEmitSystem, {
+                priority: -95,
+                socket: this.socket
+            })
             .registerSystem(System.KeyboardListenerSystem, {
                 priority: -10,
             })
@@ -121,14 +131,6 @@ export class BootManager {
             })
             .registerSystem(System.MenuSystem, {
                 priority: 5,
-            })
-            .registerSystem(System.SocketListenerSystem, {
-                priority: 9,
-                socket: this.socket
-            })
-            .registerSystem(System.SocketEmitSystem, {
-                priority: 9,
-                socket: this.socket
             })
             .registerSystem(System.MenuRenderSystem, {
                 priority: 10,

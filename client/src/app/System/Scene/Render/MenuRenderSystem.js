@@ -6,7 +6,6 @@ import {
     CanvasPosition, 
     Size, 
     Team,
-
     MenuScene, 
     SettingScene, 
     SinglePlayScene, 
@@ -16,7 +15,8 @@ import {
     MultiSetUpScene, 
     LobbyScene, 
     LoadingScene, 
-    EndScene, 
+    EndScene,
+    Room
 } from "../../../Component";
 import { SceneType, MenuHudType } from "../../../Type";
 import { 
@@ -297,7 +297,9 @@ export class MenuRenderSystem extends System {
                     break;
                 }
                 case MenuHudType.LOBBY_ROOM_ROW: {
-                    drawLobbyRoomRow(this.ctx, pos, size);
+                    const room = hud.getComponent(Room);
+                    drawLobbyRoomRow(this.ctx, pos, size, room);
+                    
                     break;
                 }
                 case MenuHudType.LOBBY_GO_BACK_BUTTON: {
@@ -468,5 +470,8 @@ MenuRenderSystem.queries = {
     },
     hoveringEndHud: {
         components: [CurrentHudHover, MenuHud, EndScene]
+    },
+    rooms: {
+      components: [Room]
     }
 };

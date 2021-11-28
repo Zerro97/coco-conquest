@@ -245,7 +245,7 @@ export function drawLobbyRoomHead(ctx, pos, size) {
     ctx.fillText("Players", pos.x + 700, pos.y + size.height/2 + 7);
 }
 
-export function drawLobbyRoomRow(ctx, pos, size) {
+export function drawLobbyRoomRow(ctx, pos, size, room = {room: "default"}) {
     ctx.beginPath();
     ctx.rect(pos.x, pos.y, size.width, size.height);
     ctx.closePath();
@@ -258,7 +258,7 @@ export function drawLobbyRoomRow(ctx, pos, size) {
     ctx.font = "18px Arial";
     ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
     ctx.textAlign = "left";
-    ctx.fillText("Zerro's Game", pos.x + 10, pos.y + size.height/2 + 7);
+    ctx.fillText(room.name, pos.x + 10, pos.y + size.height/2 + 7);
     ctx.fillText("Continent", pos.x + 400, pos.y + size.height/2 + 7);
     ctx.fillText("No", pos.x + 600, pos.y + size.height/2 + 7);
     ctx.fillText("1/8", pos.x + 700, pos.y + size.height/2 + 7);

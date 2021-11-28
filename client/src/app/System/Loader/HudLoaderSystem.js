@@ -136,17 +136,6 @@ export class HudLoaderSystem extends System {
       .addComponent(Size, {width: 800, height: 30})
       .addComponent(LobbyScene)
       .addComponent(Scene, {value: SceneType.LOBBY});
-
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.LOBBY_ROOM_ROW})
-      .addComponent(HudHoverable)
-      .addComponent(HudSelectable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 400, y: 120})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 800, height: 30})
-      .addComponent(LobbyScene)
-      .addComponent(Scene, {value: SceneType.LOBBY});
     
     this.world
       .createEntity()

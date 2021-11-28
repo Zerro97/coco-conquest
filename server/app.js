@@ -14,9 +14,13 @@ const registerTileHandler = require("./events/tile");
 const registerUnitHandler = require("./events/unit");
 const registerBuildingHandler = require("./events/building");
 
+// Event Types
+const EventType = require("./constant/event");
+
 const onConnection = (socket) => {
   console.log('Made socket connection', socket.id);
 
+  // Register socket handlers
   registerRoomHandler(io, socket);
   registerTileHandler(io, socket);
   registerUnitHandler(io, socket);

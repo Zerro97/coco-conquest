@@ -3,9 +3,13 @@ const EventType = require("../constant/event");
 module.exports = (io, socket) => {
   let rooms = {};
 
+  // Called when player just connected to server
+  const onConnect = () => {
+    socket.emit(EventType.CONNECTED, rooms);
+  }
+
   const createRoom = (data) => {
     let roomExist = false;
-    console.log(data);
 
     // Check if given room exist
     for(const room in rooms) {
@@ -18,7 +22,7 @@ module.exports = (io, socket) => {
     if(!roomExist) {
       //socket.leave(socket.room);
       socket.join(data.roomId);
-      socket.emit(EventType.ROOM_CREATED, data);
+      socket.broadcast.emit(EventType.ROOM_CREATED, data);
     } else {
       // TODO: throw error
     }
@@ -43,6 +47,7 @@ module.exports = (io, socket) => {
     }
   }
 
+  socket.on(EventType.CONNECTING, onConnect);
   socket.on(EventType.CREATING_ROOM, createRoom);
   socket.on(EventType.JOINING_ROOM, joinRoom);
 }
