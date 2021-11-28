@@ -1,6 +1,7 @@
 import { System } from "../../../Library/Ecsy";
-import { CurrentHudSelect, SceneStatus, MenuHud, Team, SocketEvents } from "../../../Component";
+import { CurrentHudSelect, SceneStatus, MenuHud, Team, SocketEvents, Room } from "../../../Component";
 import { MenuHudType, SceneType } from "../../../Type";
+import { getRandomString } from "../../../Util";
 
 export class MenuSystem extends System {
 	// This method will get called on every frame by default
@@ -83,8 +84,23 @@ export class MenuSystem extends System {
 
 				// Multi Player Set Up Scene
 				case MenuHudType.MULTI_SETUP_GO_BACK_BUTTON: {
-					console.log("IN");
 					scene.currentScene = SceneType.LOBBY;
+					break;
+				}
+
+        case MenuHudType.MULTI_CONFIRM_GAME_BUTTON: {
+          this.world
+            .createEntity()
+            .addComponent(Room, {
+              roomId: getRandomString(6),
+              roomName: document.getElementById(MenuHudType.MULTI_NAME_INPUT).value,
+              roomPass: "",
+              creatorName: "",
+              curPlayerCount: 1,
+              maxPlayerCount: 6,
+            });
+          socketAction.creatingRoom = true;
+					scene.currentScene = SceneType.MULTI_STAGE_GAME;
 					break;
 				}
 			}

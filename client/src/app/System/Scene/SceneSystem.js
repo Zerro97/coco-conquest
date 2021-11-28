@@ -44,6 +44,20 @@ export class SceneSystem extends System {
           this.stopGame();
           this.startMenu();
         }
+
+        // Set visibility of input huds
+        switch(scene.currentScene) {
+          case SceneType.MULTI_SETUP_GAME: {
+            let input = document.getElementById(MenuHudType.MULTI_NAME_INPUT);
+            input.style.display = "block";
+
+            break;
+          }
+          default: {
+            let input = document.getElementById(MenuHudType.MULTI_NAME_INPUT);
+            input.style.display = "none";
+          }
+        }
     }
   }
 
@@ -97,7 +111,8 @@ export class SceneSystem extends System {
 
   /**
    * On scene change, add all the huds associated with the scene
-   * HudSelectable component
+   * HudSelectable component so that they can be selected
+   * when at the scene they are associated with
    */
   updateHudInScene(scene) {
     this.queries.menuHuds.results.forEach(hud => {
@@ -105,7 +120,7 @@ export class SceneSystem extends System {
     });
 
     this.queries.menuHuds.results.forEach(hud => {
-        let hudScene = hud.getComponent(Scene).value;
+        let hudScene = hud.getComponent(Scene)?.value;
 
         if(hudScene === scene) {
             hud.addComponent(HudSelectable);

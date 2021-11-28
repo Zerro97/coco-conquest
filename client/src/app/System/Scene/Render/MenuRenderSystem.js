@@ -35,7 +35,9 @@ import {
     drawLobbyFrame,
     drawButton,
     drawHoveringButton,
-    drawMultiSetUpFrame
+    drawMultiSetUpFrame,
+    drawMultiSetUpTitle,
+    drawMultiSetUpLabels
 } from "../../../Util";
 
 export class MenuRenderSystem extends System {
@@ -345,7 +347,9 @@ export class MenuRenderSystem extends System {
     }
 
     drawMultiSetUpGame() {
-        drawMultiSetUpFrame(this.ctx, {x: this.canvasWidth/2 - 300, y: 60}, { width: 600, height: 700 });
+        drawMultiSetUpFrame(this.ctx, {x: this.canvasWidth/2 - 250, y: 60}, { width: 500, height: 700 });
+        drawMultiSetUpTitle(this.ctx, {x: this.canvasWidth/2, y: 100});
+        drawMultiSetUpLabels(this.ctx, {x: this.canvasWidth/2 - 60, y: 185});
 
         this.queries.multiSetUpHud.results.forEach(hud => {
             const type = hud.getComponent(MenuHud).type;

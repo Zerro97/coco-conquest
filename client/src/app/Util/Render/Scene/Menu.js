@@ -276,6 +276,24 @@ export function drawMultiSetUpFrame(ctx, pos, size) {
     ctx.stroke();
 }
 
+export function drawMultiSetUpTitle(ctx, pos) {
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+  ctx.textAlign = "center";
+  ctx.fillText("Set Up Game", pos.x, pos.y);
+}
+
+export function drawMultiSetUpLabels(ctx, pos) {
+  ctx.font = "20px Arial";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+  ctx.textAlign = "right";
+  ctx.fillText("Room Name: ", pos.x, pos.y);
+  ctx.fillText("Map Type: ", pos.x, pos.y + 50);
+  ctx.fillText("Map Size: ", pos.x, pos.y + 100);
+  ctx.fillText("Private: ", pos.x, pos.y + 150);
+  ctx.fillText("Password: ", pos.x, pos.y + 200);
+}
+
 export function drawButton(ctx, pos, size, text) {
     drawOutline(ctx, pos, size);
 

@@ -1,5 +1,5 @@
 import { System } from "../../Library/Ecsy";
-import { Turn, GlobalStatus, SocketEvents } from "../../Component";
+import { Turn, GlobalStatus, SocketEvents, Room } from "../../Component";
 import {SocketEvent} from "../../Type";
 import {  } from "../../Util";
 
@@ -44,7 +44,12 @@ export class SocketEmitSystem extends System {
   }
 
   createRoom() {
-    this.socket.emit(SocketEvent.CREATING_ROOM, {roomId: 0, username: "Zerro"});
+    const room = this.queries.rooms.added[0].getComponent(Room);
+
+    if(room) {
+      console.log(room);
+      this.socket.emit(SocketEvent.CREATING_ROOM, room);
+    }
   }
 
   joinRoom() {
@@ -93,5 +98,11 @@ SocketEmitSystem.queries = {
   },
   globalStatus: {
     components: [GlobalStatus]
+  },
+  rooms: {
+    components: [Room],
+    listen: {
+      added: true
+    }
   }
 };

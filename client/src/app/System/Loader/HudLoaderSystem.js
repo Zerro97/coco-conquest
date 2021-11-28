@@ -290,7 +290,7 @@ export class HudLoaderSystem extends System {
       id: MenuHudType.MULTI_NAME_INPUT,
       x: "0px",
       y: "0px",
-      width: "200px",
+      width: "240px",
       height: "",
       padding: "8px",
       borderWidth: "2px",
@@ -307,13 +307,14 @@ export class HudLoaderSystem extends System {
       .createEntity()
       .addComponent(TextInput)
       .addComponent(MenuHud, {type: MenuHudType.MULTI_NAME_INPUT})
+      .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME})
       .addComponent(CanvasPosition, {x: basicTextInput.x, y: basicTextInput.y})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: basicTextInput.width, height: basicTextInput.height});
 
     let setupTextInput = {...basicTextInput};
-    setupTextInput.x = (this.canvasWidth/2 - 100) + "px";
-    setupTextInput.y = "300px";
+    setupTextInput.x = (this.canvasWidth/2 - 40) + "px";
+    setupTextInput.y = "160px";
 
     this.generateDomTextInput(setupTextInput);
   }
@@ -336,7 +337,7 @@ export class HudLoaderSystem extends System {
     input.style.fontFamily = prop.fontFamily;
     input.style.fontStyle = prop.fontStyle;
     input.style.backgroundColor = prop.backgroundColor;
-    //input.style.display = "none";
+    input.style.display = "none";
 
     this.queries.textInputs.results.forEach(inputEntity => {
       const type = inputEntity.getComponent(MenuHud).type;
