@@ -8,7 +8,8 @@ import {
     Shape,
     Size,
     Scene,
-    MenuScene
+    MenuScene,
+    HudClickable
 } from "../../Component";
 import { 
     RegionSystem,
@@ -111,19 +112,19 @@ export class SceneSystem extends System {
 
   /**
    * On scene change, add all the huds associated with the scene
-   * HudSelectable component so that they can be selected
+   * HudClickable component so that they can be clicked
    * when at the scene they are associated with
    */
   updateHudInScene(scene) {
     this.queries.menuHuds.results.forEach(hud => {
-        hud.removeComponent(HudSelectable);
+        hud.removeComponent(HudClickable);
     });
 
     this.queries.menuHuds.results.forEach(hud => {
         let hudScene = hud.getComponent(Scene)?.value;
 
         if(hudScene === scene) {
-            hud.addComponent(HudSelectable);
+            hud.addComponent(HudClickable);
         }
     });
   }

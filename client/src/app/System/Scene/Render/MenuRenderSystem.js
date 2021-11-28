@@ -16,7 +16,8 @@ import {
     LobbyScene, 
     LoadingScene, 
     EndScene,
-    Room
+    Room,
+    CurrentHudSelect
 } from "../../../Component";
 import { SceneType, MenuHudType } from "../../../Type";
 import { 
@@ -37,7 +38,9 @@ import {
     drawHoveringButton,
     drawMultiSetUpFrame,
     drawMultiSetUpTitle,
-    drawMultiSetUpLabels
+    drawMultiSetUpLabels,
+    drawHoveringLobbyRoomRow,
+    drawSelectedLobbyRoomRow
 } from "../../../Util";
 
 export class MenuRenderSystem extends System {
@@ -329,7 +332,9 @@ export class MenuRenderSystem extends System {
                     break;
                 }
                 case MenuHudType.LOBBY_ROOM_ROW: {
-                    drawLobbyRoomRow(this.ctx, pos, size);
+                    const room = hud.getComponent(Room);
+                    drawHoveringLobbyRoomRow(this.ctx, pos, size, room);
+
                     break;
                 }
                 case MenuHudType.LOBBY_GO_BACK_BUTTON: {
@@ -343,6 +348,19 @@ export class MenuRenderSystem extends System {
                 case MenuHudType.LOBBY_SETUP_GAME_BUTTON: {
                     drawHoveringButton(this.ctx, pos, size, "Set Up Game");
                     break;
+                }
+            }
+        });
+
+        this.queries.selectedLobbyHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+
+            switch(type) {
+                case MenuHudType.LOBBY_ROOM_ROW: {
+                    const room = hud.getComponent(Room);
+                    drawSelectedLobbyRoomRow(this.ctx, pos, size, room);
                 }
             }
         });
@@ -446,6 +464,9 @@ MenuRenderSystem.queries = {
     hoveringLobbyHud: {
         components: [CurrentHudHover, MenuHud, LobbyScene]
     },
+    selectedLobbyHud: {
+        components: [CurrentHudSelect, MenuHud, LobbyScene]
+    },
     multiSetUpHud: {
         components: [MenuHud, MultiSetUpScene]
     },
@@ -472,6 +493,6 @@ MenuRenderSystem.queries = {
         components: [CurrentHudHover, MenuHud, EndScene]
     },
     rooms: {
-      components: [Room]
+        components: [Room]
     }
 };

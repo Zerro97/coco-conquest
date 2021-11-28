@@ -16,7 +16,8 @@ import {
   SingleSetUpScene,
   MultiSetUpScene,
   LobbyScene,
-  TextInput
+  TextInput,
+  HudClickable
 } from "../../Component";
 import { HudType, ObjectShape, SceneType, MenuHudType } from "../../Type";
 
@@ -49,7 +50,7 @@ export class HudLoaderSystem extends System {
         .createEntity()
         .addComponent(MenuHud, {type: menuButtonTypes[i]})
         .addComponent(HudHoverable)
-        .addComponent(HudSelectable)
+        .addComponent(HudClickable)
         .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 110, y: 350 + i * 50})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 220, height: 40})
@@ -69,7 +70,7 @@ export class HudLoaderSystem extends System {
         .createEntity()
         .addComponent(MenuHud, {type: singlePlayButtonTypes[i]})
         .addComponent(HudHoverable)
-        .addComponent(HudSelectable)
+        .addComponent(HudClickable)
         .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 110, y: 350 + i * 50})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 220, height: 40})
@@ -83,7 +84,7 @@ export class HudLoaderSystem extends System {
         .createEntity()
         .addComponent(MenuHud, {type: MenuHudType.PLAYER_BOX})
         .addComponent(HudHoverable)
-        .addComponent(HudSelectable)
+        .addComponent(HudClickable)
         .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 500, y: 100 + i * 55})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 260, height: 50})
@@ -94,7 +95,7 @@ export class HudLoaderSystem extends System {
         .createEntity()
         .addComponent(MenuHud, {type: MenuHudType.PLAYER_TEAM_BUTTON})
         .addComponent(HudHoverable)
-        .addComponent(HudSelectable)
+        .addComponent(HudClickable)
         .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 220, y: 100 + i * 55})
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 50, height: 50})
@@ -107,7 +108,7 @@ export class HudLoaderSystem extends System {
       .createEntity()
       .addComponent(MenuHud, {type: MenuHudType.START_BUTTON})
       .addComponent(HudHoverable)
-      .addComponent(HudSelectable)
+      .addComponent(HudClickable)
       .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 330, y: 730})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 220, height: 50})
@@ -118,7 +119,7 @@ export class HudLoaderSystem extends System {
       .createEntity()
       .addComponent(MenuHud, {type: MenuHudType.SINGLE_SETUP_GO_BACK_BUTTON})
       .addComponent(HudHoverable)
-      .addComponent(HudSelectable)
+      .addComponent(HudClickable)
       .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 550, y: 730})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 220, height: 50})
@@ -130,7 +131,7 @@ export class HudLoaderSystem extends System {
       .createEntity()
       .addComponent(MenuHud, {type: MenuHudType.LOBBY_ROOM_HEAD})
       .addComponent(HudHoverable)
-      .addComponent(HudSelectable)
+      .addComponent(HudClickable)
       .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 400, y: 80})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 800, height: 30})
@@ -141,7 +142,7 @@ export class HudLoaderSystem extends System {
       .createEntity()
       .addComponent(MenuHud, {type: MenuHudType.LOBBY_GO_BACK_BUTTON})
       .addComponent(HudHoverable)
-      .addComponent(HudSelectable)
+      .addComponent(HudClickable)
       .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 420, y: 800})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 200, height: 50})
@@ -152,7 +153,7 @@ export class HudLoaderSystem extends System {
       .createEntity()
       .addComponent(MenuHud, {type: MenuHudType.LOBBY_JOIN_GAME_BUTTON})
       .addComponent(HudHoverable)
-      .addComponent(HudSelectable)
+      .addComponent(HudClickable)
       .addComponent(CanvasPosition, {x: this.canvasWidth/2, y: 800})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 200, height: 50})
@@ -163,7 +164,7 @@ export class HudLoaderSystem extends System {
       .createEntity()
       .addComponent(MenuHud, {type: MenuHudType.LOBBY_SETUP_GAME_BUTTON})
       .addComponent(HudHoverable)
-      .addComponent(HudSelectable)
+      .addComponent(HudClickable)
       .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 220, y: 800})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 200, height: 50})
@@ -175,7 +176,7 @@ export class HudLoaderSystem extends System {
       .createEntity()
       .addComponent(MenuHud, {type: MenuHudType.MULTI_CONFIRM_GAME_BUTTON})
       .addComponent(HudHoverable)
-      .addComponent(HudSelectable)
+      .addComponent(HudClickable)
       .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 100, y: 800})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 200, height: 50})
@@ -186,7 +187,7 @@ export class HudLoaderSystem extends System {
       .createEntity()
       .addComponent(MenuHud, {type: MenuHudType.MULTI_SETUP_GO_BACK_BUTTON})
       .addComponent(HudHoverable)
-      .addComponent(HudSelectable)
+      .addComponent(HudClickable)
       .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 300, y: 800})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 200, height: 50})
@@ -200,7 +201,7 @@ export class HudLoaderSystem extends System {
       .createEntity()
       .addComponent(Hud, {type: HudType.TURN_BUTTON})
       .addComponent(HudHoverable)
-      .addComponent(HudSelectable)
+      .addComponent(HudClickable)
       .addComponent(CanvasPosition, {x: this.canvasWidth - 90, y: this.canvasHeight - 90})
       .addComponent(Shape, {type: ObjectShape.CIRCLE})
       .addComponent(Radius, {value: 60});
@@ -209,7 +210,7 @@ export class HudLoaderSystem extends System {
     this.world
       .createEntity()
       .addComponent(Hud, {type: HudType.MAP})
-      .addComponent(HudSelectable)
+      .addComponent(HudClickable)
       .addComponent(CanvasPosition, {x: 0, y: this.canvasHeight - 170})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 300, height: 170});
@@ -218,7 +219,7 @@ export class HudLoaderSystem extends System {
     this.world
       .createEntity()
       .addComponent(Hud, {type: HudType.PRODUCTION_PANEL})
-      .addComponent(HudSelectable)
+      .addComponent(HudClickable)
       .addComponent(CanvasPosition, {x: 0, y: 50})
       .addComponent(Shape, {type: ObjectShape.RECTANGLE})
       .addComponent(Size, {width: 300, height: this.canvasHeight - 220});

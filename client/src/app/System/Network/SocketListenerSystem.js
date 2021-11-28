@@ -27,7 +27,23 @@ export class SocketListenerSystem extends System {
 
   onConnect() {
     this.socket.on(SocketEvent.CONNECTED, data => {
-      console.log(data);
+      // Create rooms that are currently stored on server
+      let roomCount = 0;
+      for(const key in data) {
+        this.world
+          .createEntity()
+          .addComponent(MenuHud, {type: MenuHudType.LOBBY_ROOM_ROW})
+          .addComponent(HudHoverable)
+          .addComponent(HudSelectable)
+          .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 400, y: 120 + roomCount * 35})
+          .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+          .addComponent(Size, {width: 800, height: 30})
+          .addComponent(LobbyScene)
+          .addComponent(Scene, {value: SceneType.LOBBY})
+          .addComponent(Room, data[key]);
+        
+        roomCount += 1;
+      }
     });
   }
 
@@ -56,7 +72,7 @@ export class SocketListenerSystem extends System {
 
   onJoinRoom() {
     this.socket.on(SocketEvent.ROOM_JOINED, data => {
-      console.log(data);
+
     });
   }
 

@@ -16,16 +16,14 @@ import {
   IconImage, 
   Turn,
   CurrentHudHover,
-  CurrentHudSelect,
   CanvasPosition,
   Hud,
   Radius,
   Size,
   Team
 } from "../../../../Component";
-import { ActionType, BackgroundType, IconType, HudType, BuildingType } from "../../../../Type";
+import { ActionType, IconType, HudType, BuildingType } from "../../../../Type";
 import { 
-  roundRect, 
   arcToPoint, 
   drawTurnButton, 
   drawHoveringTurnButton, 
@@ -438,8 +436,5 @@ HudRenderSystem.queries = {
   },
   currentHudHover: {
     components: [Hud, CurrentHudHover]
-  },
-  currentHudSelect: {
-    components: [Hud, CurrentHudSelect]
   }
 };

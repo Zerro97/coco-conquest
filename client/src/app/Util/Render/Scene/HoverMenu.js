@@ -148,3 +148,22 @@ export function drawHoveringButton(ctx, pos, size, text) {
     ctx.textAlign = "center";
     ctx.fillText(text, pos.x + size.width/2, pos.y + size.height/2 + 10);
 }
+
+export function drawHoveringLobbyRoomRow(ctx, pos, size, room) {
+    ctx.beginPath();
+    ctx.rect(pos.x, pos.y, size.width, size.height);
+    ctx.closePath();
+
+    ctx.fillStyle= "rgb(36, 49, 91)";
+    ctx.fill();
+    ctx.strokeStyle = "rgb(176, 189, 231)";
+    ctx.stroke();
+
+    ctx.font = "18px Arial";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.textAlign = "left";
+    ctx.fillText(room.roomName, pos.x + 10, pos.y + size.height/2 + 7);
+    ctx.fillText("Continent", pos.x + 400, pos.y + size.height/2 + 7);
+    ctx.fillText("No", pos.x + 600, pos.y + size.height/2 + 7);
+    ctx.fillText("1/6", pos.x + 700, pos.y + size.height/2 + 7);
+}

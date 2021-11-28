@@ -1,8 +1,8 @@
 const EventType = require("../constant/event");
 
-module.exports = (io, socket) => {
-  let rooms = {};
+let rooms = {};
 
+module.exports = (io, socket) => {
   // Called when player just connected to server
   const onConnect = () => {
     socket.emit(EventType.CONNECTED, rooms);
@@ -20,6 +20,7 @@ module.exports = (io, socket) => {
 
     // If room does not exist create one
     if(!roomExist) {
+      rooms[data.roomId] = data;
       //socket.leave(socket.room);
       socket.join(data.roomId);
       socket.broadcast.emit(EventType.ROOM_CREATED, data);

@@ -258,10 +258,10 @@ export function drawLobbyRoomRow(ctx, pos, size, room = {room: "default"}) {
     ctx.font = "18px Arial";
     ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
     ctx.textAlign = "left";
-    ctx.fillText(room.name, pos.x + 10, pos.y + size.height/2 + 7);
+    ctx.fillText(room.roomName, pos.x + 10, pos.y + size.height/2 + 7);
     ctx.fillText("Continent", pos.x + 400, pos.y + size.height/2 + 7);
     ctx.fillText("No", pos.x + 600, pos.y + size.height/2 + 7);
-    ctx.fillText("1/8", pos.x + 700, pos.y + size.height/2 + 7);
+    ctx.fillText("1/6", pos.x + 700, pos.y + size.height/2 + 7);
 }
 
 export function drawMultiSetUpFrame(ctx, pos, size) {

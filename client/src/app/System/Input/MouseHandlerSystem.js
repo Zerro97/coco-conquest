@@ -7,7 +7,6 @@ import {
   CurrentHudHover,
   CurrentHudSelect,
   Hoverable,
-  MapPosition,
   MouseStatus,
   Radius,
   ScreenStatus,
@@ -20,7 +19,9 @@ import {
   PreviousSelect,
   Shape,
   HudHoverable,
-  HudSelectable
+  HudSelectable,
+  HudClickable,
+  CurrentHudClick
 } from "../../Component";
 import { isInsideCircle, isInsideHexagon, isInsideRectangle } from "../../Util";
 import { ObjectShape, TileSize, ActionType } from "../../Type";
@@ -35,12 +36,13 @@ export class MouseHandlerSystem extends System {
 
     let isHudHovering = this.checkHudHover();
     let isHudSelecting = this.checkHudSelect();
+    let isHudClicking = this.checkHudClick();
 
     if(!isHudHovering) {
       this.checkHover();
     }
 
-    if(!isHudSelecting) {
+    if(!isHudSelecting && !isHudClicking) {
       this.checkSelect();
       this.checkRightSelect();
     }
@@ -170,10 +172,10 @@ export class MouseHandlerSystem extends System {
     const mouseX = mouseStatus.x;
     const mouseY = mouseStatus.y;
 
-    this.queries.hudSelectableObjects.results.forEach(object => {
-      object.removeComponent(CurrentHudSelect);
-
-      if (mouseStatus.isMouseClicked) {
+    if(mouseStatus.isMouseClicked) {
+      this.queries.hudSelectableObjects.results.forEach(object => {
+        object.removeComponent(CurrentHudSelect);
+        
         let canvasPos = object.getComponent(CanvasPosition);
         let objectShape = object.getComponent(Shape).type;
   
@@ -236,10 +238,89 @@ export class MouseHandlerSystem extends System {
             break;
           }
         }
+      });
+    }
+
+    return isSelecting;
+  }
+
+  checkHudClick() {
+    let isClicking = false;
+
+    const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+    const mouseX = mouseStatus.x;
+    const mouseY = mouseStatus.y;
+
+    this.queries.hudClickableObjects.results.forEach(object => {
+      object.removeComponent(CurrentHudClick);
+
+      if (mouseStatus.isMouseClicked) {
+        let canvasPos = object.getComponent(CanvasPosition);
+        let objectShape = object.getComponent(Shape).type;
+  
+        switch (objectShape) {
+          case ObjectShape.RECTANGLE: {
+            let size = object.getComponent(Size);
+            if (
+              isInsideRectangle(
+                canvasPos.x,
+                canvasPos.y,
+                mouseX,
+                mouseY,
+                size.width,
+                size.height
+              )
+            ) {
+              isClicking = true;
+
+              if (!object.hasComponent(CurrentHudClick)) {
+                object.addComponent(CurrentHudClick);
+              }
+            }
+            break;
+          }
+          case ObjectShape.CIRCLE: {
+            let radius = object.getMutableComponent(Radius).value;
+            if (
+              isInsideCircle(
+                canvasPos.x,
+                canvasPos.y,
+                mouseX,
+                mouseY,
+                radius
+              )
+            ) {
+              isClicking = true;
+
+              if (!object.hasComponent(CurrentHudClick)) {
+                object.addComponent(CurrentHudClick);
+              }
+            }
+            break;
+          }
+          case ObjectShape.HEXAGON: {
+            if (
+              isInsideHexagon(
+                canvasPos.x,
+                canvasPos.y,
+                mouseX,
+                mouseY,
+                TileSize.REGULAR
+              )
+            ) {
+              isClicking = true;
+
+              if (!object.hasComponent(CurrentHudClick)) {
+                object.addComponent(CurrentHudClick);
+              }
+            }
+            break;
+          }
+        }
       }
     });
 
-    return isSelecting;
+    return isClicking;
   }
 
   checkHover() {
@@ -409,10 +490,14 @@ MouseHandlerSystem.queries = {
   rightSelectableObjects: {
     components: [RightSelectable, CanvasPosition, Shape],
   },
+
   hudHoverableObjects: {
     components: [HudHoverable, CanvasPosition]
   },
   hudSelectableObjects: {
     components: [HudSelectable, CanvasPosition]
+  },
+  hudClickableObjects: {
+    components: [HudClickable, CanvasPosition]
   }
 };

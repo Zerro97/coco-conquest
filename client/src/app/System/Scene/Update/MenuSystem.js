@@ -1,6 +1,7 @@
 import { System } from "../../../Library/Ecsy";
 import { 
   CurrentHudSelect, 
+  CurrentHudClick,
   SceneStatus, 
   MenuHud, 
   Team, 
@@ -12,7 +13,7 @@ import {
   Shape,
   Size,
   LobbyScene,
-  Scene
+  Scene,
 } from "../../../Component";
 import { MenuHudType, SceneType, ObjectShape } from "../../../Type";
 import { getRandomString } from "../../../Util";
@@ -20,16 +21,16 @@ import { getRandomString } from "../../../Util";
 export class MenuSystem extends System {
 	// This method will get called on every frame by default
 	execute(delta, time) {
-        this.checkMenuHudAction();
+        this.checkMenuHudClick();
     }
 
-	checkMenuHudAction() {
-		const selectedMenu = this.queries.selectedMenuHud.results[0];
+	checkMenuHudClick() {
+		const clickedMenu = this.queries.clickedMenuHud.results[0];
 		const socketAction = this.queries.socketAction.results[0].getMutableComponent(SocketEvents);
 		
-		if(selectedMenu) {
+		if(clickedMenu) {
 			const scene = this.queries.sceneStatus.results[0].getMutableComponent(SceneStatus);
-			const type = selectedMenu.getComponent(MenuHud).type;
+			const type = clickedMenu.getComponent(MenuHud).type;
 
 			switch(type) {
 				// Main Menu
@@ -65,7 +66,7 @@ export class MenuSystem extends System {
 
 				// Single Player Set Up Scene
 				case MenuHudType.PLAYER_TEAM_BUTTON: {
-					let team = selectedMenu.getMutableComponent(Team);
+					let team = clickedMenu.getMutableComponent(Team);
 					team.value = (team.value + 1) % 4;
 
 					break;
@@ -102,29 +103,29 @@ export class MenuSystem extends System {
 					break;
 				}
 
-        case MenuHudType.MULTI_CONFIRM_GAME_BUTTON: {
-          const roomCount = this.queries.lobbyHud.results.length;
+				case MenuHudType.MULTI_CONFIRM_GAME_BUTTON: {
+					const roomCount = this.queries.lobbyHud.results.length;
 
-          this.world
-            .createEntity()
-            .addComponent(MenuHud, {type: MenuHudType.LOBBY_ROOM_ROW})
-            .addComponent(HudHoverable)
-            .addComponent(HudSelectable)
-            .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 400, y: 120 + roomCount * 35})
-            .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-            .addComponent(Size, {width: 800, height: 30})
-            .addComponent(LobbyScene)
-            .addComponent(Scene, {value: SceneType.LOBBY})
-            .addComponent(Room, {
-              roomId: getRandomString(6),
-              roomName: document.getElementById(MenuHudType.MULTI_NAME_INPUT).value,
-              roomPass: "",
-              creatorName: "",
-              curPlayerCount: 1,
-              maxPlayerCount: 6,
-            });
+					this.world
+						.createEntity()
+						.addComponent(MenuHud, {type: MenuHudType.LOBBY_ROOM_ROW})
+						.addComponent(HudHoverable)
+						.addComponent(HudSelectable)
+						.addComponent(CanvasPosition, {x: this.canvasWidth/2 - 400, y: 120 + roomCount * 35})
+						.addComponent(Shape, {type: ObjectShape.RECTANGLE})
+						.addComponent(Size, {width: 800, height: 30})
+						.addComponent(LobbyScene)
+						.addComponent(Scene, {value: SceneType.LOBBY})
+						.addComponent(Room, {
+							roomId: getRandomString(6),
+							roomName: document.getElementById(MenuHudType.MULTI_NAME_INPUT).value,
+							roomPass: "",
+							creatorName: "",
+							curPlayerCount: 1,
+							maxPlayerCount: 6,
+						});
 
-          socketAction.creatingRoom = true;
+					socketAction.creatingRoom = true;
 					scene.currentScene = SceneType.MULTI_STAGE_GAME;
 
 					break;
@@ -140,12 +141,15 @@ MenuSystem.queries = {
 		components: [SceneStatus]
 	},
 	selectedMenuHud: {
-    components: [CurrentHudSelect, MenuHud]
-  },
+		components: [CurrentHudSelect, MenuHud]
+	},
+	clickedMenuHud: {
+		components: [CurrentHudClick, MenuHud]
+	},
 	socketAction: {
 		components: [SocketEvents]
 	},
-  lobbyHud: {
-    components: [MenuHud, LobbyScene]
-  },
+	lobbyHud: {
+		components: [MenuHud, LobbyScene]
+	},
 };

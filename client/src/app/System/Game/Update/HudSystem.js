@@ -1,5 +1,5 @@
 import { System } from "../../../Library/Ecsy";
-import { Hud, CurrentHudSelect, Turn } from "../../../Component";
+import { Hud, CurrentHudClick, Turn } from "../../../Component";
 import { HudType } from "../../../Type";
 
 export class HudSystem extends System {
@@ -8,7 +8,7 @@ export class HudSystem extends System {
   }
 
   checkHudSelect() {
-    const hud = this.queries.currentHudSelect.results[0];
+    const hud = this.queries.currentHudClick.results[0];
 
     if(hud) {
       const type = hud.getComponent(Hud).type;
@@ -26,8 +26,8 @@ export class HudSystem extends System {
 }
 
 HudSystem.queries = {
-  currentHudSelect: {
-    components: [Hud, CurrentHudSelect]
+  currentHudClick: {
+    components: [Hud, CurrentHudClick]
   },
   turn: {
     components: [Turn]
