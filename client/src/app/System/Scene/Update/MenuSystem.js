@@ -105,6 +105,7 @@ export class MenuSystem extends System {
 
 				case MenuHudType.MULTI_CONFIRM_GAME_BUTTON: {
 					const roomCount = this.queries.lobbyHud.results.length;
+					console.log("Calling Confirm Game Button");
 
 					this.world
 						.createEntity()
@@ -128,6 +129,16 @@ export class MenuSystem extends System {
 					socketAction.creatingRoom = true;
 					scene.currentScene = SceneType.MULTI_STAGE_GAME;
 
+					break;
+				}
+
+				// Multi Player Stage Scene
+				case MenuHudType.MULTI_STAGE_START_BUTTON: {
+					scene.currentScene = SceneType.GAME;
+					break;
+				}
+				case MenuHudType.MULTI_STAGE_LEAVE_BUTTON: {
+					scene.currentScene = SceneType.LOBBY;
 					break;
 				}
 			}

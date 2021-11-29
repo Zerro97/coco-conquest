@@ -8,5 +8,5 @@ Room.schema = {
     roomPass: { type: Types.String, default: "" },
     creatorName: { type: Types.String, default: "" },
     curPlayerCount: { type: Types.Number, default: 1 },
-    maxPlayerCount: { type: Types.Number, default: 6 },
+    maxPlayerCount: { type: Types.Number, default: 6 }
 };

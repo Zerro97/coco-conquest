@@ -47,7 +47,14 @@ export class SocketEmitSystem extends System {
     const room = this.queries.rooms.added[0].getComponent(Room);
 
     if(room) {
-      this.socket.emit(SocketEvent.CREATING_ROOM, room);
+      this.socket.emit(SocketEvent.CREATING_ROOM, {
+        roomId: room.roomId,
+        roomName: room.roomName,
+        roomPass: room.roomPass,
+        creatorName: room.creatorName,
+        curPlayerCount: room.curPlayerCount,
+        maxPlayerCount: room.maxPlayerCount
+      });
     }
   }
 

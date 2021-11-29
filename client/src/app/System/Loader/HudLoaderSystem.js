@@ -17,7 +17,8 @@ import {
   MultiSetUpScene,
   LobbyScene,
   TextInput,
-  HudClickable
+  HudClickable,
+  MultiStageScene
 } from "../../Component";
 import { HudType, ObjectShape, SceneType, MenuHudType } from "../../Type";
 
@@ -193,6 +194,29 @@ export class HudLoaderSystem extends System {
       .addComponent(Size, {width: 200, height: 50})
       .addComponent(MultiSetUpScene)
       .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME});
+
+    // Multiplayer Stage Scene
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.MULTI_STAGE_START_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudClickable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 150, y: 800})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 200, height: 50})
+      .addComponent(MultiStageScene)
+      .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME});
+
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.MULTI_STAGE_LEAVE_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudClickable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 350, y: 800})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 200, height: 50})
+      .addComponent(MultiStageScene)
+      .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME});
   }
 
   generateHuds() {

@@ -20,6 +20,7 @@ module.exports = (io, socket) => {
 
     // If room does not exist create one
     if(!roomExist) {
+      console.log(data);
       rooms[data.roomId] = data;
       //socket.leave(socket.room);
       socket.join(data.roomId);

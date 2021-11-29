@@ -40,7 +40,10 @@ import {
     drawMultiSetUpTitle,
     drawMultiSetUpLabels,
     drawHoveringLobbyRoomRow,
-    drawSelectedLobbyRoomRow
+    drawSelectedLobbyRoomRow,
+    drawStageFrame,
+    drawStageHead,
+    drawStageRows
 } from "../../../Util";
 
 export class MenuRenderSystem extends System {
@@ -408,7 +411,47 @@ export class MenuRenderSystem extends System {
     }
 
     drawMultiStageGame() {
+        drawStageFrame(this.ctx, {x: this.canvasWidth/2 - 350, y: 60}, { width: 700, height: 700 });
+        drawStageHead(this.ctx, {x: this.canvasWidth/2 - 350, y: 100}, { width: 700, height: 30 });
 
+        for(let i=0; i<6; i++) {
+            drawStageRows(this.ctx, {x: this.canvasWidth/2 - 350, y: 130 + i * 50});
+        }
+        
+        this.queries.multiStageHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+            
+            switch(type) {
+                case MenuHudType.MULTI_STAGE_START_BUTTON: {
+                    drawButton(this.ctx, pos, size, "Start Game");
+                    break;
+                }
+                case MenuHudType.MULTI_STAGE_LEAVE_BUTTON: {
+                    drawButton(this.ctx, pos, size, "Leave");
+                    break;
+                }
+            }
+        });
+
+        // Hovering Menu
+        this.queries.hoveringMultiStageHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+            
+            switch(type) {
+                case MenuHudType.MULTI_STAGE_START_BUTTON: {
+                    drawHoveringButton(this.ctx, pos, size, "Start Game");
+                    break;
+                }
+                case MenuHudType.MULTI_STAGE_LEAVE_BUTTON: {
+                    drawHoveringButton(this.ctx, pos, size, "Leave");
+                    break;
+                }
+            }
+        });
     }
 
     drawLoadingGame() {
