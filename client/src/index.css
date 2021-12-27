@@ -231,16 +231,3 @@ category: legacy browsers
   box-sizing: border-box;
   padding: 0;
 }
-
-/*
-  Custom
-*/
-input:focus {
-  outline: none;
-}
-
-#input-layer {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-}

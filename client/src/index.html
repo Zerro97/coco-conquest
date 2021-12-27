@@ -12,6 +12,31 @@
     <meta property="og:description" content="A simple webpack boilerplate...">
     <meta property="og:url" content="https://webpack.js.org/">
     <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3094/3094464.png">
+
+    <style>
+      body {
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      input:focus {
+        outline: none;
+      }
+
+      #input-layer {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      #main {
+        z-index: 99999;
+      }
+    </style>
 </head>
 <body>
     <div id="input-layer"></div>

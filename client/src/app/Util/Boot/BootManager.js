@@ -96,6 +96,7 @@ export class BootManager {
             })
             .registerSystem(System.MouseListenerSystem, {
                 priority: -10,
+                canvas: this.canvas,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })

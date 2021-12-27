@@ -12,7 +12,7 @@ export class MouseListenerSystem extends System {
 			e.preventDefault();
 		}, false);
 
-		document.addEventListener("pointerdown", (e) => {
+		this.canvas.addEventListener("pointerdown", (e) => {
 			const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
 
 			if(e.button === 0) {
@@ -24,7 +24,7 @@ export class MouseListenerSystem extends System {
 			}
 		});
 
-		document.addEventListener("pointerup", (e) => {
+		this.canvas.addEventListener("pointerup", (e) => {
 			const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
 
 			if(e.button === 0) {
@@ -34,10 +34,12 @@ export class MouseListenerSystem extends System {
 			}
 		});
 
-		document.addEventListener("pointermove", (e) => {
+		this.canvas.addEventListener("pointermove", (e) => {
 			const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
-			mouseStatus.x = e.clientX;
-			mouseStatus.y = e.clientY;
+      let offset = e.target.getBoundingClientRect();
+
+			mouseStatus.x = e.clientX - offset.left;
+			mouseStatus.y = e.clientY - offset.top;
 
 			const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
 			let translation = { x: screenStatus.x, y: screenStatus.y };
@@ -54,7 +56,7 @@ export class MouseListenerSystem extends System {
 			mouseStatus.mapY = mousePos.y;
 		});
 
-		document.addEventListener("wheel", (e) => {
+		this.canvas.addEventListener("wheel", (e) => {
 			const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
 			mouseStatus.wheelY = e.deltaY * 0.001;
 		});
