@@ -4,7 +4,7 @@
   "description": "A turn based game with ai based opponent",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server  --config ./config/webpack.dev.js --open",
+    "start": "webpack-dev-server  --config ./config/webpack.dev.js --open --allowed-hosts all",
     "build": "webpack --config ./config/webpack.prod.js",
     "lint": "eslint src --ext .js",
     "fix": "eslint src --ext .js --fix",

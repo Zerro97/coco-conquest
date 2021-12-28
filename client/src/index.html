@@ -15,12 +15,13 @@
 
     <style>
       body {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
         background-color: black;
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 100vw;
-        height: 100vh;
       }
 
       input:focus {
@@ -35,11 +36,14 @@
 
       #main {
         z-index: 99999;
+        min-width: 1366px;
+        min-height: 768px;
+        overflow: hidden;
       }
     </style>
 </head>
 <body>
-    <div id="input-layer"></div>
-    <canvas id="main"></canvas>
+  <div id="input-layer"></div>
+  <canvas id="main"></canvas>
 </body>
 </html>

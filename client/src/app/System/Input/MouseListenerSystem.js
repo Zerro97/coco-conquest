@@ -36,10 +36,11 @@ export class MouseListenerSystem extends System {
 
 		this.canvas.addEventListener("pointermove", (e) => {
 			const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
-      let offset = e.target.getBoundingClientRect();
+			let offset = e.target.getBoundingClientRect();
 
 			mouseStatus.x = e.clientX - offset.left;
 			mouseStatus.y = e.clientY - offset.top;
+			console.log(mouseStatus);
 
 			const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
 			let translation = { x: screenStatus.x, y: screenStatus.y };
