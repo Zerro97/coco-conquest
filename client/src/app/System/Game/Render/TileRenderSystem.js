@@ -62,8 +62,7 @@ export class TileRenderSystem extends System {
   }
 
   drawHoverTile() {
-    const canvasPos =
-      this.queries.currentHover.results[0]?.getMutableComponent(CanvasPosition);
+    const canvasPos = this.queries.currentHover.results[0]?.getMutableComponent(CanvasPosition);
 
     if (canvasPos) {
       drawHoveringTile(this.ctx, canvasPos.x, canvasPos.y);
