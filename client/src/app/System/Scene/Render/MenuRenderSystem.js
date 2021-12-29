@@ -23,6 +23,8 @@ import { SceneType, MenuHudType } from "../../../Type";
 import { 
     drawMenuButton, 
     drawHoverMenuButton, 
+    drawSettingPanels,
+    drawSettingButton,
     drawPlayerBox, 
     drawStartButton, 
     drawSetupPanels,
@@ -170,7 +172,50 @@ export class MenuRenderSystem extends System {
     }
 
     drawSetting() {
+        drawSettingPanels(this.ctx, this.canvas);
 
+        this.queries.settingHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+
+            switch(type) {
+                case MenuHudType.SETTING_GAME_BUTTON: {
+                    drawSettingButton(this.ctx, pos, size, "Game");
+                    break;
+                }
+                case MenuHudType.SETTING_GRAPHICS_BUTTON: {
+                    drawSettingButton(this.ctx, pos, size, "Graphics");
+                    break;
+                }
+                case MenuHudType.SETTING_AUDIO_BUTTON: {
+                    drawSettingButton(this.ctx, pos, size, "Audio");
+                    break;
+                }
+            }
+        });
+
+        // Hovering Menu
+        this.queries.hoveringSettingHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+
+            switch(type) {
+                case MenuHudType.SETTING_GAME_BUTTON: {
+                    drawSettingButton(this.ctx, pos, size, "Game");
+                    break;
+                }
+                case MenuHudType.SETTING_GRAPHICS_BUTTON: {
+                    drawSettingButton(this.ctx, pos, size, "Graphics");
+                    break;
+                }
+                case MenuHudType.SETTING_AUDIO_BUTTON: {
+                    drawSettingButton(this.ctx, pos, size, "Audio");
+                    break;
+                }
+            }
+        });
     }
 
     drawSinglePlay() {

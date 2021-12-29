@@ -18,7 +18,8 @@ import {
   LobbyScene,
   TextInput,
   HudClickable,
-  MultiStageScene
+  MultiStageScene,
+  SettingScene
 } from "../../Component";
 import { HudType, ObjectShape, SceneType, MenuHudType } from "../../Type";
 
@@ -126,6 +127,26 @@ export class HudLoaderSystem extends System {
       .addComponent(Size, {width: 220, height: 50})
       .addComponent(SingleSetUpScene)
       .addComponent(Scene, {value: SceneType.SINGLE_SETUP_GAME});
+
+    // Set Up Setting
+    let settingButtonTypes = [
+      MenuHudType.SETTING_GAME_BUTTON,
+      MenuHudType.SETTING_GRAPHICS_BUTTON,
+      MenuHudType.SETTING_AUDIO_BUTTON,
+    ];
+
+    for(let i=0; i<3; i++) {
+      this.world
+        .createEntity()
+        .addComponent(MenuHud, {type: settingButtonTypes[i]})
+        .addComponent(HudHoverable)
+        .addComponent(HudClickable)
+        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 485, y: 70 + i * 60})
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 200, height: 50})
+        .addComponent(SettingScene)
+        .addComponent(Scene, {value: SceneType.SETTING});
+    }
 
     // Set Up Lobby
     this.world

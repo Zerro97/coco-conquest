@@ -61,6 +61,51 @@ export function drawMenuButton(ctx, pos, size, text) {
     ctx.fillText(text, pos.x + size.width/2, pos.y + size.height/2 + 7);
 }
 
+export function drawSettingButton(ctx, pos, size, text) {
+    drawOutline(ctx, pos, size);
+    
+    const grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y+size.height);
+    grad.addColorStop(0, "rgb(16, 29, 71)");
+    grad.addColorStop(0.3, "rgb(36, 49, 91)");
+    grad.addColorStop(0.7, "rgb(36, 49, 91)");
+    grad.addColorStop(1, "rgb(16, 29, 71)");
+
+    ctx.fillStyle = grad;
+    ctx.fillRect(pos.x + 4, pos.y + 4, size.width - 8, size.height - 8);
+
+    ctx.font = "25px Arial";
+    ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+    ctx.fillText(text, pos.x + size.width/2, pos.y + size.height/2 + 10);
+}
+
+export function drawSettingPanels(ctx, canvas) {
+    // Left Panel
+    ctx.beginPath();
+    ctx.moveTo(canvas.width/2 - 500, 50);
+    ctx.lineTo(canvas.width/2 - 270, 50);
+    ctx.lineTo(canvas.width/2 - 270, 700);
+    ctx.lineTo(canvas.width/2 - 500, 700);
+    ctx.lineTo(canvas.width/2 - 500, 50);
+    ctx.closePath();
+
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "rgb(61, 74, 116)";
+    ctx.stroke();
+
+    // Right Panel
+    ctx.beginPath();
+    ctx.moveTo(canvas.width/2 - 220, 50);
+    ctx.lineTo(canvas.width/2 + 500, 50);
+    ctx.lineTo(canvas.width/2 + 500, 700);
+    ctx.lineTo(canvas.width/2 - 220, 700);
+    ctx.lineTo(canvas.width/2 - 220, 50);
+    ctx.closePath();
+
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "rgb(61, 74, 116)";
+    ctx.stroke();
+}
+
 export function drawSetupPanels(ctx, canvas) {
     // Main Panel
     ctx.beginPath();
