@@ -26,6 +26,12 @@ import {
   Turn,
   SceneStatus,
   SocketEvents,
+  Food,
+  FoodGeneration,
+  Science,
+  ScienceGeneration,
+  Money,
+  MoneyGeneration
 } from "../../Component";
 import { 
   RegionSystem,
@@ -104,8 +110,22 @@ export class LoaderSystem extends System {
       .createEntity()
       .addComponent(SceneStatus, { currentScene: SceneType.MENU });
     this.world
-    .createEntity()
-    .addComponent(SocketEvents);
+      .createEntity()
+      .addComponent(SocketEvents);
+    
+    // Resource
+    this.world
+      .createEntity()
+      .addComponent(Food)
+      .addComponent(FoodGeneration);
+    this.world
+      .createEntity()
+      .addComponent(Science)
+      .addComponent(ScienceGeneration);
+    this.world
+      .createEntity()
+      .addComponent(Money)
+      .addComponent(MoneyGeneration);
   }
 
   loadImages() {

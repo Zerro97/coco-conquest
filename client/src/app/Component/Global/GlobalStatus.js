@@ -12,5 +12,13 @@ GlobalStatus.schema = {
 	teamCount: { type: Types.Number },
 
 	// Which team you belong to
-	myTeamId: { type: Types.Number }
+	myTeamId: { type: Types.Number },
+
+  // Tells whether its beggining/during/ending of my turn
+  // TURN_STARTED: 0,
+  // IS_MY_TURN: 1,
+  // TURN_ENDED: 2,
+  // IS_NOT_MY_TURN: 3
+  turnStatus: { type: Types.Number, default: 3 }
+
 };

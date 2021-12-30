@@ -20,7 +20,14 @@ import {
   Hud,
   Radius,
   Size,
-  Team
+  Team,
+  Money, 
+  MoneyGeneration, 
+  Food, 
+  FoodGeneration, 
+  Science, 
+  ScienceGeneration, 
+  GlobalStatus 
 } from "../../../../Component";
 import { ActionType, IconType, HudType, BuildingType } from "../../../../Type";
 import { 
@@ -179,10 +186,14 @@ export class HudRenderSystem extends System {
       30
     );
 
+    const currentMoney = this.queries.moneyStatus.results[0].getComponent(Money);
+    const currentFood = this.queries.foodStatus.results[0].getComponent(Food);
+    const currentScience = this.queries.scienceStatus.results[0].getComponent(Science);
+
     this.ctx.font = "20px Arial";
     this.ctx.fillStyle = "white";
     this.ctx.textAlign = "center";
-    this.ctx.fillText(100, 70, 30);
+    this.ctx.fillText(currentMoney.value, 70, 30);
 
     this.ctx.drawImage(
       iconSpriteSheet2,
@@ -195,7 +206,7 @@ export class HudRenderSystem extends System {
       30,
       30
     );
-    this.ctx.fillText(20, 180, 30);
+    this.ctx.fillText(currentFood.value, 180, 30);
 
     this.ctx.drawImage(
       iconSpriteSheet1,
@@ -208,7 +219,7 @@ export class HudRenderSystem extends System {
       30,
       30
     );
-    this.ctx.fillText(30, 290, 30);
+    this.ctx.fillText(currentScience.value, 290, 30);
   }
 
   drawTurn() {
@@ -436,5 +447,14 @@ HudRenderSystem.queries = {
   },
   currentHudHover: {
     components: [Hud, CurrentHudHover]
-  }
+  },
+  moneyStatus: {
+    components: [Money, MoneyGeneration]
+  },
+  foodStatus: {
+    components: [Food, FoodGeneration]
+  },
+  scienceStatus: {
+    components: [Science, ScienceGeneration]
+  },
 };

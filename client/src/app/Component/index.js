@@ -13,3 +13,4 @@ export * from "./Tile";
 export * from "./Global";
 export * from "./Select";
 export * from "./Network";
+export * from "./Game";

@@ -60,7 +60,7 @@ export class BootManager {
     registerSystems() {
         this.world
             .registerSystem(System.LoaderSystem, {
-                priority: -99,
+                priority: 0,
                 tileImages: this.tileImages,
                 iconImages: this.iconImages,
                 unitImages: this.unitImages,
@@ -72,112 +72,115 @@ export class BootManager {
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.GameLoaderSystem, {
-                priority: -98,
+                priority: 1,
                 mapWidth: this.mapWidth,
                 mapHeight: this.mapHeight,
             })
             .registerSystem(System.HudLoaderSystem, {
-                priority: -97,
+                priority: 2,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.SocketListenerSystem, {
-              priority: -96,
+              priority: 10,
               socket: this.socket,
               canvasWidth: this.canvasWidth,
               canvasHeight: this.canvasHeight
             })
             .registerSystem(System.SocketEmitSystem, {
-                priority: -95,
+                priority: 11,
                 socket: this.socket
             })
             .registerSystem(System.KeyboardListenerSystem, {
-                priority: -10,
+                priority: 20,
             })
             .registerSystem(System.MouseListenerSystem, {
-                priority: -10,
+                priority: 21,
                 canvas: this.canvas,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.KeyboardHandlerSystem, {
-                priority: -5,
+                priority: 22,
             })
             .registerSystem(System.MouseHandlerSystem, {
-                priority: -5,
+                priority: 23,
             })
             .registerSystem(System.SceneSystem, {
-                priority: 0,
+                priority: 30,
             })
             .registerSystem(System.GlobalGameSystem, {
-                priority: 5
+                priority: 31
+            })
+            .registerSystem(System.ResourceSystem, {
+                priority: 32
             })
             .registerSystem(System.ScreenSystem, {
-                priority: 5,
+                priority: 33,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.MovementSystem, {
-                priority: 5,
+                priority: 34,
             })
             .registerSystem(System.ActionSystem, {
-                priority: 5,
+                priority: 35,
             })
             .registerSystem(System.UnitSystem, {
-                priority: 5,
+                priority: 36,
             })
             .registerSystem(System.HudSystem, {
-                priority: 6,
+                priority: 37,
             })
             .registerSystem(System.MenuSystem, {
-                priority: 5,
+                priority: 38,
             })
             .registerSystem(System.MenuRenderSystem, {
-                priority: 10,
+                priority: 50,
                 canvas: this.canvas,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.TileRenderSystem, {
-                priority: 10,
+                priority: 51,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.RegionSystem, {
-                priority: 11,
+                priority: 52,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.BuildingRenderSystem, {
-                priority: 12,
+                priority: 53,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.UnitRenderSystem, {
-                priority: 13,
+                priority: 54,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.RenderSystem, {
-                priority: 14,
+                priority: 55,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.GameHudSystem, {
-                priority: 15,
+                priority: 56,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.HudRenderSystem, {
-                priority: 20,
+                priority: 57,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
