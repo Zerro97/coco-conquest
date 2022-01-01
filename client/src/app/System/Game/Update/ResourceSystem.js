@@ -6,45 +6,60 @@ import {
   FoodGeneration, 
   Science, 
   ScienceGeneration, 
-  GlobalStatus 
+  GlobalStatus,
+  ResourceStatus
 } from "../../../Component";
 import { TurnType } from "../../../Type";
 
 export class ResourceSystem extends System {
 	execute(delta, time) {
-    this.generateMoney();
-    this.generateFood();
-    this.generateScience();
+    this.trackFame();
+    this.trackFood();
+    this.trackMoney();
+    this.trackScience();
 	}
 
-  generateMoney() {
+  trackMoney() {
     const globalStatus = this.queries.globalStatus.results[0].getComponent(GlobalStatus);
-    const currentMoney = this.queries.moneyStatus.results[0].getMutableComponent(Money);
-    const moneyGenerationRate = this.queries.moneyStatus.results[0].getMutableComponent(MoneyGeneration);
+    const resourceStatus = this.queries.resourceStatus.results[0].getMutableComponent(ResourceStatus);
     
     if(globalStatus.turnStatus === TurnType.TURN_STARTED) {
-      console.log(currentMoney.value);
-      currentMoney.value += moneyGenerationRate.value;
+      // TODO: update money generation/consumption from sum of all resource generating stuff
+      resourceStatus.moneyGeneration = 10;
+      resourceStatus.moneyConsumption = 5;
     }
   }
 
-  generateScience() {
+  trackScience() {
     const globalStatus = this.queries.globalStatus.results[0].getComponent(GlobalStatus);
-    const currentScience = this.queries.scienceStatus.results[0].getMutableComponent(Science);
-    const scienceGenerationRate = this.queries.scienceStatus.results[0].getMutableComponent(ScienceGeneration);
+    const resourceStatus = this.queries.resourceStatus.results[0].getMutableComponent(ResourceStatus);
     
     if(globalStatus.turnStatus === TurnType.TURN_STARTED) {
-      currentScience.value += scienceGenerationRate.value;
+      // TODO: update money generation/consumption from sum of all resource generating stuff
+      resourceStatus.scienceGeneration = 10;
+      resourceStatus.scienceConsumption = 5;
     }
   }
 
-  generateFood() {
+  trackFood() {
     const globalStatus = this.queries.globalStatus.results[0].getComponent(GlobalStatus);
-    const currentFood = this.queries.foodStatus.results[0].getMutableComponent(Food);
-    const foodGenerationRate = this.queries.foodStatus.results[0].getMutableComponent(FoodGeneration);
+    const resourceStatus = this.queries.resourceStatus.results[0].getMutableComponent(ResourceStatus);
     
     if(globalStatus.turnStatus === TurnType.TURN_STARTED) {
-      currentFood.value += foodGenerationRate.value;
+      // TODO: update money generation/consumption from sum of all resource generating stuff
+      resourceStatus.foodGeneration = 10;
+      resourceStatus.foodConsumption = 5;
+    }
+  }
+
+  trackFame() {
+    const globalStatus = this.queries.globalStatus.results[0].getComponent(GlobalStatus);
+    const resourceStatus = this.queries.resourceStatus.results[0].getMutableComponent(ResourceStatus);
+    
+    if(globalStatus.turnStatus === TurnType.TURN_STARTED) {
+      // TODO: update money generation/consumption from sum of all resource generating stuff
+      resourceStatus.fameGeneration = 10;
+      resourceStatus.fameConsumption = 5;
     }
   }
 }
@@ -54,13 +69,7 @@ ResourceSystem.queries = {
 	globalStatus: {
     components: [GlobalStatus]
   },
-  moneyStatus: {
-    components: [Money, MoneyGeneration]
-  },
-  foodStatus: {
-    components: [Food, FoodGeneration]
-  },
-  scienceStatus: {
-    components: [Science, ScienceGeneration]
-  },
+  resourceStatus: {
+    components: [ResourceStatus]
+  }
 };

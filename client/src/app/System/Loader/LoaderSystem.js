@@ -31,7 +31,8 @@ import {
   Science,
   ScienceGeneration,
   Money,
-  MoneyGeneration
+  MoneyGeneration,
+  ResourceStatus
 } from "../../Component";
 import { 
   RegionSystem,
@@ -116,16 +117,7 @@ export class LoaderSystem extends System {
     // Resource
     this.world
       .createEntity()
-      .addComponent(Food)
-      .addComponent(FoodGeneration);
-    this.world
-      .createEntity()
-      .addComponent(Science)
-      .addComponent(ScienceGeneration);
-    this.world
-      .createEntity()
-      .addComponent(Money)
-      .addComponent(MoneyGeneration);
+      .addComponent(ResourceStatus);
   }
 
   loadImages() {
