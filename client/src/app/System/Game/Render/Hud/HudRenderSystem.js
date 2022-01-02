@@ -42,7 +42,8 @@ import {
   drawProductionCategory,
   drawProductionButton,
   drawSelectedTeamIcon,
-  drawHoveringProductionButton
+  drawHoveringProductionButton,
+  drawTopPanel
 } from "../../../../Util";
 
 export class HudRenderSystem extends System {
@@ -163,17 +164,16 @@ export class HudRenderSystem extends System {
   }
 
   drawTopPanel(){
-    this.ctx.fillStyle = "rgb(39, 42, 54)";
-    this.ctx.fillRect(0, 0, this.canvasWidth, 50);
+    drawTopPanel(this.ctx, {x:0, y:0}, {width: this.canvasWidth, height: 30});
   }
 
   drawResources() {
     const iconSpriteSheet2 = this.getIconSpriteSheet(1);
     const coin = this.getIconSpriteSheetPosition(IconType.COIN);
-    const fame = this.getIconSpriteSheetPosition(IconType.DISGUISED);
 
     const iconSpriteSheet1 = this.getIconSpriteSheet(0);
     const science = this.getIconSpriteSheetPosition(IconType.INTELLIGENCE);
+    const fame = this.getIconSpriteSheetPosition(IconType.DISGUISED);
 
     this.ctx.drawImage(
       iconSpriteSheet2,
@@ -181,31 +181,31 @@ export class HudRenderSystem extends System {
       coin.y,
       coin.width,
       coin.height,
-      10, 
-      10,
-      30,
-      30
+      5, 
+      5,
+      20,
+      20
     );
 
     const resourceStatus = this.queries.resourceStatus.results[0].getComponent(ResourceStatus);
     const currentMoney = resourceStatus.money;
 
-    this.ctx.font = "20px Arial";
+    this.ctx.font = "15px Arial";
     this.ctx.fillStyle = "white";
-    this.ctx.fillText(currentMoney, 70, 30);
+    this.ctx.fillText(currentMoney, 55, 20);
 
     this.ctx.drawImage(
-      iconSpriteSheet2,
+      iconSpriteSheet1,
       fame.x,
       fame.y,
       fame.width,
       fame.height,
-      120, 
-      10,
-      30,
-      30
+      85, 
+      5,
+      20,
+      20
     );
-    this.ctx.fillText(currentMoney, 180, 30);
+    this.ctx.fillText(currentMoney, 135, 20);
 
     this.ctx.drawImage(
       iconSpriteSheet1,
@@ -213,12 +213,12 @@ export class HudRenderSystem extends System {
       science.y,
       science.width,
       science.height,
-      230, 
-      10,
-      30,
-      30
+      165, 
+      5,
+      20,
+      20
     );
-    this.ctx.fillText(currentMoney, 290, 30);
+    this.ctx.fillText(currentMoney, 215, 20);
   }
 
   drawTurn() {
@@ -377,7 +377,7 @@ export class HudRenderSystem extends System {
       let position = {};
 
       if(variation >= 64) {
-        variation %= 63;
+        variation %= 64;
       }
 
       position.width = 250;

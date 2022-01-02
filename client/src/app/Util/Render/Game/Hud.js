@@ -102,6 +102,11 @@ export function drawMap(ctx, pos, size) {
   ctx.strokeRect(pos.x + 20, pos.y + 20, size.width - 40, size.height - 40);
 }
 
+export function drawTopPanel(ctx, pos, size) {
+  ctx.fillStyle = "rgb(39, 42, 54)";
+  ctx.fillRect(pos.x, pos.y, size.width, size.height);
+}
+
 export function drawProductionPanel(ctx, pos, size) {
   drawOutline(ctx, pos, size);
 
