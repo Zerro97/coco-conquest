@@ -334,7 +334,7 @@ export class MenuRenderSystem extends System {
     }
 
     drawLobby() {
-        drawLobbyFrame(this.ctx, {x: this.canvasWidth/2 - 420, y: 60}, { width: 840, height: 700 });
+        drawLobbyFrame(this.ctx, {x: this.canvasWidth/2 - 420, y: 60}, { width: 840, height: 600 });
 
         // Menu
         this.queries.lobbyHud.results.forEach(hud => {
@@ -415,7 +415,7 @@ export class MenuRenderSystem extends System {
     }
 
     drawMultiSetUpGame() {
-        drawMultiSetUpFrame(this.ctx, {x: this.canvasWidth/2 - 250, y: 60}, { width: 500, height: 700 });
+        drawMultiSetUpFrame(this.ctx, {x: this.canvasWidth/2 - 250, y: 60}, { width: 500, height: 600 });
         drawMultiSetUpTitle(this.ctx, {x: this.canvasWidth/2, y: 100});
         drawMultiSetUpLabels(this.ctx, {x: this.canvasWidth/2 - 60, y: 185});
 
@@ -456,7 +456,7 @@ export class MenuRenderSystem extends System {
     }
 
     drawMultiStageGame() {
-        drawStageFrame(this.ctx, {x: this.canvasWidth/2 - 350, y: 60}, { width: 700, height: 700 });
+        drawStageFrame(this.ctx, {x: this.canvasWidth/2 - 350, y: 60}, { width: 700, height: 600 });
         drawStageHead(this.ctx, {x: this.canvasWidth/2 - 350, y: 100}, { width: 700, height: 30 });
 
         for(let i=0; i<6; i++) {
