@@ -43,7 +43,8 @@ import {
   drawProductionButton,
   drawSelectedTeamIcon,
   drawHoveringProductionButton,
-  drawTopPanel
+  drawTopPanel,
+  drawScienceButton
 } from "../../../../Util";
 
 export class HudRenderSystem extends System {
@@ -80,7 +81,19 @@ export class HudRenderSystem extends System {
         }
         case HudType.MAP: {
           const size = hud.getComponent(Size);
-          drawMap(this.ctx, pos, size);
+          //drawMap(this.ctx, pos, size);
+
+          break;
+        }
+        case HudType.SCIENCE_BUTTON: {
+          const radius = hud.getComponent(Radius).value;
+          drawScienceButton(this.ctx, pos, radius);
+
+          break;
+        }
+        case HudType.PERK_BUTTON: {
+          const radius = hud.getComponent(Radius).value;
+          drawScienceButton(this.ctx, pos, radius);
 
           break;
         }
@@ -224,7 +237,7 @@ export class HudRenderSystem extends System {
   drawTurn() {
     const turn = this.queries.turn.results[0].getComponent(Turn);
 
-    drawTurnBox(this.ctx, {x: this.canvasWidth/2 + 80, y: -10}, turn.currentTurn);
+    drawTurnBox(this.ctx, {x: this.canvasWidth/2 + 50, y: -10}, turn.currentTurn);
   }
 
   drawUnitPanel() {

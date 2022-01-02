@@ -28,8 +28,8 @@ export class HudLoaderSystem extends System {
     // Generate menu hud entities
     this.generateMenuHuds();
 
-    // Generate hud entities
-    this.generateHuds();
+    // Generate game hud entities
+    this.generateGameHuds();
 
     // Generate input & insert into dom
     this.generateInputHuds();
@@ -240,7 +240,7 @@ export class HudLoaderSystem extends System {
       .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME});
   }
 
-  generateHuds() {
+  generateGameHuds() {
     // Turn button at bottom right
     this.world
       .createEntity()
@@ -251,7 +251,7 @@ export class HudLoaderSystem extends System {
       .addComponent(Shape, {type: ObjectShape.CIRCLE})
       .addComponent(Radius, {value: 60});
 
-    // Map at bottom left
+    // Map at bottom left (NOT USED)
     this.world
       .createEntity()
       .addComponent(Hud, {type: HudType.MAP})
@@ -306,6 +306,7 @@ export class HudLoaderSystem extends System {
         .addComponent(Size, {width: 290, height: 30});
     }
 
+    // Team Icons on top right
     const globalStatus = this.queries.globalStatus.results[0].getComponent(GlobalStatus);
     const teamCount = globalStatus.teamCount;
 
@@ -318,6 +319,23 @@ export class HudLoaderSystem extends System {
         .addComponent(Radius, {value: 22})
         .addComponent(Team, {value: i});
     }
+
+    // Science, Perk Icons on top left
+    this.world
+      .createEntity()
+      .addComponent(Hud, {type: HudType.SCIENCE_BUTTON})
+      .addComponent(CanvasPosition, {x: 30, y: 55})
+      .addComponent(HudHoverable)
+      .addComponent(Shape, {type: ObjectShape.CIRCLE})
+      .addComponent(Radius, {value: 20});
+
+    this.world
+      .createEntity()
+      .addComponent(Hud, {type: HudType.PERK_BUTTON})
+      .addComponent(CanvasPosition, {x: 80, y: 55})
+      .addComponent(HudHoverable)
+      .addComponent(Shape, {type: ObjectShape.CIRCLE})
+      .addComponent(Radius, {value: 20});
   }
 
   generateInputHuds() {

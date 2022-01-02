@@ -65,27 +65,36 @@ export function drawTurnButton(ctx, pos, radius) {
 export function drawTurnBox(ctx, pos, text) {
   ctx.beginPath();
   ctx.moveTo(pos.x, pos.y);
-  ctx.lineTo(pos.x, pos.y + 75);
-  ctx.lineTo(pos.x - 80, pos.y + 100);
-  ctx.lineTo(pos.x - 160, pos.y + 75);
-  ctx.lineTo(pos.x - 160, pos.y - 10);
+  ctx.lineTo(pos.x, pos.y + 50);
+  ctx.lineTo(pos.x - 50, pos.y + 65);
+  ctx.lineTo(pos.x - 100, pos.y + 50);
+  ctx.lineTo(pos.x - 100, pos.y - 10);
   ctx.closePath();
 
   ctx.fillStyle = "rgb(52, 60, 89)";
   ctx.strokeStyle = "white";
-  ctx.lineWidth = 5;
+  ctx.lineWidth = 3;
   ctx.fill();
   ctx.stroke();
 
-  ctx.font = "40px Arial";
+  ctx.font = "25px Arial";
   ctx.fillStyle = "white";
   ctx.textAlign = "center";
-  ctx.fillText(text, pos.x - 80, pos.y + 50);
+  ctx.fillText(text, pos.x - 50, pos.y + 35);
 
-  ctx.font = "16px Arial";
+  ctx.font = "15px Arial";
   ctx.fillStyle = "rgba(255, 255, 255, 0.6";
   ctx.textAlign = "center";
-  ctx.fillText("Turn", pos.x - 80, pos.y + 75);
+  ctx.fillText("Turn", pos.x - 50, pos.y + 50);
+}
+
+export function drawScienceButton(ctx, pos, radius) {
+  // Draw Circle
+  ctx.beginPath();
+  ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.fillStyle = "rgb(66, 79, 121)";
+  ctx.fill();
 }
 
 export function drawMap(ctx, pos, size) {
