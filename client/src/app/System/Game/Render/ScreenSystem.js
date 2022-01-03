@@ -29,7 +29,7 @@ export class ScreenSystem extends System {
 
   updateScreen() {
     this.checkMouseWheel();
-    //this.checkScreenMove();
+    this.checkScreenMove();
     this.checkFocus();
   }
 

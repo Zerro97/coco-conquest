@@ -11,6 +11,10 @@ MouseStatus.schema = {
 	mapX: { type: Types.Number, default: 0 },
 	mapY: { type: Types.Number, default: 0 },
 
+	// The position of mouse when left mouse is pressed
+	pressX: { type: Types.Number, default: 0 },
+	pressY: { type: Types.Number, default: 0 },
+
 	// Second pointer position (ex. using finger)
 	secX: { type: Types.Number, default: 0 },
 	secY: { type: Types.Number, default: 0 }, 
@@ -24,11 +28,14 @@ MouseStatus.schema = {
 	isMouseDown: { type: Types.Boolean, default: false },
 	isRightMouseDown: { type: Types.Boolean, default: false },
 
+	// Check if mouse dragged since the last mouse down
+	isMouseDragged: { type: Types.Boolean, default: false },
+
 	// Turns true once when mouse up and then becomes false
 	isMouseClicked: { type: Types.Boolean, default: true },
 	isRightMouseClicked: { type: Types.Boolean, default: true },
 
 	// Timer since last mouse down for determining if it's a click
 	clickBuffer: { type: Types.Number, default: -1},
-  rightClickBuffer: { type: Types.Number, default: -1}
+	rightClickBuffer: { type: Types.Number, default: -1}
 };

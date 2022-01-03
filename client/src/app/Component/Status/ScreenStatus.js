@@ -6,6 +6,9 @@ ScreenStatus.schema = {
 	// Translation
 	x: { type: Types.Number, default: 0 },
 	y: { type: Types.Number, default: 0 },
+	// For storing translation when dragging
+	dragX: { type: Types.Number, default: 0 },
+	dragY: { type: Types.Number, default: 0 },
 	// Scale
 	scaleX: { type: Types.Number, default: 1 },
 	scaleY: { type: Types.Number, default: 1 },

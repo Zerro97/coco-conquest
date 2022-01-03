@@ -31,6 +31,7 @@ import { ObjectShape, TileSize, ActionType } from "../../Type";
  */
 export class MouseHandlerSystem extends System {
   execute(delta, time) {
+    this.checkMouseDrag();
     this.trackClickBuffer();
     this.checkMouseClick();
 
@@ -46,6 +47,8 @@ export class MouseHandlerSystem extends System {
       this.checkSelect();
       this.checkRightSelect();
     }
+    const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+    mouseStatus.isMouseDragged = false;
   }
 
   checkMouseClick() {
@@ -54,11 +57,11 @@ export class MouseHandlerSystem extends System {
     mouseStatus.isMouseClicked = false;
     mouseStatus.isRightMouseClicked = false;
 
-    // When mouse is up after mouse down within 30 game frame
+    // When mouse is up after mouse down within 10 game frame
     // set isMouseClicked to true
-    if (mouseStatus.clickBuffer !== -1 && !mouseStatus.isMouseDown) {
+    if (mouseStatus.clickBuffer >= 0 && !mouseStatus.isMouseDown && !mouseStatus.isMouseDragged) {
       mouseStatus.isMouseClicked = true;
-      mouseStatus.clickBuffer = -1;
+      mouseStatus.clickBuffer = -2;
     }
     if (mouseStatus.rightClickBuffer !== -1 && !mouseStatus.isRightMouseDown) {
       mouseStatus.isRightMouseClicked = true;
@@ -73,7 +76,7 @@ export class MouseHandlerSystem extends System {
       if (mouseStatus.clickBuffer !== -1) {
         mouseStatus.clickBuffer += 1;
       }
-      if (mouseStatus.clickBuffer === 30) {
+      if (mouseStatus.clickBuffer === 20) {
         mouseStatus.clickBuffer = -1;
       }
     }
@@ -82,9 +85,37 @@ export class MouseHandlerSystem extends System {
       if (mouseStatus.rightClickBuffer !== -1) {
         mouseStatus.rightClickBuffer += 1;
       }
-      if (mouseStatus.rightClickBuffer === 30) {
+      if (mouseStatus.rightClickBuffer === 20) {
         mouseStatus.rightClickBuffer = -1;
       }
+    }
+  }
+
+  checkMouseDrag() {
+    const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+    const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
+
+    // Check if mouse is dragged (for determining if mouse is considered clicked)
+    if(Math.abs(mouseStatus.pressX - mouseStatus.x) > 10 || Math.abs(mouseStatus.pressY - mouseStatus.y) > 10) {
+      mouseStatus.isMouseDragged = true;
+    }
+
+    if(mouseStatus.isMouseDown) {
+      // Right when user presses mouse button
+      if(mouseStatus.clickBuffer === 0) {
+        mouseStatus.pressX = mouseStatus.x;
+        mouseStatus.pressY = mouseStatus.y;
+        screenStatus.dragX = screenStatus.x;
+        screenStatus.dragY = screenStatus.y;
+      }
+
+      screenStatus.x = (mouseStatus.pressX - mouseStatus.x) + screenStatus.dragX;
+      screenStatus.y = (mouseStatus.pressY - mouseStatus.y) + screenStatus.dragY;
+    } else {
+      mouseStatus.pressX = -9999;
+      mouseStatus.pressY = -9999;
+      screenStatus.dragX = -9999;
+      screenStatus.dragY = -9999;
     }
   }
 
