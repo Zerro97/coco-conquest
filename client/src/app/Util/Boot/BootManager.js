@@ -59,6 +59,7 @@ export class BootManager {
 
     registerSystems() {
         this.world
+            // Loaders
             .registerSystem(System.LoaderSystem, {
                 priority: 0,
                 tileImages: this.tileImages,
@@ -81,16 +82,18 @@ export class BootManager {
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
+            // Network
             .registerSystem(System.SocketListenerSystem, {
-              priority: 10,
-              socket: this.socket,
-              canvasWidth: this.canvasWidth,
-              canvasHeight: this.canvasHeight
+                priority: 10,
+                socket: this.socket,
+                canvasWidth: this.canvasWidth,
+                canvasHeight: this.canvasHeight
             })
             .registerSystem(System.SocketEmitSystem, {
                 priority: 11,
                 socket: this.socket
             })
+            // Input
             .registerSystem(System.KeyboardListenerSystem, {
                 priority: 20,
             })
@@ -106,6 +109,7 @@ export class BootManager {
             .registerSystem(System.MouseHandlerSystem, {
                 priority: 23,
             })
+            // Game Updates
             .registerSystem(System.SceneSystem, {
                 priority: 30,
             })
@@ -136,6 +140,7 @@ export class BootManager {
             .registerSystem(System.MenuSystem, {
                 priority: 38,
             })
+            // Game Renders
             .registerSystem(System.MenuRenderSystem, {
                 priority: 50,
                 canvas: this.canvas,
@@ -143,44 +148,50 @@ export class BootManager {
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
-            .registerSystem(System.TileRenderSystem, {
+            .registerSystem(System.MapEditorRenderSystem, {
                 priority: 51,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
-            .registerSystem(System.RegionSystem, {
+            .registerSystem(System.TileRenderSystem, {
                 priority: 52,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
-            .registerSystem(System.BuildingRenderSystem, {
+            .registerSystem(System.RegionSystem, {
                 priority: 53,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
-            .registerSystem(System.UnitRenderSystem, {
+            .registerSystem(System.BuildingRenderSystem, {
                 priority: 54,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
-            .registerSystem(System.RenderSystem, {
+            .registerSystem(System.UnitRenderSystem, {
                 priority: 55,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
-            .registerSystem(System.GameHudSystem, {
+            .registerSystem(System.RenderSystem, {
                 priority: 56,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,
             })
-            .registerSystem(System.HudRenderSystem, {
+            .registerSystem(System.GameHudSystem, {
                 priority: 57,
+                ctx: this.ctx,
+                canvasWidth: this.canvasWidth,
+                canvasHeight: this.canvasHeight,
+            })
+            .registerSystem(System.HudRenderSystem, {
+                priority: 58,
                 ctx: this.ctx,
                 canvasWidth: this.canvasWidth,
                 canvasHeight: this.canvasHeight,

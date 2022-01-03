@@ -129,7 +129,7 @@ export class MenuRenderSystem extends System {
         this.ctx.font = "60px Arial";
         this.ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
         this.ctx.textAlign = "center";
-        this.ctx.fillText("GAME TITLE", this.canvasWidth/2, 250);
+        this.ctx.fillText("Coco Conquest", this.canvasWidth/2, 250);
 
         // Menu
         this.queries.menuHud.results.forEach(hud => {

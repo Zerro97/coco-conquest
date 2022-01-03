@@ -1,4 +1,4 @@
-# Ecsy Game AI
+# Coco Conquest
 A turn based game leveraging:
 - ecsy: ECS architecture for game design
 - webpack: For bundling code

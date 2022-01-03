@@ -14,6 +14,7 @@ import {
   Size,
   LobbyScene,
   Scene,
+  MapStatus,
 } from "../../../Component";
 import { MenuHudType, SceneType, ObjectShape } from "../../../Type";
 import { getRandomString } from "../../../Util";
@@ -61,6 +62,17 @@ export class MenuSystem extends System {
 				}
 				case MenuHudType.MAP_EDITOR_SETUP_BUTTON: {
 					scene.currentScene = SceneType.MAP_EDITOR;
+					
+					// Create map entity
+					this.world
+						.createEntity()
+						.addComponent(MapStatus, {
+							name: "New World",
+							width: 30,
+							height: 30,
+							playerCount: 2
+						});
+
 					break;
 				}
 				case MenuHudType.MAP_EDITOR_GO_BACK_BUTTON: {
