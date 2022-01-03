@@ -37,13 +37,39 @@ export class SceneSystem extends System {
     
     if(scene) {
         this.updateHudInScene(scene.currentScene);
+        this.stopAll();
 
-        if(scene.currentScene === SceneType.GAME) {
-          this.startGame();
-          this.stopMenu();
-        } else {
-          this.stopGame();
-          this.startMenu();
+        switch(scene.currentScene) {
+          case SceneType.MAP_EDITOR: {
+            this.world.getSystem(ScreenSystem).play();
+            this.world.getSystem(MenuSystem).play();
+            this.world.getSystem(MenuRenderSystem).play();
+            break;
+          }
+          case SceneType.GAME: {
+            // Render
+            this.world.getSystem(RegionSystem).play();
+            this.world.getSystem(RenderSystem).play();
+            this.world.getSystem(ScreenSystem).play();
+            this.world.getSystem(TileRenderSystem).play();
+            this.world.getSystem(UnitRenderSystem).play();
+            this.world.getSystem(BuildingRenderSystem).play();
+            this.world.getSystem(GameHudSystem).play();
+            this.world.getSystem(HudRenderSystem).play();
+        
+            // Update
+            this.world.getSystem(ActionSystem).play();
+            this.world.getSystem(GlobalGameSystem).play();
+            this.world.getSystem(HudSystem).play();
+            this.world.getSystem(MovementSystem).play();
+            this.world.getSystem(UnitSystem).play();
+            break;
+          }
+          default: {
+            this.world.getSystem(MenuSystem).play();
+            this.world.getSystem(MenuRenderSystem).play();
+            break;
+          }
         }
 
         // Set visibility of input huds
@@ -60,28 +86,11 @@ export class SceneSystem extends System {
           }
         }
     }
+
+    this.stop();
   }
 
-  startGame() {
-      // Render
-      this.world.getSystem(RegionSystem).play();
-      this.world.getSystem(RenderSystem).play();
-      this.world.getSystem(ScreenSystem).play();
-      this.world.getSystem(TileRenderSystem).play();
-      this.world.getSystem(UnitRenderSystem).play();
-      this.world.getSystem(BuildingRenderSystem).play();
-      this.world.getSystem(GameHudSystem).play();
-      this.world.getSystem(HudRenderSystem).play();
-  
-      // Update
-      this.world.getSystem(ActionSystem).play();
-      this.world.getSystem(GlobalGameSystem).play();
-      this.world.getSystem(HudSystem).play();
-      this.world.getSystem(MovementSystem).play();
-      this.world.getSystem(UnitSystem).play();
-  }
-
-  stopGame() {
+  stopAll() {
     // Render
     this.world.getSystem(RegionSystem).stop();
     this.world.getSystem(RenderSystem).stop();
@@ -98,14 +107,8 @@ export class SceneSystem extends System {
     this.world.getSystem(HudSystem).stop();
     this.world.getSystem(MovementSystem).stop();
     this.world.getSystem(UnitSystem).stop();
-  }
 
-  startMenu() {
-    this.world.getSystem(MenuSystem).play();
-    this.world.getSystem(MenuRenderSystem).play();
-  }
-
-  stopMenu() {
+    // Menu
     this.world.getSystem(MenuSystem).stop();
     this.world.getSystem(MenuRenderSystem).stop();
   }

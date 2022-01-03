@@ -25,7 +25,7 @@ function drawHexagon(ctx, x, y, outColor, inColor) {
 	drawHexagonLine(ctx, x, y, TileSize.REGULAR);
 	ctx.clip();
 	ctx.closePath();
-	ctx.lineWidth = 10;
+	
 	ctx.strokeStyle = outColor;
 	ctx.fillStyle = inColor;
 	ctx.fill();
@@ -33,23 +33,33 @@ function drawHexagon(ctx, x, y, outColor, inColor) {
 	ctx.restore();
 }
 
+export function drawTileGrid(ctx, x, y) {
+	ctx.lineWidth = 5;
+	drawHexagon(ctx, x, y, "rgb(30, 30, 30)", "rgb(10, 10, 10)");
+}
+
 export function drawBaseTile(ctx, x, y) {
+	ctx.lineWidth = 10;
 	drawHexagon(ctx, x, y, "rgba(255, 255, 255, 0.1)", "rgba(255, 255, 255, 0.01)");
 }
 
 export function drawHoveringTile(ctx, x, y) {
+	ctx.lineWidth = 10;
 	drawHexagon(ctx, x, y, "rgba(255, 255, 255, 0.3)", "rgba(255, 255, 255, 0.2)");
 }
 
 export function drawSelectedTile(ctx, x, y) {
+	ctx.lineWidth = 10;
 	drawHexagon(ctx, x, y, "rgba(255, 255, 255, 0.8)", "rgba(255, 255, 255, 0.2)");
 }
 
 export function drawAttackingTile(ctx, x, y) {
+	ctx.lineWidth = 10;
 	drawHexagon(ctx, x, y, "rgba(213, 33, 33, 1)", "rgba(213, 33, 33, 0.3)");
 }
 
 export function drawMovingTile(ctx, x, y) {
+	ctx.lineWidth = 10;
 	drawHexagon(ctx, x, y, "rgba(61, 133, 198, 1)", "rgba(61, 133, 198, 0.3)");
 }
 

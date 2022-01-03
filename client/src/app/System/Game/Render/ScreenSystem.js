@@ -28,6 +28,7 @@ export class ScreenSystem extends System {
   }
 
   updateScreen() {
+    console.log("Screen running");
     this.checkMouseWheel();
     this.checkScreenMove();
     this.checkFocus();

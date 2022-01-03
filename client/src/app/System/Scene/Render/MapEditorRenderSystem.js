@@ -1,11 +1,13 @@
 import { System } from "../../../Library/Ecsy";
 import {
+    Tile,
     TileImage,
     Image,
     SceneStatus,
-    MapEditorStatus
+    MapEditorStatus,
+    CanvasPosition
 } from "../../../Component";
-import { drawEditPanel, drawBaseTile } from "../../../Util";
+import { drawEditPanel, drawTileGrid } from "../../../Util";
 import { SceneType } from "../../../Type";
 
 export class MapEditorRenderSystem extends System {
@@ -29,12 +31,10 @@ export class MapEditorRenderSystem extends System {
         const name = mapEditorStatus.name;
         const playerCount = mapEditorStatus.playerCount;
 
-        for(let i=0; i<width; i++) {
-            for(let j=0; j<height; j++) {
-                drawBaseTile(this.ctx, 50, 50);
-            }
-        }
-        
+        this.queries.tiles.results.forEach(tile => {
+            let canvasPos = tile.getComponent(CanvasPosition);
+            drawTileGrid(this.ctx, canvasPos.x, canvasPos.y);
+        });
     }
 
     getSpriteSheet(type) {
@@ -68,6 +68,9 @@ export class MapEditorRenderSystem extends System {
 MapEditorRenderSystem.queries = {
     mapEditorStatus: {
         components: [MapEditorStatus]
+    },
+    tiles: {
+        components: [Tile]
     },
     tileImages: {
         components: [Image, TileImage],

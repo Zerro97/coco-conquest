@@ -1,23 +1,32 @@
 import { System } from "../../../Library/Ecsy";
 import { 
-  CurrentHudSelect, 
-  CurrentHudClick,
-  SceneStatus, 
-  MenuHud, 
-  Team, 
-  SocketEvents, 
-  Room,
-  HudHoverable,
-  HudSelectable,
-  CanvasPosition,
-  Shape,
-  Size,
-  LobbyScene,
-  Scene,
-  MapStatus,
+	CurrentHudSelect, 
+	CurrentHudClick,
+	SceneStatus, 
+	MenuHud, 
+	Team, 
+	SocketEvents, 
+	Room,
+	HudHoverable,
+	HudSelectable,
+	MapPosition,
+	CanvasPosition,
+	Shape,
+	Size,
+	LobbyScene,
+	Scene,
+	MapEditorStatus,
+	Tile,
+	Hoverable,
+	Selectable,
+	RightSelectable,
+	GameObject
 } from "../../../Component";
-import { MenuHudType, SceneType, ObjectShape } from "../../../Type";
-import { getRandomString } from "../../../Util";
+import {
+	SceneSystem
+} from "../../../System";
+import { MenuHudType, SceneType, ObjectShape, TileSize,GameObjectType } from "../../../Type";
+import { getRandomString, evenrToCube, cubeToPixel } from "../../../Util";
 
 export class MenuSystem extends System {
 	// This method will get called on every frame by default
@@ -66,12 +75,39 @@ export class MenuSystem extends System {
 					// Create map entity
 					this.world
 						.createEntity()
-						.addComponent(MapStatus, {
+						.addComponent(MapEditorStatus, {
 							name: "New World",
 							width: 30,
 							height: 30,
 							playerCount: 2
 						});
+
+					// Create Tiles
+					let count = 0;
+					for(let i=0; i<30; i++) {
+						for(let j=0; j<30; j++) {
+							let cube = evenrToCube(i, j);
+							let pixel = cubeToPixel(cube.x, cube.z, TileSize.REGULAR);
+							count += 1;
+
+							this.world
+								.createEntity()
+								.addComponent(GameObject, { value: GameObjectType.TILE })
+								.addComponent(MapPosition, { x: cube.x, y: cube.y, z: cube.z })
+								.addComponent(CanvasPosition, { x: pixel.x, y: pixel.y })
+								.addComponent(Hoverable)
+								.addComponent(Selectable)
+								.addComponent(RightSelectable)
+								.addComponent(Shape, { type: ObjectShape.HEXAGON })
+								.addComponent(Tile, {
+									id: count,
+									base: 0,
+									type: 30,
+									variation: 0,
+									weight: 0,
+								});
+						}
+					}
 
 					break;
 				}
@@ -172,6 +208,8 @@ export class MenuSystem extends System {
 					break;
 				}
 			}
+			
+			this.world.getSystem(SceneSystem).play();
 		}
 	}
 }
