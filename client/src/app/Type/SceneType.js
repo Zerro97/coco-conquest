@@ -21,5 +21,9 @@ export const SceneType = {
     // Actual Game
     LOADING_GAME: 8,
     GAME: 9,
-    END_GAME: 10
+    END_GAME: 10,
+
+    // Others
+    MAP_EDITOR_SETUP: 11,
+    MAP_EDITOR: 12
 };

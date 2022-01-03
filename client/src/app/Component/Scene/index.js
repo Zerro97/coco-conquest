@@ -13,4 +13,7 @@ export * from "./LoadingScene.js";
 export * from "./GameScene.js";
 export * from "./EndScene.js";
 
+export * from "./MapEditorScene.js";
+export * from "./MapEditorSetUpScene.js";
+
 export * from "./Scene.js";

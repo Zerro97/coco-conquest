@@ -19,7 +19,9 @@ import {
   TextInput,
   HudClickable,
   MultiStageScene,
-  SettingScene
+  SettingScene,
+  MapEditorSetUpScene,
+  MapEditorScene
 } from "../../Component";
 import { HudType, ObjectShape, SceneType, MenuHudType } from "../../Type";
 
@@ -43,11 +45,12 @@ export class HudLoaderSystem extends System {
     let menuButtonTypes = [
       MenuHudType.SINGLE_PLAY_BUTTON,
       MenuHudType.MULTI_PLAY_BUTTON,
+      MenuHudType.MAP_EDITOR_BUTTON,
       MenuHudType.SETTING_BUTTON,
       MenuHudType.EXIT_BUTTON
     ];
 
-    for(let i=0; i<4; i++) {
+    for(let i=0; i<5; i++) {
       this.world
         .createEntity()
         .addComponent(MenuHud, {type: menuButtonTypes[i]})
@@ -59,6 +62,41 @@ export class HudLoaderSystem extends System {
         .addComponent(MenuScene)
         .addComponent(Scene, {value: SceneType.MENU});
     }
+
+    // Map Editor Set Up
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.MAP_EDITOR_SETUP_GO_BACK_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudClickable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 270, y: 650})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 220, height: 40})
+      .addComponent(MapEditorSetUpScene)
+      .addComponent(Scene, {value: SceneType.MAP_EDITOR_SETUP});
+
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.MAP_EDITOR_SETUP_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudClickable)
+      .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 50, y: 650})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 220, height: 40})
+      .addComponent(MapEditorSetUpScene)
+      .addComponent(Scene, {value: SceneType.MAP_EDITOR_SETUP});
+
+    // Map Editor
+    this.world
+      .createEntity()
+      .addComponent(MenuHud, {type: MenuHudType.MAP_EDITOR_GO_BACK_BUTTON})
+      .addComponent(HudHoverable)
+      .addComponent(HudClickable)
+      .addComponent(CanvasPosition, {x: 20, y: this.canvasHeight - 60})
+      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+      .addComponent(Size, {width: 220, height: 40})
+      .addComponent(MapEditorScene)
+      .addComponent(Scene, {value: SceneType.MAP_EDITOR});
 
     // Single Play Buttons
     let singlePlayButtonTypes = [

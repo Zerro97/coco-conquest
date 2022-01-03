@@ -17,7 +17,9 @@ import {
     LoadingScene, 
     EndScene,
     Room,
-    CurrentHudSelect
+    CurrentHudSelect,
+    MapEditorScene,
+    MapEditorSetUpScene
 } from "../../../Component";
 import { SceneType, MenuHudType } from "../../../Type";
 import { 
@@ -29,8 +31,8 @@ import {
     drawStartButton, 
     drawSetupPanels,
     drawHoveringStartButton,
-    drawSetupBackButton,
-    drawHoveringSetupBackButton,
+    drawBackButton,
+    drawHoveringBackButton,
     drawPlayerTeamButton,
     drawHoveringPlayerTeamButton,
     drawLobbyRoomHead,
@@ -45,7 +47,8 @@ import {
     drawSelectedLobbyRoomRow,
     drawStageFrame,
     drawStageHead,
-    drawStageRows
+    drawStageRows,
+    drawMapEditorSetUpFrame
 } from "../../../Util";
 
 export class MenuRenderSystem extends System {
@@ -60,6 +63,16 @@ export class MenuRenderSystem extends System {
                 this.drawMenu();
                 break;
             }
+            // Map Editor
+            case SceneType.MAP_EDITOR_SETUP: {
+                this.drawMapEditorSetUp();
+                break;
+            }
+            case SceneType.MAP_EDITOR: {
+                this.drawMapEditor();
+                break;
+            }
+            // Setting
             case SceneType.SETTING: {
                 this.drawSetting();
                 break;
@@ -133,6 +146,10 @@ export class MenuRenderSystem extends System {
                     drawMenuButton(this.ctx, pos, size, "Multi Play");
                     break;
                 }
+                case MenuHudType.MAP_EDITOR_BUTTON: {
+                    drawMenuButton(this.ctx, pos, size, "Map Editor");
+                    break;
+                }
                 case MenuHudType.SETTING_BUTTON: {
                     drawMenuButton(this.ctx, pos, size, "Settings");
                     break;
@@ -159,6 +176,10 @@ export class MenuRenderSystem extends System {
                     drawHoverMenuButton(this.ctx, pos, size, "Multi Play");
                     break;
                 }
+                case MenuHudType.MAP_EDITOR_BUTTON: {
+                    drawHoverMenuButton(this.ctx, pos, size, "Map Editor");
+                    break;
+                }
                 case MenuHudType.SETTING_BUTTON: {
                     drawHoverMenuButton(this.ctx, pos, size, "Settings");
                     break;
@@ -169,6 +190,74 @@ export class MenuRenderSystem extends System {
                 }
             }
         });  
+    }
+
+    drawMapEditorSetUp() {
+        drawMapEditorSetUpFrame(this.ctx, {x: this.canvasWidth/2 - 250, y: 60}, { width: 500, height: 550 }, this.canvas);
+
+        this.queries.mapEditorSetUpHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+
+            switch(type) {
+                case MenuHudType.MAP_EDITOR_SETUP_GO_BACK_BUTTON: {
+                    drawBackButton(this.ctx, pos, size, "Go Back");
+                    break;
+                }
+                case MenuHudType.MAP_EDITOR_SETUP_BUTTON: {
+                    drawStartButton(this.ctx, pos, size, "Create Map");
+                    break;
+                }
+            }
+        });
+
+        // Hovering Menu
+        this.queries.hoveringMapEditorSetUpHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+
+            switch(type) {
+                case MenuHudType.MAP_EDITOR_SETUP_GO_BACK_BUTTON: {
+                    drawHoveringBackButton(this.ctx, pos, size, "Go Back");
+                    break;
+                }
+                case MenuHudType.MAP_EDITOR_SETUP_BUTTON: {
+                    drawHoveringStartButton(this.ctx, pos, size, "Create Map");
+                    break;
+                }
+            }
+        });
+    }
+
+    drawMapEditor() {
+        this.queries.mapEditorHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+
+            switch(type) {
+                case MenuHudType.MAP_EDITOR_GO_BACK_BUTTON: {
+                    drawBackButton(this.ctx, pos, size, "Go Back");
+                    break;
+                }
+            }
+        });
+
+        // Hovering Menu
+        this.queries.hoveringMapEditorHud.results.forEach(hud => {
+            const type = hud.getComponent(MenuHud).type;
+            const pos = hud.getComponent(CanvasPosition);
+            const size = hud.getComponent(Size);
+
+            switch(type) {
+                case MenuHudType.MAP_EDITOR_GO_BACK_BUTTON: {
+                    drawHoveringBackButton(this.ctx, pos, size, "Go Back");
+                    break;
+                }
+            }
+        });
     }
 
     drawSetting() {
@@ -290,11 +379,11 @@ export class MenuRenderSystem extends System {
                     break;
                 }
                 case MenuHudType.START_BUTTON: {
-                    drawStartButton(this.ctx, pos, size);
+                    drawStartButton(this.ctx, pos, size, "START");
                     break;
                 }
                 case MenuHudType.SINGLE_SETUP_GO_BACK_BUTTON: {
-                    drawSetupBackButton(this.ctx, pos, size);
+                    drawBackButton(this.ctx, pos, size, "Go Back");
                     break;
                 }
             }
@@ -318,11 +407,11 @@ export class MenuRenderSystem extends System {
                     break;
                 }
                 case MenuHudType.START_BUTTON: {
-                    drawHoveringStartButton(this.ctx, pos, size);
+                    drawHoveringStartButton(this.ctx, pos, size, "START");
                     break;
                 }
                 case MenuHudType.SINGLE_SETUP_GO_BACK_BUTTON: {
-                    drawHoveringSetupBackButton(this.ctx, pos, size);
+                    drawHoveringBackButton(this.ctx, pos, size, "Go Back");
                     break;
                 }
             }
@@ -525,6 +614,19 @@ MenuRenderSystem.queries = {
     },
     hoveringSettingHud: {
         components: [CurrentHudHover, MenuHud, SettingScene]
+    },
+
+    mapEditorHud: {
+        components: [MenuHud, MapEditorScene]
+    },
+    hoveringMapEditorHud: {
+        components: [CurrentHudHover, MenuHud, MapEditorScene]
+    },
+    mapEditorSetUpHud: {
+        components: [MenuHud, MapEditorSetUpScene]
+    },
+    hoveringMapEditorSetUpHud: {
+        components: [CurrentHudHover, MenuHud, MapEditorSetUpScene]
     },
 
     singlePlayHud: {

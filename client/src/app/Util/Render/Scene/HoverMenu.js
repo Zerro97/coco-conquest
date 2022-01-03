@@ -97,7 +97,7 @@ export function drawHoveringPlayerTeamButton(ctx, pos, size, team) {
     ctx.fillText(team, pos.x + size.width/2, pos.y + size.height/2 + 10);
 }
 
-export function drawHoveringStartButton(ctx, pos, size) {
+export function drawHoveringStartButton(ctx, pos, size, text) {
     drawOutline(ctx, pos, size);
 
     const grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y+size.height);
@@ -111,10 +111,10 @@ export function drawHoveringStartButton(ctx, pos, size) {
 
     ctx.font = "25px Arial";
     ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-    ctx.fillText("START", pos.x + size.width/2, pos.y + size.height/2 + 10);
+    ctx.fillText(text, pos.x + size.width/2, pos.y + size.height/2 + 10);
 }
 
-export function drawHoveringSetupBackButton(ctx, pos, size) {
+export function drawHoveringBackButton(ctx, pos, size, text) {
     drawOutline(ctx, pos, size);
 
     const grad = ctx.createLinearGradient(pos.x, pos.y, pos.x, pos.y+size.height);
@@ -128,7 +128,7 @@ export function drawHoveringSetupBackButton(ctx, pos, size) {
 
     ctx.font = "25px Arial";
     ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-    ctx.fillText("GO BACK", pos.x + size.width/2, pos.y + size.height/2 + 10);
+    ctx.fillText(text, pos.x + size.width/2, pos.y + size.height/2 + 10);
 }
 
 export function drawHoveringButton(ctx, pos, size, text) {

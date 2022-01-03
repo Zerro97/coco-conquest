@@ -42,11 +42,29 @@ export class MenuSystem extends System {
 					scene.currentScene = SceneType.LOBBY;
 					break;
 				}
+				case MenuHudType.MAP_EDITOR_BUTTON: {
+					scene.currentScene = SceneType.MAP_EDITOR_SETUP;
+					break;
+				}
 				case MenuHudType.SETTING_BUTTON: {
 					scene.currentScene = SceneType.SETTING;
 					break;
 				}
 				case MenuHudType.EXIT_BUTTON: {
+					break;
+				}
+
+				// Map Editor Set Up Scene
+				case MenuHudType.MAP_EDITOR_SETUP_GO_BACK_BUTTON: {
+					scene.currentScene = SceneType.MENU;
+					break;
+				}
+				case MenuHudType.MAP_EDITOR_SETUP_BUTTON: {
+					scene.currentScene = SceneType.MAP_EDITOR;
+					break;
+				}
+				case MenuHudType.MAP_EDITOR_GO_BACK_BUTTON: {
+					scene.currentScene = SceneType.MENU;
 					break;
 				}
 

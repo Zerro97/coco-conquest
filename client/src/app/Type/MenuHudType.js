@@ -2,8 +2,9 @@ export const MenuHudType = {
     // Main menu ( 0 - 9)
     SINGLE_PLAY_BUTTON: 0,
     MULTI_PLAY_BUTTON: 1,
-    SETTING_BUTTON: 2,
-    EXIT_BUTTON: 3,
+    MAP_EDITOR_BUTTON: 2,
+    SETTING_BUTTON: 3,
+    EXIT_BUTTON: 4,
     
     // Single player menu ( 10 - 19)
     SINGLE_SETUP_GAME_BUTTON: 10,
@@ -37,9 +38,13 @@ export const MenuHudType = {
     MULTI_STAGE_START_BUTTON: 75,
     MULTI_STAGE_LEAVE_BUTTON: 76,
 
-    // Settings ( 100 - 120 )
+    // Settings ( 100 - 150 )
     SETTING_GAME_BUTTON: 100,
     SETTING_GRAPHICS_BUTTON: 101,
     SETTING_AUDIO_BUTTON: 102,
 
+    // Map Editor ( 150 - 200 )
+    MAP_EDITOR_GO_BACK_BUTTON: 150,
+    MAP_EDITOR_SETUP_BUTTON: 151,
+    MAP_EDITOR_SETUP_GO_BACK_BUTTON: 152 
 };
