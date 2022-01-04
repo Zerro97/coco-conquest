@@ -8,20 +8,51 @@ import {
     CanvasPosition
 } from "../../../Component";
 import { drawEditPanel, drawTileGrid } from "../../../Util";
-import { SceneType } from "../../../Type";
+import { SceneType, TileSize } from "../../../Type";
 
 export class MapEditorRenderSystem extends System {
     execute(delta, time) {
-        const scene = this.queries.sceneStatus.results[0].getComponent(SceneStatus);
+        this.drawTiles();
 
-        if(scene.currentScene === SceneType.MAP_EDITOR) {
-            this.drawTiles();
-            this.drawEditPanel();
-        }
+        // Finish Applying Transformations
+        this.ctx.restore();
+        this.drawEditPanel();
     }
 
     drawEditPanel() {
         drawEditPanel(this.ctx, {x: this.canvasWidth-350, y: 30}, {width: 320, height: this.canvasHeight-60});
+
+        let editCategory = 0;
+        switch(editCategory) {
+          case 0:
+            this.drawEditPanelTiles(editCategory);
+            break;
+          case 1:
+            this.drawEditPanelTiles(editCategory);
+            break;
+        }
+    }
+
+    drawEditPanelTiles(editCategory) {
+      const spriteSheet = this.getSpriteSheet(editCategory);
+
+      for(let i=0; i<8; i++) {
+        const spritePos = this.getSpriteSheetPosition(0);
+        let row = Math.floor(i/3);
+        let col = i%3;
+
+        this.ctx.drawImage(
+          spriteSheet,
+          spritePos.x,
+          spritePos.y,
+          spritePos.width,
+          spritePos.height,
+          this.canvasWidth - 330 + col * 320/3,
+          40 + row * (this.canvasHeight-60)/8,
+          TileSize.REGULAR * 1.4,
+          TileSize.REGULAR * 1.4
+        );
+      }
     }
 
     drawTiles() {

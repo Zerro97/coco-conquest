@@ -1,10 +1,10 @@
 import { System } from "../../../Library/Ecsy";
 import { ScreenStatus, MouseStatus, CurrentSelect, Tile, MapPosition, CanvasPosition, ScreenFocusStatus } from "../../../Component";
-import { isInsideRectangle, reverseTransformation } from "../../../Util";
+import { isInsideRectangle, applyTransformation, reverseTransformation } from "../../../Util";
 import { TileSize } from "../../../Type";
 
-export class ScreenSystem extends System {
-	execute(delta, time) {
+export class MapEditorScreenSystem extends System {
+  execute(delta, time) {
     const screenStatus = this.queries.screenStatus.results[0].getComponent(ScreenStatus);
 
     this.updateScreen();
@@ -20,17 +20,16 @@ export class ScreenSystem extends System {
     this.ctx.translate(this.canvasWidth/2, this.canvasHeight/2);
     this.ctx.scale(screenStatus.scaleX, screenStatus.scaleY);
     this.ctx.translate(-this.canvasWidth/2, -this.canvasHeight/2);
-	}
+  }
 
   clearCanvas() {
-    this.ctx.fillStyle = "#69696c";
+    this.ctx.fillStyle = "rgb(10, 10, 10)";
     this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
   }
 
   updateScreen() {
     this.checkMouseWheel();
     this.checkScreenMove();
-    this.checkFocus();
   }
 
   checkMouseWheel() {
@@ -77,60 +76,13 @@ export class ScreenSystem extends System {
       screenStatus.y += Math.abs(this.canvasHeight - mouseY - 100) * 0.1;
     }
   }
-
-  checkFocus() {
-    const selectedTile = this.queries.selectedTile.results[0];
-    
-    if(selectedTile) {
-      const screenStatus = this.queries.screenStatus.results[0].getMutableComponent(ScreenStatus);
-      const focusStatus = this.queries.screenFocusStatus.results[0].getMutableComponent(ScreenFocusStatus);
-      const canvasPos = selectedTile.getMutableComponent(CanvasPosition);
-
-      const transPos = reverseTransformation(
-        canvasPos.x + TileSize.REGULAR, 
-        canvasPos.y + TileSize.REGULAR, 
-        {x: screenStatus.x, y: screenStatus.y}, 
-        {x: screenStatus.scaleX, y: screenStatus.scaleY}, 
-        {width: this.canvasWidth, height: this.canvasHeight}
-      );
-
-      const destX = this.canvasWidth/2;
-      const destY = this.canvasHeight/2;
-
-      if(focusStatus.startFocusing) {
-        focusStatus.x = transPos.x;
-        focusStatus.y = transPos.y;
-        focusStatus.curX = focusStatus.x;
-        focusStatus.curY = focusStatus.y;
-        focusStatus.startFocusing = false;
-      }
-
-      const dx = focusStatus.x - destX;
-      const dy = focusStatus.y - destY;
-      const length = Math.hypot(Math.abs(dx), Math.abs(dy));
-      
-      // If the translation reached the center of screen
-      if(!isInsideRectangle(destX -25, destY -25, focusStatus.curX, focusStatus.curY, 50, 50)) {
-        screenStatus.x += dx/length * 50;
-        screenStatus.y += dy/length * 50;
-        focusStatus.curX -= dx/length * 50;
-        focusStatus.curY -= dy/length * 50;
-      }
-    }
-  }
 }
 
-ScreenSystem.queries = {
+MapEditorScreenSystem.queries = {
   mouseStatus: {
     components: [MouseStatus],
   },
   screenStatus: {
     components: [ScreenStatus],
   },
-  screenFocusStatus: {
-    components: [ScreenFocusStatus],
-  },
-  selectedTile: {
-    components: [CurrentSelect, Tile, MapPosition, CanvasPosition],
-  }
 };
