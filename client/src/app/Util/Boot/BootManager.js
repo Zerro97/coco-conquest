@@ -201,10 +201,10 @@ export class BootManager {
                 canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.MapEditorRenderSystem, {
-              priority: 71,
-              ctx: this.ctx,
-              canvasWidth: this.canvasWidth,
-              canvasHeight: this.canvasHeight,
+                priority: 71,
+                ctx: this.ctx,
+                canvasWidth: this.canvasWidth,
+                canvasHeight: this.canvasHeight,
             });
     }
 
@@ -218,24 +218,24 @@ export class BootManager {
 
     // Only play the needed systems for the menu
     setInitialSystems() {
-      // Stop all systems
-      Object.keys(System).forEach((system) => {
-        this.world.getSystem(System[system]).stop();
-      });
+        // Stop all systems
+        Object.keys(System).forEach((system) => {
+            this.world.getSystem(System[system]).stop();
+        });
 
-      // Systems related to menu
-      this.world.getSystem(System.MenuSystem).play();
-      this.world.getSystem(System.MenuRenderSystem).play();
+        // Systems related to menu
+        this.world.getSystem(System.MenuRenderSystem).play();
 
-      // Core Systems
-      this.world.getSystem(System.GameLoaderSystem).play();
-      this.world.getSystem(System.HudLoaderSystem).play();
-      this.world.getSystem(System.LoaderSystem).play();
-      this.world.getSystem(System.KeyboardHandlerSystem).play();
-      this.world.getSystem(System.KeyboardListenerSystem).play();
-      this.world.getSystem(System.MouseHandlerSystem).play();
-      this.world.getSystem(System.MouseListenerSystem).play();
-      this.world.getSystem(System.SocketEmitSystem).play();
-      this.world.getSystem(System.SocketListenerSystem).play();
+        // Core Systems
+        this.world.getSystem(System.MenuSystem).play();
+        this.world.getSystem(System.GameLoaderSystem).play();
+        this.world.getSystem(System.HudLoaderSystem).play();
+        this.world.getSystem(System.LoaderSystem).play();
+        this.world.getSystem(System.KeyboardHandlerSystem).play();
+        this.world.getSystem(System.KeyboardListenerSystem).play();
+        this.world.getSystem(System.MouseHandlerSystem).play();
+        this.world.getSystem(System.MouseListenerSystem).play();
+        this.world.getSystem(System.SocketEmitSystem).play();
+        this.world.getSystem(System.SocketListenerSystem).play();
     }
 }

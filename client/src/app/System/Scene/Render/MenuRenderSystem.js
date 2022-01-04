@@ -63,15 +63,13 @@ export class MenuRenderSystem extends System {
                 this.drawMenu();
                 break;
             }
-            // Map Editor
+            // Map Editor Set Up
+            // (Map Editor Scene is handled separated in MapEditorRenderSystem)
             case SceneType.MAP_EDITOR_SETUP: {
                 this.drawMapEditorSetUp();
                 break;
             }
-            case SceneType.MAP_EDITOR: {
-                this.drawMapEditor();
-                break;
-            }
+
             // Setting
             case SceneType.SETTING: {
                 this.drawSetting();
@@ -225,35 +223,6 @@ export class MenuRenderSystem extends System {
                 }
                 case MenuHudType.MAP_EDITOR_SETUP_BUTTON: {
                     drawHoveringStartButton(this.ctx, pos, size, "Create Map");
-                    break;
-                }
-            }
-        });
-    }
-
-    drawMapEditor() {
-        this.queries.mapEditorHud.results.forEach(hud => {
-            const type = hud.getComponent(MenuHud).type;
-            const pos = hud.getComponent(CanvasPosition);
-            const size = hud.getComponent(Size);
-
-            switch(type) {
-                case MenuHudType.MAP_EDITOR_GO_BACK_BUTTON: {
-                    drawBackButton(this.ctx, pos, size, "Go Back");
-                    break;
-                }
-            }
-        });
-
-        // Hovering Menu
-        this.queries.hoveringMapEditorHud.results.forEach(hud => {
-            const type = hud.getComponent(MenuHud).type;
-            const pos = hud.getComponent(CanvasPosition);
-            const size = hud.getComponent(Size);
-
-            switch(type) {
-                case MenuHudType.MAP_EDITOR_GO_BACK_BUTTON: {
-                    drawHoveringBackButton(this.ctx, pos, size, "Go Back");
                     break;
                 }
             }
@@ -616,12 +585,6 @@ MenuRenderSystem.queries = {
         components: [CurrentHudHover, MenuHud, SettingScene]
     },
 
-    mapEditorHud: {
-        components: [MenuHud, MapEditorScene]
-    },
-    hoveringMapEditorHud: {
-        components: [CurrentHudHover, MenuHud, MapEditorScene]
-    },
     mapEditorSetUpHud: {
         components: [MenuHud, MapEditorSetUpScene]
     },

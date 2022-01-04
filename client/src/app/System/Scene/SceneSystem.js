@@ -21,16 +21,18 @@ export class SceneSystem extends System {
     
     if(scene) {
         this.updateHudInScene(scene.currentScene);
+        console.log("Before Stop");
         this.stopAll();
 
         switch(scene.currentScene) {
           case SceneType.MAP_EDITOR: {
             this.world.getSystem(SystemClass.MapEditorScreenSystem).play();
             this.world.getSystem(SystemClass.MapEditorRenderSystem).play();
-            this.world.getSystem(SystemClass.MenuSystem).play();
+            
             break;
           }
           case SceneType.GAME: {
+            console.log("Resume Game");
             // Render
             this.world.getSystem(SystemClass.RegionSystem).play();
             this.world.getSystem(SystemClass.RenderSystem).play();
@@ -47,11 +49,14 @@ export class SceneSystem extends System {
             this.world.getSystem(SystemClass.HudSystem).play();
             this.world.getSystem(SystemClass.MovementSystem).play();
             this.world.getSystem(SystemClass.UnitSystem).play();
+            //this.world.getSystem(SystemClass.ProductionSystem).play();
+            this.world.getSystem(SystemClass.ResourceSystem).play();
+
             break;
           }
           default: {
-            this.world.getSystem(SystemClass.MenuSystem).play();
             this.world.getSystem(SystemClass.MenuRenderSystem).play();
+
             break;
           }
         }
@@ -81,15 +86,13 @@ export class SceneSystem extends System {
     });
 
     // Core Systems
-    this.world.getSystem(SystemClass.GameLoaderSystem).play();
-    this.world.getSystem(SystemClass.HudLoaderSystem).play();
-    this.world.getSystem(SystemClass.LoaderSystem).play();
     this.world.getSystem(SystemClass.KeyboardHandlerSystem).play();
     this.world.getSystem(SystemClass.KeyboardListenerSystem).play();
     this.world.getSystem(SystemClass.MouseHandlerSystem).play();
     this.world.getSystem(SystemClass.MouseListenerSystem).play();
     this.world.getSystem(SystemClass.SocketEmitSystem).play();
     this.world.getSystem(SystemClass.SocketListenerSystem).play();
+    this.world.getSystem(SystemClass.MenuSystem).play();
   }
 
   /**

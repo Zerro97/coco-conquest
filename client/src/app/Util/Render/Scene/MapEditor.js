@@ -3,7 +3,7 @@ import { roundRect } from "..";
 export function drawEditPanel(ctx, pos, size) {
     ctx.fillStyle = "rgba(70, 70, 70, 0.8)";
     ctx.lineWidth = 2;
-    ctx.strokeStyle = "rgb(40,40,40)";
+    ctx.strokeStyle = "rgb(40, 40, 40)";
     roundRect(ctx, pos.x, pos.y, size.width, size.height, {tr: 10, tl: 0, br: 10, bl: 0}, true, false);
 
     for(let i=1; i<8; i++) {

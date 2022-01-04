@@ -62,10 +62,7 @@ export class LoaderSystem extends System {
 
     // Initial screen position
     this.setInitialPosition();
-
-    // Stop all game related systems
-    this.stopGame();
-
+    
     // Stop loader from executing after finish loading
     this.stop();
   }
@@ -160,6 +157,7 @@ export class LoaderSystem extends System {
         counter.background += 1;
       }
     });
+    console.log(this.tileImages);
   }
 
   setInitialPosition() {
@@ -172,25 +170,6 @@ export class LoaderSystem extends System {
 
     screenStatus.x = canvasPos.x - this.canvasWidth / 2;
     screenStatus.y = canvasPos.y - this.canvasHeight / 2;
-  }
-
-  stopGame() {
-      // Render
-      this.world.getSystem(RegionSystem).stop();
-      this.world.getSystem(RenderSystem).stop();
-      this.world.getSystem(ScreenSystem).stop();
-      this.world.getSystem(TileRenderSystem).stop();
-      this.world.getSystem(UnitRenderSystem).stop();
-      this.world.getSystem(BuildingRenderSystem).stop();
-      this.world.getSystem(GameHudSystem).stop();
-      this.world.getSystem(HudRenderSystem).stop();
-  
-      // Update
-      this.world.getSystem(ActionSystem).stop();
-      this.world.getSystem(GlobalGameSystem).stop();
-      this.world.getSystem(HudSystem).stop();
-      this.world.getSystem(MovementSystem).stop();
-      this.world.getSystem(UnitSystem).stop();
   }
 }
 

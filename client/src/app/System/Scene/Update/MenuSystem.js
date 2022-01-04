@@ -171,7 +171,6 @@ export class MenuSystem extends System {
 
 				case MenuHudType.MULTI_CONFIRM_GAME_BUTTON: {
 					const roomCount = this.queries.lobbyHud.results.length;
-					console.log("Calling Confirm Game Button");
 
 					this.world
 						.createEntity()
@@ -209,6 +208,7 @@ export class MenuSystem extends System {
 				}
 			}
 			
+			// Resume scene system to turn on/off corresponding systems
 			this.world.getSystem(SceneSystem).play();
 		}
 	}
