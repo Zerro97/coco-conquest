@@ -241,15 +241,20 @@ export class EntityManager {
 			return;
 		}
 
+		// console.log("Entities to remove:", this.entitiesToRemove);
+		// console.log("Entities with component to remove:", this.entitiesWithComponentsToRemove);
+
 		for (let i = 0; i < this.entitiesToRemove.length; i++) {
 			let entity = this.entitiesToRemove[i];
 			let index = this._entities.indexOf(entity);
 			this._releaseEntity(entity, index);
 		}
 		this.entitiesToRemove.length = 0;
+		
 
 		for (let i = 0; i < this.entitiesWithComponentsToRemove.length; i++) {
 			let entity = this.entitiesWithComponentsToRemove[i];
+
 			while (entity._ComponentTypesToRemove.length > 0) {
 				let Component = entity._ComponentTypesToRemove.pop();
 

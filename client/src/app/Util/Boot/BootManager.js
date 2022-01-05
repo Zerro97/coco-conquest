@@ -4,6 +4,8 @@ import { io } from "socket.io-client";
 import * as Component from "../../Component";
 import * as System from "../../System";
 
+import { SceneType, ObjectShape, MenuHudType } from "../../Type";
+
 export class BootManager {
 	constructor(world, canvas, worldSize) {
 		this.world = world;
@@ -35,8 +37,9 @@ export class BootManager {
         this.registerSystems();
         this.generateImages();
 
-        // Initial Systems to Play
+        // Initial Systems to Play / Entities for menu hud
         this.setInitialSystems();
+        this.setInitialEntities();
     }
 
     displayLoading() {
@@ -115,6 +118,8 @@ export class BootManager {
             // Game Updates
             .registerSystem(System.SceneSystem, {
                 priority: 30,
+                canvasWidth: this.canvasWidth,
+                canvasHeight: this.canvasHeight,
             })
             .registerSystem(System.GlobalGameSystem, {
                 priority: 31
@@ -228,7 +233,7 @@ export class BootManager {
 
         // Core Systems
         this.world.getSystem(System.MenuSystem).play();
-        this.world.getSystem(System.GameLoaderSystem).play();
+        //this.world.getSystem(System.GameLoaderSystem).play();
         this.world.getSystem(System.HudLoaderSystem).play();
         this.world.getSystem(System.LoaderSystem).play();
         this.world.getSystem(System.KeyboardHandlerSystem).play();
@@ -237,5 +242,28 @@ export class BootManager {
         this.world.getSystem(System.MouseListenerSystem).play();
         this.world.getSystem(System.SocketEmitSystem).play();
         this.world.getSystem(System.SocketListenerSystem).play();
+    }
+
+    setInitialEntities() {
+        let menuButtonTypes = [
+            MenuHudType.SINGLE_PLAY_BUTTON,
+            MenuHudType.MULTI_PLAY_BUTTON,
+            MenuHudType.MAP_EDITOR_BUTTON,
+            MenuHudType.SETTING_BUTTON,
+            MenuHudType.EXIT_BUTTON
+        ];
+    
+        for(let i=0; i<5; i++) {
+            this.world
+                .createEntity()
+                .addComponent(Component.MenuHud, {type: menuButtonTypes[i]})
+                .addComponent(Component.HudHoverable)
+                .addComponent(Component.HudClickable)
+                .addComponent(Component.CanvasPosition, {x: this.canvasWidth/2 - 110, y: 350 + i * 50})
+                .addComponent(Component.Shape, {type: ObjectShape.RECTANGLE})
+                .addComponent(Component.Size, {width: 220, height: 40})
+                .addComponent(Component.MenuScene)
+                .addComponent(Component.Scene, {value: SceneType.MENU});
+        }
     }
 }

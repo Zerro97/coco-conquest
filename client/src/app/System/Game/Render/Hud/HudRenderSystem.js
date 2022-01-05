@@ -68,6 +68,10 @@ export class HudRenderSystem extends System {
     const selectedBuilding = this.queries.selectedBuilding.results[0];
     const isCastleSelected = selectedBuilding?.getComponent(Building).value === BuildingType.CASTLE;
 
+    if(isCastleSelected) {
+      console.log("Need to remove the production panel game hud!");
+    }
+
     this.queries.huds.results.forEach(hud => {
       const pos = hud.getComponent(CanvasPosition);
       const type = hud.getComponent(Hud).type;

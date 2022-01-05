@@ -28,7 +28,7 @@ import { HudType, ObjectShape, SceneType, MenuHudType } from "../../Type";
 export class HudLoaderSystem extends System {
   execute(delta, time) {
     // Generate menu hud entities
-    this.generateMenuHuds();
+    //this.generateMenuHuds();
 
     // Generate game hud entities
     this.generateGameHuds();

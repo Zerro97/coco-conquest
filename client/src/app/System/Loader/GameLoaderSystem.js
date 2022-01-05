@@ -4,10 +4,12 @@ import {
   Tile,
   TileMap,
   MapPosition,
+  SceneStatus
 } from "../../Component";
 import { MapGenerator, UnitGenerator, BuildingGenerator } from "../../Assemblage";
 import { cubeToEvenr } from "../../Util";
-import { UnitType, BuildingType } from "../../Type";
+import { UnitType, BuildingType, SceneType } from "../../Type";
+import { SceneSystem } from "../../System";
 
 export class GameLoaderSystem extends System {
   execute(delta, time) {
@@ -20,6 +22,13 @@ export class GameLoaderSystem extends System {
     this.generateTileMap();
     this.assignTileToMap();
     this.assignRegions(10);
+
+    // After Loading Change current scene from LOADING_GAME to GAME
+    const scene = this.queries.sceneStatus.results[0].getMutableComponent(SceneStatus);
+    scene.currentScene = SceneType.GAME;
+
+    // Play stopped Scene System to allow switching scene
+    this.world.getSystem(SceneSystem).play();
 
     // Stop loader from executing after finish loading
     this.stop();
@@ -151,5 +160,8 @@ GameLoaderSystem.queries = {
   },
   tileMap: {
     components: [TileMap],
+  },
+  sceneStatus: {
+    components: [SceneStatus]
   }
 };

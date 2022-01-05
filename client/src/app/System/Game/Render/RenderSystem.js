@@ -38,7 +38,9 @@ export class RenderSystem extends System {
     this.drawDamagePopup();
   }
 
+  
   drawDamagePopup() {
+    // TODO: Reverse the foreach loop to ensure removal does not influence the array count
     this.queries.popup.results.forEach((entity) => {
       const damage = entity.getComponent(DamagePopup);
       const timer = entity.getMutableComponent(Timer);

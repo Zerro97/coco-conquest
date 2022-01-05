@@ -63,13 +63,14 @@ export function drawMovingTile(ctx, x, y) {
 	drawHexagon(ctx, x, y, "rgba(61, 133, 198, 1)", "rgba(61, 133, 198, 0.3)");
 }
 
-export function drawImageTile(ctx, x, y, image) {
+export function drawImageTile(ctx, spritesheet, src, dest) {
+	console.log(src, dest);
 	ctx.save();
 	ctx.beginPath();
-	drawHexagonLine(ctx, x, y, TileSize.REGULAR);
+	drawHexagonLine(ctx, dest.x, dest.y, TileSize.REGULAR);
 	ctx.closePath();
 	ctx.clip();
-	ctx.drawImage(image, x - TileSize.REGULAR, y - TileSize.REGULAR, 100, 100);
+	ctx.drawImage(spritesheet, src.x, src.y, src.width, src.height, dest.x, dest.y, dest.width, dest.height);
 	ctx.restore();
 }
 

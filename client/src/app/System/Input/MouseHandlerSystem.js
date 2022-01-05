@@ -21,7 +21,9 @@ import {
   HudHoverable,
   HudSelectable,
   HudClickable,
-  CurrentHudClick
+  CurrentHudClick,
+  Pressable,
+  CurrentPress
 } from "../../Component";
 import { isInsideCircle, isInsideHexagon, isInsideRectangle } from "../../Util";
 import { ObjectShape, TileSize, ActionType } from "../../Type";
@@ -41,6 +43,7 @@ export class MouseHandlerSystem extends System {
 
     if(!isHudHovering) {
       this.checkHover();
+      this.checkPress();
     }
 
     if(!isHudSelecting && !isHudClicking) {
@@ -354,6 +357,44 @@ export class MouseHandlerSystem extends System {
     return isClicking;
   }
 
+  /**
+   * Used in map editor. 
+   * Check if the mouse is currently pressing on the object
+   */
+  checkPress() {
+    const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
+    const mouseTransX = mouseStatus.mapX;
+    const mouseTransY = mouseStatus.mapY;
+
+    if (mouseStatus.isMouseDown) {
+      this.queries.pressableObjects.results.forEach((object) => {
+        object.removeComponent(CurrentPress); 
+
+        let objectPosition = object.getMutableComponent(CanvasPosition);
+        let objectShape = object.getMutableComponent(Shape).type;
+
+        switch (objectShape) {
+          case ObjectShape.HEXAGON: {
+            if (
+              isInsideHexagon(
+                objectPosition.x,
+                objectPosition.y,
+                mouseTransX,
+                mouseTransY,
+                TileSize.REGULAR
+              )
+            ) {
+              if (!object.hasComponent(CurrentPress)) {
+                object.addComponent(CurrentPress);
+              }
+            }
+            break;
+          }
+        }
+      });
+    }
+  }
+
   checkHover() {
     const mouseStatus = this.queries.mouseStatus.results[0].getMutableComponent(MouseStatus);
     const mouseTransX = mouseStatus.mapX;
@@ -365,9 +406,11 @@ export class MouseHandlerSystem extends System {
 
       let objectPosition = object.getMutableComponent(CanvasPosition);
       let objectShape = object.getMutableComponent(Shape).type;
+      
 
       switch (objectShape) {
         case ObjectShape.HEXAGON: {
+          //console.log("Object is hex");
           if (
             isInsideHexagon(
               objectPosition.x,
@@ -377,7 +420,9 @@ export class MouseHandlerSystem extends System {
               TileSize.REGULAR
             )
           ) {
+            //console.log("Inside the hex");
             if (!object.hasComponent(CurrentHover)) {
+              //console.log("Adding current hover");
               object.addComponent(CurrentHover);
             }
           }
@@ -411,7 +456,6 @@ export class MouseHandlerSystem extends System {
 
         let objectPosition = object.getMutableComponent(CanvasPosition);
         let objectShape = object.getMutableComponent(Shape).type;
-        
 
         switch (objectShape) {
           case ObjectShape.HEXAGON: {
@@ -513,13 +557,16 @@ MouseHandlerSystem.queries = {
   },
 
   hoverableObjects: {
-    components: [Hoverable, CanvasPosition],
+    components: [Hoverable, CanvasPosition, Shape],
   },
   selectableObjects: {
     components: [Selectable, CanvasPosition, Shape],
   },
   rightSelectableObjects: {
     components: [RightSelectable, CanvasPosition, Shape],
+  },
+  pressableObjects: {
+    components: [Pressable, CanvasPosition, Shape]
   },
 
   hudHoverableObjects: {

@@ -20,7 +20,8 @@ import {
 	Hoverable,
 	Selectable,
 	RightSelectable,
-	GameObject
+	GameObject,
+	Pressable
 } from "../../../Component";
 import {
 	SceneSystem
@@ -34,6 +35,16 @@ export class MenuSystem extends System {
         this.checkMenuHudClick();
     }
 
+	removeHuds() {
+		const scene = this.queries.sceneStatus.results[0].getMutableComponent(SceneStatus);
+
+		this.queries.menuHuds.results.forEach(hud => {
+			let hudScene = hud.getComponent(Scene)?.value;
+		});
+
+		
+	}
+
 	checkMenuHudClick() {
 		const clickedMenu = this.queries.clickedMenuHud.results[0];
 		const socketAction = this.queries.socketAction.results[0].getMutableComponent(SocketEvents);
@@ -45,6 +56,7 @@ export class MenuSystem extends System {
 			switch(type) {
 				// Main Menu
 				case MenuHudType.SINGLE_PLAY_BUTTON: {
+					this.removeHuds();
 					scene.currentScene = SceneType.SINGLE_PLAY;
 					break;
 				}
@@ -84,6 +96,7 @@ export class MenuSystem extends System {
 
 					// Create Tiles
 					let count = 0;
+					console.log("Creating Tiles");
 					for(let i=0; i<30; i++) {
 						for(let j=0; j<30; j++) {
 							let cube = evenrToCube(i, j);
@@ -98,6 +111,7 @@ export class MenuSystem extends System {
 								.addComponent(Hoverable)
 								.addComponent(Selectable)
 								.addComponent(RightSelectable)
+								.addComponent(Pressable)
 								.addComponent(Shape, { type: ObjectShape.HEXAGON })
 								.addComponent(Tile, {
 									id: count,
@@ -138,7 +152,7 @@ export class MenuSystem extends System {
 					break;
 				}
 				case MenuHudType.START_BUTTON: {
-					scene.currentScene = SceneType.GAME;
+					scene.currentScene = SceneType.LOADING_GAME;
 					break;
 				}
 				case MenuHudType.SINGLE_SETUP_GO_BACK_BUTTON: {
@@ -199,7 +213,7 @@ export class MenuSystem extends System {
 
 				// Multi Player Stage Scene
 				case MenuHudType.MULTI_STAGE_START_BUTTON: {
-					scene.currentScene = SceneType.GAME;
+					scene.currentScene = SceneType.LOADING_GAME;
 					break;
 				}
 				case MenuHudType.MULTI_STAGE_LEAVE_BUTTON: {
@@ -231,4 +245,7 @@ MenuSystem.queries = {
 	lobbyHud: {
 		components: [MenuHud, LobbyScene]
 	},
+	menuHuds: {
+		components: [MenuHud]
+	}
 };
