@@ -21,16 +21,13 @@ import {
   Radius,
   Size,
   Team,
-  Money, 
-  MoneyGeneration, 
-  Food, 
-  FoodGeneration, 
-  Science, 
-  ScienceGeneration, 
-  GlobalStatus, 
-  ResourceStatus
+  HudClickable,
+  Shape,
+  HudHoverable,
+  ResourceStatus,
+  ToggleableHud
 } from "../../../../Component";
-import { ActionType, IconType, HudType, BuildingType } from "../../../../Type";
+import { ActionType, IconType, HudType, BuildingType, ObjectShape } from "../../../../Type";
 import { 
   arcToPoint, 
   drawTurnButton, 
@@ -46,14 +43,77 @@ import {
   drawTopPanel,
   drawScienceButton
 } from "../../../../Util";
+import { CurrentGameHudToggle } from "../../../../Component/Hud/CurrentGameHudToggle";
 
 export class HudRenderSystem extends System {
   execute(delta, time) {
     this.ctx.restore();
 
+    this.toggleHudCreation();
     this.drawHudEntities();
     this.drawNotHudEntities();
     this.drawHoveringHuds();
+  }
+
+  toggleHudCreation() {
+    const toggleStatus = this.queries.toggleStatus.results[0];
+
+    // Conditions
+    const selectedBuilding = this.queries.selectedBuilding.results[0];
+    const isCastleSelected = selectedBuilding?.getComponent(Building).value === BuildingType.CASTLE;
+
+    if(isCastleSelected) {
+      // Production panel at left (shown when clicking city)
+      this.world
+        .createEntity()
+        .addComponent(Hud, {type: HudType.PRODUCTION_PANEL})
+        .addComponent(HudClickable)
+        .addComponent(ToggleableHud)
+        .addComponent(CanvasPosition, {x: 0, y: 50})
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 300, height: this.canvasHeight - 220});
+
+      // Production categories
+      this.world
+        .createEntity()
+        .addComponent(Hud, {type: HudType.PRODUCTION_UNIT})
+        .addComponent(CanvasPosition, {x: 5, y: 60})
+        .addComponent(ToggleableHud)
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 290, height: 30});
+
+      this.world
+        .createEntity()
+        .addComponent(Hud, {type: HudType.PRODUCTION_BUILDING})
+        .addComponent(CanvasPosition, {x: 5, y: 370})
+        .addComponent(ToggleableHud)
+        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+        .addComponent(Size, {width: 290, height: 30});
+
+      // Buttons for units
+      for(let i=0; i< 8; i++) {
+        this.world
+          .createEntity()
+          .addComponent(Hud, {type: HudType.PRODUCTION_BUTTON})
+          .addComponent(CanvasPosition, {x: 5, y: 100 + i * 32})
+          .addComponent(HudHoverable)
+          .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+          .addComponent(Size, {width: 290, height: 30});
+      }
+
+      // Buttons for buildings
+      for(let i=0; i< 8; i++) {
+        this.world
+          .createEntity()
+          .addComponent(Hud, {type: HudType.PRODUCTION_BUTTON})
+          .addComponent(CanvasPosition, {x: 5, y: 410 + i * 32})
+          .addComponent(HudHoverable)
+          .addComponent(Shape, {type: ObjectShape.RECTANGLE})
+          .addComponent(Size, {width: 290, height: 30});
+      }
+    } else {
+      console.log("Should remove the game hud");
+    }
   }
 
   drawNotHudEntities() {
@@ -67,10 +127,6 @@ export class HudRenderSystem extends System {
     // Conditions for drawing some huds
     const selectedBuilding = this.queries.selectedBuilding.results[0];
     const isCastleSelected = selectedBuilding?.getComponent(Building).value === BuildingType.CASTLE;
-
-    if(isCastleSelected) {
-      console.log("Need to remove the production panel game hud!");
-    }
 
     this.queries.huds.results.forEach(hud => {
       const pos = hud.getComponent(CanvasPosition);
@@ -467,4 +523,10 @@ HudRenderSystem.queries = {
   resourceStatus: {
     components: [ResourceStatus]
   },
+  toggleableHuds: {
+    components: [ToggleableHud]
+  },
+  toggleStatus: {
+    components: [CurrentGameHudToggle]
+  }
 };

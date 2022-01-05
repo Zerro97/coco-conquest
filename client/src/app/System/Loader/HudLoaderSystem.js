@@ -24,12 +24,10 @@ import {
   MapEditorScene
 } from "../../Component";
 import { HudType, ObjectShape, SceneType, MenuHudType } from "../../Type";
+import { CurrentGameHudToggle } from "../../Component/Hud/CurrentGameHudToggle";
 
 export class HudLoaderSystem extends System {
   execute(delta, time) {
-    // Generate menu hud entities
-    //this.generateMenuHuds();
-
     // Generate game hud entities
     this.generateGameHuds();
 
@@ -38,244 +36,6 @@ export class HudLoaderSystem extends System {
 
     // Stop loader from executing after finish loading
     this.stop();
-  }
-
-  generateMenuHuds() {
-    // Menu Buttons
-    let menuButtonTypes = [
-      MenuHudType.SINGLE_PLAY_BUTTON,
-      MenuHudType.MULTI_PLAY_BUTTON,
-      MenuHudType.MAP_EDITOR_BUTTON,
-      MenuHudType.SETTING_BUTTON,
-      MenuHudType.EXIT_BUTTON
-    ];
-
-    for(let i=0; i<5; i++) {
-      this.world
-        .createEntity()
-        .addComponent(MenuHud, {type: menuButtonTypes[i]})
-        .addComponent(HudHoverable)
-        .addComponent(HudClickable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 110, y: 350 + i * 50})
-        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 220, height: 40})
-        .addComponent(MenuScene)
-        .addComponent(Scene, {value: SceneType.MENU});
-    }
-
-    // Map Editor Set Up
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.MAP_EDITOR_SETUP_GO_BACK_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 270, y: 650})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 220, height: 40})
-      .addComponent(MapEditorSetUpScene)
-      .addComponent(Scene, {value: SceneType.MAP_EDITOR_SETUP});
-
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.MAP_EDITOR_SETUP_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 50, y: 650})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 220, height: 40})
-      .addComponent(MapEditorSetUpScene)
-      .addComponent(Scene, {value: SceneType.MAP_EDITOR_SETUP});
-
-    // Map Editor
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.MAP_EDITOR_GO_BACK_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: 20, y: this.canvasHeight - 60})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 220, height: 40})
-      .addComponent(MapEditorScene)
-      .addComponent(Scene, {value: SceneType.MAP_EDITOR});
-
-    // Single Play Buttons
-    let singlePlayButtonTypes = [
-      MenuHudType.SINGLE_SETUP_GAME_BUTTON,
-      MenuHudType.LOAD_GAME_BUTTON,
-      MenuHudType.SINGLE_GO_BACK_BUTTON,
-    ];
-
-    for(let i=0; i<3; i++) {
-      this.world
-        .createEntity()
-        .addComponent(MenuHud, {type: singlePlayButtonTypes[i]})
-        .addComponent(HudHoverable)
-        .addComponent(HudClickable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 110, y: 350 + i * 50})
-        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 220, height: 40})
-        .addComponent(SinglePlayScene)
-        .addComponent(Scene, {value: SceneType.SINGLE_PLAY});
-    }
-
-    // Set Up Single Player Game
-    for(let i=0; i<8; i++) {
-      this.world
-        .createEntity()
-        .addComponent(MenuHud, {type: MenuHudType.PLAYER_BOX})
-        .addComponent(HudHoverable)
-        .addComponent(HudClickable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 500, y: 100 + i * 55})
-        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 260, height: 50})
-        .addComponent(SingleSetUpScene)
-        .addComponent(Scene, {value: SceneType.SINGLE_SETUP_GAME});
-      
-      this.world
-        .createEntity()
-        .addComponent(MenuHud, {type: MenuHudType.PLAYER_TEAM_BUTTON})
-        .addComponent(HudHoverable)
-        .addComponent(HudClickable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 220, y: 100 + i * 55})
-        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 50, height: 50})
-        .addComponent(SingleSetUpScene)
-        .addComponent(Scene, {value: SceneType.SINGLE_SETUP_GAME})
-        .addComponent(Team, {value: i % 4});
-    }
-
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.START_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 330, y: 730})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 220, height: 50})
-      .addComponent(SingleSetUpScene)
-      .addComponent(Scene, {value: SceneType.SINGLE_SETUP_GAME});
-
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.SINGLE_SETUP_GO_BACK_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 550, y: 730})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 220, height: 50})
-      .addComponent(SingleSetUpScene)
-      .addComponent(Scene, {value: SceneType.SINGLE_SETUP_GAME});
-
-    // Set Up Setting
-    let settingButtonTypes = [
-      MenuHudType.SETTING_GAME_BUTTON,
-      MenuHudType.SETTING_GRAPHICS_BUTTON,
-      MenuHudType.SETTING_AUDIO_BUTTON,
-    ];
-
-    for(let i=0; i<3; i++) {
-      this.world
-        .createEntity()
-        .addComponent(MenuHud, {type: settingButtonTypes[i]})
-        .addComponent(HudHoverable)
-        .addComponent(HudClickable)
-        .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 485, y: 70 + i * 60})
-        .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-        .addComponent(Size, {width: 200, height: 50})
-        .addComponent(SettingScene)
-        .addComponent(Scene, {value: SceneType.SETTING});
-    }
-
-    // Set Up Lobby
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.LOBBY_ROOM_HEAD})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 400, y: 80})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 800, height: 30})
-      .addComponent(LobbyScene)
-      .addComponent(Scene, {value: SceneType.LOBBY});
-    
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.LOBBY_GO_BACK_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 420, y: 700})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 200, height: 50})
-      .addComponent(LobbyScene)
-      .addComponent(Scene, {value: SceneType.LOBBY});
-    
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.LOBBY_JOIN_GAME_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2, y: 700})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 200, height: 50})
-      .addComponent(LobbyScene)
-      .addComponent(Scene, {value: SceneType.LOBBY});
-
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.LOBBY_SETUP_GAME_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 220, y: 700})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 200, height: 50})
-      .addComponent(LobbyScene)
-      .addComponent(Scene, {value: SceneType.LOBBY});
-
-    // Multiplayer Game Set Up
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.MULTI_CONFIRM_GAME_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 100, y: 700})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 200, height: 50})
-      .addComponent(MultiSetUpScene)
-      .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME});
-
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.MULTI_SETUP_GO_BACK_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 300, y: 700})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 200, height: 50})
-      .addComponent(MultiSetUpScene)
-      .addComponent(Scene, {value: SceneType.MULTI_SETUP_GAME});
-
-    // Multiplayer Stage Scene
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.MULTI_STAGE_START_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 + 150, y: 700})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 200, height: 50})
-      .addComponent(MultiStageScene)
-      .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME});
-
-    this.world
-      .createEntity()
-      .addComponent(MenuHud, {type: MenuHudType.MULTI_STAGE_LEAVE_BUTTON})
-      .addComponent(HudHoverable)
-      .addComponent(HudClickable)
-      .addComponent(CanvasPosition, {x: this.canvasWidth/2 - 350, y: 800})
-      .addComponent(Shape, {type: ObjectShape.RECTANGLE})
-      .addComponent(Size, {width: 200, height: 50})
-      .addComponent(MultiStageScene)
-      .addComponent(Scene, {value: SceneType.MULTI_STAGE_GAME});
   }
 
   generateGameHuds() {
@@ -343,6 +103,13 @@ export class HudLoaderSystem extends System {
         .addComponent(Shape, {type: ObjectShape.RECTANGLE})
         .addComponent(Size, {width: 290, height: 30});
     }
+
+    // Toggleable Hud Status (show which hud is being toggled currently)
+    this.world
+      .createEntity()
+      .addComponent(CurrentGameHudToggle, {
+        0: false,
+      });
 
     // Team Icons on top right
     const globalStatus = this.queries.globalStatus.results[0].getComponent(GlobalStatus);
