@@ -1,5 +1,5 @@
 module.exports = {
-	entry: './src/index.js',
+	entry: './src/index.ts',
 	experiments: {
 		topLevelAwait: true
 	},
@@ -8,6 +8,11 @@ module.exports = {
 			{
 				test: /\.html$/,
 				use: ['html-loader']
+			},
+			{
+				test: /\.tsx?$/,
+				use: 'ts-loader',
+				exclude: /node_modules/,
 			},
 			{
 				test: /\.m?js$/,
@@ -30,5 +35,8 @@ module.exports = {
 				type: 'asset/resource'
 			}
 		]
+	},
+	resolve: {
+		extensions: ['.ts', '.js', '.tsx']
 	}
 };

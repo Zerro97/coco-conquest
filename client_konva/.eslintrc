@@ -1,0 +1,33 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jest": true
+  },
+  "parser": "@babel/eslint-parser",
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": "true"
+  },
+  "ignorePatterns": [
+    "src/app/Ecsy/*"
+  ],
+  "rules": {
+    "no-unused-vars": "off",
+    // "indent": [
+    //     "error",
+    //     "tab"
+    // ],
+    //"linebreak-style": ["warn", "windows"],
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ]
+  }
+}
