@@ -18,4 +18,4 @@ function run() {
 }
 
 var lastTime = performance.now();
-run();    
+run();
