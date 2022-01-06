@@ -49,7 +49,7 @@ export class HudRenderSystem extends System {
   execute(delta, time) {
     this.ctx.restore();
 
-    this.toggleHudCreation();
+    //this.toggleHudCreation();
     this.drawHudEntities();
     this.drawNotHudEntities();
     this.drawHoveringHuds();

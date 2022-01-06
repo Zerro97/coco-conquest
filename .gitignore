@@ -9,6 +9,17 @@ client/*.log
 client/npm-debug.log
 client/package-lock.json
 
+# Client Konva
+client_konva/node_modules/
+client_konva/coverage/
+client_konva/dist/
+
+client_konva/.DS_Store
+client_konva/*.log
+
+client_konva/npm-debug.log
+client_konva/package-lock.json
+
 # Server
 server/node_modules/
 server/coverage/

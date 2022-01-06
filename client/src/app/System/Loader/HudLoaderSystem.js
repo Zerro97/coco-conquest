@@ -105,11 +105,11 @@ export class HudLoaderSystem extends System {
     }
 
     // Toggleable Hud Status (show which hud is being toggled currently)
-    this.world
-      .createEntity()
-      .addComponent(CurrentGameHudToggle, {
-        0: false,
-      });
+    // this.world
+    //   .createEntity()
+    //   .addComponent(CurrentGameHudToggle, {
+    //     0: false,
+    //   });
 
     // Team Icons on top right
     const globalStatus = this.queries.globalStatus.results[0].getComponent(GlobalStatus);
