@@ -20,6 +20,9 @@ client_konva/*.log
 client_konva/npm-debug.log
 client_konva/package-lock.json
 
+client_konva/src-tauri/target/
+client_konva/src-tauri/WixTools
+
 # Server
 server/node_modules/
 server/coverage/

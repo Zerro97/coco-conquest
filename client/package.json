@@ -10,7 +10,8 @@
     "fix": "eslint src --ext .js --fix",
     "coverage": "jest --coverage --config=config/jest.config.js",
     "test": "jest --config=config/jest.config.js",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "tauri": "tauri"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "@babel/eslint-plugin": "^7.14.5",
     "@babel/plugin-transform-runtime": "^7.15.8",
     "@babel/preset-env": "^7.15.6",
+    "@tauri-apps/cli": "^1.0.0-beta.10",
     "babel-jest": "^27.2.4",
     "babel-loader": "^8.2.2",
     "babel-plugin-dynamic-import-webpack": "^1.1.0",
@@ -42,6 +44,7 @@
   "dependencies": {
     "@babel/plugin-syntax-top-level-await": "^7.14.5",
     "@babel/runtime": "^7.15.4",
+    "@tauri-apps/api": "^1.0.0-beta.8",
     "clean-webpack-plugin": "^4.0.0",
     "socket.io-client": "^4.4.0"
   }
