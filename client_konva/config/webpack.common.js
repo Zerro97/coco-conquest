@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
 	entry: './src/index.ts',
 	experiments: {
@@ -37,6 +39,13 @@ module.exports = {
 		]
 	},
 	resolve: {
-		extensions: ['.ts', '.js', '.tsx']
+		extensions: ['.ts', '.js', '.tsx'],
+        alias: {
+            Component: path.resolve(__dirname, '../src/app/Component/*'),
+            System: path.resolve(__dirname, '../src/app/System/*'),
+            Ecsy: path.resolve(__dirname, '../src/app/Ecsy/*'),
+            Type: path.resolve(__dirname, '../src/app/Type/*'),
+            Util: path.resolve(__dirname, '../src/app/Util/*'),
+        }
 	}
 };

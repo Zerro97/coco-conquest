@@ -1,10 +1,18 @@
 {
-  "compilerOptions": {
-    "outDir": "./dist/",
-    "noImplicitAny": true,
-    "module": "es6",
-    "target": "es5",
-    "allowJs": true,
-    "moduleResolution": "node"
-  }
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "noImplicitAny": true,
+        "module": "es6",
+        "target": "es5",
+        "allowJs": true,
+        "moduleResolution": "node",
+        "baseUrl": "/",
+        "paths": {
+            "Component": ["src/app/Component/*"],
+            "System": ["src/app/System/*"],
+            "Type": ["src/app/Type/*"],
+            "Util": ["src/app/Util/*"],
+            "Ecsy": ["src/app/Ecsy/*"],
+        }
+    }
 }

@@ -1,2 +1,2 @@
-export * from "CanvasPosition";
-export * from "MapPosition";
+export * from "./CanvasPosition";
+export * from "./MapPosition";

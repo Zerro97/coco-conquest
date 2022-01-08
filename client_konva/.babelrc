@@ -14,7 +14,16 @@
                         "regenerator": true
                     }
                 ],
-                "dynamic-import-webpack"
+                "dynamic-import-webpack",
+                "module-resolver",
+                {
+                    "extensions": ['.js', '.jsx', '.ts', '.tsx'],
+                    "root": ['./src'],
+                    "alias": {
+                    // this must be synchronized with tsconfig.json's path configuration
+                        component: './src/component',
+                    },
+                },
             ]
         }
     }
