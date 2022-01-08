@@ -1,7 +1,6 @@
 import "regenerator-runtime/runtime";
-import { World } from "Ecsy";
-// import { BootManager } from "Util";
-// import Konva from "konva";
+import { World } from "@/Ecsy";
+import { BootManager } from "@/Util/Other";
 
 ////////////////////////////////////////////
 //
@@ -12,7 +11,7 @@ import { World } from "Ecsy";
 // Initialize the world
 let world = new World({ entityPoolSize: 10000 });
 
-//let bootManager = new BootManager(world);
-//bootManager.boot();
+let bootManager = new BootManager(world);
+bootManager.boot();
 
 export { world };

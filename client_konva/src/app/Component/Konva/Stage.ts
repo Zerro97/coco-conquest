@@ -1,4 +1,4 @@
-import { Component, Types } from "../../Ecsy";
+import { Component, Types } from "@/Ecsy";
 
 export class Stage extends Component<any> {}
 

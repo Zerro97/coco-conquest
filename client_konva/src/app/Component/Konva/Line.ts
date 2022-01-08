@@ -1,4 +1,4 @@
-import { Component, Types } from "../../Ecsy";
+import { Component, Types } from "@/Ecsy";
 
 export class Line extends Component<any> {}
 

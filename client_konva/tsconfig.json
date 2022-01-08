@@ -6,13 +6,9 @@
         "target": "es5",
         "allowJs": true,
         "moduleResolution": "node",
-        "baseUrl": "/",
+        "baseUrl": "src",
         "paths": {
-            "Component": ["src/app/Component/*"],
-            "System": ["src/app/System/*"],
-            "Type": ["src/app/Type/*"],
-            "Util": ["src/app/Util/*"],
-            "Ecsy": ["src/app/Ecsy/*"],
+            "@/*": ["app/*"],
         }
     }
 }
