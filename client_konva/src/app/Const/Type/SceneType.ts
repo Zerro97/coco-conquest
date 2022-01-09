@@ -1,4 +1,4 @@
-export enum Scene {
+export enum SceneType {
     MENU,
     SETTING,
 
@@ -6,6 +6,8 @@ export enum Scene {
     SINGLE_PLAY_MENU,
     SINGLE_PLAY_SETUP,
     SINGLE_PLAY_LOAD,
+    SINGLE_PLAY_STORY,
+    SINGLE_PLAY_TUTORIAL,
 
     // Multi Player
     MULTI_PLAY_MENU,

@@ -3,8 +3,13 @@ import { Component, System } from "@/Ecsy";
 
 export class SceneRenderSystem extends System {
   execute(delta: Number, time: Number) {
-    const layer = this.queries.layer.results[0];
-    console.log(layer.value);
+    this.drawHuds();
+  }
+
+  drawHuds() {
+    const layer = this.queries.layer.results[0].getComponent(Layer);
+    
+    
   }
 }
 

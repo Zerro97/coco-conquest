@@ -1,8 +1,8 @@
 import * as Component from "@/Component";
 import * as System from "@/System";
+import { Color, Resolution } from "@/Const";
 import { World } from "@/Ecsy";
 import Konva from "konva";
-import { Layer, Stage } from "@/Component";
 
 export class BootManager {
     world: World;
@@ -28,27 +28,32 @@ export class BootManager {
             .registerSystem(System.SceneSystem, {
                 priority: 0
             })
+        this.world
+            .registerSystem(System.SceneRenderSystem, {
+                priority: 0
+            })
     }
 
     /**
      * Create initial entities
      */
     initializeWorld(): void {
+        let resolution = Resolution.DESKTOP2;
         let stage =  new Konva.Stage({
             container: 'game',
-            width: 500,
-            height: 500
+            width: resolution.width,
+            height: resolution.height,
+            draggable: true
         });
 
         let layer = new Konva.Layer();
 
-        let menu = new Konva.Circle({
-            x: stage.width() / 2,
-            y: stage.height() / 2,
-            radius: 70,
-            fill: 'red',
-            stroke: 'black',
-            strokeWidth: 4
+        let menu = new Konva.Rect({
+            x: 0,
+            y: 0,
+            width: stage.width(),
+            height: stage.height(),
+            fill: Color.XANADU.hex
         })
 
         layer.add(menu);
@@ -56,20 +61,21 @@ export class BootManager {
 
         this.world
             .createEntity()
-            .addComponent(Stage, {
+            .addComponent(Component.Stage, {
                 value: stage
             });
 
         this.world
             .createEntity()
-            .addComponent(Layer, {
+            .addComponent(Component.Layer, {
                 value: layer
             });
 
         this.world
             .createEntity()
-            .addComponent(Layer, {
+            .addComponent(Component.Rect, {
                 value: menu
-            });
+            })
+            .addComponent(Component.Background);
     }
 }

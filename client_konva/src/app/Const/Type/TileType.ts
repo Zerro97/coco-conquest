@@ -1,4 +1,4 @@
-export enum Tile {
+export enum TileType {
     // Green
     GRASS1,
     GRASS2,

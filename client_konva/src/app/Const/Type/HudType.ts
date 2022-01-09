@@ -1,5 +1,5 @@
 // All of game UI names
-export enum Hud {
+export enum HudType {
     // Game
     TURN_BUTTON,
     MAP,
