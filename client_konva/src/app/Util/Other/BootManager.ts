@@ -1,14 +1,30 @@
 import * as Component from "@/Component";
 import * as System from "@/System";
-import { Color, Resolution } from "@/Const";
+import { Color, Resolution, SceneType } from "@/Const";
 import { World } from "@/Ecsy";
 import Konva from "konva";
+import { SceneStatus } from "@/Component";
+import { HudLoader } from "./HudLoader";
+import { Stage } from "konva/lib/Stage";
+import { Layer } from "konva/lib/Layer";
 
 export class BootManager {
     world: World;
-    
+    stage: Stage;
+    layer: Layer;
+    hudLoader: HudLoader
+
     constructor(world: World) {
         this.world = world;
+        this.stage = new Konva.Stage({
+            container: 'game',
+            width: Resolution.DESKTOP2.width,
+            height: Resolution.DESKTOP2.height,
+            draggable: true
+        });
+        this.layer = new Konva.Layer();
+
+        this.hudLoader = new HudLoader(this.world, this.stage, this.layer);
     }
 
     boot(): void {
@@ -38,37 +54,27 @@ export class BootManager {
      * Create initial entities
      */
     initializeWorld(): void {
-        let resolution = Resolution.DESKTOP2;
-        let stage =  new Konva.Stage({
-            container: 'game',
-            width: resolution.width,
-            height: resolution.height,
-            draggable: true
-        });
-
-        let layer = new Konva.Layer();
-
         let menu = new Konva.Rect({
             x: 0,
             y: 0,
-            width: stage.width(),
-            height: stage.height(),
+            width: this.stage.width(),
+            height: this.stage.height(),
             fill: Color.XANADU.hex
         })
 
-        layer.add(menu);
-        stage.add(layer);
+        this.layer.add(menu);
+        this.stage.add(this.layer);
 
         this.world
             .createEntity()
             .addComponent(Component.Stage, {
-                value: stage
+                value: this.stage
             });
 
         this.world
             .createEntity()
             .addComponent(Component.Layer, {
-                value: layer
+                value: this.layer
             });
 
         this.world
@@ -77,5 +83,14 @@ export class BootManager {
                 value: menu
             })
             .addComponent(Component.Background);
+
+
+        this.generateSingletons();
+    }
+
+    generateSingletons() {
+        this.world
+            .createEntity()
+            .addComponent(SceneStatus, { currentScene: SceneType.MENU });
     }
 }

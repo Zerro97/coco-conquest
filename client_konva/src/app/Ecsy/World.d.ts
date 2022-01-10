@@ -51,7 +51,8 @@ export class World<EntityType extends Entity = Entity> {
    * Get a system registered in this world.
    * @param System Type of system to get.
    */
-  getSystem<S extends System>(System: SystemConstructor<S>): S;
+  //getSystem<S extends System>(System: SystemConstructor<S>): S;
+  getSystem<S extends System>(System: SystemConstructor<any>): S;
 
   /**
    * Get a list of systems registered in this world.

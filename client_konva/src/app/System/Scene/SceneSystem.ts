@@ -1,22 +1,29 @@
-import { SceneStatus } from "@/Component/Scene";
+import { GameEndScene, GameLoadingScene, GameScene, MapEditorScene, MapEditorSetUpScene, MenuScene, MultiMenuScene, MultiSetUpScene, MultiStageScene, SceneStatus, SettingScene, SingleLoadScene, SingleMenuScene, SingleSetUpScene, SingleStoryScene, SingleTutorialScene } from "@/Component/Scene";
+import { Hud } from "@/Component/Hud";
 import * as SystemClass from "@/System";
 import { SceneType } from "@/Const";
-import { System, SystemConstructor } from "@/Ecsy";
+import { System } from "@/Ecsy";
 
 export class SceneSystem extends System {
   execute(delta: Number, time: Number) {
-    this.checkScene();
+    const sceneStatus = this.queries.sceneStatus.changed[0]?.getComponent(SceneStatus);
+
+    if (sceneStatus) {
+      this.toggleSystems(sceneStatus.currentScene);
+    }
   }
 
-  checkScene() {
-    this.toggleSystems();
-    //this.onSceneChange();
-  }
+  /**
+   * Toggle systems on/off according to the current scene.
+   */
+  toggleSystems(scene: SceneType) {
+    // Stop all systems
+    for (const [k, v] of Object.entries(SystemClass)) {
+      this.world.getSystem(v).stop();
+    }
 
-  onSceneChange() {
-    const sceneStatus = this.queries.sceneStatus.results[0].getComponent(SceneStatus);
-
-    switch(sceneStatus.currentScene) {
+    // Change visibility of huds when switching scene
+    switch (scene) {
       case SceneType.MENU: {
 
         break;
@@ -63,35 +70,15 @@ export class SceneSystem extends System {
       case SceneType.GAME_END: {
         break;
       }
+      default: {
+        this.world.getSystem(SystemClass.SceneRenderSystem).play();
+        break;
+      }
     }
-  }
 
-  /**
-   * Toggle systems on/off according to the current scene.
-   */
-  toggleSystems() {
-    // Stop all systems
-    let keys: keyof typeof SystemClass;
 
-    // for (const [k, v] of Object.entries(SystemClass)) {
-    //   console.log(SystemClass[k]);
-    //   this.world.getSystem(v as SystemConstructor<typeof SystemClass[typeof k]>).stop();
-    // }
 
-    // for(keys in SystemClass) {
-    //   console.log(typeof SystemClass[keys]);
-    //   this.world.getSystem(SystemClass[system] as SystemConstructor<typeof SystemClass[keys]>).stop();
-    // }
-    // (Object.keys(SystemClass)).forEach((system => {
-    //   console.log(typeof SceneSystem, typeof SystemClass[system]);
-    //   this.world.getSystem(SystemClass[system]).stop();
-    // }));
-
-    // Object.keys(SystemClass).forEach((system) => {
-    //   this.world.getSystem(SystemClass[system]).stop();
-    // });
-
-    // // Core Systems
+    // Core Systems
     // this.world.getSystem(SystemClass.KeyboardHandlerSystem).play();
     // this.world.getSystem(SystemClass.KeyboardListenerSystem).play();
     // this.world.getSystem(SystemClass.MouseHandlerSystem).play();
@@ -104,6 +91,58 @@ export class SceneSystem extends System {
 
 SceneSystem.queries = {
   sceneStatus: {
-    components: [SceneStatus]
+    components: [SceneStatus],
+    listen: {
+      changed: true
+    }
+  },
+  menuHud: {
+    components: [Hud, MenuScene]
+  },
+  settingHud: {
+    components: [Hud, SettingScene]
+  },
+
+  singleMenuHud: {
+    components: [Hud, SingleMenuScene]
+  },
+  singleSetUpHud: {
+    components: [Hud, SingleSetUpScene]
+  },
+  singleLoad: {
+    components: [Hud, SingleLoadScene]
+  },
+  singleStory: {
+    components: [Hud, SingleStoryScene]
+  },
+  singleTutorial: {
+    components: [Hud, SingleTutorialScene]
+  },
+
+  multiMenuHud: {
+    components: [Hud, MultiMenuScene]
+  },
+  multiSetUpHud: {
+    components: [Hud, MultiSetUpScene]
+  },
+  multiStageHud: {
+    components: [Hud, MultiStageScene]
+  },
+
+  gameLoadingHud: {
+    components: [Hud, GameLoadingScene]
+  },
+  gameHud: {
+    components: [Hud, GameScene]
+  },
+  gameEndHud: {
+    components: [Hud, GameEndScene]
+  },
+
+  mapEditorHud: {
+    components: [Hud, MapEditorScene]
+  },
+  mapEditorSetUpHud: {
+    components: [Hud, MapEditorSetUpScene]
   }
 };
