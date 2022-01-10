@@ -67,21 +67,24 @@ export class BootManager {
 
         this.world
             .createEntity()
-            .addComponent(Component.Stage, {
+            .addComponent(Component.KonvaObject, {
                 value: this.stage
-            });
+            })
+            .addComponent(Component.Stage);
 
         this.world
             .createEntity()
-            .addComponent(Component.Layer, {
+            .addComponent(Component.KonvaObject, {
                 value: this.layer
-            });
+            })
+            .addComponent(Component.Layer);
 
         this.world
             .createEntity()
-            .addComponent(Component.Rect, {
+            .addComponent(Component.KonvaObject, {
                 value: menu
             })
+            .addComponent(Component.Rect)
             .addComponent(Component.Background);
 
         this.generateSingletons();

@@ -13,3 +13,4 @@ export * from "./Sprite";
 export * from "./Stage";
 export * from "./Text";
 export * from "./Wedge";
+export * from "./KonvaObject";

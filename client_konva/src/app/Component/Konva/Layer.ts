@@ -1,7 +1,3 @@
-import { Component, Types } from "@/Ecsy";
+import { TagComponent } from "@/Ecsy";
 
-export class Layer extends Component<any> {}
-
-Layer.schema = {
-	value: { type: Types.Ref },
-};
+export class Layer extends TagComponent {}

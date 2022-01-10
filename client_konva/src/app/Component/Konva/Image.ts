@@ -1,7 +1,3 @@
-import { Component, Types } from "@/Ecsy";
+import { TagComponent } from "@/Ecsy";
 
-export class Image extends Component<any> {}
-
-Image.schema = {
-	value: { type: Types.Ref }
-};
+export class Image extends TagComponent {}

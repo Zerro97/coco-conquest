@@ -1,7 +1,3 @@
-import { Component, Types } from "@/Ecsy";
+import { TagComponent } from "@/Ecsy";
 
-export class RegularPolygon extends Component<any> {}
-
-RegularPolygon.schema = {
-	value: { type: Types.Ref }
-};
+export class RegulardPolygon extends TagComponent {}

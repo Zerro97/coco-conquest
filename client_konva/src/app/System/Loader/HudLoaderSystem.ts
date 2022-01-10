@@ -1,4 +1,4 @@
-import { Hud, Layer as LayerComp, Rect, Stage as StageComp } from "@/Component";
+import { Hud, KonvaObject, Layer as LayerComp, Rect, Stage as StageComp } from "@/Component";
 import { Layer } from "konva/lib/Layer";
 import { Stage } from "konva/lib/Stage";
 import { Color, HudType } from "@/Const";
@@ -8,13 +8,12 @@ import Konva from "konva";
 export class HudLoaderSystem extends System {
   execute(delta: Number, time: Number) {
     this.createHuds();
-    console.log("Creating");
     this.stop();
   }
 
   createHuds() {
-    const stage = this.queries.stage.results[0].getComponent(StageComp).value;
-    const layer = this.queries.layer.results[0].getComponent(LayerComp).value;
+    const stage = this.queries.stage.results[0].getComponent(KonvaObject).value;
+    const layer = this.queries.layer.results[0].getComponent(KonvaObject).value;
 
     this.createMenuHuds(stage, layer);
     this.createSettingHuds(stage, layer);
@@ -165,9 +164,9 @@ export class HudLoaderSystem extends System {
 
 HudLoaderSystem.queries = {
   layer: {
-      components: [LayerComp]
+    components: [LayerComp, KonvaObject]
   },
   stage: {
-    components: [StageComp]
+    components: [StageComp, KonvaObject]
   }
 };

@@ -1,7 +1,3 @@
-import { Component, Types } from "@/Ecsy";
+import { TagComponent } from "@/Ecsy";
 
-export class Line extends Component<any> {}
-
-Line.schema = {
-	value: { type: Types.Ref }
-};
+export class Line extends TagComponent {}
