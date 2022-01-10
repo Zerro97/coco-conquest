@@ -4,7 +4,6 @@ import { Color, Resolution, SceneType } from "@/Const";
 import { World } from "@/Ecsy";
 import Konva from "konva";
 import { SceneStatus } from "@/Component";
-import { HudLoader } from "./HudLoader";
 import { Stage } from "konva/lib/Stage";
 import { Layer } from "konva/lib/Layer";
 
@@ -12,7 +11,6 @@ export class BootManager {
     world: World;
     stage: Stage;
     layer: Layer;
-    hudLoader: HudLoader
 
     constructor(world: World) {
         this.world = world;
@@ -23,8 +21,6 @@ export class BootManager {
             draggable: true
         });
         this.layer = new Konva.Layer();
-
-        this.hudLoader = new HudLoader(this.world, this.stage, this.layer);
     }
 
     boot(): void {
@@ -46,6 +42,10 @@ export class BootManager {
             })
         this.world
             .registerSystem(System.SceneRenderSystem, {
+                priority: 0
+            })
+        this.world
+            .registerSystem(System.HudLoaderSystem, {
                 priority: 0
             })
     }
@@ -83,7 +83,6 @@ export class BootManager {
                 value: menu
             })
             .addComponent(Component.Background);
-
 
         this.generateSingletons();
     }
