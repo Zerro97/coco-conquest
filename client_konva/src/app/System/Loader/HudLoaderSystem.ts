@@ -1,21 +1,26 @@
-import { Hud, KonvaObject, Layer as LayerComp, Rect, Stage as StageComp } from "@/Component";
+import { Hud, KonvaObject, Layer as LayerComp, MenuScene, Rect, SceneStatus, Stage as StageComp } from "@/Component";
 import { Layer } from "konva/lib/Layer";
 import { Stage } from "konva/lib/Stage";
-import { Color, HudType } from "@/Const";
+import { Color, HudType, SceneType } from "@/Const";
 import { Component, System, World } from "@/Ecsy";
 import Konva from "konva";
 
 export class HudLoaderSystem extends System {
   execute(delta: Number, time: Number) {
     this.createHuds();
+
+    const scene = this.queries.sceneStatus.results[0].getMutableComponent(SceneStatus);
+    scene.currentScene = SceneType.MENU;
+
     this.stop();
   }
 
   createHuds() {
+    const scene = this.queries.sceneStatus.results[0].getMutableComponent(SceneStatus).currentScene;
     const stage = this.queries.stage.results[0].getComponent(KonvaObject).value;
     const layer = this.queries.layer.results[0].getComponent(KonvaObject).value;
 
-    this.createMenuHuds(stage, layer);
+    this.createMenuHuds(stage, layer, scene);
     this.createSettingHuds(stage, layer);
     this.createSingleMenuHuds(stage, layer);
     this.createSingleSetUpHuds(stage, layer);
@@ -32,7 +37,7 @@ export class HudLoaderSystem extends System {
     this.createMapEditorHuds(stage, layer);
   }
 
-  createMenuHuds(stage: Stage, layer: Layer) {
+  createMenuHuds(stage: Stage, layer: Layer, scene: SceneType) {
     let leftOpaqueBox = new Konva.Rect({
       x: 0,
       y: 0,
@@ -77,24 +82,33 @@ export class HudLoaderSystem extends System {
         y: i * 55 - 8,
         width: 240,
         height: 40,
-        fill: "rgba(0,0,0,0.5",
+        fill: "rgba(0,0,0,0.5)",
         cornerRadius: 10,
         visible: false,
         id: ids[i] + "_box"
       });
-      text.on("click", () => {
-        
+      menu.on("click", () => {
+        console.log(scene);
+        scene = SceneType.SINGLE_PLAY_MENU;
       })
-      text.on("pointerover", () => {
+      menu.on("pointerover", () => {
         menu.find("#" + ids[i] + "_box")[0].setAttr("visible", true);
       })
-      text.on("pointerleave", () => {
+      menu.on("pointerleave", () => {
         menu.find("#" + ids[i] + "_box")[0].setAttr("visible", false);
       })
 
       menu.add(box);
       menu.add(text);
       layer.add(menu);
+
+      this.world
+      .createEntity()
+      .addComponent(KonvaObject, {
+        value: menu
+      })
+      .addComponent(Hud)
+      .addComponent(MenuScene)
     }
   }
 
@@ -163,6 +177,9 @@ export class HudLoaderSystem extends System {
 }
 
 HudLoaderSystem.queries = {
+  sceneStatus: {
+    components: [SceneStatus]
+  },
   layer: {
     components: [LayerComp, KonvaObject]
   },

@@ -91,52 +91,71 @@ export class SceneSystem extends System {
   }
 
   toggleHuds(scene: SceneType) {
+    this.setAllVisibleFalse();
+    console.log(scene === SceneType.SINGLE_PLAY_MENU);
+
     switch (scene) {
       case SceneType.MENU: {
-        const layer = this.queries.menuHud.results[0].getComponent(KonvaObject).value;
-
+        
+        this.setVisibleTrue("menuHud");
+        
         break;
       }
       case SceneType.SINGLE_PLAY_MENU: {
+        console.log("In Single Manu");
+        this.setVisibleTrue("singleMenuHud");
         break;
       }
       case SceneType.SINGLE_PLAY_SETUP: {
+        this.setVisibleTrue("singleSetUpHud");
         break;
       }
       case SceneType.SINGLE_PLAY_LOAD: {
+        this.setVisibleTrue("singleLoadHud");
         break;
       }
       case SceneType.SINGLE_PLAY_STORY: {
+        this.setVisibleTrue("singleStoryHud");
         break;
       }
       case SceneType.SINGLE_PLAY_TUTORIAL: {
+        this.setVisibleTrue("singleTutorialHud");
         break;
       }
       case SceneType.MULTI_PLAY_MENU: {
+        this.setVisibleTrue("multiMenuHud");
         break;
       }
       case SceneType.MULTI_PLAY_SETUP: {
+        this.setVisibleTrue("multiSetUpHud");
         break;
       }
       case SceneType.MULTI_PLAY_STAGE: {
+        this.setVisibleTrue("mutliStageHud");
         break;
       }
       case SceneType.MAP_EDITOR: {
+        this.setVisibleTrue("mapEditorHud");
         break;
       }
       case SceneType.MAP_EDITOR_SETUP: {
+        this.setVisibleTrue("mapEditorSetUpHud");
         break;
       }
       case SceneType.SETTING: {
+        this.setVisibleTrue("settingHud");
         break;
       }
       case SceneType.GAME_LOADING: {
+        this.setVisibleTrue("gameLoadingHud");
         break;
       }
       case SceneType.GAME: {
+        this.setVisibleTrue("gameHud");
         break;
       }
       case SceneType.GAME_END: {
+        this.setVisibleTrue("gameEndHud");
         break;
       }
       default: {
@@ -144,6 +163,20 @@ export class SceneSystem extends System {
         break;
       }
     }
+  }
+
+  setVisibleTrue(hudType: keyof typeof this.queries){
+    this.queries[hudType].results.forEach(hud => {
+      let konvaObj = hud.getComponent(KonvaObject).value;
+      konvaObj.setAttr("visible", true);
+    })
+  }
+
+  setAllVisibleFalse() {
+    this.queries.huds.results.forEach(hud => {
+      let konvaObj = hud.getComponent(KonvaObject).value;
+      konvaObj.setAttr("visible", false);
+    })
   }
 }
 
@@ -158,6 +191,9 @@ SceneSystem.queries = {
     components: [Layer, KonvaObject]
   },
 
+  huds: {
+    components: [Hud]
+  },
   menuHud: {
     components: [Hud, MenuScene]
   },
