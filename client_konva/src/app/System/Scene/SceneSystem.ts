@@ -13,7 +13,7 @@ export class SceneSystem extends System {
 
     if (sceneStatus) {
       this.toggleSystems(sceneStatus.currentScene);
-      this.toggleHuds(sceneStatus.currentScene);
+      this.toggleHuds(sceneStatus);
     }
   }
 
@@ -29,7 +29,6 @@ export class SceneSystem extends System {
     // Change visibility of huds when switching scene
     switch (scene) {
       case SceneType.MENU: {
-
         break;
       }
       case SceneType.SINGLE_PLAY_MENU: {
@@ -92,102 +91,130 @@ export class SceneSystem extends System {
     // this.world.getSystem(SystemClass.MenuSystem).play();
   }
 
-  toggleHuds(scene: SceneType) {
-    this.setAllVisibleFalse();
-    
-    switch (scene) {
+  toggleHuds(scene: any) {
+    let previousHuds = this.sceneToHud(scene.previousScene);
+
+    switch (scene.currentScene) {
       case SceneType.MENU: {
-        this.setVisibleTrue("menuHud");
+        this.toggleVisibility("menuHud", previousHuds);
         break;
       }
       case SceneType.SINGLE_PLAY_MENU: {
-        this.setVisibleTrue("singleMenuHud");
+        this.toggleVisibility("singleMenuHud", previousHuds);
         break;
       }
       case SceneType.SINGLE_PLAY_SETUP: {
-        this.setVisibleTrue("singleSetUpHud");
+        this.toggleVisibility("singleSetUpHud", previousHuds);
         break;
       }
       case SceneType.SINGLE_PLAY_LOAD: {
-        this.setVisibleTrue("singleLoadHud");
+        this.toggleVisibility("singleLoadHud", previousHuds);
         break;
       }
       case SceneType.SINGLE_PLAY_STORY: {
-        this.setVisibleTrue("singleStoryHud");
+        this.toggleVisibility("singleStoryHud", previousHuds);
         break;
       }
       case SceneType.SINGLE_PLAY_TUTORIAL: {
-        this.setVisibleTrue("singleTutorialHud");
+        this.toggleVisibility("singleTutorialHud", previousHuds);
         break;
       }
       case SceneType.MULTI_PLAY_MENU: {
-        this.setVisibleTrue("multiMenuHud");
+        this.toggleVisibility("multiMenuHud", previousHuds);
         break;
       }
       case SceneType.MULTI_PLAY_SETUP: {
-        this.setVisibleTrue("multiSetUpHud");
+        this.toggleVisibility("multiSetUpHud", previousHuds);
         break;
       }
       case SceneType.MULTI_PLAY_STAGE: {
-        this.setVisibleTrue("mutliStageHud");
+        this.toggleVisibility("mutliStageHud", previousHuds);
         break;
       }
       case SceneType.MAP_EDITOR: {
-        this.setVisibleTrue("mapEditorHud");
+        this.toggleVisibility("mapEditorHud", previousHuds);
         break;
       }
       case SceneType.MAP_EDITOR_SETUP: {
-        this.setVisibleTrue("mapEditorSetUpHud");
+        this.toggleVisibility("mapEditorSetUpHud", previousHuds);
         break;
       }
       case SceneType.SETTING: {
-        this.setVisibleTrue("settingHud");
+        this.toggleVisibility("settingHud", previousHuds);
         break;
       }
       case SceneType.GAME_LOADING: {
-        this.setVisibleTrue("gameLoadingHud");
+        this.toggleVisibility("gameLoadingHud", previousHuds);
         break;
       }
       case SceneType.GAME: {
-        this.setVisibleTrue("gameHud");
+        this.toggleVisibility("gameHud", previousHuds);
         break;
       }
       case SceneType.GAME_END: {
-        this.setVisibleTrue("gameEndHud");
+        this.toggleVisibility("gameEndHud", previousHuds);
         break;
       }
     }
   }
 
-  setVisibleTrue(hudType: keyof typeof this.queries){
-    this.queries[hudType].results.forEach(hud => {
-      let konvaObj = hud.getComponent(KonvaObject).value;
-      konvaObj.setAttr("visible", true);
-      new Konva.Tween({
-        node: konvaObj,
-        x: 50,
-        opacity: 1
-      }).play();
-    })
+  /**
+   * Returns a hud name associated with the given scene name
+   */
+  sceneToHud(sceneName: SceneType): string {
+    return sceneName === SceneType.MENU ? "menuHud" :
+      sceneName === SceneType.SETTING ? "settingHud" :
+        sceneName === SceneType.SINGLE_PLAY_MENU ? "singleMenuHud" :
+          sceneName === SceneType.SINGLE_PLAY_STORY ? "singleStoryHud" :
+            sceneName === SceneType.SINGLE_PLAY_SETUP ? "singleSetUpHud" :
+              sceneName === SceneType.SINGLE_PLAY_TUTORIAL ? "singleTutorialHud" :
+                sceneName === SceneType.SINGLE_PLAY_LOAD ? "singleLoadHud" :
+                  sceneName === SceneType.MULTI_PLAY_MENU ? "multiMenuHud" :
+                    sceneName === SceneType.MULTI_PLAY_SETUP ? "multiSetUpHud" :
+                      sceneName === SceneType.MULTI_PLAY_STAGE ? "multiStageHud" :
+                        sceneName === SceneType.GAME_LOADING ? "gameLoadingHud" :
+                          sceneName === SceneType.GAME ? "gameHud" :
+                            sceneName === SceneType.GAME_END ? "gameEndHud" :
+                              sceneName === SceneType.MAP_EDITOR ? "mapEditorHud" :
+                                sceneName === SceneType.MAP_EDITOR_SETUP ? "mapEditorSetUpHud" : "error"
   }
 
-    setAllVisibleFalse() {
-        this.queries.huds.results.forEach(hud => {
-            let konvaObj = hud.getComponent(KonvaObject).value;
+  toggleVisibility(hudType: keyof typeof this.queries, prevHudType: keyof typeof this.queries) {
+    const promises: any[] = [];
 
-            new Promise((resolve, reject) => {
-                new Konva.Tween({
-                    node: konvaObj,
-                    x: -50,
-                    opacity: 0,
-                    onFinish: function () {
-                        konvaObj.setAttr("visible", false);
-                        resolve("done");
-                    },
-                }).play()
-            });
+    // Fade out previous scene huds
+    this.queries[prevHudType].results.forEach(hud => {
+      promises.push(fadeOut(hud));
+
+      function fadeOut(hud: any) {
+        return new Promise((resolve) => {
+          let konvaObj = hud.getComponent(KonvaObject).value;
+
+          new Konva.Tween({
+            node: konvaObj,
+            opacity: 0,
+            onFinish: function () {
+              konvaObj.hide();
+              resolve("Done Fade Out");
+            },
+          }).play()
         })
-    }
+      }
+    })
+
+    // Fade in current scene huds
+    Promise.all(promises).then(() => {
+      this.queries[hudType].results.forEach(hud => {
+        let konvaObj = hud.getComponent(KonvaObject).value;
+
+        konvaObj.show();
+        new Konva.Tween({
+          node: konvaObj,
+          opacity: 1,
+        }).play();
+      })
+    })
+  }
 }
 
 SceneSystem.queries = {
