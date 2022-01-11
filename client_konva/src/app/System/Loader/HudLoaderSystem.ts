@@ -4,6 +4,7 @@ import { Stage } from "konva/lib/Stage";
 import { Color, HudType, SceneType } from "@/Const";
 import { Component, System, World } from "@/Ecsy";
 import Konva from "konva";
+import { TransitionHud } from "@/Component/Hud/TransitionHud";
 
 export class HudLoaderSystem extends System {
   execute(delta: Number, time: Number) {
@@ -129,6 +130,7 @@ export class HudLoaderSystem extends System {
           value: menu
         })
         .addComponent(Hud)
+        .addComponent(TransitionHud)
         .addComponent(MenuScene)
     }
   }
@@ -190,6 +192,7 @@ export class HudLoaderSystem extends System {
           value: menu
         })
         .addComponent(Hud)
+        .addComponent(TransitionHud)
         .addComponent(SettingScene)
     }
 
@@ -212,6 +215,7 @@ export class HudLoaderSystem extends System {
         value: settingPanel
       })
       .addComponent(Hud)
+      .addComponent(TransitionHud)
       .addComponent(SettingScene)
   }
 
@@ -277,6 +281,7 @@ export class HudLoaderSystem extends System {
           value: menu
         })
         .addComponent(Hud)
+        .addComponent(TransitionHud)
         .addComponent(SingleMenuScene)
     }
   }

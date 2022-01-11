@@ -6,6 +6,7 @@ import { System } from "@/Ecsy";
 import { KonvaObject, Layer } from "@/Component";
 import Konva from "konva";
 import { resolve } from "../../../../config/webpack.common";
+import { TransitionHud } from "@/Component/Hud/TransitionHud";
 
 export class SceneSystem extends System {
   execute(delta: Number, time: Number) {
@@ -189,15 +190,22 @@ export class SceneSystem extends System {
       function fadeOut(hud: any) {
         return new Promise((resolve) => {
           let konvaObj = hud.getComponent(KonvaObject).value;
+          let hasTransition = hud.hasComponent(TransitionHud);
+          console.log(hasTransition);
 
-          new Konva.Tween({
-            node: konvaObj,
-            opacity: 0,
-            onFinish: function () {
-              konvaObj.hide();
-              resolve("Done Fade Out");
-            },
-          }).play()
+          if(hasTransition) {
+            new Konva.Tween({
+              node: konvaObj,
+              opacity: 0,
+              onFinish: function () {
+                konvaObj.hide();
+                resolve("Done Fade Out");
+              },
+            }).play()
+          } else {
+            // TODO: check next scene and if it has same hud in it, then display the hud without hiding
+            resolve("Done Fade Out");
+          }
         })
       }
     })
@@ -206,12 +214,15 @@ export class SceneSystem extends System {
     Promise.all(promises).then(() => {
       this.queries[hudType].results.forEach(hud => {
         let konvaObj = hud.getComponent(KonvaObject).value;
+        let hasTransition = hud.hasComponent(TransitionHud);
 
         konvaObj.show();
-        new Konva.Tween({
-          node: konvaObj,
-          opacity: 1,
-        }).play();
+        if(hasTransition) {
+          new Konva.Tween({
+            node: konvaObj,
+            opacity: 1,
+          }).play();
+        }
       })
     })
   }
