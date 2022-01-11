@@ -1,4 +1,4 @@
-import { Layer } from "@/Component";
+import { Layer, SceneStatus } from "@/Component";
 import { Component, System } from "@/Ecsy";
 
 export class SceneRenderSystem extends System {
@@ -16,5 +16,8 @@ export class SceneRenderSystem extends System {
 SceneRenderSystem.queries = {
     layer: {
         components: [Layer]
+    },
+    sceneStatus: {
+        components: [SceneStatus]
     }
 };

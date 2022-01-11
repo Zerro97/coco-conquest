@@ -4,6 +4,8 @@ import * as SystemClass from "@/System";
 import { SceneType } from "@/Const";
 import { System } from "@/Ecsy";
 import { KonvaObject, Layer } from "@/Component";
+import Konva from "konva";
+import { resolve } from "../../../../config/webpack.common";
 
 export class SceneSystem extends System {
   execute(delta: Number, time: Number) {
@@ -21,7 +23,7 @@ export class SceneSystem extends System {
   toggleSystems(scene: SceneType) {
     // Stop all systems
     for (const [k, v] of Object.entries(SystemClass)) {
-      this.world.getSystem(v).stop();
+      //this.world.getSystem(v).stop();
     }
 
     // Change visibility of huds when switching scene
@@ -92,17 +94,13 @@ export class SceneSystem extends System {
 
   toggleHuds(scene: SceneType) {
     this.setAllVisibleFalse();
-    console.log(scene === SceneType.SINGLE_PLAY_MENU);
-
+    
     switch (scene) {
       case SceneType.MENU: {
-        
         this.setVisibleTrue("menuHud");
-        
         break;
       }
       case SceneType.SINGLE_PLAY_MENU: {
-        console.log("In Single Manu");
         this.setVisibleTrue("singleMenuHud");
         break;
       }
@@ -158,10 +156,6 @@ export class SceneSystem extends System {
         this.setVisibleTrue("gameEndHud");
         break;
       }
-      default: {
-        this.world.getSystem(SystemClass.SceneRenderSystem).play();
-        break;
-      }
     }
   }
 
@@ -169,15 +163,31 @@ export class SceneSystem extends System {
     this.queries[hudType].results.forEach(hud => {
       let konvaObj = hud.getComponent(KonvaObject).value;
       konvaObj.setAttr("visible", true);
+      new Konva.Tween({
+        node: konvaObj,
+        x: 50,
+        opacity: 1
+      }).play();
     })
   }
 
-  setAllVisibleFalse() {
-    this.queries.huds.results.forEach(hud => {
-      let konvaObj = hud.getComponent(KonvaObject).value;
-      konvaObj.setAttr("visible", false);
-    })
-  }
+    setAllVisibleFalse() {
+        this.queries.huds.results.forEach(hud => {
+            let konvaObj = hud.getComponent(KonvaObject).value;
+
+            new Promise((resolve, reject) => {
+                new Konva.Tween({
+                    node: konvaObj,
+                    x: -50,
+                    opacity: 0,
+                    onFinish: function () {
+                        konvaObj.setAttr("visible", false);
+                        resolve("done");
+                    },
+                }).play()
+            });
+        })
+    }
 }
 
 SceneSystem.queries = {
