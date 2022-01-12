@@ -60,3 +60,22 @@ export function evenrToCube(x: number, y: number) {
 
   return { x: cubeX, y: cubeY, z: cubeZ };
 }
+
+/**
+ * Given pixel coordinate of hexagon and a point
+ * return if the point is within the hexagon
+ *
+ * @param {*} hexX
+ * @param {*} hexY
+ * @param {*} posX
+ * @param {*} posY
+ * @param {*} radius
+ * @returns
+ */
+export function isInsideHexagon(hexX: number, hexY: number, pointX: number, pointY: number, radius: number) {
+  const dx = Math.abs(hexX - pointX) / (radius * 2);
+  const dy = Math.abs(hexY - pointY) / (radius * 2);
+  const a = 0.25 * Math.sqrt(3.0);
+
+  return dx <= a && a * dy + 0.25 * dx <= 0.5 * a;
+}

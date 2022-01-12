@@ -1,4 +1,4 @@
-import { EditorSetUpScene, GameEndScene, GameLoadingScene, GameScene, Hud, KonvaObject, Layer as LayerComp, MapEditorScene, MenuScene, MultiMenuScene, MultiSetUpScene, MultiStageScene, SceneStatus, SettingScene, SingleLoadScene, SingleMenuScene, SingleSetUpScene, SingleStoryScene, Stage as StageComp } from "@/Component";
+import { EditorSetUpScene, GameEndScene, GameLoadingScene, GameScene, Hud, KonvaObject, HudLayer, GameLayer, MapEditorScene, MenuScene, MultiMenuScene, MultiSetUpScene, MultiStageScene, SceneStatus, SettingScene, SingleLoadScene, SingleMenuScene, SingleSetUpScene, SingleStoryScene, Stage as StageComp, Tile } from "@/Component";
 import { Layer } from "konva/lib/Layer";
 import { Stage } from "konva/lib/Stage";
 import { Color, HudType, SceneType } from "@/Const";
@@ -18,14 +18,17 @@ export class MapEditorLoaderSystem extends System {
 
   createHuds() {
     const stage = this.queries.stage.results[0].getComponent(KonvaObject).value;
-    const layer = this.queries.layer.results[0].getComponent(KonvaObject).value;
 
-    this.createGrid(stage, layer);
-    this.createEditPanel(stage, layer);
+    const gameLayer = this.queries.gameLayer.results[0].getComponent(KonvaObject).value;
+    const hudLayer = this.queries.hudLayer.results[0].getComponent(KonvaObject).value;
+
+    this.createGrid(stage, gameLayer);
+    this.createBaseTile(stage, gameLayer);
+    this.createEditPanel(stage, hudLayer);
   }
 
 
-  createEditPanel(stage: Stage, layer: Layer) {
+  createEditPanel(stage: Stage, hudLayer: Layer) {
     let editPanel = new Konva.Group({
       x: stage.width() - 200,
       y: 100
@@ -42,12 +45,12 @@ export class MapEditorLoaderSystem extends System {
         cornerRadius: [10, 0, 0, 10]
       })
 
-      layer.add(panelTab);
+      hudLayer.add(panelTab);
       //this.createKonvaEntity(panelTab, false);
     }
   }
 
-  createGrid(stage: Stage, layer: Layer) {
+  createGrid(stage: Stage, gameLayer: Layer) {
     // Create hex grid
     for (let i = 0; i < 30; i++) {
       for (let j = 0; j < 30; j++) {
@@ -62,13 +65,101 @@ export class MapEditorLoaderSystem extends System {
           stroke: "rgb(50, 50, 50)",
           strokeWidth: 4,
         })
-        layer.add(grid);
+        gameLayer.add(grid);
         this.createKonvaEntity(grid, false);
       }
     }
   }
 
-  createKonvaEntity(konvaObj: any, isTransition?: boolean) {
+  createBaseTile(stage: Stage, gameLayer: Layer) {
+    // Create hex grid
+    for (let i = 0; i < 30; i++) {
+      for (let j = 0; j < 30; j++) {
+        let cube = evenrToCube(i, j);
+        let pixel = cubeToPixel(cube.x, cube.z, 50);
+
+        let tile = new Konva.Group({
+          x: pixel.x,
+          y: pixel.y
+        })
+
+        let baseTile = new Konva.RegularPolygon({
+          x: 0,
+          y: 0,
+          sides: 6,
+          radius: 50,
+          fill: "rgb(108, 169, 198)",
+          stroke: "rgb(0,0,0, 0.2)",
+          strokeWidth: 2,
+          name: "base_tile"
+        })
+
+        let hoverTile = new Konva.RegularPolygon({
+          x: 0,
+          y: 0,
+          sides: 6,
+          radius: 50,
+          opacity: 0,
+          fill: "rgb(255, 255, 255)",
+          name: "hover_tile"
+        })
+
+        let moveTile = new Konva.RegularPolygon({
+          x: 0,
+          y: 0,
+          sides: 6,
+          radius: 50,
+          opacity: 0,
+          fill: "rgb(61, 133, 198)",
+          name: "move_tile"
+        })
+
+        let attackTile = new Konva.RegularPolygon({
+          x: 0,
+          y: 0,
+          sides: 6,
+          radius: 50,
+          opacity: 0,
+          fill: "rgb(200, 0, 0)",
+          name: "attack_tile"
+        })
+
+        let leftCliff = new Konva.Line({
+          points: [
+            0, -50,
+            -Math.sqrt(3) * 25, -25,
+            -Math.sqrt(3) * 25, -15,
+            0, -40
+          ],
+          fill: 'rgb(0, 0, 0, 0.4)',
+          closed: true,
+        });
+
+        let rightCliff = new Konva.Line({
+          points: [
+            0, -50,
+            Math.sqrt(3) * 25, -25,
+            Math.sqrt(3) * 25, -15,
+            0, -40
+          ],
+          fill: 'rgb(0, 0, 0, 0.25)',
+          closed: true,
+        });
+
+        tile.add(baseTile);
+        tile.add(leftCliff);
+        tile.add(rightCliff);
+        tile.add(hoverTile);
+        tile.add(moveTile);
+        tile.add(attackTile);
+
+        gameLayer.add(tile);
+        this.createKonvaEntity(tile, true);
+      }
+    }
+  }
+
+  createKonvaEntity(konvaObj: any, isTile?: boolean) {
     let konvaEntity = this.world.
       createEntity().
       addComponent(Hud).
@@ -77,8 +168,8 @@ export class MapEditorLoaderSystem extends System {
       })
       .addComponent(MapEditorScene);
 
-    if (isTransition) {
-      konvaEntity.addComponent(TransitionHud);
+    if (isTile) {
+      konvaEntity.addComponent(Tile);
     }
   }
 
@@ -107,8 +198,11 @@ MapEditorLoaderSystem.queries = {
   sceneStatus: {
     components: [SceneStatus]
   },
-  layer: {
-    components: [LayerComp, KonvaObject]
+  hudLayer: {
+    components: [HudLayer, KonvaObject]
+  },
+  gameLayer: {
+    components: [GameLayer, KonvaObject]
   },
   stage: {
     components: [StageComp, KonvaObject]

@@ -1,4 +1,4 @@
-import { EditorSetUpScene, GameEndScene, GameLoadingScene, GameScene, Hud, KonvaObject, Layer as LayerComp, MapEditorScene, MenuScene, MultiMenuScene, MultiSetUpScene, MultiStageScene, SceneStatus, SettingScene, SingleLoadScene, SingleMenuScene, SingleSetUpScene, SingleStoryScene, Stage as StageComp } from "@/Component";
+import { EditorSetUpScene, GameEndScene, GameLoadingScene, GameScene, Hud, KonvaObject, HudLayer, GameLayer, MapEditorScene, MenuScene, MultiMenuScene, MultiSetUpScene, MultiStageScene, SceneStatus, SettingScene, SingleLoadScene, SingleMenuScene, SingleSetUpScene, SingleStoryScene, Stage as StageComp } from "@/Component";
 import { Layer } from "konva/lib/Layer";
 import { Stage } from "konva/lib/Stage";
 import { Color, HudType, SceneType } from "@/Const";
@@ -14,16 +14,15 @@ export class HudLoaderSystem extends System {
     this.createHuds();
 
     const scene = this.queries.sceneStatus.results[0].getMutableComponent(SceneStatus);
-    scene.currentScene = SceneType.MENU;
-    scene.previousScene = SceneType.MENU;
+    scene.currentScene = SceneType.MAP_EDITOR;
+    scene.previousScene = SceneType.MAP_EDITOR;
 
     this.stop();
   }
 
   createHuds() {
-    console.log("in");
     const stage = this.queries.stage.results[0].getComponent(KonvaObject).value;
-    const layer = this.queries.layer.results[0].getComponent(KonvaObject).value;
+    const layer = this.queries.hudLayer.results[0].getComponent(KonvaObject).value;
 
     this.createMenuHuds(stage, layer);
     this.createSettingHuds(stage, layer);
@@ -47,7 +46,8 @@ export class HudLoaderSystem extends System {
       y: 0,
       width: stage.width(),
       height: stage.height(),
-      fill: Color.XANADU.hex
+      fill: Color.XANADU.hex,
+      visible: false
     })
 
     layer.add(background);
@@ -76,6 +76,7 @@ export class HudLoaderSystem extends System {
       text: "Coco\nConquest",
       fontSize: 50,
       fill: "#eeeeee",
+      visible: false,
       id: HudType.MENU_TITLE
     });
     layer.add(title);
@@ -468,8 +469,11 @@ HudLoaderSystem.queries = {
   sceneStatus: {
     components: [SceneStatus]
   },
-  layer: {
-    components: [LayerComp, KonvaObject]
+  hudLayer: {
+    components: [HudLayer, KonvaObject]
+  },
+  gameLayer: {
+    components: [GameLayer, KonvaObject]
   },
   stage: {
     components: [StageComp, KonvaObject]

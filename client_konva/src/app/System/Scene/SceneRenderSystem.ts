@@ -1,4 +1,4 @@
-import { Layer, SceneStatus } from "@/Component";
+import { HudLayer, SceneStatus } from "@/Component";
 import { Component, System } from "@/Ecsy";
 
 export class SceneRenderSystem extends System {
@@ -7,17 +7,17 @@ export class SceneRenderSystem extends System {
   }
 
   drawHuds() {
-    const layer = this.queries.layer.results[0].getComponent(Layer);
-    
-    
+    //const layer = this.queries.hudLayer.results[0].getComponent(HudLayer);
+
+
   }
 }
 
 SceneRenderSystem.queries = {
-    layer: {
-        components: [Layer]
-    },
-    sceneStatus: {
-        components: [SceneStatus]
-    }
+  hudLayer: {
+    components: [HudLayer]
+  },
+  sceneStatus: {
+    components: [SceneStatus]
+  }
 };

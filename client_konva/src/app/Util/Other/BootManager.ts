@@ -10,21 +10,21 @@ import { Layer } from "konva/lib/Layer";
 export class BootManager {
     world: World;
     stage: Stage;
-    layer: Layer;
+    hudLayer: Layer;
+    gameLayer: Layer;
 
     constructor(world: World) {
         this.world = world;
         this.stage = new Konva.Stage({
             container: 'game',
             width: Resolution.DESKTOP2.width,
-            height: Resolution.DESKTOP2.height,
-            draggable: true
+            height: Resolution.DESKTOP2.height
         });
-        this.layer = new Konva.Layer();
+        this.hudLayer = new Konva.Layer();
+        this.gameLayer = new Konva.Layer();
     }
 
     boot(): void {
-
         this.registerComponents();
         this.registerSystems();
         this.initializeWorld();
@@ -45,16 +45,24 @@ export class BootManager {
         this.world
             .registerSystem(System.MapEditorLoaderSystem, {
                 priority: 1
-            }).getSystem(System.MapEditorLoaderSystem).stop(); // Prevent loading map editor entities on game start
+            }).getSystem(System.MapEditorLoaderSystem).stop();
+
+        // Input Listener
+        this.world
+            .registerSystem(System.MouseListenerSystem, {
+                priority: 10
+            }).getSystem(System.MouseListenerSystem).stop();
+
         // Update
         this.world
             .registerSystem(System.SceneSystem, {
-                priority: 2
+                priority: 20
             })
+
         // Render
         this.world
             .registerSystem(System.SceneRenderSystem, {
-                priority: 3
+                priority: 30
             })
     }
 
@@ -62,7 +70,8 @@ export class BootManager {
      * Create initial entities
      */
     initializeWorld(): void {
-        this.stage.add(this.layer);
+        this.stage.add(this.gameLayer);
+        this.stage.add(this.hudLayer);
 
         this.world
             .createEntity()
@@ -74,9 +83,16 @@ export class BootManager {
         this.world
             .createEntity()
             .addComponent(Component.KonvaObject, {
-                value: this.layer
+                value: this.gameLayer
             })
-            .addComponent(Component.Layer);
+            .addComponent(Component.GameLayer);
+
+        this.world
+            .createEntity()
+            .addComponent(Component.KonvaObject, {
+                value: this.hudLayer
+            })
+            .addComponent(Component.HudLayer);
 
         this.generateSingletons();
     }
@@ -84,6 +100,6 @@ export class BootManager {
     generateSingletons() {
         this.world
             .createEntity()
-            .addComponent(SceneStatus, { currentScene: SceneType.MENU });
+            .addComponent(SceneStatus, { currentScene: SceneType.MAP_EDITOR });
     }
 }

@@ -3,10 +3,11 @@ import { Hud } from "@/Component/Hud";
 import * as SystemClass from "@/System";
 import { SceneType } from "@/Const";
 import { System } from "@/Ecsy";
-import { KonvaObject, Layer } from "@/Component";
+import { KonvaObject, HudLayer, GameLayer } from "@/Component";
 import Konva from "konva";
 import { TransitionHud } from "@/Component/Hud/TransitionHud";
 import { MapEditorLoaderSystem } from "../Loader";
+import { MouseListenerSystem } from "../Input";
 
 export class SceneSystem extends System {
   execute(delta: Number, time: Number) {
@@ -53,6 +54,7 @@ export class SceneSystem extends System {
       }
       case SceneType.MAP_EDITOR: {
         this.world.getSystem(MapEditorLoaderSystem).play();
+        this.world.getSystem(MouseListenerSystem).play();
         break;
       }
       case SceneType.UNIT_EDITOR: {
@@ -256,8 +258,11 @@ SceneSystem.queries = {
       changed: true
     }
   },
-  layer: {
-    components: [Layer, KonvaObject]
+  hudLayer: {
+    components: [HudLayer, KonvaObject]
+  },
+  gameLayer: {
+    components: [GameLayer, KonvaObject]
   },
 
   huds: {
