@@ -24,6 +24,7 @@ export class BootManager {
     }
 
     boot(): void {
+
         this.registerComponents();
         this.registerSystems();
         this.initializeWorld();
@@ -36,17 +37,24 @@ export class BootManager {
     }
 
     registerSystems(): void {
-        this.world
-            .registerSystem(System.SceneSystem, {
-                priority: 0
-            })
-        this.world
-            .registerSystem(System.SceneRenderSystem, {
-                priority: 0
-            })
+        // Loader
         this.world
             .registerSystem(System.HudLoaderSystem, {
                 priority: 0
+            })
+        this.world
+            .registerSystem(System.MapEditorLoaderSystem, {
+                priority: 1
+            }).getSystem(System.MapEditorLoaderSystem).stop(); // Prevent loading map editor entities on game start
+        // Update
+        this.world
+            .registerSystem(System.SceneSystem, {
+                priority: 2
+            })
+        // Render
+        this.world
+            .registerSystem(System.SceneRenderSystem, {
+                priority: 3
             })
     }
 
@@ -54,15 +62,6 @@ export class BootManager {
      * Create initial entities
      */
     initializeWorld(): void {
-        let menu = new Konva.Rect({
-            x: 0,
-            y: 0,
-            width: this.stage.width(),
-            height: this.stage.height(),
-            fill: Color.XANADU.hex
-        })
-
-        this.layer.add(menu);
         this.stage.add(this.layer);
 
         this.world
@@ -78,14 +77,6 @@ export class BootManager {
                 value: this.layer
             })
             .addComponent(Component.Layer);
-
-        this.world
-            .createEntity()
-            .addComponent(Component.KonvaObject, {
-                value: menu
-            })
-            .addComponent(Component.Rect)
-            .addComponent(Component.Background);
 
         this.generateSingletons();
     }

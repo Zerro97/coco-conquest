@@ -1,12 +1,12 @@
-import { GameEndScene, GameLoadingScene, GameScene, MapEditorScene, MapEditorSetUpScene, MenuScene, MultiMenuScene, MultiSetUpScene, MultiStageScene, SceneStatus, SettingScene, SingleLoadScene, SingleMenuScene, SingleSetUpScene, SingleStoryScene, SingleTutorialScene } from "@/Component/Scene";
+import { GameEndScene, GameLoadingScene, GameScene, MapEditorScene, UnitEditorScene, BuildingEditorScene, EditorSetUpScene, MenuScene, MultiMenuScene, MultiSetUpScene, MultiStageScene, SceneStatus, SettingScene, SingleLoadScene, SingleMenuScene, SingleSetUpScene, SingleStoryScene, SingleTutorialScene } from "@/Component/Scene";
 import { Hud } from "@/Component/Hud";
 import * as SystemClass from "@/System";
 import { SceneType } from "@/Const";
 import { System } from "@/Ecsy";
 import { KonvaObject, Layer } from "@/Component";
 import Konva from "konva";
-import { resolve } from "../../../../config/webpack.common";
 import { TransitionHud } from "@/Component/Hud/TransitionHud";
+import { MapEditorLoaderSystem } from "../Loader";
 
 export class SceneSystem extends System {
   execute(delta: Number, time: Number) {
@@ -24,18 +24,22 @@ export class SceneSystem extends System {
   toggleSystems(scene: SceneType) {
     // Stop all systems
     for (const [k, v] of Object.entries(SystemClass)) {
-      //this.world.getSystem(v).stop();
+      this.world.getSystem(v).stop();
     }
+
+    // Core Systems
+    this.world.getSystem(SceneSystem).play();
 
     // Change visibility of huds when switching scene
     switch (scene) {
-      case SceneType.MENU: {
-        break;
-      }
-      case SceneType.SINGLE_PLAY_MENU: {
-        break;
-      }
-      case SceneType.SINGLE_PLAY_SETUP: {
+      case SceneType.MENU:
+      case SceneType.SINGLE_PLAY_MENU:
+      case SceneType.SINGLE_PLAY_SETUP:
+      case SceneType.MULTI_PLAY_MENU:
+      case SceneType.MULTI_PLAY_SETUP:
+      case SceneType.MULTI_PLAY_STAGE:
+      case SceneType.EDITOR_SETUP:
+      case SceneType.SETTING: {
         break;
       }
       case SceneType.SINGLE_PLAY_LOAD: {
@@ -47,22 +51,14 @@ export class SceneSystem extends System {
       case SceneType.SINGLE_PLAY_TUTORIAL: {
         break;
       }
-      case SceneType.MULTI_PLAY_MENU: {
-        break;
-      }
-      case SceneType.MULTI_PLAY_SETUP: {
-        break;
-      }
-      case SceneType.MULTI_PLAY_STAGE: {
-        break;
-      }
       case SceneType.MAP_EDITOR: {
+        this.world.getSystem(MapEditorLoaderSystem).play();
         break;
       }
-      case SceneType.MAP_EDITOR_SETUP: {
+      case SceneType.UNIT_EDITOR: {
         break;
       }
-      case SceneType.SETTING: {
+      case SceneType.BUILDING_EDITOR: {
         break;
       }
       case SceneType.GAME_LOADING: {
@@ -136,8 +132,16 @@ export class SceneSystem extends System {
         this.toggleVisibility("mapEditorHud", previousHuds);
         break;
       }
-      case SceneType.MAP_EDITOR_SETUP: {
-        this.toggleVisibility("mapEditorSetUpHud", previousHuds);
+      case SceneType.UNIT_EDITOR: {
+        this.toggleVisibility("unitEditorHud", previousHuds);
+        break;
+      }
+      case SceneType.BUILDING_EDITOR: {
+        this.toggleVisibility("buildingEditorHud", previousHuds);
+        break;
+      }
+      case SceneType.EDITOR_SETUP: {
+        this.toggleVisibility("editorSetUpHud", previousHuds);
         break;
       }
       case SceneType.SETTING: {
@@ -177,23 +181,26 @@ export class SceneSystem extends System {
                           sceneName === SceneType.GAME ? "gameHud" :
                             sceneName === SceneType.GAME_END ? "gameEndHud" :
                               sceneName === SceneType.MAP_EDITOR ? "mapEditorHud" :
-                                sceneName === SceneType.MAP_EDITOR_SETUP ? "mapEditorSetUpHud" : "error"
+                                sceneName === SceneType.UNIT_EDITOR ? "unitEditorHud" :
+                                  sceneName === SceneType.BUILDING_EDITOR ? "buildingEditorHud" :
+                                    sceneName === SceneType.EDITOR_SETUP ? "editorSetUpHud" : undefined
   }
 
   toggleVisibility(hudType: keyof typeof this.queries, prevHudType: keyof typeof this.queries) {
     const promises: any[] = [];
+    const prevHuds = this.queries[prevHudType].results;
+    const nextHuds = this.queries[hudType].results;
 
     // Fade out previous scene huds
-    this.queries[prevHudType].results.forEach(hud => {
+    prevHuds.forEach(hud => {
       promises.push(fadeOut(hud));
 
       function fadeOut(hud: any) {
         return new Promise((resolve) => {
           let konvaObj = hud.getComponent(KonvaObject).value;
           let hasTransition = hud.hasComponent(TransitionHud);
-          console.log(hasTransition);
 
-          if(hasTransition) {
+          if (hasTransition) {
             new Konva.Tween({
               node: konvaObj,
               opacity: 0,
@@ -203,7 +210,21 @@ export class SceneSystem extends System {
               },
             }).play()
           } else {
-            // TODO: check next scene and if it has same hud in it, then display the hud without hiding
+            let carriedOn = false;
+
+            // Check if the corresponding hud still exist in the next scene
+            nextHuds.forEach((nextHud: any) => {
+              let nextKonvaHud = nextHud.getComponent(KonvaObject).value;
+
+              if (konvaObj.id() == nextKonvaHud.id()) {
+                carriedOn = true;
+              }
+            });
+
+            // If the hud is not in the next scene, hide the hud
+            if (!carriedOn) {
+              konvaObj.hide();
+            }
             resolve("Done Fade Out");
           }
         })
@@ -212,12 +233,12 @@ export class SceneSystem extends System {
 
     // Fade in current scene huds
     Promise.all(promises).then(() => {
-      this.queries[hudType].results.forEach(hud => {
+      nextHuds.forEach(hud => {
         let konvaObj = hud.getComponent(KonvaObject).value;
         let hasTransition = hud.hasComponent(TransitionHud);
 
         konvaObj.show();
-        if(hasTransition) {
+        if (hasTransition) {
           new Konva.Tween({
             node: konvaObj,
             opacity: 1,
@@ -288,7 +309,13 @@ SceneSystem.queries = {
   mapEditorHud: {
     components: [Hud, MapEditorScene]
   },
-  mapEditorSetUpHud: {
-    components: [Hud, MapEditorSetUpScene]
+  unitEditorHud: {
+    components: [Hud, UnitEditorScene]
+  },
+  buildingEditorHud: {
+    components: [Hud, BuildingEditorScene]
+  },
+  editorSetUpHud: {
+    components: [Hud, EditorSetUpScene]
   }
 };
