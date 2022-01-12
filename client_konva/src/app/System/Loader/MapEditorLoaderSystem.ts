@@ -25,6 +25,7 @@ export class MapEditorLoaderSystem extends System {
     this.createGrid(stage, gameLayer);
     this.createBaseTile(stage, gameLayer);
     this.createEditPanel(stage, hudLayer);
+    this.createTestGrid(stage, gameLayer);
   }
 
 
@@ -157,6 +158,26 @@ export class MapEditorLoaderSystem extends System {
         this.createKonvaEntity(tile, true);
       }
     }
+  }
+
+  createTestGrid(stage: Stage, gameLayer: Layer) {
+    let testTile = new Konva.Rect({
+      x: Math.sqrt(3) * 50 * 5,
+      y: 75 * 4,
+      width: Math.sqrt(3) * 50,
+      height: 75,
+      stroke: "red",
+      strokeWidth: 4,
+      name: "test_tile"
+    })
+    gameLayer.add(testTile);
+
+    // Create hex grid
+    // for (let i = 0; i < 30; i++) {
+    //   for (let j = 0; j < 30; j++) {
+
+    //   }
+    // }
   }
 
   createKonvaEntity(konvaObj: any, isTile?: boolean) {

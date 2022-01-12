@@ -26,14 +26,15 @@ export class MouseListenerSystem extends System {
     stage.on("pointermove", () => {
       let mousePos = stage.getPointerPosition();
 
-      tiles.forEach(tile => {
-        let tileObj = tile.getComponent(KonvaObject).value;
-        let pos = tileObj.getAbsolutePosition();
 
-        if (isInsideHexagon(pos.x, pos.y, mousePos.x, mousePos.y, 50)) {
-          tileObj.find(".hover_tile")[0].setAttr("opacity", 0.5);
-        }
-      })
+      // tiles.forEach(tile => {
+      //   let tileObj = tile.getComponent(KonvaObject).value;
+      //   let pos = tileObj.getAbsolutePosition();
+
+      //   if (isInsideHexagon(pos.x, pos.y, mousePos.x, mousePos.y, 50)) {
+      //     tileObj.find(".hover_tile")[0].setAttr("opacity", 0.5);
+      //   }
+      // })
     })
 
   }
