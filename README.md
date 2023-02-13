@@ -9,5 +9,10 @@ A turn based game leveraging:
 1. `npm install`
 2. `npm start`
 
-## Game Assets Link
-[Link](https://game-icons.net/tags/weapon.html)
+## Screenshots
+<img src="./.github/screenshot/main.png">
+<img src="./.github/screenshot/single-player.png">
+<img src="./.github/screenshot/start.png">
+<img src="./.github/screenshot/select.png">
+<img src="./.github/screenshot/enemy-killed.png">
+<img src="./.github/screenshot/castle.png">
