@@ -1,7 +1,7 @@
 # Coco Conquest
 Personal game made using pure Javascript Canvas API (without any game engine). Due to many limitations, I have stopped working on this project. Quite a bit of effort was put on this project though, including:
-1. Dealing with hexagonal grids and determining its boundary (ex. whether the mouse over the hex)
-2. Coming up with alogrithm to generate random map for each game
+1. Dealing with hexagonal grids and determining its boundary (ex. whether the mouse is over the hex)
+2. Coming up with algorithm to generate random map for each game
 3. Path finding algorithm for determining where the unit can move to
 
 and many more small details.
